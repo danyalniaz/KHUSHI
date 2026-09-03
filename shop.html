@@ -492,6 +492,22 @@
             applyFilters();
         }
 
+                function openAccountModal() {
+            const el = document.getElementById('account-modal');
+            if (el) el.classList.remove('hidden');
+        }
+        function closeAccountModal() {
+            const el = document.getElementById('account-modal');
+            if (el) el.classList.add('hidden');
+        }
+        function toggleMobileFilterDrawer() {
+            const aside = document.querySelector('aside');
+            if (aside) {
+                aside.classList.toggle('hidden');
+                aside.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
         function resetAllFilters() {
             currentCategory = 'all';
             currentSubcategory = null;

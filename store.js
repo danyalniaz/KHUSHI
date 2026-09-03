@@ -5507,6 +5507,10 @@ class KhushiStore {
     }
 
     // Recently Viewed Tracking
+    clearRecentlyViewed() {
+        localStorage.removeItem('kc_recently_viewed');
+    }
+
     addToRecentlyViewed(productId) {
         let list = JSON.parse(localStorage.getItem('kc_recently_viewed')) || [];
         const id = Number(productId);
