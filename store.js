@@ -9259,34 +9259,31 @@ class KhushiStore {
         this.init();
     }
 
-    init() {
-        if (!localStorage.getItem('kc_categories')) {
-            localStorage.setItem('kc_categories', JSON.stringify(DEFAULT_CATEGORIES));
+        init() {
+        if (!localStorage.getItem(this.STORAGE_KEYS.PRODUCTS)) {
+            this.saveProducts(DEFAULT_PRODUCTS);
         }
-        const currentProducts = JSON.parse(localStorage.getItem('kc_products') || '[]');
-        if (!Array.isArray(currentProducts) || currentProducts.length < DEFAULT_PRODUCTS.length) {
-            localStorage.setItem('kc_products', JSON.stringify(DEFAULT_PRODUCTS));
+        if (!localStorage.getItem(this.STORAGE_KEYS.CATEGORIES)) {
+            this.saveCategories(DEFAULT_CATEGORIES);
         }
-        if (!localStorage.getItem('kc_settings')) {
-            localStorage.setItem('kc_settings', JSON.stringify(DEFAULT_SETTINGS));
+        if (!localStorage.getItem(this.STORAGE_KEYS.CART)) {
+            this.saveCart({});
         }
-        if (!localStorage.getItem('kc_orders')) {
-            localStorage.setItem('kc_orders', JSON.stringify(DEFAULT_ORDERS));
+        if (!localStorage.getItem(this.STORAGE_KEYS.SETTINGS)) {
+            this.saveSettings(DEFAULT_SETTINGS);
         }
-        if (!localStorage.getItem('kc_payments')) {
-            localStorage.setItem('kc_payments', JSON.stringify([]));
-        }
-        if (!localStorage.getItem('kc_cart')) {
-            localStorage.setItem('kc_cart', JSON.stringify({}));
-        }
-        if (!localStorage.getItem('kc_wishlist')) {
-            localStorage.setItem('kc_wishlist', JSON.stringify([]));
-        }
-        if (!localStorage.getItem('kc_recently_viewed')) {
-            localStorage.setItem('kc_recently_viewed', JSON.stringify([1, 5, 3]));
-        }
-        if (!localStorage.getItem('kc_notifications')) {
-            localStorage.setItem('kc_notifications', JSON.stringify([]));
+        if (!localStorage.getItem('kc_owner')) {
+            const defaultOwner = {
+                id: 'owner_1',
+                name: 'Khushi Store Owner',
+                email: 'admin@khushicollection.com',
+                password_hash: btoa('Admin@12345'),
+                pin: '8899',
+                role: 'OWNER',
+                status: 'active',
+                created_at: new Date().toISOString()
+            };
+            localStorage.setItem('kc_owner', JSON.stringify(defaultOwner));
         }
     }
 

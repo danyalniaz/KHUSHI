@@ -2,111 +2,114 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Owner Portal — Khushi Collection</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        .gold-gradient-btn {
+            background: linear-gradient(135deg, #D4AF37 0%, #AA820A 100%);
+            color: #000;
+        }
+        .gold-gradient-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
 </head>
 <body class="bg-[#080B11] text-zinc-100 min-h-screen flex items-center justify-center p-4 antialiased selection:bg-amber-500 selection:text-black">
 
-    <div class="max-w-md w-full my-8 space-y-6">
+    <div class="max-w-md w-full my-6 space-y-6">
         
         <!-- Brand Header -->
         <div class="text-center space-y-2">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 text-2xl shadow-xl mb-2">
+            <a href="index.html" class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 text-2xl shadow-2xl mb-1 hover:scale-105 transition">
                 <i class="fa-solid fa-crown"></i>
-            </div>
+            </a>
             <h1 class="text-2xl font-serif font-extrabold tracking-wider text-white">KHUSHI COLLECTION</h1>
-            <p class="text-xs uppercase font-bold tracking-widest text-amber-400" id="portal-subheading">Private Owner Portal</p>
+            <p class="text-xs uppercase font-bold tracking-widest text-amber-400">Private Owner Portal</p>
         </div>
 
-        <!-- Dynamic Card: Standard Login OR Initial Setup -->
-        <div class="luxury-card p-8 rounded-3xl border-amber-500/30 shadow-2xl space-y-6">
+        <!-- Login Card -->
+        <div class="luxury-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 shadow-2xl space-y-5">
             
-            <!-- Standard Login View -->
-            <div id="login-view" class="space-y-5">
-                <div class="text-center pb-2 border-b border-zinc-800">
-                    <h2 class="text-base font-serif font-bold text-white">Owner & Staff Authentication</h2>
-                    <p class="text-[11px] text-zinc-400 mt-0.5">Enter authorized credentials to access administrative systems</p>
-                </div>
-
-                <form onsubmit="handleLoginSubmit(event)" class="space-y-4 text-xs">
-                    <div>
-                        <label class="block font-semibold text-zinc-300 mb-1.5">Authorized Email Address *</label>
-                        <div class="relative">
-                            <input type="email" id="login-email" required placeholder="owner@khushicollection.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:border-amber-400 text-xs">
-                            <i class="fa-solid fa-envelope absolute left-3.5 top-3 text-zinc-400"></i>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block font-semibold text-zinc-300 mb-1.5">Password *</label>
-                        <div class="relative">
-                            <input type="password" id="login-password" required placeholder="••••••••••••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-2.5 pl-10 pr-10 text-white focus:outline-none focus:border-amber-400 text-xs font-mono">
-                            <i class="fa-solid fa-lock absolute left-3.5 top-3 text-zinc-400"></i>
-                            <button type="button" onclick="togglePassVisibility('login-password', this)" class="absolute right-3.5 top-3 text-zinc-400 hover:text-white">
-                                <i class="fa-solid fa-eye text-xs"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="login-error-alert" class="hidden p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-300 text-xs space-y-1">
-                        <div class="flex items-center gap-2 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> <span id="login-error-title">Access Denied</span></div>
-                        <p class="text-[11px] text-rose-200" id="login-error-msg"></p>
-                    </div>
-
-                    <button type="submit" id="login-submit-btn" class="w-full py-3.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl">
-                        <i class="fa-solid fa-shield-halved text-xs"></i>
-                        <span>Login Securely</span>
-                    </button>
-                </form>
+            <!-- Auth Method Switcher Tabs (Password vs PIN) -->
+            <div class="flex rounded-xl bg-zinc-950 p-1 border border-zinc-800 text-xs">
+                <button type="button" onclick="switchTab('password')" id="tab-pass-btn" class="flex-1 py-2 rounded-lg font-bold transition bg-amber-400 text-black">
+                    <i class="fa-solid fa-key mr-1"></i> Email & Password
+                </button>
+                <button type="button" onclick="switchTab('pin')" id="tab-pin-btn" class="flex-1 py-2 rounded-lg font-bold text-zinc-400 hover:text-white transition">
+                    <i class="fa-solid fa-lock mr-1"></i> Quick PIN
+                </button>
             </div>
 
-            <!-- First-Time Owner Setup View (Shown ONLY if no owner account exists yet) -->
-            <div id="setup-view" class="hidden space-y-5">
-                <div class="text-center pb-2 border-b border-zinc-800">
-                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-400/20 text-amber-400 border border-amber-400/30">Initial System Deployment</span>
-                    <h2 class="text-base font-serif font-bold text-white mt-2">Create Primary Store Owner</h2>
-                    <p class="text-[11px] text-zinc-400 mt-0.5">Configure the master store owner account. This setup can only be performed once.</p>
+            <!-- Standard Password Form -->
+            <form id="pass-login-form" onsubmit="handleLogin(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1.5">Owner Email Address *</label>
+                    <div class="relative">
+                        <input type="email" id="login-email" required value="admin@khushicollection.com" placeholder="admin@khushicollection.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-amber-400 text-xs">
+                        <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-zinc-400"></i>
+                    </div>
                 </div>
 
-                <form onsubmit="handleInitialSetupSubmit(event)" class="space-y-4 text-xs">
-                    <div>
-                        <label class="block font-semibold text-zinc-300 mb-1">Owner Full Name *</label>
-                        <input type="text" id="setup-name" required placeholder="Khushi Fatima" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400">
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1.5">Password *</label>
+                    <div class="relative">
+                        <input type="password" id="login-password" required value="Admin@12345" placeholder="••••••••••••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-3 pl-10 pr-10 text-white focus:outline-none focus:border-amber-400 text-xs font-mono">
+                        <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-zinc-400"></i>
+                        <button type="button" onclick="togglePassVisibility('login-password', this)" class="absolute right-3.5 top-3.5 text-zinc-400 hover:text-white p-1">
+                            <i class="fa-solid fa-eye text-xs"></i>
+                        </button>
                     </div>
+                </div>
 
-                    <div>
-                        <label class="block font-semibold text-zinc-300 mb-1">Owner Email *</label>
-                        <input type="email" id="setup-email" required placeholder="owner@khushicollection.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400">
+                <div id="login-error-alert" class="hidden p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-300 text-xs">
+                    <div class="flex items-center gap-2 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> <span>Access Denied</span></div>
+                    <p class="text-[11px] text-rose-200 mt-1" id="login-error-msg"></p>
+                </div>
+
+                <button type="submit" id="login-submit-btn" class="w-full py-4 rounded-xl gold-gradient-btn text-xs font-extrabold uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl cursor-pointer">
+                    <i class="fa-solid fa-shield-halved text-xs"></i>
+                    <span>Log In to Admin Portal</span>
+                </button>
+            </form>
+
+            <!-- Quick PIN Form (Mobile Super-Fast Access) -->
+            <form id="pin-login-form" onsubmit="handlePinLogin(event)" class="hidden space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1.5">Owner Security PIN *</label>
+                    <div class="relative">
+                        <input type="password" id="login-pin" maxlength="6" placeholder="Enter 4-6 digit PIN (e.g. 8899)" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-amber-400 text-sm tracking-widest font-mono text-center">
+                        <i class="fa-solid fa-hashtag absolute left-3.5 top-3.5 text-zinc-400"></i>
                     </div>
+                    <p class="text-[10px] text-zinc-500 mt-1 text-center">Default Master Owner PIN is <strong class="text-amber-400">8899</strong></p>
+                </div>
 
-                    <div>
-                        <label class="block font-semibold text-zinc-300 mb-1">Master Password (Min 8 chars) *</label>
-                        <input type="password" id="setup-password" required minlength="8" placeholder="Create strong master password" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono focus:outline-none focus:border-amber-400">
-                    </div>
+                <div id="pin-error-alert" class="hidden p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-200 text-xs"></div>
 
-                    <div>
-                        <label class="block font-semibold text-zinc-300 mb-1">Confirm Password *</label>
-                        <input type="password" id="setup-confirm-password" required minlength="8" placeholder="Repeat master password" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono focus:outline-none focus:border-amber-400">
-                    </div>
+                <button type="submit" class="w-full py-4 rounded-xl gold-gradient-btn text-xs font-extrabold uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl cursor-pointer">
+                    <i class="fa-solid fa-bolt text-xs"></i>
+                    <span>Authenticate with PIN</span>
+                </button>
+            </form>
 
-                    <div id="setup-error-alert" class="hidden p-3 rounded-xl bg-rose-950 border border-rose-500/40 text-rose-200 text-xs"></div>
-
-                    <button type="submit" class="w-full py-3.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-widest shadow-xl">
-                        👑 Establish Store Owner Account
-                    </button>
-                </form>
+            <!-- 1-Tap Auto Fill Demo Helper -->
+            <div class="pt-2 border-t border-zinc-800/80 text-center">
+                <button type="button" onclick="autoFillDefaultOwner()" class="text-[11px] text-amber-400 hover:text-amber-300 font-semibold underline flex items-center justify-center gap-1.5 mx-auto py-1">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> 1-Tap Fill Default Credentials (admin@khushicollection.com)
+                </button>
             </div>
 
         </div>
 
         <!-- Footer Notice -->
-        <div class="text-center text-[11px] text-zinc-600 space-y-1">
-            <p>Protected by end-to-end authorization & failed login rate-limiting.</p>
-            <a href="index.html" class="text-zinc-500 hover:text-amber-400 transition">&larr; Return to Customer Storefront</a>
+        <div class="text-center text-xs text-zinc-500 space-y-2">
+            <p>Protected by end-to-end authorization & role security.</p>
+            <a href="index.html" class="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-bold transition">
+                <i class="fa-solid fa-arrow-left text-[10px]"></i> Return to Customer Storefront
+            </a>
         </div>
 
     </div>
@@ -114,8 +117,28 @@
     <!-- Scripts -->
     <script src="store.js"></script>
     <script>
+        function switchTab(mode) {
+            const passForm = document.getElementById('pass-login-form');
+            const pinForm = document.getElementById('pin-login-form');
+            const passBtn = document.getElementById('tab-pass-btn');
+            const pinBtn = document.getElementById('tab-pin-btn');
+
+            if (mode === 'pin') {
+                passForm.classList.add('hidden');
+                pinForm.classList.remove('hidden');
+                pinBtn.className = 'flex-1 py-2 rounded-lg font-bold transition bg-amber-400 text-black';
+                passBtn.className = 'flex-1 py-2 rounded-lg font-bold text-zinc-400 hover:text-white transition';
+            } else {
+                passForm.classList.remove('hidden');
+                pinForm.classList.add('hidden');
+                passBtn.className = 'flex-1 py-2 rounded-lg font-bold transition bg-amber-400 text-black';
+                pinBtn.className = 'flex-1 py-2 rounded-lg font-bold text-zinc-400 hover:text-white transition';
+            }
+        }
+
         function togglePassVisibility(id, btn) {
             const input = document.getElementById(id);
+            if (!input) return;
             if (input.type === 'password') {
                 input.type = 'text';
                 btn.innerHTML = '<i class="fa-solid fa-eye-slash text-xs"></i>';
@@ -125,31 +148,15 @@
             }
         }
 
-        function checkOwnerStatus() {
-            // If already authenticated as owner/staff, go straight to dashboard
-            const currentUser = store.getCurrentUser();
-            if (currentUser && ['OWNER', 'MANAGER', 'STAFF'].includes(currentUser.role)) {
-                window.location.replace('admin-dashboard.html');
-                return;
-            }
-
-            const loginView = document.getElementById('login-view');
-            const setupView = document.getElementById('setup-view');
-
-            if (!store.hasOwner()) {
-                // First-time deployment: Show Setup
-                loginView.classList.add('hidden');
-                setupView.classList.remove('hidden');
-                document.getElementById('portal-subheading').textContent = 'Initial System Setup';
-            } else {
-                loginView.classList.remove('hidden');
-                setupView.classList.add('hidden');
-                document.getElementById('portal-subheading').textContent = 'Private Owner Portal';
-            }
+        function autoFillDefaultOwner() {
+            document.getElementById('login-email').value = 'admin@khushicollection.com';
+            document.getElementById('login-password').value = 'Admin@12345';
+            document.getElementById('login-pin').value = '8899';
+            showToast('Loaded Default Owner Credentials');
         }
 
-        function handleLoginSubmit(e) {
-            e.preventDefault();
+        function handleLogin(e) {
+            if (e) e.preventDefault();
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-password').value;
             const errBox = document.getElementById('login-error-alert');
@@ -157,47 +164,55 @@
 
             const res = store.login(email, pass);
             if (res.success) {
-                showToast(`Welcome back, ${res.user.name}! Authenticated as ${res.user.role}.`);
+                showToast(`Welcome back! Authenticated as ${res.user.role}.`);
                 setTimeout(() => {
-                    window.location.replace('admin-dashboard.html');
-                }, 400);
+                    window.location.href = 'admin-dashboard.html';
+                }, 300);
             } else {
                 errBox.classList.remove('hidden');
                 errMsg.textContent = res.message;
-                if (res.locked) {
-                    document.getElementById('login-submit-btn').disabled = true;
-                    document.getElementById('login-submit-btn').classList.add('opacity-50', 'cursor-not-allowed');
-                }
             }
         }
 
-        function handleInitialSetupSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('setup-name').value.trim();
-            const email = document.getElementById('setup-email').value.trim();
-            const pass = document.getElementById('setup-password').value;
-            const confirmPass = document.getElementById('setup-confirm-password').value;
-            const errBox = document.getElementById('setup-error-alert');
+        function handlePinLogin(e) {
+            if (e) e.preventDefault();
+            const pin = document.getElementById('login-pin').value.trim();
+            const errBox = document.getElementById('pin-error-alert');
 
-            if (pass !== confirmPass) {
-                errBox.classList.remove('hidden');
-                errBox.textContent = 'Passwords do not match.';
-                return;
-            }
-
-            const res = store.setupInitialOwner({ name, email, password: pass });
+            const res = store.login('admin@khushicollection.com', pin);
             if (res.success) {
-                showToast('Master Store Owner account created successfully!');
+                showToast(`PIN Verified! Redirecting to Dashboard...`);
                 setTimeout(() => {
-                    window.location.replace('admin-dashboard.html');
-                }, 500);
+                    window.location.href = 'admin-dashboard.html';
+                }, 300);
             } else {
                 errBox.classList.remove('hidden');
-                errBox.textContent = res.message;
+                errBox.textContent = res.message || 'Incorrect PIN entered.';
             }
         }
 
-        document.addEventListener('DOMContentLoaded', checkOwnerStatus);
+        function showToast(msg) {
+            let toast = document.getElementById('kc-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'kc-toast';
+                toast.className = 'fixed bottom-6 right-6 z-50 px-5 py-3 rounded-2xl bg-zinc-900 border border-amber-500/40 text-amber-300 text-xs font-bold shadow-2xl transition-all duration-300 transform translate-y-10 opacity-0 flex items-center gap-2';
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-amber-400"></i> ${msg}`;
+            toast.classList.remove('translate-y-10', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            store.init();
+            const currentUser = store.getCurrentUser ? store.getCurrentUser() : null;
+            if (currentUser && ['OWNER', 'MANAGER', 'STAFF'].includes(currentUser.role)) {
+                window.location.href = 'admin-dashboard.html';
+            }
+        });
     </script>
 </body>
 </html>
