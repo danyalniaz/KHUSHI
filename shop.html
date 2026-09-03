@@ -319,7 +319,7 @@
                 
                 <!-- Results Count Bar -->
                 <div class="flex items-center justify-between text-xs text-zinc-400 px-1">
-                    <span id="catalog-count-text">Showing 80 pieces</span>
+                    <span id="catalog-count-text">Loading luxury collections...</span>
                 </div>
 
                 <!-- Product Grid -->
@@ -395,6 +395,34 @@
                 </a>
                 <a href="checkout.html" class="py-3 rounded-xl btn-gold text-center text-xs font-extrabold uppercase tracking-wider shadow">
                     Checkout &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+        <!-- CUSTOMER ACCOUNT MODAL -->
+    <div id="account-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="luxury-card w-full max-w-md rounded-3xl p-6 border border-amber-500/30 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
+                <h3 class="font-serif font-bold text-white text-base flex items-center gap-2">
+                    <i class="fa-regular fa-user text-amber-400"></i> Khushi Account & Concierge
+                </h3>
+                <button onclick="document.getElementById('account-modal').classList.add('hidden')" class="text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="space-y-2 text-xs">
+                <a href="track-order.html" class="flex items-center justify-between p-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 transition">
+                    <span class="flex items-center gap-2.5"><i class="fa-solid fa-truck-fast text-amber-400"></i> Track Existing Order</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-zinc-500"></i>
+                </a>
+                <a href="shop.html?view=wishlist" class="flex items-center justify-between p-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 transition">
+                    <span class="flex items-center gap-2.5"><i class="fa-regular fa-heart text-rose-400"></i> Saved Wishlist</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-zinc-500"></i>
+                </a>
+                <a href="admin-login.html" class="flex items-center justify-between p-3.5 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 border border-amber-400/30 text-amber-300 font-bold transition">
+                    <span class="flex items-center gap-2.5"><i class="fa-solid fa-crown text-amber-400"></i> Store Owner / Admin Portal</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </a>
             </div>
         </div>
