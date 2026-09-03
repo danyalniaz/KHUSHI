@@ -9260,7 +9260,7 @@ class KhushiStore {
     }
 
         init() {
-        if (!localStorage.getItem(this.STORAGE_KEYS.PRODUCTS)) {
+        if (!localStorage.getItem(this.STORAGE_KEYS.PRODUCTS) || (JSON.parse(localStorage.getItem(this.STORAGE_KEYS.PRODUCTS) || "[]").length < 96)) {
             this.saveProducts(DEFAULT_PRODUCTS);
         }
         if (!localStorage.getItem(this.STORAGE_KEYS.CATEGORIES)) {
@@ -9653,9 +9653,21 @@ class KhushiStore {
 
     // Product Operations
     getProducts() {
-        const stored = JSON.parse(localStorage.getItem('kc_products'));
-        if (Array.isArray(stored) && stored.length > 0) return stored;
-        return DEFAULT_PRODUCTS;
+        try {
+            const raw = localStorage.getItem('kc_products');
+            if (!raw) {
+                this.saveProducts(DEFAULT_PRODUCTS);
+                return DEFAULT_PRODUCTS;
+            }
+            const stored = JSON.parse(raw);
+            if (!Array.isArray(stored) || stored.length < 96) {
+                this.saveProducts(DEFAULT_PRODUCTS);
+                return DEFAULT_PRODUCTS;
+            }
+            return stored;
+        } catch (e) {
+            return DEFAULT_PRODUCTS;
+        }
     }
 
     getProduct(idOrSlug) {

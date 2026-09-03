@@ -479,23 +479,30 @@
             applyFilters();
         }
 
-        function applyFilters() {
+                function applyFilters() {
             let list = store.getProducts();
+            if (!Array.isArray(list) || list.length === 0) {
+                list = typeof DEFAULT_PRODUCTS !== 'undefined' ? DEFAULT_PRODUCTS : [];
+            }
 
             // Category Filter
             if (currentCategory === 'wishlist') {
                 const wishIds = store.getWishlist();
                 list = list.filter(p => wishIds.includes(p.id));
-                document.getElementById('catalog-page-title').textContent = 'My Saved Wishlist';
+                const titleEl = document.getElementById('catalog-page-title');
+                if (titleEl) titleEl.textContent = 'My Saved Wishlist';
             } else if (currentCategory === 'sale') {
-                list = list.filter(p => p.is_flash_sale || p.sale_price);
-                document.getElementById('catalog-page-title').textContent = '🔥 Grand Flash Sale Deals';
-            } else if (currentCategory !== 'all') {
-                list = list.filter(p => p.category === currentCategory);
-                const catObj = store.getCategories().find(c => c.slug === currentCategory);
-                document.getElementById('catalog-page-title').textContent = catObj ? `${catObj.name} Couture` : 'Haute Couture';
+                list = list.filter(p => p.is_flash_sale || (p.sale_price && p.sale_price < p.price));
+                const titleEl = document.getElementById('catalog-page-title');
+                if (titleEl) titleEl.textContent = '🔥 Grand Flash Sale Deals';
+            } else if (currentCategory && currentCategory !== 'all') {
+                list = list.filter(p => (p.category || '').toLowerCase() === currentCategory.toLowerCase());
+                const catObj = store.getCategories().find(c => (c.slug || '').toLowerCase() === currentCategory.toLowerCase());
+                const titleEl = document.getElementById('catalog-page-title');
+                if (titleEl) titleEl.textContent = catObj ? `${catObj.name} Couture` : 'Haute Couture';
             } else {
-                document.getElementById('catalog-page-title').textContent = 'Haute Couture Collections';
+                const titleEl = document.getElementById('catalog-page-title');
+                if (titleEl) titleEl.textContent = 'Haute Couture Collections';
             }
 
             // Subcategory Filter
@@ -528,7 +535,7 @@
             const selectedOccasions = Array.from(document.querySelectorAll('#sidebar-occasion-filters input:checked')).map(cb => cb.value.toLowerCase());
             if (selectedOccasions.length > 0) {
                 list = list.filter(p => {
-                    const text = `${p.description} ${p.name} ${p.tags || ''}`.toLowerCase();
+                    const text = `${p.description || ''} ${p.name || ''} ${p.tags || ''}`.toLowerCase();
                     return selectedOccasions.some(occ => text.includes(occ));
                 });
             }
@@ -537,7 +544,7 @@
             const selectedFabrics = Array.from(document.querySelectorAll('#sidebar-fabric-filters input:checked')).map(cb => cb.value.toLowerCase());
             if (selectedFabrics.length > 0) {
                 list = list.filter(p => {
-                    const text = `${p.description} ${p.name} ${p.tags || ''}`.toLowerCase();
+                    const text = `${p.description || ''} ${p.name || ''} ${p.tags || ''}`.toLowerCase();
                     return selectedFabrics.some(fab => text.includes(fab));
                 });
             }
@@ -564,7 +571,7 @@
             renderCatalogGrid(list);
         }
 
-                function renderCatalogGrid(products) {
+        function renderCatalogGrid(products) {
             const grid = document.getElementById('catalog-products-grid');
             const empty = document.getElementById('catalog-empty-state');
             const countText = document.getElementById('catalog-count-text');
