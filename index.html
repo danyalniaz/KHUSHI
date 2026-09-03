@@ -381,59 +381,57 @@
     <!-- MAIN HOMEPAGE CONTENT -->
     <main class="flex-grow pb-20 md:pb-12 space-y-20">
         
-                        <!-- ==================================================================== -->
-        <!-- 4. CINEMATIC LUXURY HERO SECTION (GUARANTEED VISIBLE CONTENT)       -->
+                                <!-- ==================================================================== -->
+        <!-- 4. CINEMATIC LUXURY HERO SECTION (MOBILE & DESKTOP OPTIMIZED)       -->
         <!-- ==================================================================== -->
-        <section class="relative overflow-hidden bg-[#06090E] w-full" id="hero-carousel-section" aria-label="Khushi Collection Showcase">
-            <div class="relative h-[82vh] sm:h-[86vh] lg:h-[90vh] min-h-[640px] max-h-[960px] flex items-center w-full">
+        <section class="relative overflow-hidden bg-[#06090E] w-full select-none" id="hero-carousel-section" aria-label="Khushi Collection Showcase">
+            <div class="relative h-[78vh] sm:h-[84vh] lg:h-[90vh] min-h-[540px] sm:min-h-[640px] max-h-[960px] flex items-center w-full">
                 
                 <!-- ==================== SLIDE 01: FESTIVE ROYAL DROP ==================== -->
                 <div class="hero-slide active-slide absolute inset-0 w-full h-full" id="slide-0" data-index="0">
-                    <!-- 1. Background Image (Layer 0) -->
+                    <!-- 1. Background Image -->
                     <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1920&auto=format&fit=crop&q=85" alt="Khushi Collection Festive Royal Drop" class="absolute inset-0 w-full h-full object-cover object-[center_28%] brightness-[0.78]">
                     
-                    <!-- 2. Dark Cinematic Overlay (Layer 1) - Darker on Left, Medium in Center, Lighter on Right -->
-                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
-                    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06090E] via-[#06090E]/70 to-transparent z-10 pointer-events-none"></div>
+                    <!-- 2. Dark Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 sm:via-black/70 to-black/40 sm:to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#06090E] via-[#06090E]/80 to-transparent z-10 pointer-events-none"></div>
 
-                    <!-- 3. Foreground Content (Layer 2) - Positioned Left-Center with High Contrast -->
+                    <!-- 3. Foreground Content -->
                     <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full h-full flex items-center">
-                        <div class="max-w-2xl space-y-6 text-left py-12">
+                        <div class="max-w-2xl space-y-4 sm:space-y-6 text-left py-8 sm:py-12">
                             
-                            <!-- Gold Badge -->
                             <div>
-                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-amber-400/15 text-amber-300 border border-amber-400/40 uppercase tracking-[0.2em] shadow-lg backdrop-blur-md">
+                                <span class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold bg-amber-400/15 text-amber-300 border border-amber-400/40 uppercase tracking-[0.15em] sm:tracking-[0.2em] shadow-lg backdrop-blur-md">
                                     <span class="text-amber-400">✦</span> FESTIVE ROYAL DROP 2026
                                 </span>
                             </div>
 
-                            <!-- Main Heading -->
-                            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-extrabold text-white leading-[1.1] tracking-tight">
+                            <h1 class="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-extrabold text-white leading-[1.12] sm:leading-[1.1] tracking-tight">
                                 Timeless Luxury <br>
                                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-100 gold-glow">Crafted For Royalty</span>
                             </h1>
 
-                            <!-- Description -->
-                            <p class="text-sm sm:text-base text-zinc-200 font-normal leading-relaxed max-w-xl text-shadow">
+                            <p class="text-xs sm:text-sm lg:text-base text-zinc-200 font-normal leading-relaxed max-w-xl">
                                 Discover heritage-inspired fashion, exquisite craftsmanship, luxurious fabrics and timeless pieces designed for modern royalty.
                             </p>
 
-                            <!-- Three CTA Buttons -->
-                            <div class="flex flex-wrap items-center gap-4 pt-3">
-                                <a href="shop.html?category=women" class="group px-7 py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
+                            <!-- Responsive CTA Buttons -->
+                            <div class="flex flex-wrap items-center gap-2.5 sm:gap-4 pt-2 sm:pt-3">
+                                <a href="shop.html?category=women" class="w-full sm:w-auto text-center justify-center group px-6 sm:px-7 py-3.5 sm:py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2">
                                     <span>SHOP WOMEN</span>
                                     <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
                                 </a>
-                                <a href="shop.html?category=men" class="group px-7 py-4 rounded-full bg-zinc-900/90 hover:bg-zinc-800 text-zinc-100 border border-zinc-700/90 hover:border-amber-400 text-xs font-bold uppercase tracking-widest backdrop-blur-md transition flex items-center gap-2.5">
-                                    <span>SHOP MEN</span>
-                                    <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
-                                </a>
-                                <a href="shop.html?filter=sale" class="group px-6 py-4 rounded-full bg-rose-950/90 hover:bg-rose-900 text-rose-200 border border-rose-500/50 text-xs font-bold uppercase tracking-widest transition flex items-center gap-2 shadow-xl">
-                                    <i class="fa-solid fa-fire text-xs animate-pulse text-rose-400"></i>
-                                    <span>FLASH SALE</span>
-                                    <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
-                                </a>
+                                <div class="flex items-center gap-2 w-full sm:w-auto">
+                                    <a href="shop.html?category=men" class="flex-1 sm:flex-none text-center justify-center group px-4 sm:px-7 py-3.5 sm:py-4 rounded-full bg-zinc-900/90 hover:bg-zinc-800 text-zinc-100 border border-zinc-700/90 hover:border-amber-400 text-xs font-bold uppercase tracking-widest backdrop-blur-md transition flex items-center gap-1.5">
+                                        <span>SHOP MEN</span>
+                                        <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
+                                    </a>
+                                    <a href="shop.html?filter=sale" class="flex-1 sm:flex-none text-center justify-center group px-4 sm:px-6 py-3.5 sm:py-4 rounded-full bg-rose-950/90 hover:bg-rose-900 text-rose-200 border border-rose-500/50 text-xs font-bold uppercase tracking-widest transition flex items-center gap-1.5 shadow-xl">
+                                        <i class="fa-solid fa-fire text-xs animate-pulse text-rose-400"></i>
+                                        <span>FLASH SALE</span>
+                                    </a>
+                                </div>
                             </div>
 
                         </div>
@@ -443,27 +441,26 @@
                 <!-- ==================== SLIDE 02: WOMEN'S COUTURE ==================== -->
                 <div class="hero-slide absolute inset-0 w-full h-full" id="slide-1" data-index="1">
                     <img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=1920&auto=format&fit=crop&q=85" alt="Khushi Collection Women's Couture" class="absolute inset-0 w-full h-full object-cover object-[center_35%] brightness-[0.78]">
-                    
-                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
-                    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06090E] via-[#06090E]/70 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 sm:via-black/70 to-black/40 sm:to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#06090E] via-[#06090E]/80 to-transparent z-10 pointer-events-none"></div>
 
                     <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full h-full flex items-center">
-                        <div class="max-w-2xl space-y-6 text-left py-12">
+                        <div class="max-w-2xl space-y-4 sm:space-y-6 text-left py-8 sm:py-12">
                             <div>
-                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-amber-400/15 text-amber-300 border border-amber-400/40 uppercase tracking-[0.2em] shadow-lg backdrop-blur-md">
+                                <span class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold bg-amber-400/15 text-amber-300 border border-amber-400/40 uppercase tracking-[0.15em] sm:tracking-[0.2em] shadow-lg backdrop-blur-md">
                                     <span class="text-amber-400">✦</span> WOMEN'S COUTURE
                                 </span>
                             </div>
-                            <h2 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-extrabold text-white leading-[1.1] tracking-tight">
+                            <h2 class="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-extrabold text-white leading-[1.12] sm:leading-[1.1] tracking-tight">
                                 Elegance <br>
                                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-100 gold-glow">In Every Thread</span>
                             </h2>
-                            <p class="text-sm sm:text-base text-zinc-200 font-normal leading-relaxed max-w-xl text-shadow">
+                            <p class="text-xs sm:text-sm lg:text-base text-zinc-200 font-normal leading-relaxed max-w-xl">
                                 Discover refined silhouettes, intricate embroidery and luxurious fabrics designed to leave an everlasting impression.
                             </p>
-                            <div class="flex flex-wrap items-center gap-4 pt-3">
-                                <a href="shop.html?category=women" class="group px-8 py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
+                            <div class="pt-2 sm:pt-3">
+                                <a href="shop.html?category=women" class="w-full sm:w-auto text-center justify-center group px-8 py-3.5 sm:py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
                                     <span>EXPLORE WOMEN</span>
                                     <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
                                 </a>
@@ -475,27 +472,26 @@
                 <!-- ==================== SLIDE 03: MEN'S HERITAGE ==================== -->
                 <div class="hero-slide absolute inset-0 w-full h-full" id="slide-2" data-index="2">
                     <img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=1920&auto=format&fit=crop&q=85" alt="Khushi Collection Men's Heritage" class="absolute inset-0 w-full h-full object-cover object-[center_25%] brightness-[0.78]">
-                    
-                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
-                    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06090E] via-[#06090E]/70 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 sm:via-black/70 to-black/40 sm:to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#06090E] via-[#06090E]/80 to-transparent z-10 pointer-events-none"></div>
 
                     <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full h-full flex items-center">
-                        <div class="max-w-2xl space-y-6 text-left py-12">
+                        <div class="max-w-2xl space-y-4 sm:space-y-6 text-left py-8 sm:py-12">
                             <div>
-                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-amber-400/15 text-amber-300 border border-amber-400/40 uppercase tracking-[0.2em] shadow-lg backdrop-blur-md">
+                                <span class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold bg-amber-400/15 text-amber-300 border border-amber-400/40 uppercase tracking-[0.15em] sm:tracking-[0.2em] shadow-lg backdrop-blur-md">
                                     <span class="text-amber-400">✦</span> MEN'S HERITAGE
                                 </span>
                             </div>
-                            <h2 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-extrabold text-white leading-[1.1] tracking-tight">
+                            <h2 class="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-extrabold text-white leading-[1.12] sm:leading-[1.1] tracking-tight">
                                 Heritage <br>
                                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-100 gold-glow">Reimagined</span>
                             </h2>
-                            <p class="text-sm sm:text-base text-zinc-200 font-normal leading-relaxed max-w-xl text-shadow">
+                            <p class="text-xs sm:text-sm lg:text-base text-zinc-200 font-normal leading-relaxed max-w-xl">
                                 Classic Pakistani menswear crafted for the modern gentleman. Bespoke raw silk kurtas, tailored jamawar waistcoats, and regal prince suits.
                             </p>
-                            <div class="flex flex-wrap items-center gap-4 pt-3">
-                                <a href="shop.html?category=men" class="group px-8 py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
+                            <div class="pt-2 sm:pt-3">
+                                <a href="shop.html?category=men" class="w-full sm:w-auto text-center justify-center group px-8 py-3.5 sm:py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
                                     <span>SHOP MEN</span>
                                     <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
                                 </a>
@@ -507,27 +503,26 @@
                 <!-- ==================== SLIDE 04: THE ART OF OUD ==================== -->
                 <div class="hero-slide absolute inset-0 w-full h-full" id="slide-3" data-index="3">
                     <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=1920&auto=format&fit=crop&q=85" alt="Khushi Collection The Art of Oud" class="absolute inset-0 w-full h-full object-cover object-center brightness-[0.78]">
-                    
-                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
-                    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06090E] via-[#06090E]/70 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 sm:via-black/70 to-black/40 sm:to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#06090E] via-[#06090E]/80 to-transparent z-10 pointer-events-none"></div>
 
                     <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full h-full flex items-center">
-                        <div class="max-w-2xl space-y-6 text-left py-12">
+                        <div class="max-w-2xl space-y-4 sm:space-y-6 text-left py-8 sm:py-12">
                             <div>
-                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-amber-400/15 text-amber-300 border border-amber-400/40 uppercase tracking-[0.2em] shadow-lg backdrop-blur-md">
+                                <span class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold bg-amber-400/15 text-amber-300 border border-amber-400/40 uppercase tracking-[0.15em] sm:tracking-[0.2em] shadow-lg backdrop-blur-md">
                                     <span class="text-amber-400">✦</span> THE ART OF OUD
                                 </span>
                             </div>
-                            <h2 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-extrabold text-white leading-[1.1] tracking-tight">
+                            <h2 class="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-extrabold text-white leading-[1.12] sm:leading-[1.1] tracking-tight">
                                 Find Your <br>
                                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-100 gold-glow">Signature Scent</span>
                             </h2>
-                            <p class="text-sm sm:text-base text-zinc-200 font-normal leading-relaxed max-w-xl text-shadow">
+                            <p class="text-xs sm:text-sm lg:text-base text-zinc-200 font-normal leading-relaxed max-w-xl">
                                 Discover sophisticated oriental fragrances created to leave an impression. Cambodian agarwood, Damascus rose, and saffron extraits.
                             </p>
-                            <div class="flex flex-wrap items-center gap-4 pt-3">
-                                <a href="shop.html?category=perfumes" class="group px-8 py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
+                            <div class="pt-2 sm:pt-3">
+                                <a href="shop.html?category=perfumes" class="w-full sm:w-auto text-center justify-center group px-8 py-3.5 sm:py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
                                     <span>EXPLORE PERFUMES</span>
                                     <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
                                 </a>
@@ -539,27 +534,26 @@
                 <!-- ==================== SLIDE 05: KHUSHI GRAND SALE ==================== -->
                 <div class="hero-slide absolute inset-0 w-full h-full" id="slide-4" data-index="4">
                     <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&auto=format&fit=crop&q=85" alt="Khushi Collection Grand Sale" class="absolute inset-0 w-full h-full object-cover object-[center_30%] brightness-[0.78]">
-                    
-                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
-                    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06090E] via-[#06090E]/70 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 sm:via-black/70 to-black/40 sm:to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#06090E] via-[#06090E]/80 to-transparent z-10 pointer-events-none"></div>
 
                     <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full h-full flex items-center">
-                        <div class="max-w-2xl space-y-6 text-left py-12">
+                        <div class="max-w-2xl space-y-4 sm:space-y-6 text-left py-8 sm:py-12">
                             <div>
-                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/50 uppercase tracking-[0.2em] shadow-lg backdrop-blur-md">
+                                <span class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/50 uppercase tracking-[0.15em] sm:tracking-[0.2em] shadow-lg backdrop-blur-md">
                                     <i class="fa-solid fa-fire text-xs text-rose-400 animate-pulse"></i> KHUSHI GRAND SALE
                                 </span>
                             </div>
-                            <h2 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-extrabold text-white leading-[1.1] tracking-tight">
+                            <h2 class="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-extrabold text-white leading-[1.12] sm:leading-[1.1] tracking-tight">
                                 Luxury Worth <br>
                                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-amber-300 to-amber-100 gold-glow">Discovering</span>
                             </h2>
-                            <p class="text-sm sm:text-base text-zinc-200 font-normal leading-relaxed max-w-xl text-shadow">
+                            <p class="text-sm sm:text-base text-zinc-200 font-normal leading-relaxed max-w-xl">
                                 Exclusive pieces and selected styles at exceptional prices. Up to 40% off limited couture editions, velvet shawls, and chronographs.
                             </p>
-                            <div class="flex flex-wrap items-center gap-4 pt-3">
-                                <a href="shop.html?filter=sale" class="group px-8 py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
+                            <div class="pt-2 sm:pt-3">
+                                <a href="shop.html?filter=sale" class="w-full sm:w-auto text-center justify-center group px-8 py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
                                     <span>SHOP SALE</span>
                                     <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
                                 </a>
@@ -568,36 +562,34 @@
                     </div>
                 </div>
 
-                <!-- Navigation Arrows (Desktop 40-50px from edge) -->
-                <button onclick="prevSlide()" aria-label="Previous Slide" class="absolute left-4 sm:left-8 lg:left-12 top-1/2 -translate-y-1/2 z-30 w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/90 text-white hover:border-amber-400 hover:text-amber-400 hover:bg-black/90 hover:scale-105 transition shadow-2xl flex items-center justify-center group focus:outline-none focus:ring-2 focus:ring-amber-400">
-                    <i class="fa-solid fa-chevron-left text-sm group-hover:-translate-x-0.5 transition-transform"></i>
+                <!-- Navigation Arrows (Responsive Sizing) -->
+                <button onclick="prevSlide()" aria-label="Previous Slide" class="absolute left-2 sm:left-6 lg:left-12 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/90 text-white hover:border-amber-400 hover:text-amber-400 hover:bg-black/90 hover:scale-105 transition shadow-2xl flex items-center justify-center group focus:outline-none">
+                    <i class="fa-solid fa-chevron-left text-xs sm:text-sm group-hover:-translate-x-0.5 transition-transform"></i>
                 </button>
-                <button onclick="nextSlide()" aria-label="Next Slide" class="absolute right-4 sm:right-8 lg:right-12 top-1/2 -translate-y-1/2 z-30 w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/90 text-white hover:border-amber-400 hover:text-amber-400 hover:bg-black/90 hover:scale-105 transition shadow-2xl flex items-center justify-center group focus:outline-none focus:ring-2 focus:ring-amber-400">
-                    <i class="fa-solid fa-chevron-right text-sm group-hover:translate-x-0.5 transition-transform"></i>
+                <button onclick="nextSlide()" aria-label="Next Slide" class="absolute right-2 sm:right-6 lg:right-12 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/90 text-white hover:border-amber-400 hover:text-amber-400 hover:bg-black/90 hover:scale-105 transition shadow-2xl flex items-center justify-center group focus:outline-none">
+                    <i class="fa-solid fa-chevron-right text-xs sm:text-sm group-hover:translate-x-0.5 transition-transform"></i>
                 </button>
 
-                <!-- Bottom-Center Scroll Indicator -->
-                <div class="hidden sm:flex absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex-col items-center gap-1.5 pointer-events-none opacity-80">
+                <!-- Bottom-Center Scroll Indicator (Hidden on Small Phones) -->
+                <div class="hidden md:flex absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex-col items-center gap-1.5 pointer-events-none opacity-80">
                     <span class="text-[9px] font-bold uppercase tracking-[0.25em] text-zinc-400">SCROLL TO DISCOVER</span>
                     <i class="fa-solid fa-chevron-down text-[10px] text-amber-400 animate-bounce"></i>
                 </div>
 
-                <!-- Slide Indicator & Progress Bar (Bottom-Right) -->
-                <div class="absolute bottom-6 sm:bottom-8 right-4 sm:right-8 z-30 flex items-center gap-3.5 bg-black/70 backdrop-blur-md px-4 py-2.5 rounded-full border border-zinc-800 shadow-2xl">
-                    <span id="hero-slide-counter" class="text-xs font-mono font-bold text-amber-400 tracking-wider">01 / 05</span>
+                <!-- Slide Indicator & Progress Bar (Raised on Mobile for Bottom Nav clearance) -->
+                <div class="absolute bottom-16 sm:bottom-8 right-3 sm:right-8 z-30 flex items-center gap-2 sm:gap-3.5 bg-black/80 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2.5 rounded-full border border-zinc-800 shadow-2xl">
+                    <span id="hero-slide-counter" class="text-[11px] sm:text-xs font-mono font-bold text-amber-400 tracking-wider">01 / 05</span>
                     
-                    <!-- Progress Bar Line -->
-                    <div class="w-12 h-1 bg-zinc-800 rounded-full overflow-hidden relative">
+                    <div class="w-8 sm:w-12 h-1 bg-zinc-800 rounded-full overflow-hidden relative">
                         <div id="hero-slide-progress" class="h-full bg-gradient-to-r from-amber-400 to-amber-200 rounded-full hero-progress-bar"></div>
                     </div>
 
-                    <!-- Clickable Indicator Dots -->
-                    <div class="flex items-center gap-2">
-                        <button onclick="setSlide(0)" id="dot-0" aria-label="Go to Slide 1" class="w-2.5 h-2.5 rounded-full bg-amber-400 transition-all"></button>
-                        <button onclick="setSlide(1)" id="dot-1" aria-label="Go to Slide 2" class="w-2 h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all"></button>
-                        <button onclick="setSlide(2)" id="dot-2" aria-label="Go to Slide 3" class="w-2 h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all"></button>
-                        <button onclick="setSlide(3)" id="dot-3" aria-label="Go to Slide 4" class="w-2 h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all"></button>
-                        <button onclick="setSlide(4)" id="dot-4" aria-label="Go to Slide 5" class="w-2 h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all"></button>
+                    <div class="flex items-center gap-1.5 sm:gap-2">
+                        <button onclick="setSlide(0)" id="dot-0" aria-label="Go to Slide 1" class="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-amber-400 transition-all"></button>
+                        <button onclick="setSlide(1)" id="dot-1" aria-label="Go to Slide 2" class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all"></button>
+                        <button onclick="setSlide(2)" id="dot-2" aria-label="Go to Slide 3" class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all"></button>
+                        <button onclick="setSlide(3)" id="dot-3" aria-label="Go to Slide 4" class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all"></button>
+                        <button onclick="setSlide(4)" id="dot-4" aria-label="Go to Slide 5" class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all"></button>
                     </div>
                 </div>
             </div>
@@ -1687,9 +1679,19 @@
         function closeSearchModal() { document.getElementById('smart-search-modal').classList.add('hidden'); }
         function openAccountModal() { document.getElementById('account-modal').classList.remove('hidden'); }
         function closeAccountModal() { document.getElementById('account-modal').classList.add('hidden'); }
-        function toggleMobileMenu() {
-            const nav = document.getElementById('header-category-links');
-            if (nav) nav.classList.toggle('hidden');
+                function toggleMobileMenu() {
+            const drawer = document.getElementById('mobile-nav-drawer');
+            const overlay = document.getElementById('mobile-nav-overlay');
+            if (drawer && overlay) {
+                const isClosed = drawer.classList.contains('-translate-x-full');
+                if (isClosed) {
+                    drawer.classList.remove('-translate-x-full');
+                    overlay.classList.remove('hidden');
+                } else {
+                    drawer.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                }
+            }
         }
 
         // Best Sellers Tab Filter
@@ -1892,5 +1894,54 @@
             store.applyStorefrontSettings();
         });
     </script>
+    <!-- MOBILE SLIDE-IN NAVIGATION DRAWER -->
+    <div id="mobile-nav-overlay" onclick="toggleMobileMenu()" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm transition-opacity"></div>
+    <div id="mobile-nav-drawer" class="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm z-50 bg-[#0A0D14] border-r border-zinc-800 p-6 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 overflow-y-auto">
+        <div class="space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-zinc-800">
+                <img src="static/images/logo.svg" alt="Khushi Collection" class="h-10 w-auto">
+                <button onclick="toggleMobileMenu()" class="text-zinc-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Department Links -->
+            <div class="space-y-1 text-sm font-semibold uppercase tracking-wider text-zinc-300">
+                <a href="index.html" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400 text-amber-400">Home</a>
+                <a href="shop.html" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">All Collections</a>
+                <a href="shop.html?category=women" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Women Couture</a>
+                <a href="shop.html?category=men" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Men Heritage</a>
+                <a href="shop.html?category=kids" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Kids Festive</a>
+                <a href="shop.html?category=perfumes" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Imperial Oud</a>
+                <a href="shop.html?category=watches" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Watches</a>
+                <a href="shop.html?category=shoes" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Khussas</a>
+                <a href="shop.html?category=bags" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Bags</a>
+                <a href="shop.html?filter=sale" class="block py-2.5 px-3 rounded-xl bg-rose-950/60 text-rose-300 font-bold">🔥 Seasonal Sale</a>
+            </div>
+
+            <div class="pt-4 border-t border-zinc-800 space-y-2 text-xs text-zinc-400">
+                <a href="track-order.html" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-zinc-900 hover:text-white">
+                    <i class="fa-solid fa-truck-fast text-amber-400"></i>
+                    <span>Track Your Order</span>
+                </a>
+                <a href="contact.html" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-zinc-900 hover:text-white">
+                    <i class="fa-solid fa-headset text-amber-400"></i>
+                    <span>Concierge & WhatsApp</span>
+                </a>
+                <a href="about.html" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-zinc-900 hover:text-white">
+                    <i class="fa-solid fa-book-open text-amber-400"></i>
+                    <span>The Khushi Story</span>
+                </a>
+                <a href="admin-login.html" class="flex items-center gap-2.5 py-2 px-3 rounded-xl bg-amber-400/10 text-amber-300 font-bold border border-amber-400/20">
+                    <i class="fa-solid fa-user-shield text-amber-400"></i>
+                    <span>Owner Admin Portal</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="pt-6 border-t border-zinc-900 text-center text-[11px] text-zinc-600">
+            <p>&copy; 2026 Khushi Collection Pvt Ltd</p>
+        </div>
+    </div>
 </body>
 </html>
