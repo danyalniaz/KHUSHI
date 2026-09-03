@@ -784,14 +784,31 @@
             `).join('');
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            store.init();
-            parseUrlParams();
-            renderCategoryTabs();
-            applyFilters();
-            const headerBag = document.getElementById('header-bag-subtotal');
-            if (headerBag) headerBag.textContent = `Rs. ${store.getCartSubtotal().toLocaleString()}`;
-        });
+        function initShopPage() {
+            try {
+                if (typeof store !== 'undefined' && store.init) {
+                    store.init();
+                }
+                parseUrlParams();
+                renderCategoryTabs();
+                applyFilters();
+                const headerBag = document.getElementById('header-bag-subtotal');
+                if (headerBag && typeof store !== 'undefined' && store.getCartSubtotal) {
+                    headerBag.textContent = `Rs. ${store.getCartSubtotal().toLocaleString()}`;
+                }
+            } catch (err) {
+                console.error("Shop page init error:", err);
+                if (typeof renderCatalogGrid === 'function' && typeof DEFAULT_PRODUCTS !== 'undefined') {
+                    renderCatalogGrid(DEFAULT_PRODUCTS);
+                }
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initShopPage);
+        } else {
+            initShopPage();
+        }
     </script>
 </body>
 </html>

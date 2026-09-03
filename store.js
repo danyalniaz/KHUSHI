@@ -4918,7 +4918,7 @@ class KhushiStore {
         this.init();
     }
 
-        init() {
+    init() {
         if (!localStorage.getItem(this.STORAGE_KEYS.PRODUCTS) || (JSON.parse(localStorage.getItem(this.STORAGE_KEYS.PRODUCTS) || "[]").length < 96)) {
             this.saveProducts(DEFAULT_PRODUCTS);
         }
@@ -5366,6 +5366,11 @@ class KhushiStore {
     }
 
     // Cart Operations with Variant & Stock Checks
+    saveCart(cart) {
+        localStorage.setItem(this.STORAGE_KEYS.CART, JSON.stringify(cart));
+        this.updateBadgeCounts();
+    }
+
     getCart() {
         return JSON.parse(localStorage.getItem('kc_cart')) || {};
     }
