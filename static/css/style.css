@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  
+  --primary-gold: #D4AF37;
+  --primary-gold-light: #F6E05E;
+  --primary-gold-dark: #B7950B;
+  --accent-gold-glow: rgba(212, 175, 55, 0.25);
+  
+  --bg-dark: #0A0D14;
+  --card-dark: #121824;
+  --card-dark-border: rgba(212, 175, 55, 0.18);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #0A0D14;
+  color: #E2E8F0;
+  overflow-x: hidden;
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0D14;
+}
+::-webkit-scrollbar-thumb {
+  background: #2D3748;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+/* Luxury Card with Subtle Glow */
+.luxury-card {
+  background: linear-gradient(145deg, #131A29, #0D131F);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.luxury-card:hover {
+  border-color: rgba(212, 175, 55, 0.45);
+  box-shadow: 0 15px 30px -5px rgba(212, 175, 55, 0.12), 0 0 15px rgba(212, 175, 55, 0.1);
+  transform: translateY(-4px);
+}
+
+/* Subtle Neon Glow Accents */
+.glow-gold {
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+.glow-border {
+  position: relative;
+}
+.glow-border::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.5), transparent, rgba(212, 175, 55, 0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Gradient Text */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #FFF1B8 0%, #D4AF37 50%, #AA820A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism */
+.glass-nav {
+  background: rgba(10, 13, 20, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.glass-dropdown {
+  background: rgba(18, 24, 38, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Buttons */
+.btn-gold {
+  background: linear-gradient(135deg, #D4AF37 0%, #C59B27 100%);
+  color: #0A0D14;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+.btn-gold:hover {
+  background: linear-gradient(135deg, #F6E05E 0%, #D4AF37 100%);
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-outline-gold {
+  border: 1px solid #D4AF37;
+  color: #D4AF37;
+  transition: all 0.25s ease;
+}
+.btn-outline-gold:hover {
+  background: rgba(212, 175, 55, 0.12);
+  color: #FFF1B8;
+  border-color: #FFF1B8;
+}
+
+/* Product Card Image Zoom */
+.product-image-container {
+  overflow: hidden;
+  position: relative;
+}
+.product-image-container img {
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.product-card:hover .product-image-container img {
+  transform: scale(1.06);
+}
+
+/* Badge Styles */
+.badge-sale {
+  background: linear-gradient(135deg, #E11D48, #BE123C);
+  color: #FFFFFF;
+}
+.badge-new {
+  background: linear-gradient(135deg, #059669, #047857);
+  color: #FFFFFF;
+}
+.badge-hot {
+  background: linear-gradient(135deg, #EA580C, #C2410C);
+  color: #FFFFFF;
+}
+
+/* Mobile Bottom Navigation */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10, 13, 20, 0.95);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(212, 175, 55, 0.2);
+  z-index: 50;
+  height: 64px;
+}
+
+/* Shimmer Loading Skeleton */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #1E293B 25%, #334155 50%, #1E293B 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+/* Flash Sale Countdown Pill */
+.countdown-box {
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  color: #F87171;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Print Invoice Styles */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .invoice-container {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+}

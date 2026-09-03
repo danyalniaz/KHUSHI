@@ -1,0 +1,93 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Inventory Management — Khushi Collection Admin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-serif font-bold text-white">Inventory & Stock Control</h1>
+            <p class="text-xs text-zinc-400 mt-1">Live warehouse stock, automatic threshold warnings, and one-click stock restock</p>
+        </div>
+    </div>
+
+    <!-- Inventory Table -->
+    <div class="luxury-card rounded-3xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-zinc-300">
+                <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 bg-zinc-900/60 text-[11px]">
+                    <tr>
+                        <th class="py-3.5 px-4">Product Details</th>
+                        <th class="py-3.5 px-4">Category</th>
+                        <th class="py-3.5 px-4">SKU</th>
+                        <th class="py-3.5 px-4">Stock Status</th>
+                        <th class="py-3.5 px-4 text-center">Quick Stock Adjust</th>
+                        <th class="py-3.5 px-4 text-right">Threshold Alert</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-zinc-800/80">
+                    {% for p in products %}
+                    <tr class="hover:bg-zinc-800/30 transition">
+                        <td class="py-3.5 px-4">
+                            <div class="flex items-center gap-3">
+                                <img src="{{ p.thumbnail }}" alt="{{ p.name }}" class="w-10 h-12 object-cover rounded-lg border border-zinc-700 flex-shrink-0">
+                                <div>
+                                    <h4 class="font-bold text-white">{{ p.name }}</h4>
+                                    <span class="text-[10px] text-zinc-400">Rs. {{ "{:,}".format(p.price|int) }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-3.5 px-4 text-zinc-300">{{ p.category_name }}</td>
+                        <td class="py-3.5 px-4 font-mono text-zinc-400 font-bold">{{ p.sku }}</td>
+                        <td class="py-3.5 px-4">
+                            <div class="flex items-center gap-2">
+                                <span id="stock-val-{{ p.id }}" class="font-serif font-bold text-base text-white">{{ p.stock }}</span>
+                                {% if p.stock == 0 %}
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-950 text-rose-400 border border-rose-500/30">OUT OF STOCK</span>
+                                {% elif p.stock <= p.low_stock_threshold %}
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-950 text-amber-400 border border-amber-500/30">LOW STOCK</span>
+                                {% else %}
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/30">HEALTHY</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="py-3.5 px-4">
+                            <div class="flex items-center justify-center gap-2">
+                                <button onclick="quickAdjustStock({{ p.id }}, -1)" class="w-7 h-7 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold text-xs flex items-center justify-center transition">-1</button>
+                                <button onclick="quickAdjustStock({{ p.id }}, 5)" class="px-2.5 h-7 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 border border-emerald-500/30 font-bold text-xs flex items-center justify-center transition">+5</button>
+                                <button onclick="quickAdjustStock({{ p.id }}, 10)" class="px-2.5 h-7 rounded-lg btn-gold text-black font-bold text-xs flex items-center justify-center transition">+10</button>
+                            </div>
+                        </td>
+                        <td class="py-3.5 px-4 text-right text-zinc-400 text-xs">
+                            Trigger at &le; {{ p.low_stock_threshold }} units
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    async function quickAdjustStock(productId, change) {
+        try {
+            const res = await fetch('/admin/inventory/quick-update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ product_id: productId, change: change })
+            });
+            const data = await res.json();
+            if (data.success) {
+                const elem = document.getElementById(`stock-val-${productId}`);
+                if (elem) elem.textContent = data.new_stock;
+                showToast(`Stock updated to ${data.new_stock}`, 'success');
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+</script>
+{% endblock %}

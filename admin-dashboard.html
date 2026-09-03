@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Management Studio — Khushi Collection Admin</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <!-- Chart.js for Live Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-[#080B11] text-zinc-100 min-h-screen flex antialiased">
+
+    <!-- Section 38: Full Admin Dashboard Sidebar -->
+    <aside class="w-64 bg-[#0B0F17] border-r border-zinc-800/80 flex flex-col justify-between hidden md:flex flex-shrink-0">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-zinc-800/80">
+                <a href="admin-dashboard.html" class="flex items-center gap-2.5">
+                    <img src="static/images/logo.svg" alt="Khushi Collection" class="h-9 w-auto">
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">Studio</span>
+                </a>
+            </div>
+
+            <nav class="p-4 space-y-1 text-xs font-semibold max-h-[calc(100vh-140px)] overflow-y-auto">
+                <a href="admin-dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30">
+                    <i class="fa-solid fa-chart-line w-4"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="admin-orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-bag-shopping w-4"></i>
+                    <span>Orders & Fulfillment</span>
+                </a>
+                <a href="admin-products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-shirt w-4"></i>
+                    <span>Products Studio</span>
+                </a>
+                <a href="admin-categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-folder-tree w-4"></i>
+                    <span>Categories Manager</span>
+                </a>
+                <a href="admin-products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-boxes-stacked w-4"></i>
+                    <span>Inventory & Barcodes</span>
+                </a>
+                <a href="admin-orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-users w-4"></i>
+                    <span>Customers Directory</span>
+                </a>
+                <a href="admin-settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-sliders w-4"></i>
+                    <span>Owner Settings</span>
+                </a>
+                <a href="admin-reports.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-chart-pie w-4"></i>
+                    <span>Financial Reports</span>
+                </a>
+                <a href="admin-security.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-shield-halved w-4"></i>
+                    <span>Owner Security & Staff</span>
+                </a>
+                <a href="shop.html" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-tag w-4"></i>
+                    <span>Coupons & Promos</span>
+                </a>
+                <a href="index.html#flash-sale-section" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-bolt text-rose-400 w-4"></i>
+                    <span>Flash Sale Engine</span>
+                </a>
+                <a href="track-order.html" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-truck-fast w-4"></i>
+                    <span>Live Tracking</span>
+                </a>
+                <a href="index.html" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-amber-400/80 hover:text-amber-300 hover:bg-zinc-800/50 transition pt-2 border-t border-zinc-800/60">
+                    <i class="fa-solid fa-arrow-up-right-from-square w-4"></i>
+                    <span>View Customer Store</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-zinc-800/80 text-[11px] text-zinc-500">
+            Khushi Collection &bull; Executive Portal
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <header class="h-20 bg-[#0B0F17]/80 border-b border-zinc-800/80 px-6 flex items-center justify-between sticky top-0 z-30 backdrop-blur-md">
+            <div>
+                <h1 class="text-base sm:text-lg font-serif font-bold text-white">Executive Operations Hub</h1>
+                <p class="text-[11px] text-zinc-400">Live order flow, revenue metrics, and inventory health</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="admin-user-pill"></div>
+                <a href="admin-products.html" class="px-4 py-2 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow">
+                    <i class="fa-solid fa-plus"></i> Add Product
+                </a>
+            </div>
+        </header>
+
+        <main class="p-6 sm:p-8 space-y-8">
+            
+            <!-- Owner Quick-Actions Hub -->
+            <div class="space-y-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-400"><i class="fa-solid fa-bolt mr-1"></i> Owner Quick Actions</span>
+                <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-xs">
+                    <a href="admin-products.html" class="p-3.5 rounded-2xl luxury-card border-amber-500/40 hover:border-amber-400 flex flex-col items-center justify-center gap-1.5 text-center font-bold text-white transition group shadow-lg">
+                        <i class="fa-solid fa-plus text-amber-400 group-hover:scale-110 transition text-base"></i>
+                        <span>+ Add Product</span>
+                    </a>
+                    <a href="admin-categories.html" class="p-3.5 rounded-2xl luxury-card border-amber-500/40 hover:border-amber-400 flex flex-col items-center justify-center gap-1.5 text-center font-bold text-white transition group shadow-lg">
+                        <i class="fa-solid fa-folder-plus text-amber-400 group-hover:scale-110 transition text-base"></i>
+                        <span>+ Add Category</span>
+                    </a>
+                    <a href="admin-orders.html" class="p-3.5 rounded-2xl luxury-card border-zinc-700 hover:border-amber-400 flex flex-col items-center justify-center gap-1.5 text-center font-bold text-white transition group shadow-lg">
+                        <i class="fa-solid fa-bag-shopping text-zinc-300 group-hover:text-amber-400 transition text-base"></i>
+                        <span>View Orders</span>
+                    </a>
+                    <a href="admin-settings.html" class="p-3.5 rounded-2xl luxury-card border-zinc-700 hover:border-amber-400 flex flex-col items-center justify-center gap-1.5 text-center font-bold text-white transition group shadow-lg">
+                        <i class="fa-solid fa-credit-card text-zinc-300 group-hover:text-amber-400 transition text-base"></i>
+                        <span>Payment Settings</span>
+                    </a>
+                    <a href="admin-settings.html" class="p-3.5 rounded-2xl luxury-card border-zinc-700 hover:border-amber-400 flex flex-col items-center justify-center gap-1.5 text-center font-bold text-white transition group shadow-lg">
+                        <i class="fa-solid fa-store text-zinc-300 group-hover:text-amber-400 transition text-base"></i>
+                        <span>Store Settings</span>
+                    </a>
+                    <a href="admin-products.html" class="p-3.5 rounded-2xl luxury-card border-zinc-700 hover:border-amber-400 flex flex-col items-center justify-center gap-1.5 text-center font-bold text-white transition group shadow-lg">
+                        <i class="fa-solid fa-boxes-stacked text-zinc-300 group-hover:text-amber-400 transition text-base"></i>
+                        <span>Inventory</span>
+                    </a>
+                    <a href="admin-reports.html" class="p-3.5 rounded-2xl luxury-card border-zinc-700 hover:border-amber-400 flex flex-col items-center justify-center gap-1.5 text-center font-bold text-white transition group shadow-lg">
+                        <i class="fa-solid fa-chart-pie text-zinc-300 group-hover:text-amber-400 transition text-base"></i>
+                        <span>Reports</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 10 Metric Executive KPI Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div class="luxury-card p-5 rounded-2xl space-y-2">
+                    <div class="flex items-center justify-between text-zinc-400 text-xs">
+                        <span class="uppercase tracking-wider font-semibold">Today's Revenue</span>
+                        <i class="fa-solid fa-money-bill-wave text-amber-400 text-base"></i>
+                    </div>
+                    <div class="text-2xl font-serif font-bold text-white" id="kpi-today-sales">Rs. 42,500</div>
+                    <span class="text-[10px] text-emerald-400 font-semibold"><i class="fa-solid fa-arrow-trend-up"></i> +18% vs yesterday</span>
+                </div>
+
+                <div class="luxury-card p-5 rounded-2xl space-y-2">
+                    <div class="flex items-center justify-between text-zinc-400 text-xs">
+                        <span class="uppercase tracking-wider font-semibold">Total Orders</span>
+                        <i class="fa-solid fa-bag-shopping text-amber-400 text-base"></i>
+                    </div>
+                    <div class="text-2xl font-serif font-bold text-white" id="kpi-orders-count">1</div>
+                    <span class="text-[10px] text-zinc-400">1 awaiting dispatch</span>
+                </div>
+
+                <div class="luxury-card p-5 rounded-2xl space-y-2">
+                    <div class="flex items-center justify-between text-zinc-400 text-xs">
+                        <span class="uppercase tracking-wider font-semibold">Active Catalog</span>
+                        <i class="fa-solid fa-shirt text-amber-400 text-base"></i>
+                    </div>
+                    <div class="text-2xl font-serif font-bold text-white" id="kpi-products-count">8</div>
+                    <span class="text-[10px] text-emerald-400">100% indexed in shop</span>
+                </div>
+
+                <div class="luxury-card p-5 rounded-2xl space-y-2">
+                    <div class="flex items-center justify-between text-zinc-400 text-xs">
+                        <span class="uppercase tracking-wider font-semibold">Low Stock Warnings</span>
+                        <i class="fa-solid fa-triangle-exclamation text-rose-400 text-base"></i>
+                    </div>
+                    <div class="text-2xl font-serif font-bold text-rose-400" id="kpi-low-stock-count">2 Items</div>
+                    <span class="text-[10px] text-zinc-400">Requires atelier restock</span>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Sales Curve -->
+                <div class="lg:col-span-8 luxury-card p-6 rounded-3xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-serif font-bold text-white">7-Day Nationwide Sales Curve (PKR)</h3>
+                        <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider">Live Feed</span>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Low Stock Quick Action Widget -->
+                <div class="lg:col-span-4 luxury-card p-6 rounded-3xl space-y-4 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm font-serif font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-bell text-rose-400"></i> Stock Replenishment Alerts
+                        </h3>
+                        <p class="text-xs text-zinc-400 mt-1">Variants below threshold (3 units):</p>
+                    </div>
+
+                    <div class="space-y-3" id="low-stock-items-list"></div>
+
+                    <a href="admin-products.html" class="block w-full py-2.5 rounded-xl border border-zinc-700 hover:border-amber-400 text-center text-xs font-bold text-zinc-300 uppercase tracking-wider transition">
+                        Open Full Inventory Studio &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recent Orders Feed -->
+            <div class="luxury-card rounded-3xl overflow-hidden p-6 space-y-4">
+                <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
+                    <h3 class="text-sm font-serif font-bold text-white">Recent Customer Orders</h3>
+                    <a href="admin-orders.html" class="text-xs text-amber-400 hover:underline font-bold">View All Orders &rarr;</a>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-zinc-300">
+                        <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 text-[10px]">
+                            <tr>
+                                <th class="py-2.5 px-3">Order #</th>
+                                <th class="py-2.5 px-3">Customer</th>
+                                <th class="py-2.5 px-3">City</th>
+                                <th class="py-2.5 px-3">Total</th>
+                                <th class="py-2.5 px-3">Payment</th>
+                                <th class="py-2.5 px-3">Status</th>
+                                <th class="py-2.5 px-3 text-right">Invoice</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-800/80" id="dash-orders-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="store.js"></script>
+    <script src="admin-guard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const orders = store.getOrders();
+            const products = store.getProducts();
+
+            // Set KPIs
+            document.getElementById('kpi-orders-count').textContent = orders.length;
+            document.getElementById('kpi-products-count').textContent = products.length;
+
+            const lowStockProducts = products.filter(p => {
+                const totalStock = (p.variant_matrix && p.variant_matrix.length > 0)
+                    ? p.variant_matrix.reduce((sum, v) => sum + (v.stock || 0), 0)
+                    : p.stock;
+                return totalStock <= (p.low_stock_threshold || 3);
+            });
+
+            document.getElementById('kpi-low-stock-count').textContent = `${lowStockProducts.length} Items`;
+
+            // Render Low Stock Items
+            const lowBox = document.getElementById('low-stock-items-list');
+            lowBox.innerHTML = lowStockProducts.slice(0, 3).map(p => `
+                <div class="p-3 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-between text-xs">
+                    <div class="min-w-0 pr-2">
+                        <h5 class="font-bold text-white truncate">${p.name}</h5>
+                        <span class="text-[10px] text-zinc-400 font-mono">${p.sku} &bull; ${p.category_name}</span>
+                    </div>
+                    <button onclick="p.stock += 5; store.saveProducts(store.getProducts()); showToast('Added +5 units to ${p.sku}'); location.reload();" class="px-2.5 py-1 rounded bg-amber-400/20 text-amber-400 border border-amber-400/30 text-[10px] font-bold uppercase whitespace-nowrap hover:bg-amber-400 hover:text-black transition">
+                        +5 Stock
+                    </button>
+                </div>
+            `).join('');
+
+            // Render Recent Orders
+            document.getElementById('dash-orders-tbody').innerHTML = orders.slice(0, 5).map(o => `
+                <tr class="hover:bg-zinc-800/30">
+                    <td class="py-3 px-3 font-mono font-bold text-amber-400">#${o.order_number}</td>
+                    <td class="py-3 px-3">
+                        <span class="font-bold text-white block">${o.customer_name}</span>
+                        <span class="text-[10px] text-zinc-400">${o.customer_phone}</span>
+                    </td>
+                    <td class="py-3 px-3">${o.city}</td>
+                    <td class="py-3 px-3 font-mono font-bold text-white">Rs. ${Number(o.total_amount).toLocaleString()}</td>
+                    <td class="py-3 px-3 uppercase text-[10px] text-zinc-400">${o.payment_method}</td>
+                    <td class="py-3 px-3">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-400/10 text-amber-300 border border-amber-400/20">
+                            ${o.order_status.replace('_', ' ')}
+                        </span>
+                    </td>
+                    <td class="py-3 px-3 text-right">
+                        <a href="invoice.html?order_id=${o.order_number}" class="text-xs text-amber-400 hover:underline font-bold">Print &rarr;</a>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Render Chart.js Sales Graph
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Gross Sales (PKR)',
+                        data: [28000, 34500, 29000, 48000, 52000, 61000, 42500],
+                        borderColor: '#D4AF37',
+                        backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#71717a' } },
+                        y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#71717a' } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

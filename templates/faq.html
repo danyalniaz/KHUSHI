@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Help & FAQs — Khushi Collection{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+    <div class="text-center space-y-2">
+        <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Knowledge Base</span>
+        <h1 class="text-3xl sm:text-4xl font-serif font-bold text-white">Frequently Asked Questions</h1>
+        <p class="text-xs text-zinc-400">Everything you need to know about purchasing, sizing, shipping, and exchanges</p>
+    </div>
+
+    <!-- Accordion FAQ Items -->
+    <div class="space-y-4">
+        
+        <div class="luxury-card rounded-2xl p-6 space-y-2">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-circle-question text-amber-400"></i> How do I place an order online?
+            </h3>
+            <p class="text-xs text-zinc-300 leading-relaxed pl-6">
+                Browse our collections, select your desired size and color, and click "Add to Bag". When ready, click the bag icon in the top navigation or bottom mobile bar, and proceed to checkout. You can check out as a guest or create an account for live tracking.
+            </p>
+        </div>
+
+        <div class="luxury-card rounded-2xl p-6 space-y-2">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-truck-fast text-amber-400"></i> What are your delivery charges and shipping times?
+            </h3>
+            <p class="text-xs text-zinc-300 leading-relaxed pl-6">
+                Delivery charges are Rs. 150 for Islamabad & Rawalpindi, Rs. 180 for Lahore, and Rs. 250 for Karachi and all other cities in Pakistan. <strong>Orders over Rs. 5,000 enjoy 100% Free Express Delivery!</strong> Delivery takes 2 to 4 business days.
+            </p>
+        </div>
+
+        <div class="luxury-card rounded-2xl p-6 space-y-2">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-money-bill-wave text-amber-400"></i> What payment methods do you accept?
+            </h3>
+            <p class="text-xs text-zinc-300 leading-relaxed pl-6">
+                We accept Cash on Delivery (COD), Direct Bank Transfer (Meezan Bank), EasyPaisa, and JazzCash. You can choose your preferred method at checkout.
+            </p>
+        </div>
+
+        <div class="luxury-card rounded-2xl p-6 space-y-2">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-rotate-left text-amber-400"></i> What is your exchange and return policy?
+            </h3>
+            <p class="text-xs text-zinc-300 leading-relaxed pl-6">
+                We offer a 7-day hassle-free size exchange policy. The item must be unworn, unwashed, and in its original luxury presentation box with all designer tags intact. Simply reach out to our WhatsApp concierge to initiate your exchange.
+            </p>
+        </div>
+
+        <div class="luxury-card rounded-2xl p-6 space-y-2">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-brands fa-whatsapp text-emerald-400"></i> How do I track my parcel?
+            </h3>
+            <p class="text-xs text-zinc-300 leading-relaxed pl-6">
+                You can visit our <a href="{{ url_for('storefront.track_order') }}" class="text-amber-400 underline font-semibold">Track Order page</a>, enter your Order ID (e.g. KC-10025) and phone number, and instantly see the real-time stage of your parcel along with the courier tracking number.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Help Banner -->
+    <div class="p-6 rounded-3xl bg-zinc-900 border border-zinc-800 text-center space-y-2">
+        <h4 class="text-sm font-serif font-bold text-white">Still have questions?</h4>
+        <p class="text-xs text-zinc-400">Our customer support specialists are available on WhatsApp 7 days a week.</p>
+        <a href="https://wa.me/{{ store_settings.get('store_whatsapp', '923001234567') }}" target="_blank" class="inline-block mt-2 px-6 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold uppercase tracking-wider transition">
+            <i class="fa-brands fa-whatsapp text-sm mr-1"></i> Chat with Us on WhatsApp
+        </a>
+    </div>
+</div>
+{% endblock %}

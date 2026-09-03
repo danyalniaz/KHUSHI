@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us — Khushi Collection Luxury Brand{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+    
+    <!-- Hero Story -->
+    <div class="text-center max-w-2xl mx-auto space-y-4">
+        <span class="text-xs font-bold uppercase tracking-widest text-amber-400">The Crown of Pakistani Haute Couture</span>
+        <h1 class="text-4xl sm:text-5xl font-serif font-extrabold text-white">The Khushi Legacy</h1>
+        <p class="text-sm text-zinc-300 leading-relaxed font-light">
+            Founded with a vision to marry ancestral subcontinental needlework with sleek modern silhouettes, Khushi Collection is the destination for discerning fashion connoisseurs across Pakistan and overseas.
+        </p>
+    </div>
+
+    <!-- Image Banner -->
+    <div class="rounded-3xl overflow-hidden border border-amber-500/20 shadow-2xl">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&auto=format&fit=crop&q=80" alt="Khushi Atelier" class="w-full h-96 object-cover brightness-75">
+    </div>
+
+    <!-- 3 Pillars -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="luxury-card p-8 rounded-3xl space-y-3 text-center">
+            <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-feather"></i>
+            </div>
+            <h3 class="text-lg font-serif font-bold text-white">Artisanal Heritage</h3>
+            <p class="text-xs text-zinc-400 leading-relaxed">
+                Every needle-stroke of zardozi, tilla, and dabka is handcrafted by generational master artisans preserving centuries-old royal traditions.
+            </p>
+        </div>
+
+        <div class="luxury-card p-8 rounded-3xl space-y-3 text-center">
+            <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-gem"></i>
+            </div>
+            <h3 class="text-lg font-serif font-bold text-white">Purity of Fabric</h3>
+            <p class="text-xs text-zinc-400 leading-relaxed">
+                From 9000-grade micro velvet to authentic Korean blended raw silks, air-jet cotton lawn, and aged agarwood oils, no compromises are ever made.
+            </p>
+        </div>
+
+        <div class="luxury-card p-8 rounded-3xl space-y-3 text-center">
+            <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-medal"></i>
+            </div>
+            <h3 class="text-lg font-serif font-bold text-white">Patron Satisfaction</h3>
+            <p class="text-xs text-zinc-400 leading-relaxed">
+                Over 45,000 delighted clients across Karachi, Lahore, Islamabad, and worldwide. Our VIP WhatsApp concierge ensures effortless luxury care.
+            </p>
+        </div>
+    </div>
+
+    <!-- Store Atelier Location -->
+    <div class="luxury-card p-8 sm:p-12 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="space-y-3 max-w-lg">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Flagship Boutique</span>
+            <h3 class="text-2xl font-serif font-bold text-white">Visit Our Lahore Atelier</h3>
+            <p class="text-xs text-zinc-300 leading-relaxed">
+                Experience the luxury fabrics in person at our flagship store located in Gulberg Galleria. Book a private bespoke bridal or formal consultation with our senior designers.
+            </p>
+            <p class="text-xs text-zinc-400">
+                <i class="fa-solid fa-location-dot text-amber-400 mr-2"></i> Suite 104, Gulberg Galleria, Main Boulevard, Lahore
+            </p>
+        </div>
+        <a href="{{ url_for('storefront.contact') }}" class="px-8 py-4 rounded-xl btn-gold text-xs font-bold uppercase tracking-widest shadow-xl flex-shrink-0">
+            Book Appointment &rarr;
+        </a>
+    </div>
+
+</div>
+{% endblock %}

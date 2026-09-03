@@ -1,0 +1,198 @@
+{% extends "admin/base.html" %}
+{% block title %}Owner Security & Access Control{% endblock %}
+
+{% block content %}
+<div class="space-y-8 max-w-6xl">
+    <div>
+        <h1 class="text-2xl font-serif font-bold text-white">Owner Security Center & Audit Trail</h1>
+        <p class="text-xs text-zinc-400 mt-1">Configure security credentials, delegate staff roles, and inspect real-time audit logs</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Change Password Card -->
+        <div class="luxury-card p-6 rounded-3xl space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
+                <h3 class="text-sm font-serif font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-key text-amber-400"></i> Change Security Password
+                </h3>
+                <span class="text-[10px] text-zinc-400 font-mono">Bcrypt/Argon2</span>
+            </div>
+
+            <form method="POST" action="{{ url_for('admin.change_password') }}" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Current Password *</label>
+                    <input type="password" name="current_password" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+                </div>
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">New Password (Min 8 chars) *</label>
+                    <input type="password" name="new_password" required minlength="8" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+                </div>
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Confirm New Password *</label>
+                    <input type="password" name="confirm_password" required minlength="8" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider mt-2">
+                    Update Password
+                </button>
+            </form>
+        </div>
+
+        <!-- Session Status Card -->
+        <div class="luxury-card p-6 rounded-3xl space-y-4 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
+                    <h3 class="text-sm font-serif font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-network-wired text-amber-400"></i> Session Protection
+                    </h3>
+                    <span class="text-[10px] text-emerald-400 font-bold uppercase">● Active</span>
+                </div>
+                <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
+                    Administrative access uses cryptographic session cookies with strict SameSite protection and server-side role validation on every API endpoint.
+                </p>
+                <div class="p-3 mt-4 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs space-y-1">
+                    <div class="flex justify-between font-bold text-white">
+                        <span>Current User</span>
+                        <span class="text-amber-400">{{ session.get('user_name') }}</span>
+                    </div>
+                    <p class="text-[11px] text-zinc-400 font-mono">Role: {{ session.get('user_role') }} &bull; Email: {{ session.get('user_email') }}</p>
+                </div>
+            </div>
+
+            <a href="{{ url_for('admin.admin_logout') }}" class="w-full py-2.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-500/30 text-xs font-bold uppercase tracking-wider text-center transition block">
+                <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Terminate Admin Session
+            </a>
+        </div>
+    </div>
+
+    <!-- Staff Accounts Section (Owner Only) -->
+    {% if session.get('user_role') in ('OWNER', 'super_admin') %}
+    <div class="luxury-card p-6 sm:p-8 rounded-3xl space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-800">
+            <div>
+                <h3 class="text-base font-serif font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield text-amber-400"></i> Staff Accounts & Permissions
+                </h3>
+                <p class="text-xs text-zinc-400 mt-0.5">Owner-exclusive: Delegate limited operational roles (Manager or Staff)</p>
+            </div>
+            <button onclick="document.getElementById('flask-staff-modal').classList.remove('hidden')" class="px-4 py-2 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-plus"></i> Add Staff Account
+            </button>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-zinc-300">
+                <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 text-[10px]">
+                    <tr>
+                        <th class="py-2.5 px-3">Name</th>
+                        <th class="py-2.5 px-3">Email</th>
+                        <th class="py-2.5 px-3">Role</th>
+                        <th class="py-2.5 px-3">Status</th>
+                        <th class="py-2.5 px-3">Created</th>
+                        <th class="py-2.5 px-3 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-zinc-800/80">
+                    {% for s in staff %}
+                    <tr class="hover:bg-zinc-800/30">
+                        <td class="py-3 px-3 font-bold text-white">{{ s['name'] }}</td>
+                        <td class="py-3 px-3 text-zinc-400 font-mono">{{ s['email'] }}</td>
+                        <td class="py-3 px-3">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold {{ 'bg-amber-400/20 text-amber-400' if s['role'] in ('MANAGER', 'manager') else 'bg-zinc-800 text-zinc-300' }}">
+                                {{ s['role'].upper() }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-3">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold {{ 'bg-emerald-950 text-emerald-400' if s['status'] == 'active' else 'bg-rose-950 text-rose-400' }}">
+                                {{ s['status'] }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-3 text-zinc-500">{{ s['created_at'][:10] if s['created_at'] else '—' }}</td>
+                        <td class="py-3 px-3 text-right space-x-2">
+                            <form method="POST" action="{{ url_for('admin.toggle_staff', id=s['id']) }}" class="inline">
+                                <button type="submit" class="text-xs text-zinc-400 hover:text-white">
+                                    {{ 'Disable' if s['status'] == 'active' else 'Enable' }}
+                                </button>
+                            </form>
+                            <form method="POST" action="{{ url_for('admin.delete_staff', id=s['id']) }}" onsubmit="return confirm('Delete staff {{ s['name'] }}?');" class="inline">
+                                <button type="submit" class="text-xs text-rose-400 hover:underline">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="py-6 text-center text-zinc-500">No staff accounts created yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Audit Trail Section -->
+    <div class="luxury-card p-6 sm:p-8 rounded-3xl space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+            <div>
+                <h3 class="text-base font-serif font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-amber-400"></i> Real-Time Audit Trail
+                </h3>
+                <p class="text-xs text-zinc-400 mt-0.5">Chronological record of logins, administrative modifications, and security alerts</p>
+            </div>
+        </div>
+
+        <div class="max-h-80 overflow-y-auto space-y-2 text-xs">
+            {% for log in audit_logs %}
+            <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800 flex items-center justify-between">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="px-1.5 py-0.5 rounded bg-zinc-800 text-[10px] font-mono font-bold text-amber-400">{{ log['action'] }}</span>
+                        <span class="text-zinc-300 font-medium">{{ log['details'] }}</span>
+                    </div>
+                    <span class="text-[10px] text-zinc-500 mt-1 block">User: {{ log['user_email'] or 'system' }} &bull; IP: {{ log['ip_address'] or 'local' }}</span>
+                </div>
+                <span class="text-[10px] text-zinc-500 font-mono whitespace-nowrap">{{ log['created_at'] }}</span>
+            </div>
+            {% else %}
+            <p class="text-center py-6 text-zinc-500">No audit records logged yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal for adding staff in Flask -->
+<div id="flask-staff-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="luxury-card p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-4">
+        <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
+            <h3 class="text-base font-serif font-bold text-white">Add Staff Member</h3>
+            <button onclick="document.getElementById('flask-staff-modal').classList.add('hidden')" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <form method="POST" action="{{ url_for('admin.add_staff') }}" class="space-y-3 text-xs">
+            <div>
+                <label class="block font-semibold text-zinc-300 mb-1">Full Name *</label>
+                <input type="text" name="name" required placeholder="Staff Member Name" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+            </div>
+            <div>
+                <label class="block font-semibold text-zinc-300 mb-1">Email Address *</label>
+                <input type="email" name="email" required placeholder="staff@khushicollection.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+            </div>
+            <div>
+                <label class="block font-semibold text-zinc-300 mb-1">Role *</label>
+                <select name="role" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-semibold">
+                    <option value="MANAGER">MANAGER (Catalog, Inventory, Orders)</option>
+                    <option value="STAFF">STAFF (Orders & Fulfillment Only)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block font-semibold text-zinc-300 mb-1">Initial Password (Min 8 chars) *</label>
+                <input type="password" name="password" required minlength="8" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+            </div>
+            <button type="submit" class="w-full py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider mt-2">
+                Create Account
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,451 @@
+{% extends 'base.html' %}
+
+{% block title %}Khushi Collection — The Crown of Eastern & Modern Luxury Fashion{% endblock %}
+
+{% block content %}
+<!-- Section 8 & 9: Hero Banner Carousel -->
+<section class="relative overflow-hidden bg-black">
+    <div class="relative min-h-[540px] sm:min-h-[640px] flex items-center">
+        <!-- Hero Background Slider -->
+        {% for banner in banners %}
+        <div class="hero-slide absolute inset-0 transition-opacity duration-1000 {% if loop.first %}opacity-100 z-10{% else %}opacity-0 z-0{% endif %}" data-index="{{ loop.index0 }}">
+            <img src="{{ banner.image_url }}" alt="{{ banner.title }}" class="w-full h-full object-cover object-center brightness-50 transform scale-105 transition-transform duration-[10000ms]">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0A0D14] via-transparent to-black/40"></div>
+        </div>
+        {% endfor %}
+
+        <!-- Slide Overlay Content -->
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+            <div class="max-w-2xl space-y-6">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-400/10 text-amber-300 border border-amber-400/30 uppercase tracking-widest backdrop-blur-md">
+                    <i class="fa-solid fa-crown text-[11px]"></i> Festive Royal Edition 2026
+                </span>
+                
+                <h1 class="text-4xl sm:text-6xl font-serif font-extrabold text-white leading-tight tracking-tight">
+                    Timeless Luxury <br>
+                    <span class="gold-gradient-text">Crafted For Royalty</span>
+                </h1>
+
+                <p class="text-sm sm:text-base text-zinc-300 max-w-xl font-light leading-relaxed">
+                    Discover ethereal hand-embroidered velvet couture, executive raw silk menswear, bespoke timepieces, and sensational oud fragrances.
+                </p>
+
+                <div class="flex flex-wrap items-center gap-4 pt-4">
+                    <a href="{{ url_for('storefront.shop') }}" class="px-8 py-4 rounded-xl btn-gold text-xs font-bold uppercase tracking-widest flex items-center gap-3 shadow-xl">
+                        <span>Explore Collection</span>
+                        <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                    </a>
+                    <a href="{{ url_for('storefront.shop', category='sale') }}" class="px-7 py-4 rounded-xl border border-zinc-600 hover:border-amber-400 text-xs font-bold uppercase tracking-widest text-zinc-200 transition backdrop-blur-sm">
+                        View Seasonal Sale
+                    </a>
+                </div>
+
+                <!-- Live stats badges -->
+                <div class="grid grid-cols-3 gap-6 pt-8 border-t border-zinc-800/80 max-w-lg">
+                    <div>
+                        <span class="block text-xl sm:text-2xl font-bold text-amber-400 font-serif">100%</span>
+                        <span class="text-[11px] text-zinc-400 uppercase tracking-wider">Pure Luxury Fabrics</span>
+                    </div>
+                    <div>
+                        <span class="block text-xl sm:text-2xl font-bold text-amber-400 font-serif">24 - 48h</span>
+                        <span class="text-[11px] text-zinc-400 uppercase tracking-wider">Express Dispatch</span>
+                    </div>
+                    <div>
+                        <span class="block text-xl sm:text-2xl font-bold text-amber-400 font-serif">45,000+</span>
+                        <span class="text-[11px] text-zinc-400 uppercase tracking-wider">Happy Patrons</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slider Navigation Dots -->
+        <div class="absolute bottom-8 right-8 z-30 flex items-center gap-2">
+            {% for banner in banners %}
+            <button onclick="setHeroSlide({{ loop.index0 }})" class="hero-dot w-2.5 h-2.5 rounded-full transition-all {% if loop.first %}w-8 bg-amber-400{% else %}bg-zinc-600 hover:bg-zinc-400{% endif %}"></button>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Mobile Search Bar Quick Container -->
+<div class="md:hidden px-4 py-3 bg-zinc-900/90 border-b border-zinc-800">
+    <div class="relative">
+        <input type="text" 
+               placeholder="Search luxury kurtas, velvet, perfumes..." 
+               class="global-search-input w-full bg-zinc-950 border border-zinc-700/80 rounded-full py-2.5 pl-10 pr-4 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-zinc-400 text-xs"></i>
+    </div>
+    <div class="global-search-results hidden absolute left-4 right-4 mt-2 rounded-2xl glass-dropdown border border-amber-500/20 shadow-2xl z-50 overflow-hidden"></div>
+</div>
+
+<!-- Section 10: Featured Categories -->
+<section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+        <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block mb-1">Curated Collections</span>
+            <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Explore By Category</h2>
+        </div>
+        <a href="{{ url_for('storefront.shop') }}" class="text-xs text-amber-400 hover:text-amber-300 font-semibold uppercase tracking-wider mt-2 md:mt-0 flex items-center gap-1.5">
+            <span>All Categories</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
+        {% for cat in featured_categories %}
+        <a href="{{ url_for('storefront.shop', category=cat.slug) }}" class="group relative rounded-2xl overflow-hidden luxury-card flex flex-col items-center text-center p-3 sm:p-4">
+            <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-amber-500/30 group-hover:border-amber-400 p-1 transition-all duration-300 transform group-hover:scale-105 shadow-xl">
+                <img src="{{ cat.image_url }}" alt="{{ cat.name }}" class="w-full h-full object-cover rounded-full">
+            </div>
+            <h3 class="text-xs sm:text-sm font-semibold text-zinc-100 group-hover:text-amber-400 transition mt-3.5 tracking-wide">{{ cat.name }}</h3>
+            <span class="text-[10px] text-zinc-500 mt-0.5">Explore &rarr;</span>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Section 14: Flash Sale with Live Countdown -->
+{% if flash_sale %}
+<section class="py-12 bg-gradient-to-b from-rose-950/20 via-[#101522] to-[#0A0D14] border-y border-rose-900/30 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-rose-950/80 text-rose-400 border border-rose-500/30 uppercase tracking-widest mb-2">
+                    <i class="fa-solid fa-fire text-xs animate-pulse"></i> Limited Time Offer
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-serif font-extrabold text-white">{{ flash_sale.title }}</h2>
+                <p class="text-xs text-zinc-400 mt-1">{{ flash_sale.subtitle }}</p>
+            </div>
+
+            <!-- Live Tabular Countdown Timer -->
+            <div class="flash-sale-timer flex items-center gap-3">
+                <div class="countdown-box px-3.5 py-2 rounded-xl text-center min-w-[62px]">
+                    <span class="timer-hours block text-2xl font-mono font-bold text-white">48</span>
+                    <span class="text-[9px] uppercase tracking-wider text-zinc-400">Hours</span>
+                </div>
+                <span class="text-xl font-bold text-rose-500">:</span>
+                <div class="countdown-box px-3.5 py-2 rounded-xl text-center min-w-[62px]">
+                    <span class="timer-minutes block text-2xl font-mono font-bold text-white">14</span>
+                    <span class="text-[9px] uppercase tracking-wider text-zinc-400">Mins</span>
+                </div>
+                <span class="text-xl font-bold text-rose-500">:</span>
+                <div class="countdown-box px-3.5 py-2 rounded-xl text-center min-w-[62px]">
+                    <span class="timer-seconds block text-2xl font-mono font-bold text-white">36</span>
+                    <span class="text-[9px] uppercase tracking-wider text-zinc-400">Secs</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flash Sale Products Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {% for product in flash_products %}
+            <div class="product-card luxury-card rounded-2xl overflow-hidden flex flex-col group relative">
+                <!-- Badges -->
+                <div class="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
+                    <span class="badge-sale px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider shadow-lg">
+                        {{ flash_sale.discount_percentage }}% OFF
+                    </span>
+                    <span class="bg-black/80 backdrop-blur-sm text-zinc-300 border border-zinc-700 px-2 py-0.5 rounded text-[10px] font-semibold">
+                        <i class="fa-solid fa-bolt text-amber-400 mr-1"></i> Flash
+                    </span>
+                </div>
+
+                <!-- Wishlist heart -->
+                <button onclick="toggleWishlist({{ product.id }}, this)" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/80 flex items-center justify-center text-zinc-300 hover:text-rose-500 transition shadow">
+                    <i class="fa-regular fa-heart text-xs"></i>
+                </button>
+
+                <!-- Thumbnail -->
+                <a href="{{ url_for('storefront.product_detail', slug=product.slug) }}" class="product-image-container block aspect-[4/5] bg-zinc-950">
+                    <img src="{{ product.thumbnail }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+                </a>
+
+                <!-- Details -->
+                <div class="p-4 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-zinc-400">{{ product.brand or 'Khushi' }}</span>
+                        <h4 class="text-xs sm:text-sm font-semibold text-zinc-100 group-hover:text-amber-400 transition truncate mt-0.5">
+                            <a href="{{ url_for('storefront.product_detail', slug=product.slug) }}">{{ product.name }}</a>
+                        </h4>
+                        
+                        <div class="flex items-center gap-2 mt-2">
+                            <span class="text-sm sm:text-base font-bold text-amber-400">Rs. {{ "{:,}".format(product.sale_price|int if product.sale_price else product.price|int) }}</span>
+                            {% if product.sale_price %}
+                            <span class="text-xs line-through text-zinc-500">Rs. {{ "{:,}".format(product.price|int) }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2">
+                        <button onclick="openQuickView({{ product.id }})" class="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition" title="Quick View">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                        <button onclick="addToCart({{ product.id }})" class="flex-1 py-2 px-3 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow">
+                            <i class="fa-solid fa-bag-shopping text-[11px]"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Section 11: New Arrivals -->
+<section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+        <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block mb-1">Runway Exclusives</span>
+            <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">New Arrivals</h2>
+        </div>
+        <a href="{{ url_for('storefront.shop', category='new-arrivals') }}" class="text-xs text-amber-400 hover:text-amber-300 font-semibold uppercase tracking-wider mt-2 md:mt-0 flex items-center gap-1.5">
+            <span>View All New Drop</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {% for product in new_arrivals %}
+        <div class="product-card luxury-card rounded-2xl overflow-hidden flex flex-col group relative">
+            <div class="absolute top-3 left-3 z-10">
+                <span class="badge-new px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider shadow-lg">New</span>
+            </div>
+
+            <button onclick="toggleWishlist({{ product.id }}, this)" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/80 flex items-center justify-center text-zinc-300 hover:text-rose-500 transition">
+                <i class="fa-regular fa-heart text-xs"></i>
+            </button>
+
+            <a href="{{ url_for('storefront.product_detail', slug=product.slug) }}" class="product-image-container block aspect-[4/5] bg-zinc-950">
+                <img src="{{ product.thumbnail }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+            </a>
+
+            <div class="p-4 flex-1 flex flex-col justify-between">
+                <div>
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-zinc-400">{{ product.brand or 'Khushi Pret' }}</span>
+                    <h4 class="text-xs sm:text-sm font-semibold text-zinc-100 group-hover:text-amber-400 transition truncate mt-0.5">
+                        <a href="{{ url_for('storefront.product_detail', slug=product.slug) }}">{{ product.name }}</a>
+                    </h4>
+                    
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-sm sm:text-base font-bold text-amber-400">Rs. {{ "{:,}".format(product.sale_price|int if product.sale_price else product.price|int) }}</span>
+                        {% if product.sale_price %}
+                        <span class="text-xs line-through text-zinc-500">Rs. {{ "{:,}".format(product.price|int) }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2">
+                    <button onclick="openQuickView({{ product.id }})" class="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition">
+                        <i class="fa-regular fa-eye"></i>
+                    </button>
+                    <button onclick="addToCart({{ product.id }})" class="flex-1 py-2 px-3 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow">
+                        <i class="fa-solid fa-bag-shopping text-[11px]"></i> Add
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Section 15: Special Offers Banner -->
+<section class="py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Banner 1 -->
+        <div class="relative rounded-3xl overflow-hidden min-h-[260px] flex items-center p-8 border border-amber-500/20 shadow-2xl group">
+            <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=900&auto=format&fit=crop&q=80" alt="Imperial Ouds" class="absolute inset-0 w-full h-full object-cover brightness-40 group-hover:scale-105 transition-transform duration-700">
+            <div class="relative z-10 max-w-sm space-y-3">
+                <span class="text-[10px] uppercase font-bold tracking-widest text-amber-300 bg-amber-950/80 px-2.5 py-1 rounded border border-amber-500/40">Pure Aged Fragrances</span>
+                <h3 class="text-2xl font-serif font-bold text-white">Khushi Imperial Ouds</h3>
+                <p class="text-xs text-zinc-300">24-hour long-lasting Cambodian agarwood & Damascus Rose notes.</p>
+                <a href="{{ url_for('storefront.shop', category='perfumes') }}" class="inline-block px-5 py-2.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider shadow">Explore Ouds &rarr;</a>
+            </div>
+        </div>
+
+        <!-- Banner 2 -->
+        <div class="relative rounded-3xl overflow-hidden min-h-[260px] flex items-center p-8 border border-amber-500/20 shadow-2xl group">
+            <img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=900&auto=format&fit=crop&q=80" alt="Men's Heritage" class="absolute inset-0 w-full h-full object-cover brightness-40 group-hover:scale-105 transition-transform duration-700">
+            <div class="relative z-10 max-w-sm space-y-3">
+                <span class="text-[10px] uppercase font-bold tracking-widest text-amber-300 bg-amber-950/80 px-2.5 py-1 rounded border border-amber-500/40">Gentleman Attire</span>
+                <h3 class="text-2xl font-serif font-bold text-white">Royal Raw Silk & Kurtas</h3>
+                <p class="text-xs text-zinc-300">Hand-finished band collars with genuine metallic crest buttons.</p>
+                <a href="{{ url_for('storefront.shop', category='men') }}" class="inline-block px-5 py-2.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider shadow">Shop Men &rarr;</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 12 & 13: Best Sellers & Trending -->
+<section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+        <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block mb-1">Customer Favorites</span>
+            <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Best Sellers</h2>
+        </div>
+        <a href="{{ url_for('storefront.shop', category='best-sellers') }}" class="text-xs text-amber-400 hover:text-amber-300 font-semibold uppercase tracking-wider mt-2 md:mt-0 flex items-center gap-1.5">
+            <span>View All Best Sellers</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {% for product in bestsellers %}
+        <div class="product-card luxury-card rounded-2xl overflow-hidden flex flex-col group relative">
+            <div class="absolute top-3 left-3 z-10">
+                <span class="badge-hot px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider shadow-lg">Hot</span>
+            </div>
+
+            <button onclick="toggleWishlist({{ product.id }}, this)" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/80 flex items-center justify-center text-zinc-300 hover:text-rose-500 transition">
+                <i class="fa-regular fa-heart text-xs"></i>
+            </button>
+
+            <a href="{{ url_for('storefront.product_detail', slug=product.slug) }}" class="product-image-container block aspect-[4/5] bg-zinc-950">
+                <img src="{{ product.thumbnail }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+            </a>
+
+            <div class="p-4 flex-1 flex flex-col justify-between">
+                <div>
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-zinc-400">{{ product.brand or 'Khushi Collection' }}</span>
+                    <h4 class="text-xs sm:text-sm font-semibold text-zinc-100 group-hover:text-amber-400 transition truncate mt-0.5">
+                        <a href="{{ url_for('storefront.product_detail', slug=product.slug) }}">{{ product.name }}</a>
+                    </h4>
+                    
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="text-sm sm:text-base font-bold text-amber-400">Rs. {{ "{:,}".format(product.sale_price|int if product.sale_price else product.price|int) }}</span>
+                        {% if product.sale_price %}
+                        <span class="text-xs line-through text-zinc-500">Rs. {{ "{:,}".format(product.price|int) }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2">
+                    <button onclick="openQuickView({{ product.id }})" class="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition">
+                        <i class="fa-regular fa-eye"></i>
+                    </button>
+                    <button onclick="addToCart({{ product.id }})" class="flex-1 py-2 px-3 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow">
+                        <i class="fa-solid fa-bag-shopping text-[11px]"></i> Add
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Section 17: Customer Reviews -->
+<section class="py-16 bg-[#0E131E] border-t border-zinc-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-xl mx-auto mb-12">
+            <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block mb-1">Words From Our Patrons</span>
+            <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Client Testimonials</h2>
+            <div class="flex items-center justify-center gap-1 text-amber-400 text-sm mt-2">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <span class="text-xs font-semibold text-zinc-300 ml-2">4.9 / 5.0 Rated by 45,000+ Customers</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for review in reviews[:3] %}
+            <div class="luxury-card p-6 rounded-2xl flex flex-col justify-between space-y-4">
+                <div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-1 text-amber-400 text-xs">
+                            {% for i in range(review.rating) %}
+                            <i class="fa-solid fa-star"></i>
+                            {% endfor %}
+                        </div>
+                        <span class="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-certificate text-[9px]"></i> Verified Buyer
+                        </span>
+                    </div>
+                    <p class="text-xs text-zinc-300 mt-3.5 leading-relaxed font-light italic">"{{ review.comment }}"</p>
+                </div>
+                <div class="pt-4 border-t border-zinc-800 flex items-center gap-3">
+                    <img src="{{ review.product_thumb }}" alt="Product" class="w-10 h-10 object-cover rounded-lg border border-zinc-700">
+                    <div class="min-w-0">
+                        <h5 class="text-xs font-semibold text-white truncate">{{ review.customer_name }}</h5>
+                        <p class="text-[10px] text-zinc-400 truncate">{{ review.product_name }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Section 18: Why Choose Khushi Collection (Trust Features) -->
+<section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="luxury-card p-6 rounded-2xl text-center space-y-3">
+            <div class="w-12 h-12 rounded-xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-xl shadow">
+                <i class="fa-solid fa-gem"></i>
+            </div>
+            <h4 class="text-sm font-serif font-bold text-white">100% Authentic</h4>
+            <p class="text-[11px] text-zinc-400 leading-relaxed">Handcrafted pure fabrics, micro-velvet, and Japanese timepieces.</p>
+        </div>
+
+        <div class="luxury-card p-6 rounded-2xl text-center space-y-3">
+            <div class="w-12 h-12 rounded-xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-xl shadow">
+                <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <h4 class="text-sm font-serif font-bold text-white">Express Delivery</h4>
+            <p class="text-[11px] text-zinc-400 leading-relaxed">Fast 2-4 business days express courier across all cities in Pakistan.</p>
+        </div>
+
+        <div class="luxury-card p-6 rounded-2xl text-center space-y-3">
+            <div class="w-12 h-12 rounded-xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-xl shadow">
+                <i class="fa-solid fa-rotate-left"></i>
+            </div>
+            <h4 class="text-sm font-serif font-bold text-white">Easy Exchange</h4>
+            <p class="text-[11px] text-zinc-400 leading-relaxed">7-day hassle-free size exchange and return guarantee.</p>
+        </div>
+
+        <div class="luxury-card p-6 rounded-2xl text-center space-y-3">
+            <div class="w-12 h-12 rounded-xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-xl shadow">
+                <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <h4 class="text-sm font-serif font-bold text-white">VIP Concierge</h4>
+            <p class="text-[11px] text-zinc-400 leading-relaxed">Instant order tracking and live styling help on WhatsApp.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let currentHeroIndex = 0;
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.hero-dot');
+
+    function setHeroSlide(index) {
+        if (!slides.length) return;
+        currentHeroIndex = index;
+        slides.forEach((s, i) => {
+            s.classList.toggle('opacity-100', i === index);
+            s.classList.toggle('z-10', i === index);
+            s.classList.toggle('opacity-0', i !== index);
+            s.classList.toggle('z-0', i !== index);
+        });
+        dots.forEach((d, i) => {
+            if (i === index) {
+                d.className = 'hero-dot w-8 h-2.5 rounded-full bg-amber-400 transition-all';
+            } else {
+                d.className = 'hero-dot w-2.5 h-2.5 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all';
+            }
+        });
+    }
+
+    if (slides.length > 1) {
+        setInterval(() => {
+            let next = (currentHeroIndex + 1) % slides.length;
+            setHeroSlide(next);
+        }, 6000);
+    }
+</script>
+{% endblock %}

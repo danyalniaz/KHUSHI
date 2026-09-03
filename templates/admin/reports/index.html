@@ -1,0 +1,97 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Reports & Notification Logs — Khushi Collection Admin{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-serif font-bold text-white">Reports & Communication Logs</h1>
+            <p class="text-xs text-zinc-400 mt-1">Audit sales velocity, geographic delivery distribution, and automated customer SMS dispatches</p>
+        </div>
+    </div>
+
+    <!-- Top Grid: Best Selling & City Breakdown -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Best Selling Products (7 cols) -->
+        <div class="lg:col-span-7 luxury-card p-6 rounded-3xl space-y-4">
+            <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">Top Performing Designs</h3>
+            <div class="space-y-3">
+                {% for p in best_selling %}
+                <div class="flex items-center justify-between gap-4 text-xs">
+                    <div class="flex items-center gap-3">
+                        <img src="{{ p.thumbnail }}" alt="{{ p.product_name }}" class="w-10 h-12 object-cover rounded-lg border border-zinc-800">
+                        <div>
+                            <h4 class="font-bold text-white truncate max-w-xs">{{ p.product_name }}</h4>
+                            <span class="text-[10px] text-amber-400">{{ p.total_sold }} units sold</span>
+                        </div>
+                    </div>
+                    <span class="font-serif font-bold text-white text-sm">Rs. {{ "{:,}".format(p.total_revenue|int) }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Geographic Delivery Breakdown (5 cols) -->
+        <div class="lg:col-span-5 luxury-card p-6 rounded-3xl space-y-4">
+            <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">Orders by City</h3>
+            <div class="space-y-2.5 text-xs">
+                {% for c in city_distribution %}
+                <div class="flex items-center justify-between py-2 px-3 rounded-xl bg-zinc-900/60 border border-zinc-800">
+                    <div>
+                        <span class="font-bold text-white">{{ c.city }}</span>
+                        <span class="text-[10px] text-zinc-400 block">{{ c.orders_count }} orders</span>
+                    </div>
+                    <span class="font-bold text-amber-400">Rs. {{ "{:,}".format(c.total_revenue|int) }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 11 & 27. SMS & Notification System Audit Log -->
+    <div class="luxury-card p-6 rounded-3xl space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+            <div>
+                <h3 class="text-sm font-serif font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-comment-sms text-amber-400"></i> Automated Customer SMS & WhatsApp Dispatch Log
+                </h3>
+                <span class="text-[11px] text-zinc-400">Records of triggered SMS notifications when order status changed (e.g. ON THE WAY, DELIVERED)</span>
+            </div>
+            <span class="text-xs text-emerald-400 font-bold"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Live Gateway Simulator Active</span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-zinc-300">
+                <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 bg-zinc-900/60 text-[11px]">
+                    <tr>
+                        <th class="py-3 px-4">Recipient Phone</th>
+                        <th class="py-3 px-4">Notification Content</th>
+                        <th class="py-3 px-4">Channel</th>
+                        <th class="py-3 px-4">Status</th>
+                        <th class="py-3 px-4 text-right">Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-zinc-800/80">
+                    {% for n in sms_logs %}
+                    <tr class="hover:bg-zinc-800/30 transition">
+                        <td class="py-3 px-4 font-mono font-bold text-amber-400">{{ n.recipient }}</td>
+                        <td class="py-3 px-4 text-zinc-200 max-w-md">"{{ n.message }}"</td>
+                        <td class="py-3 px-4 uppercase font-bold text-[10px] text-zinc-400">{{ n.channel }}</td>
+                        <td class="py-3 px-4">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/30">
+                                {{ n.status|upper }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 text-right font-mono text-[10px] text-zinc-500">{{ n.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Account — Khushi Collection{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto px-4 py-16">
+    <div class="luxury-card p-8 rounded-3xl space-y-6">
+        <div class="text-center space-y-2">
+            <h1 class="text-2xl font-serif font-bold text-white">Join Khushi Collection</h1>
+            <p class="text-xs text-zinc-400">Experience effortless shopping, fast checkout, and exclusive perks</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('account.register') }}" class="space-y-4">
+            <div>
+                <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Full Name *</label>
+                <input type="text" name="name" required placeholder="Khushi Fatima" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Email Address *</label>
+                <input type="email" name="email" required placeholder="khushi@example.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Mobile Phone (optional)</label>
+                <input type="tel" name="phone" placeholder="0300 1234567" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Password *</label>
+                <input type="password" name="password" required placeholder="••••••••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Confirm Password *</label>
+                <input type="password" name="confirm_password" required placeholder="••••••••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+            </div>
+
+            <button type="submit" class="w-full py-3.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider shadow-xl">
+                Create Account &rarr;
+            </button>
+        </form>
+
+        <div class="pt-4 border-t border-zinc-800 text-center text-xs text-zinc-400">
+            Already have an account? 
+            <a href="{{ url_for('account.login') }}" class="text-amber-400 font-bold hover:underline ml-1">Sign In</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

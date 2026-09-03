@@ -1,0 +1,58 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Customers — Khushi Collection Admin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-serif font-bold text-white">Registered Patrons & Customers</h1>
+            <p class="text-xs text-zinc-400 mt-1">View customer contact records, order history, and lifetime spending</p>
+        </div>
+    </div>
+
+    <div class="luxury-card rounded-3xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-zinc-300">
+                <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 bg-zinc-900/60 text-[11px]">
+                    <tr>
+                        <th class="py-3.5 px-4">Customer</th>
+                        <th class="py-3.5 px-4">Phone</th>
+                        <th class="py-3.5 px-4">Orders Count</th>
+                        <th class="py-3.5 px-4">Total Spending</th>
+                        <th class="py-3.5 px-4">Last Order</th>
+                        <th class="py-3.5 px-4">Status</th>
+                        <th class="py-3.5 px-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-zinc-800/80">
+                    {% for c in customers %}
+                    <tr class="hover:bg-zinc-800/30 transition">
+                        <td class="py-3.5 px-4">
+                            <span class="font-bold text-white block">{{ c.name }}</span>
+                            <span class="text-[10px] text-zinc-400">{{ c.email }}</span>
+                        </td>
+                        <td class="py-3.5 px-4 font-mono">{{ c.phone or '—' }}</td>
+                        <td class="py-3.5 px-4 font-bold text-white">{{ c.total_orders }} orders</td>
+                        <td class="py-3.5 px-4 font-serif font-bold text-amber-400 text-sm">Rs. {{ "{:,}".format(c.total_spent|int) }}</td>
+                        <td class="py-3.5 px-4 text-zinc-400 text-[11px]">{{ c.last_order or 'Never' }}</td>
+                        <td class="py-3.5 px-4">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase text-emerald-400 bg-emerald-950/80">
+                                {{ c.status }}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-4 text-right">
+                            {% if c.phone %}
+                            <a href="https://wa.me/{{ c.phone|replace('+', '')|replace(' ', '') }}" target="_blank" class="p-1.5 rounded-lg bg-emerald-950 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-900 transition text-xs font-semibold">
+                                <i class="fa-brands fa-whatsapp"></i> Chat
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Payment Receipt — Khushi Collection</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="bg-[#080B11] text-zinc-100 min-h-screen flex flex-col antialiased">
+
+    <!-- Store Navigation -->
+    <header class="h-20 bg-[#0B0F17]/90 border-b border-zinc-800/80 px-6 sm:px-12 flex items-center justify-between sticky top-0 z-40 backdrop-blur-md">
+        <a href="index.html" class="flex items-center gap-2">
+            <img src="static/images/logo.svg" alt="Khushi Collection" class="h-9 w-auto">
+        </a>
+        <div class="flex items-center gap-4 text-xs font-semibold">
+            <a href="track-order.html" class="text-zinc-400 hover:text-white transition">Track Order</a>
+            <a href="shop.html" class="text-amber-400 hover:text-amber-300 transition">Store Catalog</a>
+        </div>
+    </header>
+
+    <main class="flex-1 flex items-center justify-center p-4 sm:p-8">
+        <div class="luxury-card rounded-3xl max-w-xl w-full p-6 sm:p-10 space-y-6 border-amber-500/40 shadow-2xl relative overflow-hidden" id="receipt-card">
+            
+            <!-- Top Watermark & Badge -->
+            <div class="text-center space-y-3">
+                <div id="receipt-icon" class="w-16 h-16 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-2xl mx-auto">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div>
+                    <span id="receipt-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-950 text-emerald-400 border border-emerald-500/30">
+                        Payment Verified
+                    </span>
+                    <h1 class="text-xl sm:text-2xl font-serif font-bold text-white mt-2" id="receipt-heading">Payment Confirmation</h1>
+                    <p class="text-xs text-zinc-400 mt-1" id="receipt-subheading">Your transaction has been securely processed and confirmed.</p>
+                </div>
+            </div>
+
+            <!-- Receipt Breakdown Table -->
+            <div class="p-5 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-3 text-xs">
+                <div class="flex justify-between py-1.5 border-b border-zinc-800/60">
+                    <span class="text-zinc-400">Payment ID:</span>
+                    <span class="font-mono font-bold text-white" id="rcpt-pay-id">PAY-KC-0000</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-zinc-800/60">
+                    <span class="text-zinc-400">Order Reference:</span>
+                    <span class="font-mono font-bold text-amber-400" id="rcpt-order-no">#KC-00000</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-zinc-800/60">
+                    <span class="text-zinc-400">Gateway Provider:</span>
+                    <span class="font-semibold text-white uppercase" id="rcpt-gateway">Online Card (Paymob)</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-zinc-800/60">
+                    <span class="text-zinc-400">Transaction Reference:</span>
+                    <span class="font-mono text-zinc-300" id="rcpt-trx-ref">TRX-74839201</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-zinc-800/60">
+                    <span class="text-zinc-400">Customer Name:</span>
+                    <span class="font-medium text-white" id="rcpt-cust-name">Valued Customer</span>
+                </div>
+                <div class="flex justify-between py-1.5 border-b border-zinc-800/60">
+                    <span class="text-zinc-400">Date & Timestamp:</span>
+                    <span class="text-zinc-300" id="rcpt-date">Just Now</span>
+                </div>
+                <div class="flex justify-between pt-2 text-sm font-bold">
+                    <span class="text-white">Total Amount:</span>
+                    <span class="font-serif text-amber-400 text-lg" id="rcpt-amount">Rs. 0</span>
+                </div>
+            </div>
+
+            <!-- Verification Notice if Pending -->
+            <div id="pending-notice" class="hidden p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs space-y-1">
+                <span class="font-bold block"><i class="fa-solid fa-clock mr-1"></i> Verification in Progress:</span>
+                <p class="text-[11px] text-amber-300/80 leading-relaxed">
+                    Our accounts concierge is validating your transaction reference with the banking partner. Your order will be confirmed and processed for dispatch shortly.
+                </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+                <button onclick="window.print()" class="w-full sm:w-1/2 py-3 rounded-xl border border-zinc-700 hover:border-amber-400 text-xs font-bold text-zinc-200 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-print"></i> Print Receipt
+                </button>
+                <a id="rcpt-track-link" href="track-order.html" class="w-full sm:w-1/2 py-3 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-lg">
+                    <span>Track Order</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="text-center">
+                <a href="shop.html" class="text-xs text-zinc-500 hover:text-amber-400 transition">&larr; Return to Catalog</a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="store.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const orderId = params.get('order_id');
+            const paymentId = params.get('payment_id');
+
+            const orders = store.getOrders();
+            const payments = store.getPayments();
+
+            const order = orders.find(o => o.order_number === orderId);
+            const payment = payments.find(p => p.payment_id === paymentId || p.order_number === orderId);
+
+            if (payment) {
+                document.getElementById('rcpt-pay-id').textContent = payment.payment_id;
+                document.getElementById('rcpt-order-no').textContent = `#${payment.order_number}`;
+                document.getElementById('rcpt-gateway').textContent = payment.gateway.replace('_', ' ');
+                document.getElementById('rcpt-trx-ref').textContent = payment.transaction_reference || 'N/A';
+                document.getElementById('rcpt-cust-name').textContent = payment.customer_name;
+                document.getElementById('rcpt-amount').textContent = `Rs. ${Number(payment.amount).toLocaleString()}`;
+                document.getElementById('rcpt-date').textContent = payment.created_at ? payment.created_at.slice(0, 16).replace('T', ' ') : new Date().toLocaleString();
+
+                if (payment.payment_status === 'PAID') {
+                    document.getElementById('receipt-badge').textContent = 'PAYMENT VERIFIED & PAID';
+                    document.getElementById('receipt-badge').className = 'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-emerald-950 text-emerald-400 border border-emerald-500/30';
+                    document.getElementById('receipt-heading').textContent = 'Payment Completed';
+                    document.getElementById('receipt-subheading').textContent = 'Your payment was successfully verified and your order is confirmed.';
+                } else if (payment.payment_status === 'PENDING_VERIFICATION') {
+                    document.getElementById('receipt-icon').className = 'w-16 h-16 rounded-full bg-amber-950/60 border border-amber-500/40 text-amber-400 flex items-center justify-center text-2xl mx-auto';
+                    document.getElementById('receipt-icon').innerHTML = '<i class="fa-solid fa-clock"></i>';
+                    document.getElementById('receipt-badge').textContent = 'PAYMENT PENDING VERIFICATION';
+                    document.getElementById('receipt-badge').className = 'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-amber-950 text-amber-300 border border-amber-500/30';
+                    document.getElementById('receipt-heading').textContent = 'Verification in Progress';
+                    document.getElementById('receipt-subheading').textContent = 'We have received your payment reference and are confirming with the provider.';
+                    document.getElementById('pending-notice').classList.remove('hidden');
+                }
+            } else if (order) {
+                document.getElementById('rcpt-pay-id').textContent = `PAY-${order.order_number}`;
+                document.getElementById('rcpt-order-no').textContent = `#${order.order_number}`;
+                document.getElementById('rcpt-gateway').textContent = order.payment_method.toUpperCase();
+                document.getElementById('rcpt-trx-ref').textContent = order.tracking_number || 'N/A';
+                document.getElementById('rcpt-cust-name').textContent = order.customer_name;
+                document.getElementById('rcpt-amount').textContent = `Rs. ${Number(order.total_amount).toLocaleString()}`;
+            }
+
+            if (orderId) {
+                document.getElementById('rcpt-track-link').href = `track-order.html?order_id=${orderId}`;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Bag — Khushi Collection{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="flex items-center justify-between pb-6 border-b border-zinc-800 mb-8">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-serif font-bold text-white">Your Shopping Bag</h1>
+            <p class="text-xs text-zinc-400 mt-1">Review your items before proceeding to secure checkout</p>
+        </div>
+        <a href="{{ url_for('storefront.shop') }}" class="text-xs text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-arrow-left text-[10px]"></i> Continue Browsing
+        </a>
+    </div>
+
+    <div id="full-cart-container" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Cart Items (8 cols) -->
+        <div class="lg:col-span-8 space-y-4">
+            <div id="cart-page-items" class="luxury-card rounded-3xl p-6 divide-y divide-zinc-800">
+                <!-- Dynamically injected by renderFullCartPage() -->
+            </div>
+        </div>
+
+        <!-- Order Summary & Coupon (4 cols) -->
+        <div class="lg:col-span-4 space-y-6">
+            <!-- Coupon Box -->
+            <div class="luxury-card p-6 rounded-3xl space-y-3">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-300 flex items-center gap-2">
+                    <i class="fa-solid fa-ticket text-amber-400"></i> Promotional Coupon
+                </h4>
+                <div class="flex gap-2">
+                    <input type="text" id="cart-coupon-input" placeholder="e.g. WELCOME10" class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-xs uppercase text-white focus:outline-none focus:border-amber-400">
+                    <button type="button" onclick="applyCartCoupon()" class="px-4 py-2 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider">Apply</button>
+                </div>
+                <div id="coupon-feedback" class="text-xs hidden"></div>
+                <p class="text-[11px] text-zinc-500">Available demo coupons: <span class="text-amber-400 font-mono">WELCOME10</span> (10% off) or <span class="text-amber-400 font-mono">KHUSHI500</span> (Rs. 500 off)</p>
+            </div>
+
+            <!-- Totals Box -->
+            <div class="luxury-card p-6 rounded-3xl space-y-4">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-300 pb-3 border-b border-zinc-800">Order Summary</h4>
+                <div class="space-y-2.5 text-xs text-zinc-300">
+                    <div class="flex justify-between">
+                        <span>Items Subtotal:</span>
+                        <span id="page-subtotal" class="font-bold text-white">Rs. 0</span>
+                    </div>
+                    <div id="discount-row" class="flex justify-between text-emerald-400 hidden">
+                        <span>Coupon Discount:</span>
+                        <span id="page-discount" class="font-bold">- Rs. 0</span>
+                    </div>
+                    <div class="flex justify-between text-zinc-400">
+                        <span>Estimated Shipping:</span>
+                        <span id="page-shipping" class="font-semibold text-zinc-200">Calculated at checkout</span>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-zinc-800 flex justify-between items-baseline">
+                    <span class="text-sm font-bold text-white">Total Amount:</span>
+                    <span id="page-total" class="text-2xl font-serif font-bold text-amber-400">Rs. 0</span>
+                </div>
+
+                <a href="{{ url_for('storefront.checkout') }}" class="block w-full py-3.5 rounded-xl btn-gold text-center text-xs font-bold uppercase tracking-wider shadow-xl mt-4">
+                    Proceed to Checkout &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State Container -->
+    <div id="empty-cart-state" class="hidden py-20 text-center max-w-md mx-auto">
+        <div class="w-24 h-24 mx-auto rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-amber-400 mb-6 text-4xl shadow-xl">
+            <i class="fa-solid fa-bag-shopping"></i>
+        </div>
+        <h2 class="text-2xl font-serif font-bold text-white">Your cart is waiting for something beautiful ✨</h2>
+        <p class="text-xs text-zinc-400 mt-2 leading-relaxed">Explore our royal couture, festive lawn collections, and signature fragrances.</p>
+        <a href="{{ url_for('storefront.shop') }}" class="inline-block mt-8 px-8 py-3.5 rounded-full btn-gold text-xs font-bold uppercase tracking-widest shadow-xl">
+            Discover Collections
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let appliedCoupon = null;
+    let rawSubtotal = 0;
+
+    async function renderFullCartPage() {
+        const container = document.getElementById('cart-page-items');
+        const emptyState = document.getElementById('empty-cart-state');
+        const mainContainer = document.getElementById('full-cart-container');
+        if (!container) return;
+
+        try {
+            const res = await fetch('/api/cart');
+            const data = await res.json();
+            rawSubtotal = data.subtotal;
+
+            if (!data.items || data.items.length === 0) {
+                if (mainContainer) mainContainer.classList.add('hidden');
+                if (emptyState) emptyState.classList.remove('hidden');
+                return;
+            }
+
+            if (mainContainer) mainContainer.classList.remove('hidden');
+            if (emptyState) emptyState.classList.add('hidden');
+
+            let html = '';
+            data.items.forEach(item => {
+                html += `
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-5">
+                        <div class="flex items-center gap-4">
+                            <img src="${item.thumbnail}" alt="${item.name}" class="w-20 h-24 object-cover rounded-xl border border-zinc-800 flex-shrink-0">
+                            <div>
+                                <h3 class="text-sm font-semibold text-white">${item.name}</h3>
+                                <p class="text-xs text-zinc-400 mt-0.5">Size: <span class="text-amber-400 font-semibold">${item.size || 'Standard'}</span> | Color: <span class="text-amber-400 font-semibold">${item.color || 'Default'}</span></p>
+                                <span class="text-xs text-zinc-400 mt-1 block">Unit: Rs. ${item.price.toLocaleString()}</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto">
+                            <!-- Qty buttons -->
+                            <div class="flex items-center border border-zinc-700 rounded-lg overflow-hidden bg-zinc-900">
+                                <button onclick="updateCartItemQty('${item.key}', ${item.quantity - 1})" class="px-3 py-1.5 text-xs text-zinc-400 hover:bg-zinc-800 transition">-</button>
+                                <span class="px-3.5 py-1.5 text-xs font-bold text-white">${item.quantity}</span>
+                                <button onclick="updateCartItemQty('${item.key}', ${item.quantity + 1})" class="px-3 py-1.5 text-xs text-zinc-400 hover:bg-zinc-800 transition">+</button>
+                            </div>
+
+                            <span class="text-sm font-bold text-amber-400 min-w-[90px] text-right">Rs. ${(item.price * item.quantity).toLocaleString()}</span>
+
+                            <button onclick="removeCartItem('${item.key}')" class="text-zinc-500 hover:text-rose-400 text-sm transition p-1">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            updateTotalsUI();
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    function updateTotalsUI() {
+        document.getElementById('page-subtotal').textContent = `Rs. ${rawSubtotal.toLocaleString()}`;
+        
+        let discount = 0;
+        if (appliedCoupon) {
+            discount = appliedCoupon.discount_amount;
+            document.getElementById('discount-row').classList.remove('hidden');
+            document.getElementById('page-discount').textContent = `- Rs. ${discount.toLocaleString()}`;
+        } else {
+            document.getElementById('discount-row').classList.add('hidden');
+        }
+
+        const grandTotal = Math.max(0, rawSubtotal - discount);
+        document.getElementById('page-total').textContent = `Rs. ${grandTotal.toLocaleString()}`;
+    }
+
+    async function applyCartCoupon() {
+        const input = document.getElementById('cart-coupon-input');
+        const feedback = document.getElementById('coupon-feedback');
+        const code = input.value.trim();
+
+        if (!code) return;
+
+        try {
+            const res = await fetch('/api/coupon/validate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code, subtotal: rawSubtotal })
+            });
+            const data = await res.json();
+
+            feedback.classList.remove('hidden');
+            if (data.valid) {
+                appliedCoupon = data;
+                feedback.className = 'text-xs text-emerald-400 font-semibold';
+                feedback.textContent = data.message;
+                updateTotalsUI();
+            } else {
+                appliedCoupon = null;
+                feedback.className = 'text-xs text-rose-400 font-semibold';
+                feedback.textContent = data.message;
+                updateTotalsUI();
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderFullCartPage);
+</script>
+{% endblock %}

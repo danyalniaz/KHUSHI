@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Category Manager — Khushi Collection Admin</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="bg-[#080B11] text-zinc-100 min-h-screen flex antialiased">
+
+    <!-- Admin Sidebar -->
+    <aside class="w-64 bg-[#0B0F17] border-r border-zinc-800/80 flex flex-col justify-between hidden md:flex flex-shrink-0">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-zinc-800/80">
+                <a href="admin-dashboard.html" class="flex items-center gap-2.5">
+                    <img src="static/images/logo.svg" alt="Khushi Collection" class="h-9 w-auto">
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">Admin</span>
+                </a>
+            </div>
+
+            <nav class="p-4 space-y-1.5 text-xs font-semibold">
+                <a href="admin-dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-chart-line w-4"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="admin-orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-bag-shopping w-4"></i>
+                    <span>Customer Orders</span>
+                </a>
+                <a href="admin-products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-shirt w-4"></i>
+                    <span>Products Catalog</span>
+                </a>
+                <a href="admin-categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30">
+                    <i class="fa-solid fa-folder-tree w-4"></i>
+                    <span>Categories Manager</span>
+                </a>
+                <a href="admin-settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-sliders w-4"></i>
+                    <span>Owner Settings</span>
+                </a>
+                <a href="admin-reports.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-chart-pie w-4"></i>
+                    <span>Financial Reports</span>
+                </a>
+                <a href="admin-security.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-shield-halved w-4"></i>
+                    <span>Owner Security & Staff</span>
+                </a>
+                <a href="index.html" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-amber-400/80 hover:text-amber-300 hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-arrow-up-right-from-square w-4"></i>
+                    <span>View Customer Store</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <header class="h-20 bg-[#0B0F17]/80 border-b border-zinc-800/80 px-6 flex items-center justify-between sticky top-0 z-30 backdrop-blur-md">
+            <div>
+                <h1 class="text-base sm:text-lg font-serif font-bold text-white">Dynamic Categories & Subcategories</h1>
+                <p class="text-[11px] text-zinc-400">Create new fashion departments without modifying code</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="admin-user-pill"></div>
+                <button onclick="openCategoryModal()" class="px-5 py-2.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow">
+                    <i class="fa-solid fa-plus"></i> Add Category
+                </button>
+            </div>
+        </header>
+
+        <main class="p-6 sm:p-8 space-y-6">
+            <!-- Categories Grid / Table -->
+            <div class="luxury-card rounded-3xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-zinc-300">
+                        <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 bg-zinc-900/60 text-[11px]">
+                            <tr>
+                                <th class="py-3.5 px-4">Thumbnail</th>
+                                <th class="py-3.5 px-4">Category Name</th>
+                                <th class="py-3.5 px-4">Slug</th>
+                                <th class="py-3.5 px-4">Subcategories</th>
+                                <th class="py-3.5 px-4">Products</th>
+                                <th class="py-3.5 px-4">Featured</th>
+                                <th class="py-3.5 px-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-800/80" id="categories-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Category Modal -->
+    <div id="category-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="luxury-card p-6 sm:p-8 rounded-3xl max-w-lg w-full space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
+                <h3 class="text-base font-serif font-bold text-white" id="cat-modal-title">Create New Category</h3>
+                <button onclick="closeCategoryModal()" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form onsubmit="handleCategorySubmit(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="cat-edit-id">
+
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Category Name *</label>
+                    <input type="text" id="cat-name" required placeholder="e.g. Luxury Shawls" oninput="document.getElementById('cat-slug').value = this.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">URL Slug</label>
+                    <input type="text" id="cat-slug" required placeholder="luxury-shawls" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white font-mono">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Subcategories (Comma separated) *</label>
+                    <input type="text" id="cat-subcategories" placeholder="Pashmina, Embroidered Velvet, Digital Silk, Woolen" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                    <span class="text-[10px] text-zinc-500 mt-1 block">Subcategories automatically appear in filters and product editor</span>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Thumbnail Photo URL *</label>
+                    <input type="url" id="cat-img" required placeholder="https://images.unsplash.com/..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Hero Banner Photo URL (Optional)</label>
+                    <input type="url" id="cat-banner" placeholder="https://images.unsplash.com/..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Department Description</label>
+                    <textarea id="cat-desc" rows="2" placeholder="Handcrafted royal wraps and seasonal couture shawls..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white"></textarea>
+                </div>
+
+                <div class="pt-2 border-t border-zinc-800 space-y-2">
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-zinc-900 border border-zinc-700 cursor-pointer">
+                        <div>
+                            <span class="font-semibold text-white block">Cash on Delivery (COD) Allowed</span>
+                            <span class="text-[10px] text-zinc-400">Disable for luxury perfumes or bespoke items</span>
+                        </div>
+                        <input type="checkbox" id="cat-cod-allowed" checked class="w-5 h-5 accent-amber-500 rounded">
+                    </label>
+
+                    <label class="flex items-center gap-2 font-semibold text-zinc-300 cursor-pointer pt-1">
+                        <input type="checkbox" id="cat-is-featured" checked class="accent-amber-400">
+                        <span>Show on Homepage Curated Categories</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full py-3 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider shadow-xl mt-2">
+                    Save Category
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="store.js"></script>
+    <script src="admin-guard.js"></script>
+    <script>
+        function openCategoryModal(editId = null) {
+            document.getElementById('cat-edit-id').value = editId || '';
+            if (editId) {
+                const cat = store.getCategory(editId);
+                if (cat) {
+                    document.getElementById('cat-modal-title').textContent = `Edit Category: ${cat.name}`;
+                    document.getElementById('cat-name').value = cat.name;
+                    document.getElementById('cat-slug').value = cat.slug;
+                    document.getElementById('cat-subcategories').value = (cat.subcategories || []).join(', ');
+                    document.getElementById('cat-img').value = cat.image_url;
+                    document.getElementById('cat-banner').value = cat.banner_url || '';
+                    document.getElementById('cat-desc').value = cat.description || '';
+                    document.getElementById('cat-cod-allowed').checked = cat.cod_allowed !== false;
+                    document.getElementById('cat-is-featured').checked = !!cat.is_featured;
+                }
+            } else {
+                document.getElementById('cat-modal-title').textContent = 'Create New Category';
+                document.getElementById('cat-name').value = '';
+                document.getElementById('cat-slug').value = '';
+                document.getElementById('cat-subcategories').value = '';
+                document.getElementById('cat-img').value = 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80';
+                document.getElementById('cat-banner').value = '';
+                document.getElementById('cat-desc').value = '';
+                document.getElementById('cat-cod-allowed').checked = true;
+                document.getElementById('cat-is-featured').checked = true;
+            }
+            document.getElementById('category-modal').classList.remove('hidden');
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('category-modal').classList.add('hidden');
+        }
+
+        function handleCategorySubmit(e) {
+            e.preventDefault();
+            const editId = document.getElementById('cat-edit-id').value;
+            const name = document.getElementById('cat-name').value.trim();
+            const slug = document.getElementById('cat-slug').value.trim();
+            const subs = document.getElementById('cat-subcategories').value.split(',').map(s => s.trim()).filter(Boolean);
+
+            const catData = {
+                name: name,
+                slug: slug,
+                subcategories: subs,
+                image_url: document.getElementById('cat-img').value.trim(),
+                banner_url: document.getElementById('cat-banner').value.trim(),
+                description: document.getElementById('cat-desc').value.trim(),
+                cod_allowed: document.getElementById('cat-cod-allowed').checked,
+                is_featured: document.getElementById('cat-is-featured').checked
+            };
+
+            if (editId) {
+                store.updateCategory(editId, catData);
+                showToast(`Category "${name}" updated successfully!`);
+            } else {
+                store.addCategory(catData);
+                showToast(`New category "${name}" added to store!`);
+            }
+
+            closeCategoryModal();
+            renderCategoriesTable();
+        }
+
+        function deleteCategoryWithConfirm(id) {
+            const cat = store.getCategory(id);
+            if (!cat) return;
+            if (confirm(`Delete category "${cat.name}"?`)) {
+                store.deleteCategory(id);
+                showToast(`Category "${cat.name}" removed.`);
+                renderCategoriesTable();
+            }
+        }
+
+        function renderCategoriesTable() {
+            const categories = store.getCategories();
+            const products = store.getProducts();
+
+            const tbody = document.getElementById('categories-tbody');
+            tbody.innerHTML = categories.map(c => {
+                const count = products.filter(p => p.category === c.slug).length;
+                const subs = c.subcategories || [];
+
+                return `
+                    <tr class="hover:bg-zinc-800/30 transition">
+                        <td class="py-3 px-4">
+                            <img src="${c.image_url}" class="w-10 h-10 object-cover rounded-full border border-amber-500/30">
+                        </td>
+                        <td class="py-3 px-4">
+                            <span class="font-bold text-white block">${c.name}</span>
+                            <span class="text-[10px] text-zinc-400 line-clamp-1">${c.description || 'Department'}</span>
+                        </td>
+                        <td class="py-3 px-4 font-mono text-zinc-400">${c.slug}</td>
+                        <td class="py-3 px-4">
+                            <div class="flex flex-wrap gap-1 max-w-xs">
+                                ${subs.slice(0, 3).map(s => `<span class="px-1.5 py-0.5 rounded bg-zinc-800 text-[9px] text-zinc-300 font-semibold">${s}</span>`).join('')}
+                                ${subs.length > 3 ? `<span class="text-[9px] text-zinc-500 font-semibold">+${subs.length - 3} more</span>` : ''}
+                            </div>
+                        </td>
+                        <td class="py-3 px-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-zinc-900 border border-zinc-700 text-amber-400">
+                                ${count} items
+                            </span>
+                        </td>
+                        <td class="py-3 px-4">
+                            ${c.cod_allowed === false ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold text-rose-400 bg-rose-950/60 border border-rose-500/20">COD OFF</span>' : '<span class="px-2 py-0.5 rounded text-[10px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/20">COD ON</span>'}
+                        </td>
+                        <td class="py-3 px-4 text-right space-x-2">
+                            <button onclick="openCategoryModal(${c.id})" class="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs" title="Edit">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deleteCategoryWithConfirm(${c.id})" class="p-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 text-rose-400 text-xs" title="Delete">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', renderCategoriesTable);
+    </script>
+</body>
+</html>

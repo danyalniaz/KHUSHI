@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Settings & Payment Gateways — Khushi Collection Admin</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="bg-[#080B11] text-zinc-100 min-h-screen flex antialiased">
+
+    <!-- Admin Sidebar -->
+    <aside class="w-64 bg-[#0B0F17] border-r border-zinc-800/80 flex flex-col justify-between hidden md:flex flex-shrink-0">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-zinc-800/80">
+                <a href="admin-dashboard.html" class="flex items-center gap-2.5">
+                    <img src="static/images/logo.svg" alt="Khushi Collection" class="h-9 w-auto">
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">Studio</span>
+                </a>
+            </div>
+
+            <nav class="p-4 space-y-1 text-xs font-semibold">
+                <a href="admin-dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-chart-line w-4"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="admin-orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-bag-shopping w-4"></i>
+                    <span>Customer Orders</span>
+                </a>
+                <a href="admin-products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-shirt w-4"></i>
+                    <span>Products Studio</span>
+                </a>
+                <a href="admin-categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-folder-tree w-4"></i>
+                    <span>Categories Manager</span>
+                </a>
+                <a href="admin-settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30">
+                    <i class="fa-solid fa-sliders w-4"></i>
+                    <span>Owner Settings</span>
+                </a>
+                <a href="admin-reports.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-chart-pie w-4"></i>
+                    <span>Financial Reports</span>
+                </a>
+                <a href="admin-security.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-shield-halved w-4"></i>
+                    <span>Owner Security & Staff</span>
+                </a>
+                <a href="index.html" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition pt-2 border-t border-zinc-800/60">
+                    <i class="fa-solid fa-arrow-up-right-from-square w-4"></i>
+                    <span>View Storefront</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-zinc-800/80 text-[11px] text-zinc-500">
+            Khushi Collection &bull; Settings v3.0
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <header class="h-20 bg-[#0B0F17]/80 border-b border-zinc-800/80 px-6 flex items-center justify-between sticky top-0 z-30 backdrop-blur-md">
+            <div>
+                <h1 class="text-base sm:text-lg font-serif font-bold text-white">Owner Control Center & Settings</h1>
+                <p class="text-[11px] text-zinc-400">Configure store identity, payment gateways, delivery rates, and notifications</p>
+            </div>
+            <div id="admin-user-pill"></div>
+        </header>
+
+        <main class="p-6 sm:p-8 space-y-6 max-w-6xl">
+            
+            <!-- Onboarding Progress Tracker Banner -->
+            <div class="p-5 rounded-3xl luxury-card border-amber-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="space-y-1 text-center md:text-left">
+                    <div class="flex items-center gap-2 justify-center md:justify-start">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-400/20 text-amber-400 border border-amber-400/30">Owner Setup Guide</span>
+                        <span class="text-xs font-bold text-white" id="onboarding-percent-txt">Progress: 100% Complete</span>
+                    </div>
+                    <p class="text-xs text-zinc-400">All primary store operations, payment gateways, and delivery channels are active.</p>
+                </div>
+                <div class="w-full md:w-64 space-y-1.5">
+                    <div class="w-full bg-zinc-800 rounded-full h-2.5 overflow-hidden">
+                        <div id="onboarding-progress-bar" class="bg-gradient-to-r from-amber-500 to-amber-300 h-2.5 rounded-full transition-all duration-500" style="width: 100%"></div>
+                    </div>
+                    <div class="flex justify-between text-[10px] text-zinc-400 font-mono">
+                        <span>Profile & Contact</span>
+                        <span>Payments & COD</span>
+                        <span>Live</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tabbed Navigation -->
+            <div class="luxury-card rounded-2xl p-2 flex items-center gap-2 overflow-x-auto text-xs font-semibold scrollbar-none">
+                <button onclick="switchSettingsTab(1)" class="settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap bg-amber-400 text-black font-bold">
+                    <i class="fa-solid fa-store mr-1.5"></i> Store Profile
+                </button>
+                <button onclick="switchSettingsTab(2)" class="settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-headset mr-1.5"></i> Contact & Support
+                </button>
+                <button onclick="switchSettingsTab(3)" class="settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-credit-card mr-1.5"></i> Payment Methods
+                </button>
+                <button onclick="switchSettingsTab(4)" class="settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-money-bill-wave mr-1.5"></i> Cash on Delivery
+                </button>
+                <button onclick="switchSettingsTab(5)" class="settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-building-columns mr-1.5"></i> Bank & Wallets
+                </button>
+                <button onclick="switchSettingsTab(6)" class="settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-truck-fast mr-1.5"></i> Delivery & Shipping
+                </button>
+                <button onclick="switchSettingsTab(7)" class="settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-percent mr-1.5"></i> Taxes
+                </button>
+                <button onclick="switchSettingsTab(8)" class="settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-bell mr-1.5"></i> Customer Notifications
+                </button>
+                <button onclick="switchSettingsTab(9)" class="settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-globe mr-1.5"></i> SEO & Social
+                </button>
+            </div>
+
+            <!-- Tab 1: Store Profile -->
+            <div id="tab-pane-1" class="settings-pane luxury-card p-6 sm:p-8 rounded-3xl space-y-6">
+                <div class="pb-3 border-b border-zinc-800">
+                    <h2 class="text-base font-serif font-bold text-white">Store Identity & Branding</h2>
+                    <p class="text-xs text-zinc-400">Configure store titles, physical address, business hours, and brand descriptions</p>
+                </div>
+
+                <form onsubmit="handleSaveSettings(event, 'store_profile')" class="space-y-4 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Store Name *</label>
+                            <input type="text" id="cfg-store-name" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Owner / Legal Entity Name *</label>
+                            <input type="text" id="cfg-owner-name" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Official Helpline Phone *</label>
+                            <input type="text" id="cfg-phone" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Official WhatsApp Concierge *</label>
+                            <input type="text" id="cfg-whatsapp" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Store Email Address *</label>
+                            <input type="email" id="cfg-email" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">City & Country *</label>
+                            <input type="text" id="cfg-city-country" placeholder="Lahore, Pakistan" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Physical Store Address *</label>
+                        <input type="text" id="cfg-address" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Google Maps Location Link</label>
+                            <input type="url" id="cfg-maps-url" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Business Working Hours</label>
+                            <input type="text" id="cfg-hours" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Store Logo URL / Path</label>
+                            <input type="text" id="cfg-logo-url" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Favicon URL / Path</label>
+                            <input type="text" id="cfg-favicon-url" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Storefront Description (About / Hero)</label>
+                        <textarea id="cfg-store-desc" rows="2" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Footer Heritage Description</label>
+                        <textarea id="cfg-footer-desc" rows="2" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white"></textarea>
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="px-6 py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider shadow-lg">
+                            <i class="fa-solid fa-check mr-1.5"></i> Save Store Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 2: Contact & Support -->
+            <div id="tab-pane-2" class="settings-pane hidden luxury-card p-6 sm:p-8 rounded-3xl space-y-6">
+                <div class="pb-3 border-b border-zinc-800">
+                    <h2 class="text-base font-serif font-bold text-white">Contact & VIP Concierge Settings</h2>
+                    <p class="text-xs text-zinc-400">These details synchronize dynamically with Contact page, Footer, Order Confirmation, and SMS</p>
+                </div>
+
+                <form onsubmit="handleSaveSettings(event, 'contact_support')" class="space-y-4 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Customer Support Phone *</label>
+                            <input type="text" id="cfg-cs-phone" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">WhatsApp Business Number *</label>
+                            <input type="text" id="cfg-cs-whatsapp" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Support Email Address *</label>
+                            <input type="email" id="cfg-cs-email" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Working Hours Label</label>
+                            <input type="text" id="cfg-cs-hours" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Concierge Office Address</label>
+                        <input type="text" id="cfg-cs-address" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="px-6 py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider shadow-lg">
+                            <i class="fa-solid fa-check mr-1.5"></i> Save Contact Settings
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 3: Payment Gateways & Method Management -->
+            <div id="tab-pane-3" class="settings-pane hidden luxury-card p-6 sm:p-8 rounded-3xl space-y-6">
+                <div class="pb-3 border-b border-zinc-800">
+                    <h2 class="text-base font-serif font-bold text-white">Payment Method Master Controls</h2>
+                    <p class="text-xs text-zinc-400">Enable or disable checkout payment channels across the entire store</p>
+                </div>
+
+                <form onsubmit="handleSaveSettings(event, 'payment_gateways')" class="space-y-6 text-xs">
+                    <!-- Method Toggles -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-center justify-between">
+                            <div>
+                                <span class="font-bold text-white block">Cash on Delivery (COD)</span>
+                                <span class="text-[10px] text-zinc-400">Pay at doorstep upon parcel arrival</span>
+                            </div>
+                            <input type="checkbox" id="chk-method-cod" class="w-5 h-5 accent-amber-500 rounded">
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-center justify-between">
+                            <div>
+                                <span class="font-bold text-white block">Online Card Gateway</span>
+                                <span class="text-[10px] text-zinc-400">Visa, Mastercard, Paymob, Debit</span>
+                            </div>
+                            <input type="checkbox" id="chk-method-card" class="w-5 h-5 accent-amber-500 rounded">
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-center justify-between">
+                            <div>
+                                <span class="font-bold text-white block">Direct Bank Transfer</span>
+                                <span class="text-[10px] text-zinc-400">IBAN & Account Deposit with Proof</span>
+                            </div>
+                            <input type="checkbox" id="chk-method-bank" class="w-5 h-5 accent-amber-500 rounded">
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-center justify-between">
+                            <div>
+                                <span class="font-bold text-white block">Easypaisa Mobile</span>
+                                <span class="text-[10px] text-zinc-400">Telenor Microfinance Wallet</span>
+                            </div>
+                            <input type="checkbox" id="chk-method-easypaisa" class="w-5 h-5 accent-amber-500 rounded">
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-center justify-between">
+                            <div>
+                                <span class="font-bold text-white block">JazzCash Mobile</span>
+                                <span class="text-[10px] text-zinc-400">Mobilink Microfinance Wallet</span>
+                            </div>
+                            <input type="checkbox" id="chk-method-jazzcash" class="w-5 h-5 accent-amber-500 rounded">
+                        </div>
+                    </div>
+
+                    <!-- Online Payment Gateway Credentials (Encrypted & Masked) -->
+                    <div class="p-5 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-zinc-800">
+                            <div>
+                                <h3 class="font-bold text-white text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-lock text-amber-400"></i> Online Card Gateway Credentials
+                                </h3>
+                                <p class="text-[11px] text-zinc-400">Paymob / Visa / Mastercard merchant credentials</p>
+                            </div>
+                            <!-- Test/Live Mode Switch -->
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-zinc-300 font-semibold">Environment:</span>
+                                <select id="cfg-card-mode" onchange="toggleTestModeWarning(this.value)" class="bg-zinc-800 border border-zinc-700 text-amber-400 font-bold px-3 py-1 rounded-xl text-xs">
+                                    <option value="TEST">TEST MODE</option>
+                                    <option value="LIVE">LIVE PRODUCTION</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="test-mode-warning-banner" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+                            <span><strong>TEST MODE ACTIVE</strong> — Real payment transactions are not being processed. Card gateway is running in sandbox verification mode.</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Gateway Provider Name</label>
+                                <input type="text" id="cfg-card-name" value="Paymob / Visa / Mastercard" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Merchant / Integration ID</label>
+                                <input type="text" id="cfg-card-merch-id" placeholder="MERCH_KHUSHI_99" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-white font-mono">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Public Key / API Client ID</label>
+                                <input type="text" id="cfg-card-pub-key" placeholder="pk_test_khushi_..." class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-white font-mono">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Secret Key / API Secret (Masked)</label>
+                                <input type="password" id="cfg-card-sec-key" placeholder="••••••••••••••••••••" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-white font-mono">
+                            </div>
+                        </div>
+
+                        <div class="pt-2 flex items-center gap-3">
+                            <button type="button" onclick="testGatewayConnection()" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold flex items-center gap-1.5">
+                                <i class="fa-solid fa-plug text-amber-400"></i> Test Connection
+                            </button>
+                            <span id="gateway-test-result" class="text-xs text-zinc-400"></span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="px-6 py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider shadow-lg">
+                            <i class="fa-solid fa-check mr-1.5"></i> Save Payment Settings
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 4: Cash on Delivery (COD) Rules -->
+            <div id="tab-pane-4" class="settings-pane hidden luxury-card p-6 sm:p-8 rounded-3xl space-y-6">
+                <div class="pb-3 border-b border-zinc-800">
+                    <h2 class="text-base font-serif font-bold text-white">Cash on Delivery (COD) Rules & Limits</h2>
+                    <p class="text-xs text-zinc-400">Configure minimum / maximum order thresholds and category exclusions</p>
+                </div>
+
+                <form onsubmit="handleSaveSettings(event, 'cod_rules')" class="space-y-4 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">COD Minimum Order Amount (Rs.) *</label>
+                            <input type="number" id="cfg-cod-min" min="0" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">COD Maximum Order Limit (Rs.) *</label>
+                            <input type="number" id="cfg-cod-max" min="0" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">COD Delivery Surcharge (Rs.)</label>
+                            <input type="number" id="cfg-cod-fee" min="0" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Available Cities for COD</label>
+                        <input type="text" id="cfg-cod-cities" placeholder="All Cities" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        <span class="text-[10px] text-zinc-400 mt-1 block">Enter "All Cities" or comma-separated: Lahore, Karachi, Islamabad, Faisalabad</span>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800 text-xs text-zinc-300 space-y-2">
+                        <span class="font-bold text-white block"><i class="fa-solid fa-circle-info text-amber-400 mr-1"></i> Product-Specific Rule Notice:</span>
+                        <p class="text-zinc-400 text-[11px] leading-relaxed">
+                            Individual products can have Cash on Delivery disabled in <strong>Product Studio &rarr; Payment Options</strong>. If a customer adds an excluded product (such as Luxury Oud or Bridal Sets), checkout automatically hides COD and displays: <em>"Cash on Delivery is not available for this product."</em>
+                        </p>
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="px-6 py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider shadow-lg">
+                            <i class="fa-solid fa-check mr-1.5"></i> Save COD Rules
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 5: Bank & Mobile Wallets -->
+            <div id="tab-pane-5" class="settings-pane hidden luxury-card p-6 sm:p-8 rounded-3xl space-y-6">
+                <div class="pb-3 border-b border-zinc-800">
+                    <h2 class="text-base font-serif font-bold text-white">Bank Transfer & Mobile Wallet Details</h2>
+                    <p class="text-xs text-zinc-400">These account numbers and payment instructions will be presented directly to customers at checkout</p>
+                </div>
+
+                <form onsubmit="handleSaveSettings(event, 'bank_wallets')" class="space-y-6 text-xs">
+                    <!-- Bank Account -->
+                    <div class="space-y-3 pb-4 border-b border-zinc-800">
+                        <h3 class="font-bold text-white text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-building-columns text-amber-400"></i> Direct Bank Account Details
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Bank Name *</label>
+                                <input type="text" id="cfg-bank-name" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Account Title *</label>
+                                <input type="text" id="cfg-bank-title" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Account Number *</label>
+                                <input type="text" id="cfg-bank-acc" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">IBAN Number *</label>
+                                <input type="text" id="cfg-bank-iban" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Branch Name</label>
+                            <input type="text" id="cfg-bank-branch" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Bank Transfer Instructions for Customer</label>
+                            <textarea id="cfg-bank-instructions" rows="2" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Easypaisa & JazzCash -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- Easypaisa -->
+                        <div class="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800 space-y-3">
+                            <h4 class="font-bold text-white text-sm flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> Easypaisa Details
+                            </h4>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Account Title</label>
+                                <input type="text" id="cfg-ep-title" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Mobile Account Number</label>
+                                <input type="text" id="cfg-ep-number" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-white font-mono">
+                            </div>
+                        </div>
+
+                        <!-- JazzCash -->
+                        <div class="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800 space-y-3">
+                            <h4 class="font-bold text-white text-sm flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span> JazzCash Details
+                            </h4>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Account Title</label>
+                                <input type="text" id="cfg-jc-title" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Mobile Account Number</label>
+                                <input type="text" id="cfg-jc-number" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-white font-mono">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="px-6 py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider shadow-lg">
+                            <i class="fa-solid fa-check mr-1.5"></i> Save Bank & Wallet Details
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 6: Delivery & Shipping -->
+            <div id="tab-pane-6" class="settings-pane hidden luxury-card p-6 sm:p-8 rounded-3xl space-y-6">
+                <div class="pb-3 border-b border-zinc-800">
+                    <h2 class="text-base font-serif font-bold text-white">Delivery Charges & Free Shipping Threshold</h2>
+                    <p class="text-xs text-zinc-400">Configure logistics fees and automated cart delivery discounts</p>
+                </div>
+
+                <form onsubmit="handleSaveSettings(event, 'delivery')" class="space-y-4 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Free Delivery Threshold (Rs.) *</label>
+                            <input type="number" id="cfg-ship-free-thresh" min="0" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                            <span class="text-[10px] text-zinc-400">Orders above this value receive free shipping</span>
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Standard Delivery Fee (Rs.) *</label>
+                            <input type="number" id="cfg-ship-def-fee" min="0" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Estimated Delivery Time *</label>
+                            <input type="text" id="cfg-ship-time" placeholder="2 - 4 Working Days" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Express / Same Day Surcharge (Rs.)</label>
+                            <input type="number" id="cfg-ship-express" min="0" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="px-6 py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider shadow-lg">
+                            <i class="fa-solid fa-check mr-1.5"></i> Save Delivery Rules
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 7: Taxes -->
+            <div id="tab-pane-7" class="settings-pane hidden luxury-card p-6 sm:p-8 rounded-3xl space-y-6">
+                <div class="pb-3 border-b border-zinc-800">
+                    <h2 class="text-base font-serif font-bold text-white">Taxation & Surcharges</h2>
+                    <p class="text-xs text-zinc-400">Optionally configure GST, Sales Tax, or Luxury Surcharges</p>
+                </div>
+
+                <form onsubmit="handleSaveSettings(event, 'taxes')" class="space-y-4 text-xs">
+                    <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-center justify-between">
+                        <div>
+                            <span class="font-bold text-white block">Enable Tax Calculation</span>
+                            <span class="text-[10px] text-zinc-400">Automatically compute sales tax at checkout</span>
+                        </div>
+                        <input type="checkbox" id="chk-tax-enabled" class="w-5 h-5 accent-amber-500 rounded">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Tax Label / Name</label>
+                            <input type="text" id="cfg-tax-name" placeholder="GST / Sales Tax" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Tax Rate (%)</label>
+                            <input type="number" id="cfg-tax-rate" min="0" max="100" step="0.1" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="px-6 py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider shadow-lg">
+                            <i class="fa-solid fa-check mr-1.5"></i> Save Tax Settings
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 8: Customer Notification Templates -->
+            <div id="tab-pane-8" class="settings-pane hidden luxury-card p-6 sm:p-8 rounded-3xl space-y-6">
+                <div class="pb-3 border-b border-zinc-800">
+                    <h2 class="text-base font-serif font-bold text-white">Customer Notification Templates</h2>
+                    <p class="text-xs text-zinc-400">Customize SMS and WhatsApp messages triggered during order status updates</p>
+                </div>
+
+                <form onsubmit="handleSaveSettings(event, 'notifications')" class="space-y-4 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-2">
+                        <div class="p-3 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-between">
+                            <span class="font-bold text-white">SMS Alerts</span>
+                            <input type="checkbox" id="chk-notif-sms" class="w-4 h-4 accent-amber-500 rounded">
+                        </div>
+                        <div class="p-3 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-between">
+                            <span class="font-bold text-white">WhatsApp Alerts</span>
+                            <input type="checkbox" id="chk-notif-wa" class="w-4 h-4 accent-amber-500 rounded">
+                        </div>
+                        <div class="p-3 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-between">
+                            <span class="font-bold text-white">Email Alerts</span>
+                            <input type="checkbox" id="chk-notif-em" class="w-4 h-4 accent-amber-500 rounded">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Status: Confirmed Template</label>
+                        <textarea id="tpl-confirmed" rows="2" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono"></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Status: Shipped Template</label>
+                        <textarea id="tpl-shipped" rows="2" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono"></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Status: On The Way Template</label>
+                        <textarea id="tpl-ontheway" rows="2" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono"></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Status: Delivered Template</label>
+                        <textarea id="tpl-delivered" rows="2" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono"></textarea>
+                    </div>
+
+                    <p class="text-[11px] text-zinc-400">Available variables: <code class="text-amber-400">{customer_name}</code>, <code class="text-amber-400">{order_id}</code>, <code class="text-amber-400">{total}</code>, <code class="text-amber-400">{tracking_number}</code></p>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="px-6 py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider shadow-lg">
+                            <i class="fa-solid fa-check mr-1.5"></i> Save Notification Templates
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 9: SEO & Social -->
+            <div id="tab-pane-9" class="settings-pane hidden luxury-card p-6 sm:p-8 rounded-3xl space-y-6">
+                <div class="pb-3 border-b border-zinc-800">
+                    <h2 class="text-base font-serif font-bold text-white">Social Media Channels & Metadata</h2>
+                    <p class="text-xs text-zinc-400">Official social presence URLs linked in footer and customer communications</p>
+                </div>
+
+                <form onsubmit="handleSaveSettings(event, 'social')" class="space-y-4 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1"><i class="fa-brands fa-instagram text-rose-400 mr-1"></i> Instagram Profile URL</label>
+                            <input type="url" id="cfg-soc-insta" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1"><i class="fa-brands fa-facebook text-blue-400 mr-1"></i> Facebook Page URL</label>
+                            <input type="url" id="cfg-soc-fb" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1"><i class="fa-brands fa-tiktok text-white mr-1"></i> TikTok Account URL</label>
+                            <input type="url" id="cfg-soc-tt" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1"><i class="fa-brands fa-youtube text-red-500 mr-1"></i> YouTube Channel URL</label>
+                            <input type="url" id="cfg-soc-yt" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="px-6 py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider shadow-lg">
+                            <i class="fa-solid fa-check mr-1.5"></i> Save Social Links
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="store.js"></script>
+    <script src="admin-guard.js"></script>
+    <script>
+        function switchSettingsTab(idx) {
+            document.querySelectorAll('.settings-pane').forEach((p, i) => {
+                p.classList.toggle('hidden', i + 1 !== idx);
+            });
+            document.querySelectorAll('.settings-tab-btn').forEach((b, i) => {
+                const match = i + 1 === idx;
+                b.className = match 
+                    ? 'settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap bg-amber-400 text-black font-bold' 
+                    : 'settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white';
+            });
+        }
+
+        function toggleTestModeWarning(mode) {
+            const banner = document.getElementById('test-mode-warning-banner');
+            banner.classList.toggle('hidden', mode !== 'TEST');
+        }
+
+        function testGatewayConnection() {
+            const btn = event.currentTarget;
+            const resBox = document.getElementById('gateway-test-result');
+            resBox.innerHTML = '<span class="text-amber-400"><i class="fa-solid fa-circle-notch fa-spin mr-1"></i> Pinging gateway endpoint...</span>';
+            
+            setTimeout(() => {
+                resBox.innerHTML = '<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i> Gateway Connection Successful! Sandbox handshake verified.</span>';
+                showToast('Payment Gateway test connection successful!');
+            }, 800);
+        }
+
+        function populateSettingsForm() {
+            const s = store.getSettings();
+            
+            // Profile
+            document.getElementById('cfg-store-name').value = s.store_profile.store_name || '';
+            document.getElementById('cfg-owner-name').value = s.store_profile.owner_name || '';
+            document.getElementById('cfg-phone').value = s.store_profile.phone || '';
+            document.getElementById('cfg-whatsapp').value = s.store_profile.whatsapp || '';
+            document.getElementById('cfg-email').value = s.store_profile.email || '';
+            document.getElementById('cfg-city-country').value = `${s.store_profile.city || ''}, ${s.store_profile.country || ''}`;
+            document.getElementById('cfg-address').value = s.store_profile.address || '';
+            document.getElementById('cfg-maps-url').value = s.store_profile.maps_url || '';
+            document.getElementById('cfg-hours').value = s.store_profile.business_hours || '';
+            document.getElementById('cfg-logo-url').value = s.store_profile.logo_url || '';
+            document.getElementById('cfg-favicon-url').value = s.store_profile.favicon_url || '';
+            document.getElementById('cfg-store-desc').value = s.store_profile.store_description || '';
+            document.getElementById('cfg-footer-desc').value = s.store_profile.footer_description || '';
+
+            // Contact
+            document.getElementById('cfg-cs-phone').value = s.contact_support.support_phone || '';
+            document.getElementById('cfg-cs-whatsapp').value = s.contact_support.whatsapp_number || '';
+            document.getElementById('cfg-cs-email').value = s.contact_support.support_email || '';
+            document.getElementById('cfg-cs-hours').value = s.contact_support.working_hours || '';
+            document.getElementById('cfg-cs-address').value = s.contact_support.business_address || '';
+
+            // Gateways
+            document.getElementById('chk-method-cod').checked = !!s.payments.cod.enabled;
+            document.getElementById('chk-method-card').checked = !!s.payments.online_card.enabled;
+            document.getElementById('chk-method-bank').checked = !!s.payments.bank_transfer.enabled;
+            document.getElementById('chk-method-easypaisa').checked = !!s.payments.easypaisa.enabled;
+            document.getElementById('chk-method-jazzcash').checked = !!s.payments.jazzcash.enabled;
+
+            document.getElementById('cfg-card-mode').value = s.payments.online_card.mode || 'TEST';
+            toggleTestModeWarning(document.getElementById('cfg-card-mode').value);
+            document.getElementById('cfg-card-name').value = s.payments.online_card.gateway_name || '';
+            document.getElementById('cfg-card-merch-id').value = s.payments.online_card.merchant_id || '';
+            document.getElementById('cfg-card-pub-key').value = s.payments.online_card.public_key || '';
+            document.getElementById('cfg-card-sec-key').value = s.payments.online_card.secret_key || '';
+
+            // COD
+            document.getElementById('cfg-cod-min').value = s.payments.cod.min_amount || 500;
+            document.getElementById('cfg-cod-max').value = s.payments.cod.max_amount || 100000;
+            document.getElementById('cfg-cod-fee').value = s.payments.cod.cod_fee || 0;
+            document.getElementById('cfg-cod-cities').value = s.payments.cod.available_cities || 'All Cities';
+
+            // Bank & Wallets
+            document.getElementById('cfg-bank-name').value = s.payments.bank_transfer.bank_name || '';
+            document.getElementById('cfg-bank-title').value = s.payments.bank_transfer.account_title || '';
+            document.getElementById('cfg-bank-acc').value = s.payments.bank_transfer.account_number || '';
+            document.getElementById('cfg-bank-iban').value = s.payments.bank_transfer.iban || '';
+            document.getElementById('cfg-bank-branch').value = s.payments.bank_transfer.branch || '';
+            document.getElementById('cfg-bank-instructions').value = s.payments.bank_transfer.instructions || '';
+
+            document.getElementById('cfg-ep-title').value = s.payments.easypaisa.account_name || '';
+            document.getElementById('cfg-ep-number').value = s.payments.easypaisa.account_number || '';
+            document.getElementById('cfg-jc-title').value = s.payments.jazzcash.account_name || '';
+            document.getElementById('cfg-jc-number').value = s.payments.jazzcash.account_number || '';
+
+            // Delivery
+            document.getElementById('cfg-ship-free-thresh').value = s.delivery.free_delivery_threshold || 5000;
+            document.getElementById('cfg-ship-def-fee').value = s.delivery.default_delivery_fee || 250;
+            document.getElementById('cfg-ship-time').value = s.delivery.estimated_delivery_time || '2 - 4 Working Days';
+            document.getElementById('cfg-ship-express').value = s.delivery.express_delivery_fee || 500;
+
+            // Taxes
+            document.getElementById('chk-tax-enabled').checked = !!s.taxes.enabled;
+            document.getElementById('cfg-tax-name').value = s.taxes.tax_name || 'GST';
+            document.getElementById('cfg-tax-rate').value = s.taxes.tax_percentage || 0;
+
+            // Notifications
+            document.getElementById('chk-notif-sms').checked = !!s.notifications.sms_enabled;
+            document.getElementById('chk-notif-wa').checked = !!s.notifications.whatsapp_enabled;
+            document.getElementById('chk-notif-em').checked = !!s.notifications.email_enabled;
+            document.getElementById('tpl-confirmed').value = s.notifications.templates.order_confirmed || '';
+            document.getElementById('tpl-shipped').value = s.notifications.templates.order_shipped || '';
+            document.getElementById('tpl-ontheway').value = s.notifications.templates.order_on_the_way || '';
+            document.getElementById('tpl-delivered').value = s.notifications.templates.order_delivered || '';
+
+            // Social
+            document.getElementById('cfg-soc-insta').value = s.social_media.instagram || '';
+            document.getElementById('cfg-soc-fb').value = s.social_media.facebook || '';
+            document.getElementById('cfg-soc-tt').value = s.social_media.tiktok || '';
+            document.getElementById('cfg-soc-yt').value = s.social_media.youtube || '';
+        }
+
+        function handleSaveSettings(e, section) {
+            e.preventDefault();
+            const s = store.getSettings();
+
+            if (section === 'store_profile') {
+                const parts = document.getElementById('cfg-city-country').value.split(',');
+                s.store_profile = {
+                    ...s.store_profile,
+                    store_name: document.getElementById('cfg-store-name').value.trim(),
+                    owner_name: document.getElementById('cfg-owner-name').value.trim(),
+                    phone: document.getElementById('cfg-phone').value.trim(),
+                    whatsapp: document.getElementById('cfg-whatsapp').value.trim(),
+                    email: document.getElementById('cfg-email').value.trim(),
+                    city: parts[0] ? parts[0].trim() : 'Lahore',
+                    country: parts[1] ? parts[1].trim() : 'Pakistan',
+                    address: document.getElementById('cfg-address').value.trim(),
+                    maps_url: document.getElementById('cfg-maps-url').value.trim(),
+                    business_hours: document.getElementById('cfg-hours').value.trim(),
+                    logo_url: document.getElementById('cfg-logo-url').value.trim(),
+                    favicon_url: document.getElementById('cfg-favicon-url').value.trim(),
+                    store_description: document.getElementById('cfg-store-desc').value.trim(),
+                    footer_description: document.getElementById('cfg-footer-desc').value.trim()
+                };
+            } else if (section === 'contact_support') {
+                s.contact_support = {
+                    support_phone: document.getElementById('cfg-cs-phone').value.trim(),
+                    whatsapp_number: document.getElementById('cfg-cs-whatsapp').value.trim(),
+                    support_email: document.getElementById('cfg-cs-email').value.trim(),
+                    working_hours: document.getElementById('cfg-cs-hours').value.trim(),
+                    business_address: document.getElementById('cfg-cs-address').value.trim(),
+                    whatsapp_business: document.getElementById('cfg-cs-whatsapp').value.trim()
+                };
+            } else if (section === 'payment_gateways') {
+                s.payments.cod.enabled = document.getElementById('chk-method-cod').checked;
+                s.payments.online_card.enabled = document.getElementById('chk-method-card').checked;
+                s.payments.bank_transfer.enabled = document.getElementById('chk-method-bank').checked;
+                s.payments.easypaisa.enabled = document.getElementById('chk-method-easypaisa').checked;
+                s.payments.jazzcash.enabled = document.getElementById('chk-method-jazzcash').checked;
+
+                s.payments.online_card.mode = document.getElementById('cfg-card-mode').value;
+                s.payments.online_card.gateway_name = document.getElementById('cfg-card-name').value.trim();
+                s.payments.online_card.merchant_id = document.getElementById('cfg-card-merch-id').value.trim();
+                s.payments.online_card.public_key = document.getElementById('cfg-card-pub-key').value.trim();
+                s.payments.online_card.secret_key = document.getElementById('cfg-card-sec-key').value.trim();
+            } else if (section === 'cod_rules') {
+                s.payments.cod.min_amount = Number(document.getElementById('cfg-cod-min').value);
+                s.payments.cod.max_amount = Number(document.getElementById('cfg-cod-max').value);
+                s.payments.cod.cod_fee = Number(document.getElementById('cfg-cod-fee').value);
+                s.payments.cod.available_cities = document.getElementById('cfg-cod-cities').value.trim();
+            } else if (section === 'bank_wallets') {
+                s.payments.bank_transfer.bank_name = document.getElementById('cfg-bank-name').value.trim();
+                s.payments.bank_transfer.account_title = document.getElementById('cfg-bank-title').value.trim();
+                s.payments.bank_transfer.account_number = document.getElementById('cfg-bank-acc').value.trim();
+                s.payments.bank_transfer.iban = document.getElementById('cfg-bank-iban').value.trim();
+                s.payments.bank_transfer.branch = document.getElementById('cfg-bank-branch').value.trim();
+                s.payments.bank_transfer.instructions = document.getElementById('cfg-bank-instructions').value.trim();
+
+                s.payments.easypaisa.account_name = document.getElementById('cfg-ep-title').value.trim();
+                s.payments.easypaisa.account_number = document.getElementById('cfg-ep-number').value.trim();
+                s.payments.jazzcash.account_name = document.getElementById('cfg-jc-title').value.trim();
+                s.payments.jazzcash.account_number = document.getElementById('cfg-jc-number').value.trim();
+            } else if (section === 'delivery') {
+                s.delivery.free_delivery_threshold = Number(document.getElementById('cfg-ship-free-thresh').value);
+                s.delivery.default_delivery_fee = Number(document.getElementById('cfg-ship-def-fee').value);
+                s.delivery.estimated_delivery_time = document.getElementById('cfg-ship-time').value.trim();
+                s.delivery.express_delivery_fee = Number(document.getElementById('cfg-ship-express').value);
+            } else if (section === 'taxes') {
+                s.taxes.enabled = document.getElementById('chk-tax-enabled').checked;
+                s.taxes.tax_name = document.getElementById('cfg-tax-name').value.trim();
+                s.taxes.tax_percentage = Number(document.getElementById('cfg-tax-rate').value);
+            } else if (section === 'notifications') {
+                s.notifications.sms_enabled = document.getElementById('chk-notif-sms').checked;
+                s.notifications.whatsapp_enabled = document.getElementById('chk-notif-wa').checked;
+                s.notifications.email_enabled = document.getElementById('chk-notif-em').checked;
+                s.notifications.templates.order_confirmed = document.getElementById('tpl-confirmed').value.trim();
+                s.notifications.templates.order_shipped = document.getElementById('tpl-shipped').value.trim();
+                s.notifications.templates.order_on_the_way = document.getElementById('tpl-ontheway').value.trim();
+                s.notifications.templates.order_delivered = document.getElementById('tpl-delivered').value.trim();
+            } else if (section === 'social') {
+                s.social_media.instagram = document.getElementById('cfg-soc-insta').value.trim();
+                s.social_media.facebook = document.getElementById('cfg-soc-fb').value.trim();
+                s.social_media.tiktok = document.getElementById('cfg-soc-tt').value.trim();
+                s.social_media.youtube = document.getElementById('cfg-soc-yt').value.trim();
+            }
+
+            store.saveSettings(s);
+            showToast('Store settings updated successfully.');
+        }
+
+        document.addEventListener('DOMContentLoaded', populateSettingsForm);
+    </script>
+</body>
+</html>

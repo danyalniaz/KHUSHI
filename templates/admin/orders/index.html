@@ -1,0 +1,111 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Orders Management — Khushi Collection Admin{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-serif font-bold text-white">Customer Orders</h1>
+            <p class="text-xs text-zinc-400 mt-1">Manage fulfillment workflow, parcel tracking numbers, and customer notification dispatches</p>
+        </div>
+    </div>
+
+    <!-- Status Filters & Search -->
+    <div class="luxury-card p-4 sm:p-5 rounded-3xl space-y-4">
+        <!-- Status Tabs -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 text-xs">
+            <a href="{{ url_for('admin.orders') }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold transition {% if not status_filter %}btn-gold text-black{% else %}bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-zinc-500{% endif %}">
+                All Orders
+            </a>
+            <a href="{{ url_for('admin.orders', status='pending') }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold transition {% if status_filter == 'pending' %}bg-amber-400 text-black{% else %}bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-zinc-500{% endif %}">
+                Pending
+            </a>
+            <a href="{{ url_for('admin.orders', status='confirmed') }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold transition {% if status_filter == 'confirmed' %}bg-blue-400 text-black{% else %}bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-zinc-500{% endif %}">
+                Confirmed
+            </a>
+            <a href="{{ url_for('admin.orders', status='processing') }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold transition {% if status_filter == 'processing' %}bg-purple-400 text-black{% else %}bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-zinc-500{% endif %}">
+                Processing
+            </a>
+            <a href="{{ url_for('admin.orders', status='ready') }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold transition {% if status_filter == 'ready' %}bg-teal-400 text-black{% else %}bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-zinc-500{% endif %}">
+                Ready
+            </a>
+            <a href="{{ url_for('admin.orders', status='shipped') }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold transition {% if status_filter == 'shipped' %}bg-indigo-400 text-black{% else %}bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-zinc-500{% endif %}">
+                Shipped
+            </a>
+            <a href="{{ url_for('admin.orders', status='on_the_way') }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold transition {% if status_filter == 'on_the_way' %}bg-amber-400 text-black{% else %}bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-zinc-500{% endif %}">
+                On The Way
+            </a>
+            <a href="{{ url_for('admin.orders', status='delivered') }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold transition {% if status_filter == 'delivered' %}bg-emerald-500 text-black{% else %}bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-zinc-500{% endif %}">
+                Delivered
+            </a>
+            <a href="{{ url_for('admin.orders', status='cancelled') }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold transition {% if status_filter == 'cancelled' %}bg-rose-500 text-black{% else %}bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-zinc-500{% endif %}">
+                Cancelled
+            </a>
+        </div>
+
+        <!-- Search Bar -->
+        <form method="GET" action="{{ url_for('admin.orders') }}" class="flex items-center gap-3">
+            {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
+            <input type="text" name="search" value="{{ search or '' }}" placeholder="Search by Order ID (e.g. KC-10025), customer name, or phone..." class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+            <button type="submit" class="px-5 py-2 rounded-xl btn-gold text-xs font-bold uppercase">Search</button>
+            {% if search %}
+            <a href="{{ url_for('admin.orders', status=status_filter) }}" class="text-xs text-zinc-400 hover:text-white">Clear</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="luxury-card rounded-3xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-zinc-300">
+                <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 bg-zinc-900/60 text-[11px]">
+                    <tr>
+                        <th class="py-3.5 px-4">Order ID</th>
+                        <th class="py-3.5 px-4">Customer Details</th>
+                        <th class="py-3.5 px-4">Destination</th>
+                        <th class="py-3.5 px-4">Amount</th>
+                        <th class="py-3.5 px-4">Payment</th>
+                        <th class="py-3.5 px-4">Status</th>
+                        <th class="py-3.5 px-4">Tracking #</th>
+                        <th class="py-3.5 px-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-zinc-800/80">
+                    {% for o in orders %}
+                    <tr class="hover:bg-zinc-800/30 transition">
+                        <td class="py-3.5 px-4 font-mono font-bold text-amber-400">#{{ o.order_number }}</td>
+                        <td class="py-3.5 px-4">
+                            <span class="font-bold text-white block">{{ o.customer_name }}</span>
+                            <span class="text-[10px] text-zinc-400">{{ o.customer_phone }}</span>
+                        </td>
+                        <td class="py-3.5 px-4">{{ o.city }}</td>
+                        <td class="py-3.5 px-4 font-bold text-white">Rs. {{ "{:,}".format(o.total_amount|int) }}</td>
+                        <td class="py-3.5 px-4">
+                            <span class="uppercase text-[10px] font-bold text-zinc-300 block">{{ o.payment_method }}</span>
+                            <span class="text-[9px] text-zinc-500 font-semibold">{{ o.payment_status }}</span>
+                        </td>
+                        <td class="py-3.5 px-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {% if o.order_status == 'delivered' %}bg-emerald-950 text-emerald-400 border border-emerald-500/30{% elif o.order_status in ('shipped', 'on_the_way') %}bg-amber-950 text-amber-400 border border-amber-500/30{% elif o.order_status == 'cancelled' %}bg-rose-950 text-rose-400 border border-rose-500/30{% else %}bg-zinc-800 text-zinc-300 border border-zinc-700{% endif %}">
+                                {{ o.order_status.replace('_', ' ').title() }}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-4 font-mono text-zinc-400 text-[11px]">
+                            {{ o.tracking_number or '—' }}
+                        </td>
+                        <td class="py-3.5 px-4 text-right space-x-2">
+                            <a href="{{ url_for('admin.order_detail', id=o.id) }}" class="py-1 px-2.5 rounded-lg btn-gold text-xs font-bold uppercase">
+                                Process
+                            </a>
+                            <a href="{{ url_for('admin.admin_invoice', order_number=o.order_number) }}" target="_blank" class="py-1 px-2 rounded-lg border border-zinc-700 hover:border-amber-400 text-zinc-400 hover:text-white text-xs" title="Print Invoice">
+                                <i class="fa-solid fa-print"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Product Details — Khushi Collection</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            50: '#FDFCF7', 100: '#FAF7EC', 200: '#F3EDD0',
+                            300: '#E8DCAC', 400: '#DEC985', 500: '#D4AF37',
+                            600: '#B7950B', 700: '#8E7308', 800: '#675206', 900: '#433404'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Cormorant Garamond', 'Georgia', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/style.css">
+
+    <style>
+        body {
+            background-color: #0A0D14;
+            color: #F4F4F5;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+        .glass-nav {
+            background: rgba(10, 13, 20, 0.9);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        .luxury-card {
+            background: linear-gradient(180deg, rgba(20, 26, 38, 0.7) 0%, rgba(12, 16, 24, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #ECC94B 0%, #D4AF37 50%, #B7791F 100%);
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            transform: translateY(-1px);
+        }
+        .tab-btn-active {
+            color: #D4AF37 !important;
+            border-bottom-color: #D4AF37 !important;
+            font-weight: 700 !important;
+        }
+    </style>
+</head>
+<body class="bg-[#0A0D14] text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-black">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-amber-700 via-amber-500 to-amber-700 text-black py-2 px-4 text-xs font-bold tracking-wider text-center shadow-md">
+        <span>✨ FREE NATIONWIDE EXPRESS DELIVERY ON ORDERS OVER RS. 5,000 | WHATSAPP CONCIERGE: +92 300 1234567</span>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="static/images/logo.svg" alt="Khushi Collection" class="h-12 w-auto">
+            </a>
+
+            <div class="hidden md:flex items-center space-x-6 text-xs font-semibold uppercase tracking-widest text-zinc-300">
+                <a href="index.html" class="hover:text-amber-400 transition">Home</a>
+                <a href="shop.html" class="hover:text-amber-400 transition">Catalog</a>
+                <a href="shop.html?category=women" class="hover:text-amber-400 transition">Women</a>
+                <a href="shop.html?category=men" class="hover:text-amber-400 transition">Men</a>
+                <a href="shop.html?category=perfumes" class="hover:text-amber-400 transition">The Art of Oud</a>
+                <a href="shop.html?filter=sale" class="text-rose-400 hover:text-rose-300 transition">Sale</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="track-order.html" class="hidden sm:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-amber-400 transition">
+                    <i class="fa-solid fa-truck-fast text-amber-400 text-sm"></i>
+                    <span>Track</span>
+                </a>
+                <a href="shop.html?view=wishlist" class="relative p-2 text-zinc-300 hover:text-amber-400 transition">
+                    <i class="fa-regular fa-heart text-lg"></i>
+                    <span class="wishlist-badge-count hidden absolute top-0 right-0 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center">0</span>
+                </a>
+                <a href="cart.html" class="relative p-2 text-zinc-300 hover:text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-bag-shopping text-xl text-amber-400"></i>
+                    <span class="cart-badge-count hidden absolute -top-1 -right-2 w-4 h-4 rounded-full bg-amber-500 text-black text-[10px] font-extrabold flex items-center justify-center">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="bg-zinc-950/80 border-b border-zinc-800/80 py-3.5 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto flex items-center gap-2 text-xs text-zinc-400">
+            <a href="index.html" class="hover:text-amber-400">Home</a>
+            <i class="fa-solid fa-chevron-right text-[9px] text-zinc-600"></i>
+            <a href="shop.html" class="hover:text-amber-400" id="crumb-category">Catalog</a>
+            <i class="fa-solid fa-chevron-right text-[9px] text-zinc-600"></i>
+            <span class="text-amber-400 font-semibold truncate max-w-xs" id="crumb-title">Product Details</span>
+        </div>
+    </div>
+
+    <!-- MAIN PRODUCT BODY -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-16">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            
+            <!-- Left: Gallery Section (5 cols) -->
+            <div class="lg:col-span-5 space-y-4">
+                <!-- Main Image Preview -->
+                <div class="aspect-[4/5] rounded-3xl overflow-hidden luxury-card border border-amber-500/20 shadow-2xl relative group bg-zinc-950">
+                    <img id="main-product-image" src="" alt="" class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105">
+                    <div id="product-badge-overlay" class="absolute top-4 left-4 z-10"></div>
+                </div>
+
+                <!-- 3 Thumbnails Switcher -->
+                <div class="grid grid-cols-3 gap-3" id="product-thumbnails-grid"></div>
+            </div>
+
+            <!-- Right: Product Purchasing Details (7 cols) -->
+            <div class="lg:col-span-7 space-y-6">
+                <div>
+                    <div class="flex items-center justify-between text-xs text-zinc-400">
+                        <span class="uppercase font-bold tracking-widest text-amber-400" id="detail-brand">Khushi Collection</span>
+                        <span class="font-mono text-zinc-500" id="detail-sku">SKU-000</span>
+                    </div>
+
+                    <h1 class="text-2xl sm:text-4xl font-serif font-extrabold text-white mt-1.5" id="detail-title">
+                        Luxury Ensemble
+                    </h1>
+
+                    <div class="flex items-center gap-4 mt-2 text-xs">
+                        <div class="flex items-center text-amber-400" id="detail-rating-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <span class="text-zinc-300 font-bold ml-1.5" id="detail-rating-num">4.9</span>
+                        </div>
+                        <span class="text-zinc-600">&bull;</span>
+                        <span class="text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-semibold text-[10px]">
+                            <i class="fa-solid fa-check"></i> In Stock &bull; Atelier Ready
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Price Block -->
+                <div class="flex items-baseline gap-4 py-4 border-y border-zinc-800">
+                    <span class="text-3xl sm:text-4xl font-serif font-bold text-amber-400" id="detail-price">Rs. 0</span>
+                    <span class="text-base line-through text-zinc-500 hidden" id="detail-original-price">Rs. 0</span>
+                    <span class="badge-sale px-3 py-1 rounded-full text-xs font-extrabold hidden" id="detail-discount-badge">0% OFF</span>
+                </div>
+
+                <!-- Short Description -->
+                <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light" id="detail-short-desc"></p>
+
+                <!-- Size Selector -->
+                <div id="size-selection-box" class="space-y-2">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-bold text-zinc-300 uppercase tracking-wider text-[11px]">Select Size:</span>
+                        <button onclick="openSizeGuideModal()" class="text-amber-400 hover:text-amber-300 underline text-xs">
+                            <i class="fa-solid fa-ruler-horizontal mr-1"></i> Size Guide
+                        </button>
+                    </div>
+                    <div class="flex flex-wrap gap-2.5" id="detail-sizes-list"></div>
+                </div>
+
+                <!-- Color Selector -->
+                <div id="color-selection-box" class="space-y-2">
+                    <span class="font-bold text-zinc-300 uppercase tracking-wider text-[11px] block">Select Color / Finish:</span>
+                    <div class="flex flex-wrap gap-2.5" id="detail-colors-list"></div>
+                </div>
+
+                <!-- Quantity & Add to Cart -->
+                <div class="space-y-3 pt-2">
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center border border-zinc-700 rounded-2xl bg-zinc-900 px-2 py-1.5">
+                            <button onclick="adjustDetailQty(-1)" class="px-3 py-1 text-zinc-400 hover:text-white font-bold text-base">-</button>
+                            <span id="detail-qty-val" class="px-4 text-sm font-bold text-white font-mono">1</span>
+                            <button onclick="adjustDetailQty(1)" class="px-3 py-1 text-zinc-400 hover:text-white font-bold text-base">+</button>
+                        </div>
+
+                        <button onclick="handleDetailAddToCart()" class="flex-1 py-4 px-6 rounded-2xl btn-gold text-xs uppercase tracking-widest font-extrabold shadow-xl flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bag-shopping"></i> Add to Shopping Bag
+                        </button>
+
+                        <button onclick="handleDetailWishlistToggle()" id="detail-wishlist-btn" class="w-14 h-14 rounded-2xl bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-rose-500 flex items-center justify-center text-lg transition shadow">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    </div>
+
+                    <button onclick="handleDetailBuyNow()" class="w-full py-3.5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-zinc-100 border border-amber-500/40 text-xs uppercase tracking-widest font-bold transition">
+                        Instant Checkout (Buy Now)
+                    </button>
+                </div>
+
+                <!-- WhatsApp Styling Assistance -->
+                <div class="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-brands fa-whatsapp text-2xl text-emerald-400"></i>
+                        <div>
+                            <span class="font-bold text-white block">Need Custom Sizing or Styling Advice?</span>
+                            <span class="text-zinc-400 text-[11px]">Chat with our personal master stylist on WhatsApp</span>
+                        </div>
+                    </div>
+                    <a id="detail-whatsapp-btn" href="https://wa.me/923001234567" target="_blank" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-[11px] shadow">
+                        Chat Now
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 6 INFORMATION TABS (Description, Fabric, Size & Fit, Delivery, Returns, Care) -->
+        <section class="luxury-card rounded-3xl p-6 sm:p-10 border border-zinc-800">
+            <!-- Tabs Navigation -->
+            <div class="flex items-center gap-6 sm:gap-10 border-b border-zinc-800 overflow-x-auto pb-3 text-xs uppercase tracking-wider font-semibold text-zinc-400" id="product-tabs-nav">
+                <button onclick="switchTab('desc', this)" class="pb-2 border-b-2 border-transparent hover:text-amber-400 tab-btn-active">Description</button>
+                <button onclick="switchTab('fabric', this)" class="pb-2 border-b-2 border-transparent hover:text-amber-400">Fabric & Material</button>
+                <button onclick="switchTab('fit', this)" class="pb-2 border-b-2 border-transparent hover:text-amber-400">Size & Fit</button>
+                <button onclick="switchTab('delivery', this)" class="pb-2 border-b-2 border-transparent hover:text-amber-400">Delivery & Shipping</button>
+                <button onclick="switchTab('returns', this)" class="pb-2 border-b-2 border-transparent hover:text-amber-400">Returns & Exchange</button>
+                <button onclick="switchTab('care', this)" class="pb-2 border-b-2 border-transparent hover:text-amber-400">Care Instructions</button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="pt-6 text-xs sm:text-sm text-zinc-300 leading-relaxed" id="tab-contents">
+                <div id="tab-desc" class="space-y-3">
+                    <p id="tab-desc-content">Handcrafted by master artisans with heirloom attention to detail.</p>
+                </div>
+                <div id="tab-fabric" class="hidden space-y-3">
+                    <p>Crafted using the highest quality 100% natural raw materials. Micro-velvet with metallic tilla embroidery, pure Korean raw silk weave, and authentic gold electroplated hardware.</p>
+                </div>
+                <div id="tab-fit" class="hidden space-y-3">
+                    <p>Tailored to relaxed Pakistani standard luxury measurements. For custom stitching requirements, choose your nearest size and contact our WhatsApp atelier with your order ID.</p>
+                </div>
+                <div id="tab-delivery" class="hidden space-y-3">
+                    <p>• <strong>Standard Express Delivery:</strong> 2 to 4 business days across Pakistan.<br>• <strong>Free Shipping:</strong> On all orders exceeding Rs. 5,000.<br>• <strong>International Courier:</strong> 4 to 7 business days via DHL Express to UAE, UK, USA, and Canada.</p>
+                </div>
+                <div id="tab-returns" class="hidden space-y-3">
+                    <p>Khushi Collection provides a 7-day hassle-free return and exchange guarantee on unworn pret pieces with original tags intact.</p>
+                </div>
+                <div id="tab-care" class="hidden space-y-3">
+                    <p>Dry clean only. Store in provided Khushi Collection dust bag in a moisture-free closet away from direct sunlight.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FREQUENTLY BOUGHT TOGETHER BUNDLE -->
+        <section class="luxury-card rounded-3xl p-6 sm:p-8 border border-amber-500/20 space-y-4">
+            <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Signature Ensemble Styling</span>
+            <h3 class="text-xl font-serif font-bold text-white">Frequently Bought Together</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center pt-2" id="bundle-items-container">
+                <!-- Injected dynamically -->
+            </div>
+        </section>
+
+        <!-- YOU MAY ALSO LIKE RECOMMENDATIONS -->
+        <section class="space-y-6">
+            <h3 class="text-2xl font-serif font-bold text-white">You May Also Like</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" id="related-products-grid"></div>
+        </section>
+
+    </main>
+
+    <!-- SIZE GUIDE MODAL -->
+    <div id="size-guide-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="luxury-card w-full max-w-xl rounded-3xl p-6 border border-amber-500/30 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
+                <h3 class="font-serif font-bold text-white text-base">Khushi Standard Size Chart (Inches)</h3>
+                <button onclick="closeSizeGuideModal()" class="text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <table class="w-full text-xs text-left text-zinc-300 divide-y divide-zinc-800">
+                <thead>
+                    <tr class="text-amber-400 font-bold uppercase text-[10px]">
+                        <th class="py-2">Size</th>
+                        <th>Chest</th>
+                        <th>Waist</th>
+                        <th>Hips</th>
+                        <th>Length</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-zinc-800/60 font-mono">
+                    <tr><td class="py-2 font-bold text-white">Small (S)</td><td>36"</td><td>32"</td><td>38"</td><td>42"</td></tr>
+                    <tr><td class="py-2 font-bold text-white">Medium (M)</td><td>40"</td><td>36"</td><td>42"</td><td>44"</td></tr>
+                    <tr><td class="py-2 font-bold text-white">Large (L)</td><td>44"</td><td>40"</td><td>46"</td><td>45"</td></tr>
+                    <tr><td class="py-2 font-bold text-white">XL</td><td>48"</td><td>44"</td><td>50"</td><td>46"</td></tr>
+                </tbody>
+            </table>
+            <p class="text-[11px] text-zinc-400">For bespoke measurements, message our master tailor on WhatsApp.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[#05070D] border-t border-zinc-800/80 py-10 text-xs text-zinc-500 text-center mt-auto">
+        <p>&copy; 2026 Khushi Collection Pvt Ltd. All Rights Reserved.</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="store.js"></script>
+    <script>
+        let currentProduct = null;
+        let selectedSize = 'M';
+        let selectedColor = 'Standard';
+        let qty = 1;
+
+        function getProductIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return Number(params.get('id')) || 1;
+        }
+
+        function adjustDetailQty(delta) {
+            qty = Math.max(1, qty + delta);
+            document.getElementById('detail-qty-val').textContent = qty;
+        }
+
+        function switchTab(tabKey, btn) {
+            document.querySelectorAll('#product-tabs-nav button').forEach(b => {
+                b.className = 'pb-2 border-b-2 border-transparent hover:text-amber-400';
+            });
+            btn.className = 'pb-2 border-b-2 border-transparent hover:text-amber-400 tab-btn-active';
+
+            const tabs = ['desc', 'fabric', 'fit', 'delivery', 'returns', 'care'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if (el) {
+                    if (t === tabKey) el.classList.remove('hidden');
+                    else el.classList.add('hidden');
+                }
+            });
+        }
+
+        function openSizeGuideModal() { document.getElementById('size-guide-modal').classList.remove('hidden'); }
+        function closeSizeGuideModal() { document.getElementById('size-guide-modal').classList.add('hidden'); }
+
+        function handleDetailAddToCart() {
+            if (!currentProduct) return;
+            store.addToCart(currentProduct.id, qty, selectedSize, selectedColor);
+            showToast(`Added ${qty}x ${currentProduct.name} to your bag!`);
+        }
+
+        function handleDetailBuyNow() {
+            if (!currentProduct) return;
+            store.addToCart(currentProduct.id, qty, selectedSize, selectedColor);
+            window.location.href = 'checkout.html';
+        }
+
+        function handleDetailWishlistToggle() {
+            if (!currentProduct) return;
+            const res = store.toggleWishlist(currentProduct.id);
+            showToast(res.message);
+            const btn = document.getElementById('detail-wishlist-btn');
+            const icon = btn.querySelector('i');
+            icon.className = res.inWishlist ? 'fa-solid fa-heart text-rose-500' : 'fa-regular fa-heart';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            store.init();
+            const id = getProductIdFromUrl();
+            currentProduct = store.getProduct(id) || DEFAULT_PRODUCTS[0];
+
+            // Breadcrumbs & Title
+            document.title = `${currentProduct.name} — Khushi Collection`;
+            document.getElementById('crumb-title').textContent = currentProduct.name;
+            const crumbCat = document.getElementById('crumb-category');
+            if (crumbCat) {
+                crumbCat.textContent = (currentProduct.category_name || currentProduct.category).toUpperCase();
+                crumbCat.href = `shop.html?category=${currentProduct.category}`;
+            }
+
+            // Image Gallery
+            const mainImg = document.getElementById('main-product-image');
+            mainImg.src = currentProduct.thumbnail;
+            const thumbsContainer = document.getElementById('product-thumbnails-grid');
+            const allImages = currentProduct.images || [currentProduct.thumbnail, currentProduct.secondary_image || currentProduct.thumbnail];
+
+            thumbsContainer.innerHTML = allImages.map((img, idx) => `
+                <button onclick="document.getElementById('main-product-image').src='${img}'" class="aspect-[4/5] rounded-xl overflow-hidden border border-zinc-800 hover:border-amber-400 transition bg-zinc-950">
+                    <img src="${img}" class="w-full h-full object-cover">
+                </button>
+            `).join('');
+
+            // Details
+            document.getElementById('detail-brand').textContent = currentProduct.brand || 'Khushi Collection';
+            document.getElementById('detail-sku').textContent = currentProduct.sku;
+            document.getElementById('detail-title').textContent = currentProduct.name;
+            document.getElementById('detail-price').textContent = `Rs. ${(currentProduct.sale_price || currentProduct.price).toLocaleString()}`;
+            document.getElementById('detail-short-desc').textContent = currentProduct.description || currentProduct.short_description;
+            document.getElementById('tab-desc-content').textContent = currentProduct.description;
+
+            if (currentProduct.sale_price) {
+                const origEl = document.getElementById('detail-original-price');
+                const badgeEl = document.getElementById('detail-discount-badge');
+                origEl.textContent = `Rs. ${currentProduct.price.toLocaleString()}`;
+                origEl.classList.remove('hidden');
+                const pct = Math.round(((currentProduct.price - currentProduct.sale_price) / currentProduct.price) * 100);
+                badgeEl.textContent = `${pct}% OFF`;
+                badgeEl.classList.remove('hidden');
+            }
+
+            // Sizes
+            const sizesList = document.getElementById('detail-sizes-list');
+            const sizes = currentProduct.sizes || ['Standard'];
+            selectedSize = sizes[0];
+            sizesList.innerHTML = sizes.map((s, idx) => `
+                <button onclick="document.querySelectorAll('#detail-sizes-list button').forEach(b => b.className = 'px-4 py-2 rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-300 text-xs font-semibold'); this.className = 'px-4 py-2 rounded-xl border border-amber-400 bg-amber-400/20 text-amber-400 text-xs font-bold'; selectedSize = '${s}';" class="px-4 py-2 rounded-xl border ${idx === 0 ? 'border-amber-400 bg-amber-400/20 text-amber-400 font-bold' : 'border-zinc-700 bg-zinc-900 text-zinc-300'} text-xs font-semibold">
+                    ${s}
+                </button>
+            `).join('');
+
+            // Colors
+            const colorsList = document.getElementById('detail-colors-list');
+            const colors = currentProduct.colors || ['Black / Gold'];
+            selectedColor = colors[0];
+            colorsList.innerHTML = colors.map((c, idx) => `
+                <button onclick="document.querySelectorAll('#detail-colors-list button').forEach(b => b.className = 'px-4 py-2 rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-300 text-xs font-semibold'); this.className = 'px-4 py-2 rounded-xl border border-amber-400 bg-amber-400/20 text-amber-400 text-xs font-bold'; selectedColor = '${c}';" class="px-4 py-2 rounded-xl border ${idx === 0 ? 'border-amber-400 bg-amber-400/20 text-amber-400 font-bold' : 'border-zinc-700 bg-zinc-900 text-zinc-300'} text-xs font-semibold">
+                    ${c}
+                </button>
+            `).join('');
+
+            // Wishlist Heart state
+            const inWish = store.getWishlist().includes(currentProduct.id);
+            const wishIcon = document.getElementById('detail-wishlist-btn').querySelector('i');
+            wishIcon.className = inWish ? 'fa-solid fa-heart text-rose-500' : 'fa-regular fa-heart';
+
+            // WhatsApp link with product query
+            const waBtn = document.getElementById('detail-whatsapp-btn');
+            if (waBtn) {
+                waBtn.href = `https://wa.me/923001234567?text=Hi%20Khushi%20Collection,%20I%20am%20inquiring%20about%20${encodeURIComponent(currentProduct.name)}%20(SKU:%20${currentProduct.sku})`;
+            }
+
+            // Related Products
+            const related = store.getProducts().filter(p => p.category === currentProduct.category && p.id !== currentProduct.id).slice(0, 4);
+            const relatedGrid = document.getElementById('related-products-grid');
+            if (relatedGrid) {
+                relatedGrid.innerHTML = related.map(p => `
+                    <div class="luxury-card rounded-2xl overflow-hidden flex flex-col group p-3">
+                        <a href="product-detail.html?id=${p.id}" class="aspect-[4/5] rounded-xl overflow-hidden bg-zinc-950 block">
+                            <img src="${p.thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition">
+                        </a>
+                        <div class="pt-3">
+                            <h4 class="text-xs font-semibold text-white truncate">${p.name}</h4>
+                            <span class="text-xs font-bold text-amber-400 block mt-1">Rs. ${(p.sale_price || p.price).toLocaleString()}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        });
+    </script>
+</body>
+</html>

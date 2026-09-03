@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal Login — Khushi Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-[#070A0F] text-zinc-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-md luxury-card p-8 sm:p-10 rounded-3xl space-y-6 border border-amber-500/30 glow-gold">
+        <div class="text-center space-y-3">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Khushi Collection" class="h-12 w-auto mx-auto">
+            <span class="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-amber-400/10 text-amber-400 border border-amber-400/30">
+                Staff & Admin Portal
+            </span>
+            <h1 class="text-xl font-serif font-bold text-white">Store Management Access</h1>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="p-3 rounded-xl text-xs font-semibold {% if category == 'error' %}bg-rose-950/80 text-rose-200 border border-rose-500/30{% else %}bg-emerald-950/80 text-emerald-200 border border-emerald-500/30{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('admin.admin_login') }}" class="space-y-4">
+            <div>
+                <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Admin Email</label>
+                <input type="email" name="email" required placeholder="admin@khushicollection.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Password</label>
+                <input type="password" name="password" required placeholder="••••••••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+            </div>
+
+            <button type="submit" class="w-full py-3.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider shadow-xl flex items-center justify-center gap-2">
+                <i class="fa-solid fa-lock"></i>
+                <span>Enter Admin Console</span>
+            </button>
+        </form>
+
+        <div class="p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-[11px] text-zinc-400 space-y-1">
+            <p class="font-bold text-zinc-300">Quick Test Logins:</p>
+            <p>Super Admin: <span class="text-amber-400 font-mono">admin@khushicollection.com</span> / <span class="text-amber-400 font-mono">admin123</span></p>
+            <p>Store Manager: <span class="text-amber-400 font-mono">manager@khushicollection.com</span> / <span class="text-amber-400 font-mono">manager123</span></p>
+        </div>
+
+        <div class="text-center pt-2">
+            <a href="{{ url_for('storefront.home') }}" class="text-xs text-zinc-400 hover:text-amber-400">
+                &larr; Return to Customer Storefront
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

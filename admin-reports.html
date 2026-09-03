@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Reports & Payments — Khushi Collection Admin</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="bg-[#080B11] text-zinc-100 min-h-screen flex antialiased">
+
+    <!-- Admin Sidebar -->
+    <aside class="w-64 bg-[#0B0F17] border-r border-zinc-800/80 flex flex-col justify-between hidden md:flex flex-shrink-0">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-zinc-800/80">
+                <a href="admin-dashboard.html" class="flex items-center gap-2.5">
+                    <img src="static/images/logo.svg" alt="Khushi Collection" class="h-9 w-auto">
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">Studio</span>
+                </a>
+            </div>
+
+            <nav class="p-4 space-y-1 text-xs font-semibold">
+                <a href="admin-dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-chart-line w-4"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="admin-orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-bag-shopping w-4"></i>
+                    <span>Customer Orders</span>
+                </a>
+                <a href="admin-products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-shirt w-4"></i>
+                    <span>Products Studio</span>
+                </a>
+                <a href="admin-categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-folder-tree w-4"></i>
+                    <span>Categories Manager</span>
+                </a>
+                <a href="admin-settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-sliders w-4"></i>
+                    <span>Owner Settings</span>
+                </a>
+                <a href="admin-reports.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30">
+                    <i class="fa-solid fa-chart-pie w-4"></i>
+                    <span>Financial Reports</span>
+                </a>
+                <a href="admin-security.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-shield-halved w-4"></i>
+                    <span>Owner Security & Staff</span>
+                </a>
+                <a href="index.html" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition pt-2 border-t border-zinc-800/60">
+                    <i class="fa-solid fa-arrow-up-right-from-square w-4"></i>
+                    <span>View Storefront</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-zinc-800/80 text-[11px] text-zinc-500">
+            Khushi Collection &bull; Reports v3.0
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <header class="h-20 bg-[#0B0F17]/80 border-b border-zinc-800/80 px-6 flex items-center justify-between sticky top-0 z-30 backdrop-blur-md">
+            <div>
+                <h1 class="text-base sm:text-lg font-serif font-bold text-white">Financial Dashboard & Payment Analytics</h1>
+                <p class="text-[11px] text-zinc-400">Track gross sales, paid online revenue, COD settlements, and pending verifications</p>
+            </div>
+            <div id="admin-user-pill"></div>
+        </header>
+
+        <main class="p-6 sm:p-8 space-y-6 max-w-6xl">
+            
+            <!-- Timeframe Filter Tabs -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-2 overflow-x-auto text-xs font-semibold p-1.5 rounded-2xl bg-zinc-900 border border-zinc-800">
+                    <button onclick="setTimeframeFilter('all', this)" class="tf-filter-btn px-3.5 py-1.5 rounded-xl bg-amber-400 text-black font-bold">All Time</button>
+                    <button onclick="setTimeframeFilter('today', this)" class="tf-filter-btn px-3.5 py-1.5 rounded-xl text-zinc-400 hover:text-white">Today</button>
+                    <button onclick="setTimeframeFilter('7days', this)" class="tf-filter-btn px-3.5 py-1.5 rounded-xl text-zinc-400 hover:text-white">Past 7 Days</button>
+                    <button onclick="setTimeframeFilter('30days', this)" class="tf-filter-btn px-3.5 py-1.5 rounded-xl text-zinc-400 hover:text-white">Past 30 Days</button>
+                </div>
+
+                <div class="text-xs text-zinc-400 font-mono flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Live Database Audited
+                </div>
+            </div>
+
+            <!-- 6 KPI Revenue Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Total Gross Revenue -->
+                <div class="luxury-card p-5 rounded-2xl space-y-2">
+                    <span class="text-[11px] text-zinc-400 font-semibold uppercase tracking-wider block">Total Gross Revenue</span>
+                    <div class="text-2xl font-serif font-bold text-white" id="rep-gross-rev">Rs. 0</div>
+                    <span class="text-[10px] text-emerald-400 block"><i class="fa-solid fa-arrow-trend-up"></i> Confirmed volume</span>
+                </div>
+
+                <!-- Paid Online -->
+                <div class="luxury-card p-5 rounded-2xl space-y-2">
+                    <span class="text-[11px] text-zinc-400 font-semibold uppercase tracking-wider block">Paid Online (Verified)</span>
+                    <div class="text-2xl font-serif font-bold text-amber-400" id="rep-online-rev">Rs. 0</div>
+                    <span class="text-[10px] text-zinc-400 block" id="rep-online-count">0 transactions</span>
+                </div>
+
+                <!-- Cash on Delivery -->
+                <div class="luxury-card p-5 rounded-2xl space-y-2">
+                    <span class="text-[11px] text-zinc-400 font-semibold uppercase tracking-wider block">COD Dispatch Volume</span>
+                    <div class="text-2xl font-serif font-bold text-zinc-200" id="rep-cod-rev">Rs. 0</div>
+                    <span class="text-[10px] text-zinc-400 block" id="rep-cod-count">0 orders</span>
+                </div>
+
+                <!-- Pending Verification -->
+                <div class="luxury-card p-5 rounded-2xl space-y-2">
+                    <span class="text-[11px] text-zinc-400 font-semibold uppercase tracking-wider block">Pending Proof Review</span>
+                    <div class="text-2xl font-serif font-bold text-amber-300" id="rep-pending-count">0 Orders</div>
+                    <span class="text-[10px] text-zinc-500 block">Awaiting bank/wallet approval</span>
+                </div>
+            </div>
+
+            <!-- Payment Records Table -->
+            <div class="luxury-card rounded-3xl overflow-hidden space-y-4 p-6">
+                <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+                    <div>
+                        <h3 class="text-base font-serif font-bold text-white">Payment Audit Records</h3>
+                        <p class="text-xs text-zinc-400">Complete server and provider verification history for all transactions</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-zinc-300">
+                        <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 bg-zinc-900/60 text-[10px]">
+                            <tr>
+                                <th class="py-3 px-3">Payment ID</th>
+                                <th class="py-3 px-3">Order Ref</th>
+                                <th class="py-3 px-3">Customer</th>
+                                <th class="py-3 px-3">Gateway</th>
+                                <th class="py-3 px-3">Amount</th>
+                                <th class="py-3 px-3">Payment Status</th>
+                                <th class="py-3 px-3">Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-800/80" id="payments-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="store.js"></script>
+    <script src="admin-guard.js"></script>
+    <script>
+        let currentTf = 'all';
+
+        function setTimeframeFilter(tf, btn) {
+            currentTf = tf;
+            document.querySelectorAll('.tf-filter-btn').forEach(b => {
+                b.className = 'tf-filter-btn px-3.5 py-1.5 rounded-xl text-zinc-400 hover:text-white';
+            });
+            btn.className = 'tf-filter-btn px-3.5 py-1.5 rounded-xl bg-amber-400 text-black font-bold';
+            renderFinancialDashboard();
+        }
+
+        function renderFinancialDashboard() {
+            const reports = store.getFinancialReports(currentTf);
+            document.getElementById('rep-gross-rev').textContent = `Rs. ${reports.grossRevenue.toLocaleString()}`;
+            document.getElementById('rep-online-rev').textContent = `Rs. ${reports.paidOnlineRevenue.toLocaleString()}`;
+            document.getElementById('rep-online-count').textContent = `${reports.paidOnlineCount} paid online`;
+            document.getElementById('rep-cod-rev').textContent = `Rs. ${reports.codRevenue.toLocaleString()}`;
+            document.getElementById('rep-cod-count').textContent = `${reports.codCount} COD orders`;
+            document.getElementById('rep-pending-count').textContent = `${reports.pendingCount} Pending`;
+
+            // Render payments list
+            const payments = store.getPayments();
+            const tbody = document.getElementById('payments-tbody');
+
+            if (payments.length === 0) {
+                // Generate simulated payment records from default orders if empty
+                const orders = store.getOrders();
+                tbody.innerHTML = orders.map(o => `
+                    <tr class="hover:bg-zinc-800/30">
+                        <td class="py-3 px-3 font-mono font-bold text-zinc-300">PAY-${o.order_number}</td>
+                        <td class="py-3 px-3 font-mono font-bold text-amber-400">#${o.order_number}</td>
+                        <td class="py-3 px-3 font-semibold text-white">${o.customer_name}</td>
+                        <td class="py-3 px-3 uppercase text-[10px] text-zinc-400">${o.payment_method}</td>
+                        <td class="py-3 px-3 font-mono font-bold text-white">Rs. ${Number(o.total_amount).toLocaleString()}</td>
+                        <td class="py-3 px-3">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${o.payment_status === 'PAID' ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/30' : 'bg-amber-400/10 text-amber-300 border border-amber-400/20'}">
+                                ${o.payment_status || 'COD'}
+                            </span>
+                        </td>
+                        <td class="py-3 px-3 text-zinc-500">${o.created_at ? o.created_at.slice(0, 16).replace('T', ' ') : 'Today'}</td>
+                    </tr>
+                `).join('');
+                return;
+            }
+
+            tbody.innerHTML = payments.map(p => `
+                <tr class="hover:bg-zinc-800/30">
+                    <td class="py-3 px-3 font-mono font-bold text-zinc-300">${p.payment_id}</td>
+                    <td class="py-3 px-3 font-mono font-bold text-amber-400">#${p.order_number}</td>
+                    <td class="py-3 px-3 font-semibold text-white">${p.customer_name}</td>
+                    <td class="py-3 px-3 uppercase text-[10px] text-zinc-400">${p.gateway}</td>
+                    <td class="py-3 px-3 font-mono font-bold text-white">Rs. ${Number(p.amount).toLocaleString()}</td>
+                    <td class="py-3 px-3">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${p.payment_status === 'PAID' ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/30' : 'bg-amber-400/10 text-amber-300 border border-amber-400/20'}">
+                            ${p.payment_status}
+                        </span>
+                    </td>
+                    <td class="py-3 px-3 text-zinc-500">${p.created_at ? p.created_at.slice(0, 16).replace('T', ' ') : 'Today'}</td>
+                </tr>
+            `).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', renderFinancialDashboard);
+    </script>
+</body>
+</html>

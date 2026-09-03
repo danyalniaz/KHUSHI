@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}My Account — Khushi Collection{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="pb-6 border-b border-zinc-800 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-serif font-bold text-white">My Account</h1>
+            <p class="text-xs text-zinc-400 mt-1">Manage profile information, view orders, and manage addresses</p>
+        </div>
+        <a href="{{ url_for('account.logout') }}" class="px-4 py-2 rounded-xl border border-rose-500/30 text-rose-400 hover:bg-rose-950/40 text-xs font-semibold self-start sm:self-auto transition">
+            <i class="fa-solid fa-arrow-right-from-bracket mr-1.5"></i> Logout
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Sidebar Navigation (3 cols) -->
+        <div class="lg:col-span-3 space-y-4">
+            <div class="luxury-card p-5 rounded-3xl space-y-3">
+                <div class="flex items-center gap-3 pb-4 border-b border-zinc-800">
+                    <div class="w-12 h-12 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-400 flex items-center justify-center font-serif font-bold text-lg">
+                        {{ user.name[0] }}
+                    </div>
+                    <div class="min-w-0">
+                        <h4 class="text-xs font-bold text-white truncate">{{ user.name }}</h4>
+                        <p class="text-[11px] text-zinc-400 truncate">{{ user.email }}</p>
+                    </div>
+                </div>
+
+                <nav class="space-y-1 text-xs font-semibold">
+                    <a href="{{ url_for('account.dashboard') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl bg-amber-400/10 text-amber-400">
+                        <i class="fa-solid fa-user text-xs w-4"></i> Profile Overview
+                    </a>
+                    <a href="{{ url_for('account.orders') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl text-zinc-300 hover:bg-zinc-800 transition">
+                        <i class="fa-solid fa-box text-xs w-4"></i> My Orders
+                    </a>
+                    <a href="{{ url_for('storefront.track_order') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl text-zinc-300 hover:bg-zinc-800 transition">
+                        <i class="fa-solid fa-truck-fast text-xs w-4"></i> Track Order
+                    </a>
+                    <a href="{{ url_for('storefront.wishlist') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl text-zinc-300 hover:bg-zinc-800 transition">
+                        <i class="fa-regular fa-heart text-xs w-4"></i> Wishlist
+                    </a>
+                    <a href="{{ url_for('account.addresses') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-xl text-zinc-300 hover:bg-zinc-800 transition">
+                        <i class="fa-solid fa-location-dot text-xs w-4"></i> Delivery Addresses
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content Area (9 cols) -->
+        <div class="lg:col-span-9 space-y-8">
+            
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="luxury-card p-5 rounded-2xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-400/10 text-amber-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                    </div>
+                    <div>
+                        <span class="text-[11px] text-zinc-400 block uppercase font-bold tracking-wider">Total Orders</span>
+                        <span class="text-xl font-serif font-bold text-white">{{ total_orders }}</span>
+                    </div>
+                </div>
+
+                <div class="luxury-card p-5 rounded-2xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-400/10 text-emerald-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <div>
+                        <span class="text-[11px] text-zinc-400 block uppercase font-bold tracking-wider">Total Spent</span>
+                        <span class="text-xl font-serif font-bold text-amber-400">Rs. {{ "{:,}".format(total_spent|int) }}</span>
+                    </div>
+                </div>
+
+                <div class="luxury-card p-5 rounded-2xl flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-rose-400/10 text-rose-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <span class="text-[11px] text-zinc-400 block uppercase font-bold tracking-wider">Patron Status</span>
+                        <span class="text-xs font-bold text-white">VIP Silver Member</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="luxury-card p-6 rounded-3xl space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+                    <h3 class="text-sm font-serif font-bold text-white">Recent Orders</h3>
+                    <a href="{{ url_for('account.orders') }}" class="text-xs text-amber-400 hover:underline">View All</a>
+                </div>
+
+                {% if orders %}
+                <div class="divide-y divide-zinc-800 text-xs">
+                    {% for o in orders %}
+                    <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <span class="font-mono font-bold text-amber-400">#{{ o.order_number }}</span>
+                            <span class="text-zinc-500 ml-2">({{ o.created_at[:10] }})</span>
+                            <p class="text-zinc-400 text-[11px] mt-0.5">{{ o.address }}, {{ o.city }}</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="font-bold text-white">Rs. {{ "{:,}".format(o.total_amount|int) }}</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-zinc-800 text-zinc-200 border border-zinc-700">
+                                {{ o.order_status.replace('_', ' ').title() }}
+                            </span>
+                            <a href="{{ url_for('storefront.track_order', order_id=o.order_number, phone=o.customer_phone) }}" class="text-amber-400 hover:underline font-semibold">Track &rarr;</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-xs text-zinc-400 py-4 text-center">You haven't placed any orders yet.</p>
+                {% endif %}
+            </div>
+
+            <!-- Change Password Box -->
+            <div class="luxury-card p-6 rounded-3xl space-y-4 max-w-xl">
+                <h3 class="text-sm font-serif font-bold text-white pb-3 border-b border-zinc-800">Change Password</h3>
+                <form method="POST" action="{{ url_for('account.change_password') }}" class="space-y-3">
+                    <div>
+                        <label class="block text-[11px] text-zinc-400 mb-1">Current Password</label>
+                        <input type="password" name="current_password" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-zinc-400 mb-1">New Password</label>
+                        <input type="password" name="new_password" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-zinc-400 mb-1">Confirm New Password</label>
+                        <input type="password" name="confirm_password" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                    </div>
+                    <button type="submit" class="py-2.5 px-6 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider">Update Password</button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

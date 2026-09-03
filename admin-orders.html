@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Orders — Khushi Collection Admin</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="bg-[#080B11] text-zinc-100 min-h-screen flex antialiased">
+
+    <!-- Admin Sidebar -->
+    <aside class="w-64 bg-[#0B0F17] border-r border-zinc-800/80 flex flex-col justify-between hidden md:flex">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-zinc-800/80">
+                <a href="admin-dashboard.html" class="flex items-center gap-2.5">
+                    <img src="static/images/logo.svg" alt="Khushi Collection" class="h-9 w-auto">
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">Admin</span>
+                </a>
+            </div>
+
+            <nav class="p-4 space-y-1.5 text-xs font-semibold">
+                <a href="admin-dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-chart-line w-4"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="admin-orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30">
+                    <i class="fa-solid fa-bag-shopping w-4"></i>
+                    <span>Customer Orders</span>
+                </a>
+                <a href="admin-products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-shirt w-4"></i>
+                    <span>Products Studio</span>
+                </a>
+                <a href="admin-categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-folder-tree w-4"></i>
+                    <span>Categories Manager</span>
+                </a>
+                <a href="admin-settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-sliders w-4"></i>
+                    <span>Owner Settings</span>
+                </a>
+                <a href="admin-reports.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-chart-pie w-4"></i>
+                    <span>Financial Reports</span>
+                </a>
+                <a href="admin-security.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-shield-halved w-4"></i>
+                    <span>Owner Security & Staff</span>
+                </a>
+                <a href="index.html" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-amber-400/80 hover:text-amber-300 hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-arrow-up-right-from-square w-4"></i>
+                    <span>View Customer Store</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <header class="h-20 bg-[#0B0F17]/80 border-b border-zinc-800/80 px-6 flex items-center justify-between sticky top-0 z-30 backdrop-blur-md">
+            <div>
+                <h1 class="text-base sm:text-lg font-serif font-bold text-white">Order Management & SMS Dispatch</h1>
+                <p class="text-[11px] text-zinc-400">Order workflow timeline, consignment updates, and customer SMS triggers</p>
+            </div>
+            <div id="admin-user-pill"></div>
+        </header>
+
+        <main class="p-6 sm:p-8 space-y-6">
+            <!-- Filter Tabs -->
+            <div class="luxury-card p-4 rounded-2xl space-y-3">
+                <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs" id="status-tabs">
+                    <button onclick="setStatusFilter('')" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold tab-btn btn-gold text-black" data-st="">All Orders</button>
+                    <button onclick="setStatusFilter('pending')" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold tab-btn bg-zinc-900 text-zinc-300" data-st="pending">Pending</button>
+                    <button onclick="setStatusFilter('confirmed')" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold tab-btn bg-zinc-900 text-zinc-300" data-st="confirmed">Confirmed</button>
+                    <button onclick="setStatusFilter('processing')" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold tab-btn bg-zinc-900 text-zinc-300" data-st="processing">Processing</button>
+                    <button onclick="setStatusFilter('ready')" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold tab-btn bg-zinc-900 text-zinc-300" data-st="ready">Ready</button>
+                    <button onclick="setStatusFilter('shipped')" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold tab-btn bg-zinc-900 text-zinc-300" data-st="shipped">Shipped</button>
+                    <button onclick="setStatusFilter('on_the_way')" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold tab-btn bg-zinc-900 text-zinc-300" data-st="on_the_way">On The Way</button>
+                    <button onclick="setStatusFilter('delivered')" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold tab-btn bg-zinc-900 text-zinc-300" data-st="delivered">Delivered</button>
+                    <button onclick="setStatusFilter('cancelled')" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold tab-btn bg-zinc-900 text-zinc-300" data-st="cancelled">Cancelled</button>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <input type="text" id="order-search-inp" oninput="renderOrdersTable()" placeholder="Search Order #, customer name, phone..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+
+            <!-- Orders Table -->
+            <div class="luxury-card rounded-3xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-zinc-300">
+                        <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 bg-zinc-900/60 text-[11px]">
+                            <tr>
+                                <th class="py-3.5 px-4">Order Reference</th>
+                                <th class="py-3.5 px-4">Customer Details</th>
+                                <th class="py-3.5 px-4">Destination</th>
+                                <th class="py-3.5 px-4">Amount</th>
+                                <th class="py-3.5 px-4">Payment</th>
+                                <th class="py-3.5 px-4">Current Status</th>
+                                <th class="py-3.5 px-4">Tracking #</th>
+                                <th class="py-3.5 px-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-800/80" id="orders-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Order Process & Status Update Modal -->
+    <div id="process-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="luxury-card p-6 sm:p-8 rounded-3xl max-w-xl w-full space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+                <div>
+                    <h3 class="text-base font-serif font-bold text-white">Process Order <span id="modal-order-id" class="text-amber-400 font-mono"></span></h3>
+                    <p class="text-[11px] text-zinc-400 mt-0.5">Changing status automatically triggers customer SMS notification</p>
+                </div>
+                <button onclick="document.getElementById('process-modal').classList.add('hidden')" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form onsubmit="handleStatusSubmit(event)" class="space-y-4 text-xs">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Order Fulfillment Status</label>
+                        <select id="modal-new-status" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-semibold focus:border-amber-400">
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="processing">Processing (Preparing)</option>
+                            <option value="ready">Ready for Dispatch</option>
+                            <option value="shipped">Shipped with Courier</option>
+                            <option value="on_the_way">On The Way (Rider Out)</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="returned">Returned</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Payment Status (Independent)</label>
+                        <select id="modal-payment-status" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-semibold focus:border-amber-400">
+                            <option value="PAID">PAID (Verified)</option>
+                            <option value="COD">COD (Cash on Delivery)</option>
+                            <option value="PENDING_VERIFICATION">PENDING_VERIFICATION (Proof Review)</option>
+                            <option value="PAYMENT_FAILED">PAYMENT_FAILED</option>
+                            <option value="REFUNDED">REFUNDED</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Courier Partner</label>
+                        <select id="modal-courier" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                            <option value="Trax Logistics">Trax Logistics</option>
+                            <option value="TCS Express">TCS Express</option>
+                            <option value="Leopard Courier">Leopard Courier</option>
+                            <option value="M&P Express">M&P Express</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Tracking Number</label>
+                        <input type="text" id="modal-tracking" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+                    </div>
+                </div>
+
+                <!-- Live SMS Preview Banner -->
+                <div class="p-3.5 rounded-xl bg-amber-400/10 border border-amber-400/30 text-[11px] text-amber-200 space-y-1">
+                    <span class="font-bold flex items-center gap-1.5 text-amber-400 uppercase tracking-wider">
+                        <i class="fa-solid fa-comment-sms"></i> Automated Customer SMS Trigger
+                    </span>
+                    <p id="modal-sms-preview" class="italic">"Hello Khushi Fatima, your Khushi Collection order #KC-10025 is now on the way. Thank you for shopping with Khushi Collection."</p>
+                </div>
+
+                <div class="flex items-center gap-3 pt-2">
+                    <button type="submit" class="flex-1 py-3 rounded-xl btn-gold font-bold uppercase tracking-wider shadow">
+                        Save Status & Dispatch SMS
+                    </button>
+                    <a id="modal-invoice-btn" href="#" target="_blank" class="px-4 py-3 rounded-xl border border-zinc-700 hover:border-amber-400 text-zinc-300 font-semibold" title="Print Invoice">
+                        <i class="fa-solid fa-print"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="store.js"></script>
+    <script src="admin-guard.js"></script>
+    <script>
+        let currentFilterStatus = '';
+        let activeProcessingOrder = null;
+
+        function setStatusFilter(status) {
+            currentFilterStatus = status;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                const match = btn.getAttribute('data-st') === status;
+                btn.className = match ? 'px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold tab-btn btn-gold text-black' : 'px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold tab-btn bg-zinc-900 text-zinc-300';
+            });
+            renderOrdersTable();
+        }
+
+        function renderOrdersTable() {
+            const orders = store.getOrders();
+            const search = document.getElementById('order-search-inp').value.toLowerCase().trim();
+
+            const filtered = orders.filter(o => {
+                if (currentFilterStatus && o.order_status !== currentFilterStatus) return false;
+                if (search && !o.order_number.toLowerCase().includes(search) && !o.customer_name.toLowerCase().includes(search) && !o.customer_phone.includes(search)) return false;
+                return true;
+            });
+
+            const tbody = document.getElementById('orders-tbody');
+            tbody.innerHTML = filtered.map(o => {
+                const pStatus = (o.payment_status || 'COD').toUpperCase();
+                let pBadgeClass = 'bg-zinc-900 text-zinc-300 border border-zinc-700';
+                if (pStatus === 'PAID') pBadgeClass = 'bg-emerald-950 text-emerald-400 border border-emerald-500/40';
+                else if (pStatus === 'PENDING_VERIFICATION') pBadgeClass = 'bg-amber-950 text-amber-300 border border-amber-500/40';
+                else if (pStatus === 'PAYMENT_FAILED') pBadgeClass = 'bg-rose-950 text-rose-400 border border-rose-500/40';
+
+                return `
+                    <tr class="hover:bg-zinc-800/30 transition">
+                        <td class="py-3.5 px-4 font-mono font-bold text-amber-400">#${o.order_number}</td>
+                        <td class="py-3.5 px-4">
+                            <span class="font-bold text-white block">${o.customer_name}</span>
+                            <span class="text-[10px] text-zinc-400 font-mono">${o.customer_phone}</span>
+                        </td>
+                        <td class="py-3.5 px-4">${o.city}</td>
+                        <td class="py-3.5 px-4 font-bold text-white">Rs. ${Number(o.total_amount).toLocaleString()}</td>
+                        <td class="py-3.5 px-4">
+                            <span class="uppercase text-[10px] font-bold text-zinc-300 block">${o.payment_method}</span>
+                            <span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase inline-block mt-0.5 ${pBadgeClass}">
+                                ${pStatus}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${o.order_status === 'delivered' ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/30' : 'bg-amber-950 text-amber-400 border border-amber-500/30'}">
+                                ${o.order_status.replace('_', ' ')}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-4 font-mono text-zinc-400 text-[11px]">${o.tracking_number || '—'}</td>
+                        <td class="py-3.5 px-4 text-right space-x-2">
+                            <button onclick="openProcessModal('${o.order_number}')" class="py-1 px-2.5 rounded-lg btn-gold text-xs font-bold uppercase">
+                                Process
+                            </button>
+                            <a href="invoice.html?order_id=${o.order_number}" target="_blank" class="py-1 px-2 rounded-lg border border-zinc-700 hover:border-amber-400 text-zinc-400 hover:text-white text-xs" title="Print Invoice">
+                                <i class="fa-solid fa-print"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openProcessModal(orderNum) {
+            const order = store.getOrder(orderNum);
+            if (!order) return;
+
+            activeProcessingOrder = order;
+            document.getElementById('modal-order-id').textContent = `#${order.order_number}`;
+            document.getElementById('modal-new-status').value = order.order_status;
+            document.getElementById('modal-payment-status').value = (order.payment_status || 'COD').toUpperCase();
+            document.getElementById('modal-courier').value = order.courier_name || 'Trax Logistics';
+            document.getElementById('modal-tracking').value = order.tracking_number || 'TRX-99882211';
+            document.getElementById('modal-invoice-btn').href = `invoice.html?order_id=${order.order_number}`;
+
+            updateSmsPreview();
+            document.getElementById('process-modal').classList.remove('hidden');
+        }
+
+        document.getElementById('modal-new-status').addEventListener('change', updateSmsPreview);
+
+        function updateSmsPreview() {
+            if (!activeProcessingOrder) return;
+            const st = document.getElementById('modal-new-status').value;
+            const name = activeProcessingOrder.customer_name;
+            const id = activeProcessingOrder.order_number;
+
+            if (st === 'on_the_way') {
+                document.getElementById('modal-sms-preview').textContent = `"Hello ${name}, your Khushi Collection order #${id} is now on the way. Thank you for shopping with Khushi Collection."`;
+            } else if (st === 'delivered') {
+                document.getElementById('modal-sms-preview').textContent = `"Hello ${name}, your Khushi Collection order #${id} has been delivered. We hope you love your purchase! Thank you for shopping with Khushi Collection."`;
+            } else {
+                document.getElementById('modal-sms-preview').textContent = `"Hello ${name}, your Khushi Collection order #${id} status has been updated to ${st.toUpperCase()}."`;
+            }
+        }
+
+        function handleStatusSubmit(e) {
+            e.preventDefault();
+            if (!activeProcessingOrder) return;
+
+            const newStatus = document.getElementById('modal-new-status').value;
+            const newPaymentStatus = document.getElementById('modal-payment-status').value;
+            const courier = document.getElementById('modal-courier').value;
+            const tracking = document.getElementById('modal-tracking').value;
+
+            const orders = store.getOrders();
+            const order = orders.find(o => o.order_number === activeProcessingOrder.order_number);
+            if (order) {
+                order.order_status = newStatus;
+                order.payment_status = newPaymentStatus;
+                order.courier_name = courier;
+                order.tracking_number = tracking;
+
+                if (!order.timeline) order.timeline = [];
+                order.timeline.push({
+                    status: newStatus,
+                    title: newStatus.replace('_', ' ').toUpperCase(),
+                    description: `Order: ${newStatus.replace('_', ' ')} | Payment: ${newPaymentStatus}`,
+                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                    by: 'Store Admin'
+                });
+
+                store.saveOrders(orders);
+
+                // Update payment record in kc_payments
+                const payments = store.getPayments();
+                const p = payments.find(x => x.order_number === order.order_number);
+                if (p) {
+                    p.payment_status = newPaymentStatus;
+                    localStorage.setItem('kc_payments', JSON.stringify(payments));
+                }
+
+                // Trigger and log simulated SMS
+                const sentSms = store.triggerOrderStatusSMS(order, newStatus);
+                showToast(`Status updated (Payment: ${newPaymentStatus})! SMS dispatched.`, 'success');
+
+                document.getElementById('process-modal').classList.add('hidden');
+                renderOrdersTable();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const openOrderId = urlParams.get('order_id');
+            renderOrdersTable();
+            if (openOrderId) openProcessModal(openOrderId);
+        });
+    </script>
+</body>
+</html>

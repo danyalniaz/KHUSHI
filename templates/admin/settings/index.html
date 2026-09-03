@@ -1,0 +1,148 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Store Settings — Khushi Collection Admin{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+    <div class="pb-4 border-b border-zinc-800">
+        <h1 class="text-2xl font-serif font-bold text-white">Store & Integration Settings</h1>
+        <p class="text-xs text-zinc-400 mt-1">Configure business profile, WhatsApp dispatch, SMS provider gateway, and delivery fees</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('admin.settings') }}" class="space-y-8">
+        
+        <!-- 1. Store Identity -->
+        <div class="luxury-card p-6 sm:p-8 rounded-3xl space-y-4">
+            <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">1. Brand Identity & Contact</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">Store Name</label>
+                    <input type="text" name="store_name" value="{{ settings.get('store_name', 'Khushi Collection') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">Customer Helpline Phone</label>
+                    <input type="text" name="store_phone" value="{{ settings.get('store_phone', '+92 300 1234567') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">Store Email</label>
+                    <input type="email" name="store_email" value="{{ settings.get('store_email', 'support@khushicollection.com') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">Store Address</label>
+                    <input type="text" name="store_address" value="{{ settings.get('store_address', 'Gulberg Galleria, Main Boulevard, Lahore') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-zinc-300 mb-1">Announcement Bar Ticker Text</label>
+                <input type="text" name="announcement_text" value="{{ settings.get('announcement_text', '✨ FREE NATIONWIDE EXPRESS DELIVERY ON ORDERS OVER RS. 5,000 | WHATSAPP: +92 300 1234567 ✨') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+            </div>
+        </div>
+
+        <!-- 2. WhatsApp & SMS Integrations -->
+        <div class="luxury-card p-6 sm:p-8 rounded-3xl space-y-4">
+            <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">2. WhatsApp & Customer SMS Gateway</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-emerald-400 mb-1">Store Owner WhatsApp Number (International format)</label>
+                    <input type="text" name="store_whatsapp" value="{{ settings.get('store_whatsapp', '923001234567') }}" placeholder="923001234567" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white font-mono focus:outline-none focus:border-emerald-400">
+                    <span class="text-[10px] text-zinc-400 mt-1 block">Receives formatted new order alert messages from customers.</span>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">SMS Gateway Provider</label>
+                    <select name="sms_provider" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                        <option value="simulator" {% if settings.get('sms_provider') == 'simulator' %}selected{% endif %}>Simulator & Database Audit Log (Active)</option>
+                        <option value="twilio" {% if settings.get('sms_provider') == 'twilio' %}selected{% endif %}>Twilio SMS Cloud</option>
+                        <option value="pk_sms" {% if settings.get('sms_provider') == 'pk_sms' %}selected{% endif %}>Pakistan Brand SMS Gateway</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">SMS API Secret Key</label>
+                    <input type="password" name="sms_api_key" value="{{ settings.get('sms_api_key', 'KC_SECURE_API_SMS_KEY_8829') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white font-mono focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">SMS Brand Masking / Sender ID</label>
+                    <input type="text" name="sms_sender_id" value="{{ settings.get('sms_sender_id', 'KHUSHI-COL') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white font-mono focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Delivery & Free Shipping Threshold -->
+        <div class="luxury-card p-6 sm:p-8 rounded-3xl space-y-4">
+            <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">3. Delivery & Shipping Rules</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">Base Standard Delivery Fee (PKR)</label>
+                    <input type="number" name="base_delivery_fee" value="{{ settings.get('base_delivery_fee', '200') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-amber-400 mb-1">Free Delivery Cart Threshold (PKR)</label>
+                    <input type="number" name="free_delivery_threshold" value="{{ settings.get('free_delivery_threshold', '5000') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                    <span class="text-[10px] text-zinc-400 mt-1 block">Orders above this amount get 100% free delivery across Pakistan.</span>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-zinc-300 mb-1">City-wise Rates (JSON Config)</label>
+                <textarea name="city_rates" rows="3" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white font-mono focus:outline-none focus:border-amber-400">{{ settings.get('city_rates', '{"Islamabad": 150, "Rawalpindi": 150, "Lahore": 180, "Karachi": 250, "Other Cities": 250}') }}</textarea>
+            </div>
+        </div>
+
+        <!-- 4. Payment Methods Configuration -->
+        <div class="luxury-card p-6 sm:p-8 rounded-3xl space-y-4">
+            <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">4. Payment Methods & Account Details</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">EasyPaisa Account Number</label>
+                    <input type="text" name="easypaisa_number" value="{{ settings.get('easypaisa_number', '03001234567') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">EasyPaisa Account Title</label>
+                    <input type="text" name="easypaisa_title" value="{{ settings.get('easypaisa_title', 'Khushi Fatima') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">JazzCash Account Number</label>
+                    <input type="text" name="jazzcash_number" value="{{ settings.get('jazzcash_number', '03001234567') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">JazzCash Account Title</label>
+                    <input type="text" name="jazzcash_title" value="{{ settings.get('jazzcash_title', 'Khushi Fatima') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">Bank Name</label>
+                    <input type="text" name="bank_name" value="{{ settings.get('bank_name', 'Meezan Bank') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">Account Title</label>
+                    <input type="text" name="bank_account_title" value="{{ settings.get('bank_account_title', 'Khushi Collection Luxury Pvt Ltd') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-zinc-300 mb-1">Account Number / IBAN</label>
+                    <input type="text" name="bank_account_number" value="{{ settings.get('bank_account_number', '0201010887654321') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="px-8 py-4 rounded-xl btn-gold text-xs font-bold uppercase tracking-widest shadow-2xl">
+            Save All Settings
+        </button>
+    </form>
+</div>
+{% endblock %}

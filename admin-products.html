@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management Studio — Khushi Collection Admin</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="bg-[#080B11] text-zinc-100 min-h-screen flex antialiased">
+
+    <!-- Admin Sidebar -->
+    <aside class="w-64 bg-[#0B0F17] border-r border-zinc-800/80 flex flex-col justify-between hidden md:flex flex-shrink-0">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-zinc-800/80">
+                <a href="admin-dashboard.html" class="flex items-center gap-2.5">
+                    <img src="static/images/logo.svg" alt="Khushi Collection" class="h-9 w-auto">
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">Admin</span>
+                </a>
+            </div>
+
+            <nav class="p-4 space-y-1.5 text-xs font-semibold">
+                <a href="admin-dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-chart-line w-4"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="admin-orders.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-bag-shopping w-4"></i>
+                    <span>Customer Orders</span>
+                </a>
+                <a href="admin-products.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30">
+                    <i class="fa-solid fa-shirt w-4"></i>
+                    <span>Products Catalog</span>
+                </a>
+                <a href="admin-categories.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-folder-tree w-4"></i>
+                    <span>Categories Manager</span>
+                </a>
+                <a href="track-order.html" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-truck-fast w-4"></i>
+                    <span>Live Tracking Portal</span>
+                </a>
+                <a href="index.html" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-amber-400/80 hover:text-amber-300 hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-arrow-up-right-from-square w-4"></i>
+                    <span>View Customer Store</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-zinc-800/80 text-[11px] text-zinc-500">
+            Khushi Collection &bull; Studio v2.4
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <!-- Top Action Bar -->
+        <header class="h-20 bg-[#0B0F17]/80 border-b border-zinc-800/80 px-6 flex items-center justify-between sticky top-0 z-30 backdrop-blur-md">
+            <div>
+                <h1 class="text-base sm:text-lg font-serif font-bold text-white">Product Studio & Inventory</h1>
+                <p class="text-[11px] text-zinc-400">Manage multi-variant collections, category attributes, and media</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="admin-user-pill"></div>
+                <a href="admin-categories.html" class="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl border border-zinc-700 hover:border-amber-400 text-zinc-300 text-xs font-semibold">
+                    <i class="fa-solid fa-folder-tree"></i> Categories
+                </a>
+                <button onclick="openProductModal()" class="px-5 py-2.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-xl">
+                    <i class="fa-solid fa-plus"></i> Add New Product
+                </button>
+            </div>
+        </header>
+
+        <main class="p-6 sm:p-8 space-y-6">
+            <!-- Filter & Bulk Action Toolbar -->
+            <div class="luxury-card p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                    <input type="text" id="admin-search-inp" oninput="renderProductsTable()" placeholder="Search title, SKU, or brand..." class="bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder-zinc-500 w-64 focus:outline-none focus:border-amber-400">
+                    
+                    <select id="admin-category-filter" onchange="renderProductsTable()" class="bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                        <option value="">All Categories</option>
+                    </select>
+
+                    <select id="admin-status-filter" onchange="renderProductsTable()" class="bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                        <option value="">All Statuses</option>
+                        <option value="published">Published</option>
+                        <option value="draft">Draft</option>
+                        <option value="hidden">Hidden</option>
+                        <option value="scheduled">Scheduled</option>
+                    </select>
+                </div>
+
+                <!-- Bulk Actions -->
+                <div class="flex items-center gap-2" id="bulk-actions-box">
+                    <span class="text-xs text-zinc-400"><span id="selected-count" class="font-bold text-white">0</span> selected</span>
+                    <button onclick="applyBulkAction('publish')" class="px-2.5 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[11px] font-semibold">Publish</button>
+                    <button onclick="applyBulkAction('hide')" class="px-2.5 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[11px] font-semibold">Hide</button>
+                    <button onclick="applyBulkAction('delete')" class="px-2.5 py-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 text-rose-400 text-[11px] font-semibold">Delete</button>
+                </div>
+            </div>
+
+            <!-- Products Table -->
+            <div class="luxury-card rounded-3xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-zinc-300">
+                        <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 bg-zinc-900/60 text-[11px]">
+                            <tr>
+                                <th class="py-3.5 px-4 w-8"><input type="checkbox" id="select-all-cb" onchange="toggleSelectAll(this)" class="accent-amber-400"></th>
+                                <th class="py-3.5 px-4">Product Info</th>
+                                <th class="py-3.5 px-4">Category</th>
+                                <th class="py-3.5 px-4">SKU</th>
+                                <th class="py-3.5 px-4">Price</th>
+                                <th class="py-3.5 px-4">Variants / Stock</th>
+                                <th class="py-3.5 px-4">Status</th>
+                                <th class="py-3.5 px-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-800/80" id="products-table-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- 10-TAB ADVANCED PRODUCT CREATION & EDITING MODAL STUDIO -->
+    <!-- ==================================================================== -->
+    <div id="product-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+        <div class="luxury-card rounded-3xl max-w-5xl w-full my-8 max-h-[92vh] flex flex-col overflow-hidden border-amber-500/30 shadow-2xl">
+            
+            <!-- Modal Header with Progress Bar -->
+            <div class="p-6 border-b border-zinc-800 bg-zinc-950/90 flex-shrink-0">
+                <div class="flex items-center justify-between pb-4">
+                    <div>
+                        <h2 class="text-lg font-serif font-bold text-white flex items-center gap-2.5">
+                            <i class="fa-solid fa-gem text-amber-400"></i> <span id="modal-heading">Add New Luxury Product</span>
+                        </h2>
+                        <p class="text-xs text-zinc-400 mt-0.5">Configure couture specifications, variant matrices, and media</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button type="button" onclick="previewCurrentProduct()" class="px-4 py-2 rounded-xl border border-zinc-700 hover:border-amber-400 text-xs font-bold uppercase text-zinc-200 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-eye text-amber-400"></i> Preview
+                        </button>
+                        <button onclick="closeProductModal()" class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 10-Tab Navigation Bar -->
+                <div class="flex items-center gap-1 overflow-x-auto pb-1 text-xs font-semibold" id="tab-headers">
+                    <button type="button" onclick="switchTab(1)" class="tab-btn-pill px-3 py-2 rounded-xl whitespace-nowrap bg-amber-400 text-black font-bold" data-tab="1">1. Basic Info</button>
+                    <button type="button" onclick="switchTab(2)" class="tab-btn-pill px-3 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white" data-tab="2">2. Category & Attributes</button>
+                    <button type="button" onclick="switchTab(3)" class="tab-btn-pill px-3 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white" data-tab="3">3. Pricing</button>
+                    <button type="button" onclick="switchTab(4)" class="tab-btn-pill px-3 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white" data-tab="4">4. Inventory</button>
+                    <button type="button" onclick="switchTab(5)" class="tab-btn-pill px-3 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white" data-tab="5">5. Gallery & Video</button>
+                    <button type="button" onclick="switchTab(6)" class="tab-btn-pill px-3 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white" data-tab="6">6. Variants Matrix</button>
+                    <button type="button" onclick="switchTab(7)" class="tab-btn-pill px-3 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white" data-tab="7">7. Size Guide</button>
+                    <button type="button" onclick="switchTab(8)" class="tab-btn-pill px-3 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white" data-tab="8">8. Description</button>
+                    <button type="button" onclick="switchTab(9)" class="tab-btn-pill px-3 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white" data-tab="9">9. Payment Options</button>
+                    <button type="button" onclick="switchTab(10)" class="tab-btn-pill px-3 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white" data-tab="10">10. SEO & Publishing</button>
+                </div>
+            </div>
+
+            <!-- Tab Content (Scrollable) -->
+            <form id="product-editor-form" onsubmit="saveProduct(event)" class="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6 text-xs">
+                <input type="hidden" id="edit-prod-id">
+
+                <!-- TAB 1: BASIC INFORMATION -->
+                <div id="tab-content-1" class="tab-pane space-y-4">
+                    <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">1. Basic Information</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Product Title *</label>
+                            <input type="text" id="f-title" required oninput="generateSlugFromTitle(this.value)" placeholder="Khushi Royal Embroidered Velvet Suit" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Brand Name *</label>
+                            <input type="text" id="f-brand" required value="Khushi Signature" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Category *</label>
+                            <select id="f-category" required onchange="handleCategoryChange()" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 font-semibold"></select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Subcategory</label>
+                            <select id="f-subcategory" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400"></select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">SKU (Master Stock Keeping Unit) *</label>
+                            <input type="text" id="f-sku" required placeholder="KC-WMN-009" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono uppercase focus:outline-none focus:border-amber-400">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Short Summary</label>
+                        <input type="text" id="f-short-desc" placeholder="One-line summary for product cards & search previews" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400">
+                    </div>
+                </div>
+
+                <!-- TAB 2: CATEGORY-SPECIFIC & CUSTOM ATTRIBUTES -->
+                <div id="tab-content-2" class="tab-pane hidden space-y-6">
+                    <div>
+                        <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800 flex items-center justify-between">
+                            <span>2. Category-Specific Attributes (<span id="cat-attr-label" class="text-amber-400">Clothes</span>)</span>
+                            <span class="text-[10px] text-zinc-400 font-normal">Fields dynamically adapt to the selected category</span>
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-4" id="category-specific-fields-container"></div>
+                    </div>
+
+                    <!-- Custom Attributes Repeater -->
+                    <div class="pt-4 border-t border-zinc-800 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400">Custom Attributes</h4>
+                            <button type="button" onclick="addCustomAttributeRow()" class="px-3 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold">+ Add Custom Attribute</button>
+                        </div>
+                        <div id="custom-attributes-container" class="space-y-2"></div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: PRICING -->
+                <div id="tab-content-3" class="tab-pane hidden space-y-4">
+                    <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">3. Pricing & Margins</h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Regular Price (PKR) *</label>
+                            <input type="number" id="f-price" required min="0" oninput="calculateDiscountPercent()" placeholder="18500" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Sale / Discounted Price (PKR)</label>
+                            <input type="number" id="f-sale-price" min="0" oninput="calculateDiscountPercent()" placeholder="14950" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Discount %</label>
+                            <input type="text" id="f-discount-badge" readonly placeholder="Auto calculated" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-amber-400 font-bold font-mono">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Cost Price (Admin confidential)</label>
+                            <input type="number" id="f-cost-price" min="0" placeholder="9500" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Sales Tax (%)</label>
+                            <input type="number" id="f-tax" value="0" min="0" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Flash Sale Special Price</label>
+                            <input type="number" id="f-flash-price" min="0" placeholder="Special deal price" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 font-mono">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: INVENTORY -->
+                <div id="tab-content-4" class="tab-pane hidden space-y-4">
+                    <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">4. Inventory & Warehouse Logistics</h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Base Stock Quantity *</label>
+                            <input type="number" id="f-stock" required min="0" value="10" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Low Stock Warning Threshold</label>
+                            <input type="number" id="f-low-stock" min="1" value="3" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Stock Status Override</label>
+                            <select id="f-stock-status" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 font-semibold">
+                                <option value="auto">Automatic (Based on quantity)</option>
+                                <option value="in_stock">Force In Stock</option>
+                                <option value="out_of_stock">Force Out of Stock</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Barcode (EAN-13 / UPC)</label>
+                            <input type="text" id="f-barcode" placeholder="8901234567890" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono focus:outline-none focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Warehouse Bin / Shelf Location</label>
+                            <input type="text" id="f-warehouse-loc" placeholder="Aisle 4, Bin B-12" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 5: GALLERY & VIDEO -->
+                <div id="tab-content-5" class="tab-pane hidden space-y-4">
+                    <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">5. Multi-Image Gallery & Video Presentation</h3>
+                    
+                    <!-- Drag & Drop Uploader -->
+                    <div class="p-6 rounded-2xl border-2 border-dashed border-zinc-700 hover:border-amber-400 transition text-center space-y-3 bg-zinc-900/40">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-amber-400"></i>
+                        <div>
+                            <p class="text-xs font-bold text-white">Drag & drop product photos here, or browse files</p>
+                            <p class="text-[11px] text-zinc-400 mt-0.5">Supports JPG, PNG, WEBP. Recommended 8-12 angles (Main, Front, Back, Detail, Model, Packaging).</p>
+                        </div>
+                        <input type="file" id="f-file-uploader" multiple accept="image/*" onchange="handleFileGalleryUpload(event)" class="hidden">
+                        <div class="flex items-center justify-center gap-3">
+                            <button type="button" onclick="document.getElementById('f-file-uploader').click()" class="px-4 py-2 rounded-xl btn-gold text-xs font-bold uppercase">Browse Images</button>
+                            <button type="button" onclick="promptAddImageUrl()" class="px-4 py-2 rounded-xl border border-zinc-700 hover:border-amber-400 text-xs font-semibold text-zinc-300">+ Add via URL</button>
+                        </div>
+                    </div>
+
+                    <!-- Live Gallery Thumbnail Manager -->
+                    <div>
+                        <span class="text-[11px] font-bold text-zinc-300 uppercase tracking-wider block mb-2">Uploaded Images (<span id="gallery-count">0</span>):</span>
+                        <div id="modal-gallery-previews" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3"></div>
+                    </div>
+
+                    <div class="pt-4 border-t border-zinc-800">
+                        <label class="block font-semibold text-zinc-300 mb-1">Product Runway Video (Embed URL or YouTube / MP4)</label>
+                        <input type="url" id="f-video-url" placeholder="https://www.youtube.com/embed/..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono focus:outline-none focus:border-amber-400">
+                    </div>
+                </div>
+
+                <!-- TAB 6: VARIANTS (SIZE + COLOR MATRIX) -->
+                <div id="tab-content-6" class="tab-pane hidden space-y-6">
+                    <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
+                        <h3 class="text-sm font-serif font-bold text-white">6. Size & Color Variant Matrix</h3>
+                        <button type="button" onclick="generateVariantMatrixFromSelectors()" class="px-3.5 py-1.5 rounded-xl btn-gold text-xs font-bold uppercase">Generate Matrix Table</button>
+                    </div>
+
+                    <!-- Step 1: Pick Sizes -->
+                    <div class="space-y-2">
+                        <label class="block font-semibold text-zinc-300">Select Available Sizes</label>
+                        <div class="flex flex-wrap gap-2" id="variant-size-selector">
+                            <label class="px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-300 cursor-pointer flex items-center gap-1.5"><input type="checkbox" value="XS" checked class="accent-amber-400"> XS</label>
+                            <label class="px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-300 cursor-pointer flex items-center gap-1.5"><input type="checkbox" value="S" checked class="accent-amber-400"> S</label>
+                            <label class="px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-300 cursor-pointer flex items-center gap-1.5"><input type="checkbox" value="M" checked class="accent-amber-400"> M</label>
+                            <label class="px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-300 cursor-pointer flex items-center gap-1.5"><input type="checkbox" value="L" checked class="accent-amber-400"> L</label>
+                            <label class="px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-300 cursor-pointer flex items-center gap-1.5"><input type="checkbox" value="XL" checked class="accent-amber-400"> XL</label>
+                            <label class="px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-300 cursor-pointer flex items-center gap-1.5"><input type="checkbox" value="XXL" class="accent-amber-400"> XXL</label>
+                            <label class="px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-300 cursor-pointer flex items-center gap-1.5"><input type="checkbox" value="3XL" class="accent-amber-400"> 3XL</label>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Pick Colors -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="font-semibold text-zinc-300">Available Color Shades</label>
+                            <button type="button" onclick="addColorOptionRow()" class="text-xs text-amber-400 font-bold hover:underline">+ Add Color</button>
+                        </div>
+                        <div id="color-options-builder" class="space-y-2"></div>
+                    </div>
+
+                    <!-- Step 3: Generated Matrix Table -->
+                    <div class="space-y-3 pt-4 border-t border-zinc-800">
+                        <span class="text-xs font-bold text-white uppercase tracking-wider">Combinations Inventory Matrix</span>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-zinc-300">
+                                <thead class="border-b border-zinc-800 text-[10px] uppercase text-zinc-400 bg-zinc-900">
+                                    <tr>
+                                        <th class="py-2 px-3">Color</th>
+                                        <th class="py-2 px-3">Size</th>
+                                        <th class="py-2 px-3">Variant SKU</th>
+                                        <th class="py-2 px-3">Price (PKR)</th>
+                                        <th class="py-2 px-3">Stock Units</th>
+                                        <th class="py-2 px-3 text-right">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-zinc-800" id="matrix-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 7: SIZE GUIDE -->
+                <div id="tab-content-7" class="tab-pane hidden space-y-4">
+                    <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
+                        <h3 class="text-sm font-serif font-bold text-white">7. Product Measurement Size Guide (Inches)</h3>
+                        <button type="button" onclick="addSizeGuideRow()" class="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold">+ Add Size Row</button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-zinc-300">
+                            <thead class="border-b border-zinc-800 text-[10px] uppercase text-zinc-400 bg-zinc-900">
+                                <tr>
+                                    <th class="py-2 px-3">Size Label</th>
+                                    <th class="py-2 px-3">Chest</th>
+                                    <th class="py-2 px-3">Waist</th>
+                                    <th class="py-2 px-3">Hip</th>
+                                    <th class="py-2 px-3">Shirt Length</th>
+                                    <th class="py-2 px-3">Trouser Length</th>
+                                    <th class="py-2 px-3 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-zinc-800" id="size-guide-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 8: DESCRIPTION & POLICIES -->
+                <div id="tab-content-8" class="tab-pane hidden space-y-4">
+                    <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">8. Detailed Descriptions & Client Care</h3>
+                    
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Full Couture Description *</label>
+                        <textarea id="f-full-desc" rows="4" placeholder="Describe the silhouette, needlework, fabric richness, and design philosophy..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Care & Washing Instructions</label>
+                            <input type="text" id="f-care" placeholder="Dry clean recommended. Cool iron with cloth." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Shipping Notes Override</label>
+                            <input type="text" id="f-ship-notes" placeholder="Express 24-48h courier delivery." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 9: PAYMENT OPTIONS -->
+                <div id="tab-content-9" class="tab-pane hidden space-y-4">
+                    <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">9. Product-Specific Payment Gateways & Rules</h3>
+                    <p class="text-xs text-zinc-400">Select which payment methods are accepted for this piece. Unchecking Cash on Delivery will automatically restrict checkout to online card and bank methods.</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+                        <label class="p-3.5 rounded-2xl bg-zinc-900 border border-zinc-700 flex items-center justify-between cursor-pointer hover:border-amber-400 transition">
+                            <div>
+                                <span class="font-bold text-white block">Cash on Delivery (COD)</span>
+                                <span class="text-[10px] text-zinc-400">Doorstep cash collection</span>
+                            </div>
+                            <input type="checkbox" id="f-pay-cod" checked class="w-5 h-5 accent-amber-500 rounded">
+                        </label>
+
+                        <label class="p-3.5 rounded-2xl bg-zinc-900 border border-zinc-700 flex items-center justify-between cursor-pointer hover:border-amber-400 transition">
+                            <div>
+                                <span class="font-bold text-white block">Online Card Payment</span>
+                                <span class="text-[10px] text-zinc-400">Visa / Mastercard / Paymob</span>
+                            </div>
+                            <input type="checkbox" id="f-pay-card" checked class="w-5 h-5 accent-amber-500 rounded">
+                        </label>
+
+                        <label class="p-3.5 rounded-2xl bg-zinc-900 border border-zinc-700 flex items-center justify-between cursor-pointer hover:border-amber-400 transition">
+                            <div>
+                                <span class="font-bold text-white block">Direct Bank Transfer</span>
+                                <span class="text-[10px] text-zinc-400">IBAN deposit with proof</span>
+                            </div>
+                            <input type="checkbox" id="f-pay-bank" checked class="w-5 h-5 accent-amber-500 rounded">
+                        </label>
+
+                        <label class="p-3.5 rounded-2xl bg-zinc-900 border border-zinc-700 flex items-center justify-between cursor-pointer hover:border-amber-400 transition">
+                            <div>
+                                <span class="font-bold text-white block">Easypaisa</span>
+                                <span class="text-[10px] text-zinc-400">Telenor Mobile Wallet</span>
+                            </div>
+                            <input type="checkbox" id="f-pay-easypaisa" checked class="w-5 h-5 accent-amber-500 rounded">
+                        </label>
+
+                        <label class="p-3.5 rounded-2xl bg-zinc-900 border border-zinc-700 flex items-center justify-between cursor-pointer hover:border-amber-400 transition">
+                            <div>
+                                <span class="font-bold text-white block">JazzCash</span>
+                                <span class="text-[10px] text-zinc-400">Mobilink Mobile Wallet</span>
+                            </div>
+                            <input type="checkbox" id="f-pay-jazzcash" checked class="w-5 h-5 accent-amber-500 rounded">
+                        </label>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs">
+                        <i class="fa-solid fa-circle-info mr-1"></i>
+                        <span>If Cash on Delivery is disabled, customers purchasing this piece will see: <em>"Cash on Delivery is not available for this product."</em></span>
+                    </div>
+                </div>
+
+                <!-- TAB 10: SEO & PUBLISHING -->
+                <div id="tab-content-10" class="tab-pane hidden space-y-6">
+                    <div class="space-y-4">
+                        <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">10. SEO Optimization & Catalog Badges</h3>
+                        
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">URL Slug (Auto-generated)</label>
+                            <input type="text" id="f-slug" required placeholder="khushi-royal-embroidered-velvet-suit" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white font-mono">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Meta SEO Title</label>
+                                <input type="text" id="f-seo-title" placeholder="Khushi Royal Velvet Suit — Pakistani Luxury Pret" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Search Keywords / Tags</label>
+                                <input type="text" id="f-tags" placeholder="velvet, wedding, formal, stitched, couture" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Meta Description</label>
+                            <textarea id="f-seo-desc" rows="2" placeholder="Discover authentic festive velvet couture stitched to perfection..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 pt-4 border-t border-zinc-800">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400">Publishing Status & Merchandising</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Publishing Status *</label>
+                                <select id="f-status" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-semibold">
+                                    <option value="published">Published & Active on Store</option>
+                                    <option value="draft">Save as Draft (Internal)</option>
+                                    <option value="hidden">Hidden from Catalog</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+                            <label class="flex items-center gap-2 font-semibold text-zinc-300 cursor-pointer">
+                                <input type="checkbox" id="f-is-featured" class="accent-amber-400">
+                                <span>Featured Collection</span>
+                            </label>
+                            <label class="flex items-center gap-2 font-semibold text-zinc-300 cursor-pointer">
+                                <input type="checkbox" id="f-is-new" checked class="accent-amber-400">
+                                <span>New Arrival</span>
+                            </label>
+                            <label class="flex items-center gap-2 font-semibold text-zinc-300 cursor-pointer">
+                                <input type="checkbox" id="f-is-bestseller" class="accent-amber-400">
+                                <span>Best Seller</span>
+                            </label>
+                            <label class="flex items-center gap-2 font-semibold text-zinc-300 cursor-pointer">
+                                <input type="checkbox" id="f-is-flash" class="accent-amber-400">
+                                <span>Flash Sale Item</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer CTAs inside modal -->
+                <div class="pt-6 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-2 text-zinc-400 text-xs">
+                        <span id="active-tab-indicator">Step 1 of 10</span>
+                    </div>
+                    <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                        <button type="button" id="prev-tab-btn" onclick="stepTab(-1)" class="px-4 py-2.5 rounded-xl border border-zinc-700 text-zinc-300 font-semibold hover:border-zinc-500">Previous</button>
+                        <button type="button" id="next-tab-btn" onclick="stepTab(1)" class="px-5 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-bold">Next Step &rarr;</button>
+                        <button type="submit" class="px-6 py-2.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-widest shadow-xl">
+                            Publish Product
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PREVIEW PRODUCT MODAL -->
+    <div id="preview-modal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="luxury-card rounded-3xl max-w-4xl w-full my-8 p-6 sm:p-8 space-y-6 border-amber-500/40">
+            <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Client Storefront Live Preview</span>
+                <button onclick="document.getElementById('preview-modal').classList.add('hidden')" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="preview-modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="store.js"></script>
+    <script src="admin-guard.js"></script>
+    <script>
+        let currentTab = 1;
+        let selectedProductIds = [];
+        let galleryImages = [];
+        let colorList = [];
+        let customAttributes = [];
+
+        // Tab Navigation
+        function switchTab(num) {
+            currentTab = num;
+            document.querySelectorAll('.tab-pane').forEach((p, idx) => {
+                p.classList.toggle('hidden', idx + 1 !== num);
+            });
+            document.querySelectorAll('.tab-btn-pill').forEach((btn, idx) => {
+                const match = idx + 1 === num;
+                btn.className = match ? 'tab-btn-pill px-3 py-2 rounded-xl whitespace-nowrap bg-amber-400 text-black font-bold' : 'tab-btn-pill px-3 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white';
+            });
+            document.getElementById('active-tab-indicator').textContent = `Step ${num} of 10`;
+            document.getElementById('prev-tab-btn').classList.toggle('invisible', num === 1);
+            document.getElementById('next-tab-btn').classList.toggle('hidden', num === 10);
+        }
+
+        function stepTab(dir) {
+            const next = currentTab + dir;
+            if (next >= 1 && next <= 10) switchTab(next);
+        }
+
+        function generateSlugFromTitle(title) {
+            const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            document.getElementById('f-slug').value = slug;
+            if (!document.getElementById('f-seo-title').value) {
+                document.getElementById('f-seo-title').value = `${title} — Khushi Collection`;
+            }
+        }
+
+        function calculateDiscountPercent() {
+            const reg = parseFloat(document.getElementById('f-price').value) || 0;
+            const sale = parseFloat(document.getElementById('f-sale-price').value) || 0;
+            const badge = document.getElementById('f-discount-badge');
+            if (reg > 0 && sale > 0 && sale < reg) {
+                const pct = Math.round(((reg - sale) / reg) * 100);
+                badge.value = `${pct}% OFF`;
+            } else {
+                badge.value = 'No Discount';
+            }
+        }
+
+        // Category & Specific Attributes
+        function populateCategoryDropdowns() {
+            const categories = store.getCategories();
+            const catSelect = document.getElementById('f-category');
+            const filterSelect = document.getElementById('admin-category-filter');
+
+            const optionsHtml = categories.map(c => `<option value="${c.slug}">${c.name}</option>`).join('');
+            catSelect.innerHTML = optionsHtml;
+            filterSelect.innerHTML = '<option value="">All Categories</option>' + optionsHtml;
+
+            handleCategoryChange();
+        }
+
+        function handleCategoryChange() {
+            const catSlug = document.getElementById('f-category').value;
+            const cat = store.getCategory(catSlug);
+            const subcatSelect = document.getElementById('f-subcategory');
+
+            // Populate Subcategories
+            if (cat && cat.subcategories && cat.subcategories.length > 0) {
+                subcatSelect.innerHTML = cat.subcategories.map(sc => `<option value="${sc}">${sc}</option>`).join('');
+            } else {
+                subcatSelect.innerHTML = '<option value="">General</option>';
+            }
+
+            // Render Dynamic Attributes based on Category
+            renderCategoryAttributesFields(catSlug);
+        }
+
+        function renderCategoryAttributesFields(catSlug) {
+            const container = document.getElementById('category-specific-fields-container');
+            let schemaKey = 'clothes';
+            if (catSlug === 'shoes') schemaKey = 'shoes';
+            else if (catSlug === 'watches') schemaKey = 'watches';
+            else if (catSlug === 'perfumes') schemaKey = 'perfumes';
+            else if (catSlug === 'bags') schemaKey = 'bags';
+            else if (catSlug === 'accessories') schemaKey = 'accessories';
+
+            document.getElementById('cat-attr-label').textContent = schemaKey.toUpperCase();
+            const fields = CATEGORY_ATTRIBUTE_SCHEMAS[schemaKey] || [];
+
+            container.innerHTML = fields.map(f => {
+                if (f.type === 'select') {
+                    return `
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">${f.label}</label>
+                            <select name="cat_attr_${f.key}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                                ${f.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                            </select>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">${f.label}</label>
+                            <input type="${f.type || 'text'}" name="cat_attr_${f.key}" placeholder="${f.placeholder || ''}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        // Custom Attributes Repeater
+        function addCustomAttributeRow(name = '', value = '') {
+            const container = document.getElementById('custom-attributes-container');
+            const row = document.createElement('div');
+            row.className = 'flex items-center gap-3 custom-attr-row';
+            row.innerHTML = `
+                <input type="text" placeholder="Attribute Name (e.g. Fabric Weight)" value="${name}" class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-medium attr-name">
+                <input type="text" placeholder="Value (e.g. 450 GSM Heavy Micro-Velvet)" value="${value}" class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white attr-val">
+                <button type="button" onclick="this.parentElement.remove()" class="text-zinc-500 hover:text-rose-400 p-2"><i class="fa-solid fa-trash-can"></i></button>
+            `;
+            container.appendChild(row);
+        }
+
+        // Colors Builder
+        function addColorOptionRow(name = 'Emerald Green', hex = '#064e3b') {
+            const container = document.getElementById('color-options-builder');
+            const row = document.createElement('div');
+            row.className = 'flex items-center gap-3 color-builder-row';
+            row.innerHTML = `
+                <input type="color" value="${hex}" class="w-10 h-10 rounded-lg cursor-pointer bg-transparent color-hex">
+                <input type="text" placeholder="Color Name (e.g. Emerald Green)" value="${name}" class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white color-name">
+                <button type="button" onclick="this.parentElement.remove()" class="text-zinc-500 hover:text-rose-400 p-2"><i class="fa-solid fa-trash-can"></i></button>
+            `;
+            container.appendChild(row);
+        }
+
+        // Size + Color Matrix Generator
+        function generateVariantMatrixFromSelectors() {
+            const sizes = Array.from(document.querySelectorAll('#variant-size-selector input:checked')).map(cb => cb.value);
+            const colorRows = document.querySelectorAll('.color-builder-row');
+            const colors = Array.from(colorRows).map(r => r.querySelector('.color-name').value.trim()).filter(Boolean);
+
+            if (sizes.length === 0 || colors.length === 0) {
+                showToast('Please select at least one size and one color shade.', 'error');
+                return;
+            }
+
+            const baseSku = document.getElementById('f-sku').value.trim() || 'KC-VAR';
+            const basePrice = parseFloat(document.getElementById('f-sale-price').value || document.getElementById('f-price').value) || 0;
+
+            const tbody = document.getElementById('matrix-tbody');
+            tbody.innerHTML = '';
+
+            colors.forEach(col => {
+                sizes.forEach(sz => {
+                    const skuCode = `${baseSku}-${col.slice(0,2).toUpperCase()}-${sz}`;
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-zinc-800/40 matrix-row';
+                    tr.dataset.color = col;
+                    tr.dataset.size = sz;
+                    tr.innerHTML = `
+                        <td class="py-2.5 px-3 font-semibold text-white">${col}</td>
+                        <td class="py-2.5 px-3 font-bold text-amber-400">${sz}</td>
+                        <td class="py-2.5 px-3"><input type="text" value="${skuCode}" class="w-32 bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1 text-white font-mono v-sku"></td>
+                        <td class="py-2.5 px-3"><input type="number" value="${basePrice}" class="w-24 bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1 text-white font-mono v-price"></td>
+                        <td class="py-2.5 px-3"><input type="number" value="5" class="w-20 bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1 text-white font-mono v-stock"></td>
+                        <td class="py-2.5 px-3 text-right"><button type="button" onclick="this.closest('tr').remove()" class="text-zinc-500 hover:text-rose-400"><i class="fa-solid fa-trash-can"></i></button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+
+            showToast(`Generated ${colors.length * sizes.length} variant combinations!`);
+        }
+
+        // Size Guide Builder
+        function addSizeGuideRow(size = 'M', chest = '40', waist = '36', hip = '43', shirt = '41', trouser = '38') {
+            const tbody = document.getElementById('size-guide-tbody');
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-zinc-800/40 size-guide-row';
+            tr.innerHTML = `
+                <td class="py-2 px-3"><input type="text" value="${size}" class="w-16 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-amber-400 font-bold sg-size"></td>
+                <td class="py-2 px-3"><input type="text" value="${chest}" class="w-16 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-white sg-chest"></td>
+                <td class="py-2 px-3"><input type="text" value="${waist}" class="w-16 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-white sg-waist"></td>
+                <td class="py-2 px-3"><input type="text" value="${hip}" class="w-16 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-white sg-hip"></td>
+                <td class="py-2 px-3"><input type="text" value="${shirt}" class="w-16 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-white sg-shirt"></td>
+                <td class="py-2 px-3"><input type="text" value="${trouser}" class="w-16 bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-white sg-trouser"></td>
+                <td class="py-2 px-3 text-right"><button type="button" onclick="this.closest('tr').remove()" class="text-zinc-500 hover:text-rose-400"><i class="fa-solid fa-trash-can"></i></button></td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        // Gallery & Multi-File Upload
+        function handleFileGalleryUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    galleryImages.push(e.target.result);
+                    renderGalleryPreviews();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function promptAddImageUrl() {
+            const url = prompt('Enter public image URL:');
+            if (url && url.trim()) {
+                galleryImages.push(url.trim());
+                renderGalleryPreviews();
+            }
+        }
+
+        function renderGalleryPreviews() {
+            const box = document.getElementById('modal-gallery-previews');
+            document.getElementById('gallery-count').textContent = galleryImages.length;
+
+            box.innerHTML = galleryImages.map((img, idx) => `
+                <div class="relative group aspect-[4/5] rounded-xl overflow-hidden border ${idx === 0 ? 'border-amber-400 ring-2 ring-amber-400/40' : 'border-zinc-700'} bg-zinc-950">
+                    <img src="${img}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex flex-col justify-between p-2">
+                        <span class="text-[9px] font-bold text-amber-400 uppercase">${idx === 0 ? '★ MAIN PHOTO' : `#${idx+1}`}</span>
+                        <div class="flex items-center justify-between">
+                            ${idx !== 0 ? `<button type="button" onclick="setMainGalleryPhoto(${idx})" class="p-1 rounded bg-zinc-800 text-[10px] text-zinc-300 hover:text-amber-400" title="Set as Main">★ Main</button>` : ''}
+                            <button type="button" onclick="removeGalleryPhoto(${idx})" class="p-1 rounded bg-rose-950 text-[10px] text-rose-400" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setMainGalleryPhoto(idx) {
+            const selected = galleryImages.splice(idx, 1)[0];
+            galleryImages.unshift(selected);
+            renderGalleryPreviews();
+        }
+
+        function removeGalleryPhoto(idx) {
+            galleryImages.splice(idx, 1);
+            renderGalleryPreviews();
+        }
+
+        // Open & Reset Modal
+        function openProductModal(editId = null) {
+            currentTab = 1;
+            switchTab(1);
+            populateCategoryDropdowns();
+            galleryImages = [];
+            document.getElementById('custom-attributes-container').innerHTML = '';
+            document.getElementById('color-options-builder').innerHTML = '';
+            document.getElementById('matrix-tbody').innerHTML = '';
+            document.getElementById('size-guide-tbody').innerHTML = '';
+
+            const editInput = document.getElementById('edit-prod-id');
+            editInput.value = editId || '';
+
+            if (editId) {
+                const p = store.getProduct(editId);
+                if (p) {
+                    document.getElementById('modal-heading').textContent = `Edit Product: ${p.name}`;
+                    document.getElementById('f-title').value = p.name;
+                    document.getElementById('f-brand').value = p.brand;
+                    document.getElementById('f-category').value = p.category;
+                    handleCategoryChange();
+                    document.getElementById('f-subcategory').value = p.subcategory || '';
+                    document.getElementById('f-sku').value = p.sku;
+                    document.getElementById('f-short-desc').value = p.short_description || '';
+                    document.getElementById('f-price').value = p.price;
+                    document.getElementById('f-sale-price').value = p.sale_price || '';
+                    calculateDiscountPercent();
+                    document.getElementById('f-cost-price').value = p.cost_price || '';
+                    document.getElementById('f-stock').value = p.stock;
+                    document.getElementById('f-low-stock').value = p.low_stock_threshold || 3;
+                    document.getElementById('f-video-url').value = p.video_url || '';
+                    document.getElementById('f-full-desc').value = p.description || '';
+                    document.getElementById('f-care').value = p.care_instructions || '';
+                    document.getElementById('f-ship-notes').value = p.shipping_info || '';
+                    document.getElementById('f-slug').value = p.slug;
+                    document.getElementById('f-seo-title').value = p.seo_title || '';
+                    document.getElementById('f-seo-desc').value = p.meta_description || '';
+                    document.getElementById('f-tags').value = (p.tags || []).join(', ');
+                    document.getElementById('f-status').value = p.status || 'published';
+                    document.getElementById('f-is-featured').checked = !!p.is_featured;
+                    document.getElementById('f-is-new').checked = !!p.is_new;
+                    document.getElementById('f-is-bestseller').checked = !!p.is_bestseller;
+                    document.getElementById('f-is-flash').checked = !!p.is_flash_sale;
+
+                    galleryImages = p.images ? [...p.images] : [p.thumbnail];
+                    renderGalleryPreviews();
+
+                    if (p.custom_attributes) {
+                        p.custom_attributes.forEach(a => addCustomAttributeRow(a.name, a.value));
+                    }
+                    if (p.colors) {
+                        p.colors.forEach(c => addColorOptionRow(c.name, c.hex));
+                    }
+                    if (p.size_guide) {
+                        p.size_guide.forEach(sg => addSizeGuideRow(sg.size, sg.chest, sg.waist, sg.hip, sg.shirt_length, sg.trouser_length));
+                    }
+                    if (p.variant_matrix && p.variant_matrix.length > 0) {
+                        const tbody = document.getElementById('matrix-tbody');
+                        tbody.innerHTML = p.variant_matrix.map(v => `
+                            <tr class="hover:bg-zinc-800/40 matrix-row" data-color="${v.color}" data-size="${v.size}">
+                                <td class="py-2.5 px-3 font-semibold text-white">${v.color}</td>
+                                <td class="py-2.5 px-3 font-bold text-amber-400">${v.size}</td>
+                                <td class="py-2.5 px-3"><input type="text" value="${v.sku}" class="w-32 bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1 text-white font-mono v-sku"></td>
+                                <td class="py-2.5 px-3"><input type="number" value="${v.price}" class="w-24 bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1 text-white font-mono v-price"></td>
+                                <td class="py-2.5 px-3"><input type="number" value="${v.stock}" class="w-20 bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1 text-white font-mono v-stock"></td>
+                                <td class="py-2.5 px-3 text-right"><button type="button" onclick="this.closest('tr').remove()" class="text-zinc-500 hover:text-rose-400"><i class="fa-solid fa-trash-can"></i></button></td>
+                            </tr>
+                        `).join('');
+                    }
+
+                    // Populate Payment Options
+                    document.getElementById('f-pay-cod').checked = p.cod_allowed !== false;
+                    const methods = p.payment_methods || ["cod", "card", "bank", "easypaisa", "jazzcash"];
+                    document.getElementById('f-pay-card').checked = methods.includes('card');
+                    document.getElementById('f-pay-bank').checked = methods.includes('bank');
+                    document.getElementById('f-pay-easypaisa').checked = methods.includes('easypaisa');
+                    document.getElementById('f-pay-jazzcash').checked = methods.includes('jazzcash');
+                }
+            } else {
+                document.getElementById('modal-heading').textContent = 'Add New Luxury Product';
+                document.getElementById('product-editor-form').reset();
+                document.getElementById('f-brand').value = 'Khushi Signature';
+                document.getElementById('f-stock').value = 10;
+                document.getElementById('f-low-stock').value = 3;
+                document.getElementById('f-pay-cod').checked = true;
+                document.getElementById('f-pay-card').checked = true;
+                document.getElementById('f-pay-bank').checked = true;
+                document.getElementById('f-pay-easypaisa').checked = true;
+                document.getElementById('f-pay-jazzcash').checked = true;
+                addColorOptionRow('Emerald Green', '#064e3b');
+                addColorOptionRow('Royal Maroon', '#881337');
+                addSizeGuideRow('S', '38', '34', '40', '40', '38');
+                addSizeGuideRow('M', '40', '36', '43', '41', '38');
+                addSizeGuideRow('L', '44', '40', '47', '42', '39');
+            }
+
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        // Live Product Preview
+        function previewCurrentProduct() {
+            const title = document.getElementById('f-title').value || 'Untitled Luxury Ensemble';
+            const price = parseFloat(document.getElementById('f-price').value) || 12000;
+            const salePrice = parseFloat(document.getElementById('f-sale-price').value) || 0;
+            const img = galleryImages[0] || 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80';
+            const desc = document.getElementById('f-full-desc').value || 'Detailed description will appear here on the customer storefront.';
+
+            const body = document.getElementById('preview-modal-body');
+            body.innerHTML = `
+                <div class="aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-xl">
+                    <img src="${img}" class="w-full h-full object-cover">
+                </div>
+                <div class="space-y-4">
+                    <span class="text-xs uppercase font-bold text-amber-400 tracking-widest">${document.getElementById('f-brand').value || 'Khushi Signature'}</span>
+                    <h2 class="text-2xl font-serif font-bold text-white">${title}</h2>
+                    <div class="flex items-baseline gap-3">
+                        <span class="text-2xl font-serif font-bold text-amber-400">Rs. ${(salePrice || price).toLocaleString()}</span>
+                        ${salePrice ? `<span class="text-sm line-through text-zinc-500">Rs. ${price.toLocaleString()}</span>` : ''}
+                    </div>
+                    <p class="text-xs text-zinc-300 leading-relaxed">${desc}</p>
+                    <div class="pt-4 border-t border-zinc-800 flex items-center gap-3">
+                        <button type="button" class="flex-1 py-3 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider">Add to Bag</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('preview-modal').classList.remove('hidden');
+        }
+
+        // Save & Validate Product
+        function saveProduct(e) {
+            e.preventDefault();
+            const title = document.getElementById('f-title').value.trim();
+            const sku = document.getElementById('f-sku').value.trim();
+            const price = parseFloat(document.getElementById('f-price').value);
+
+            if (!title || !sku || isNaN(price)) {
+                showToast('Please fill out Product Title, SKU, and Price.', 'error');
+                return;
+            }
+
+            // Collect Custom Attributes
+            const customAttrs = [];
+            document.querySelectorAll('.custom-attr-row').forEach(row => {
+                const name = row.querySelector('.attr-name').value.trim();
+                const val = row.querySelector('.attr-val').value.trim();
+                if (name && val) customAttrs.push({ name, value: val });
+            });
+
+            // Collect Category Attributes
+            const categoryAttributes = {};
+            document.querySelectorAll('.cat-spec-input').forEach(inp => {
+                const key = inp.name.replace('cat_attr_', '');
+                categoryAttributes[key] = inp.value;
+            });
+
+            // Collect Color Shades
+            const colorRows = document.querySelectorAll('.color-builder-row');
+            const colors = Array.from(colorRows).map(r => ({
+                name: r.querySelector('.color-name').value.trim(),
+                hex: r.querySelector('.color-hex').value
+            })).filter(c => c.name);
+
+            // Collect Matrix
+            const matrixRows = document.querySelectorAll('.matrix-row');
+            const variantMatrix = Array.from(matrixRows).map(r => ({
+                color: r.dataset.color,
+                size: r.dataset.size,
+                sku: r.querySelector('.v-sku').value.trim(),
+                price: parseFloat(r.querySelector('.v-price').value) || price,
+                stock: parseInt(r.querySelector('.v-stock').value) || 0
+            }));
+
+            // Collect Size Guide
+            const sgRows = document.querySelectorAll('.size-guide-row');
+            const sizeGuide = Array.from(sgRows).map(r => ({
+                size: r.querySelector('.sg-size').value,
+                chest: r.querySelector('.sg-chest').value,
+                waist: r.querySelector('.sg-waist').value,
+                hip: r.querySelector('.sg-hip').value,
+                shirt_length: r.querySelector('.sg-shirt').value,
+                trouser_length: r.querySelector('.sg-trouser').value
+            }));
+
+            // Collect Payment Methods
+            const selectedMethods = [];
+            if (document.getElementById('f-pay-cod').checked) selectedMethods.push('cod');
+            if (document.getElementById('f-pay-card').checked) selectedMethods.push('card');
+            if (document.getElementById('f-pay-bank').checked) selectedMethods.push('bank');
+            if (document.getElementById('f-pay-easypaisa').checked) selectedMethods.push('easypaisa');
+            if (document.getElementById('f-pay-jazzcash').checked) selectedMethods.push('jazzcash');
+
+            const editId = document.getElementById('edit-prod-id').value;
+            const categorySlug = document.getElementById('f-category').value;
+            const catObj = store.getCategory(categorySlug);
+
+            const productData = {
+                name: title,
+                slug: document.getElementById('f-slug').value.trim(),
+                brand: document.getElementById('f-brand').value.trim(),
+                category: categorySlug,
+                category_name: catObj ? catObj.name : 'Couture',
+                subcategory: document.getElementById('f-subcategory').value,
+                sku: sku,
+                short_description: document.getElementById('f-short-desc').value.trim(),
+                description: document.getElementById('f-full-desc').value.trim(),
+                care_instructions: document.getElementById('f-care').value.trim(),
+                shipping_info: document.getElementById('f-ship-notes').value.trim(),
+                price: price,
+                sale_price: parseFloat(document.getElementById('f-sale-price').value) || null,
+                cost_price: parseFloat(document.getElementById('f-cost-price').value) || null,
+                stock: parseInt(document.getElementById('f-stock').value) || 0,
+                low_stock_threshold: parseInt(document.getElementById('f-low-stock').value) || 3,
+                thumbnail: galleryImages[0] || 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80',
+                secondary_image: galleryImages[1] || galleryImages[0],
+                images: galleryImages,
+                video_url: document.getElementById('f-video-url').value.trim(),
+                colors: colors,
+                sizes: Array.from(document.querySelectorAll('#variant-size-selector input:checked')).map(cb => cb.value),
+                variant_matrix: variantMatrix,
+                size_guide: sizeGuide,
+                category_attributes: categoryAttributes,
+                custom_attributes: customAttrs,
+                cod_allowed: document.getElementById('f-pay-cod').checked,
+                payment_methods: selectedMethods,
+                seo_title: document.getElementById('f-seo-title').value.trim(),
+                meta_description: document.getElementById('f-seo-desc').value.trim(),
+                tags: document.getElementById('f-tags').value.split(',').map(t => t.trim()).filter(Boolean),
+                status: document.getElementById('f-status').value,
+                is_featured: document.getElementById('f-is-featured').checked,
+                is_new: document.getElementById('f-is-new').checked,
+                is_bestseller: document.getElementById('f-is-bestseller').checked,
+                is_flash_sale: document.getElementById('f-is-flash').checked
+            };
+
+            if (editId) {
+                store.updateProduct(editId, productData);
+                showToast(`Product "${title}" updated successfully!`);
+            } else {
+                store.addProduct(productData);
+                showToast(`Product "${title}" published to catalog!`);
+            }
+
+            closeProductModal();
+            renderProductsTable();
+        }
+
+        // Inline Quick Edit Handlers
+        function inlineEditPrice(id, currentPrice) {
+            const val = prompt('Enter new retail price (PKR):', currentPrice);
+            if (val !== null && !isNaN(val) && Number(val) > 0) {
+                store.quickUpdateProduct(id, { price: Number(val) });
+                showToast('Price updated successfully.');
+                renderProductsTable();
+            }
+        }
+
+        function inlineEditStock(id, currentStock) {
+            const val = prompt('Enter new stock quantity:', currentStock);
+            if (val !== null && !isNaN(val) && Number(val) >= 0) {
+                store.quickUpdateProduct(id, { stock: Number(val) });
+                showToast('Stock quantity updated.');
+                renderProductsTable();
+            }
+        }
+
+        // Duplicate Product Action
+        function duplicateProduct(id) {
+            const res = store.duplicateProduct(id);
+            if (res.success) {
+                showToast(res.message);
+                renderProductsTable();
+            }
+        }
+
+        // Table Render & Bulk Actions
+        function renderProductsTable() {
+            const products = store.getProducts();
+            const search = document.getElementById('admin-search-inp').value.toLowerCase().trim();
+            const cat = document.getElementById('admin-category-filter').value;
+            const status = document.getElementById('admin-status-filter').value;
+
+            const filtered = products.filter(p => {
+                if (search && !p.name.toLowerCase().includes(search) && !p.sku.toLowerCase().includes(search)) return false;
+                if (cat && p.category !== cat) return false;
+                if (status && p.status !== status) return false;
+                return true;
+            });
+
+            const tbody = document.getElementById('products-table-tbody');
+            tbody.innerHTML = filtered.map(p => {
+                const totalVariantStock = (p.variant_matrix && p.variant_matrix.length > 0)
+                    ? p.variant_matrix.reduce((acc, v) => acc + (v.stock || 0), 0)
+                    : p.stock;
+
+                const isLow = totalVariantStock <= (p.low_stock_threshold || 3);
+                const isOut = totalVariantStock === 0;
+
+                return `
+                    <tr class="hover:bg-zinc-800/30 transition">
+                        <td class="py-3.5 px-4">
+                            <input type="checkbox" value="${p.id}" onchange="handleRowCheckbox(this)" class="row-cb accent-amber-400">
+                        </td>
+                        <td class="py-3.5 px-4">
+                            <div class="flex items-center gap-3">
+                                <img src="${p.thumbnail}" class="w-10 h-12 object-cover rounded-lg border border-zinc-700 flex-shrink-0">
+                                <div class="min-w-0">
+                                    <h5 class="font-bold text-white truncate max-w-xs">${p.name}</h5>
+                                    <span class="text-[10px] text-zinc-400">${p.brand} &bull; ${p.subcategory || 'General'}</span>
+                                    ${p.cod_allowed === false ? '<span class="inline-block text-[9px] font-bold text-rose-400 bg-rose-950/60 px-1.5 py-0.2 rounded mt-0.5">COD OFF</span>' : ''}
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-3.5 px-4 text-zinc-300">${p.category_name}</td>
+                        <td class="py-3.5 px-4 font-mono text-zinc-400 font-bold">${p.sku}</td>
+                        <td class="py-3.5 px-4">
+                            <span onclick="inlineEditPrice(${p.id}, ${p.sale_price || p.price})" class="font-bold text-white hover:text-amber-400 cursor-pointer border-b border-dashed border-zinc-700 hover:border-amber-400 pb-0.5" title="Click to Quick Edit Price">
+                                Rs. ${(p.sale_price || p.price).toLocaleString()}
+                            </span>
+                            ${p.sale_price ? `<span class="block text-[10px] line-through text-zinc-500">Rs. ${p.price.toLocaleString()}</span>` : ''}
+                        </td>
+                        <td class="py-3.5 px-4">
+                            <div class="flex items-center gap-2">
+                                <span onclick="inlineEditStock(${p.id}, ${totalVariantStock})" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold cursor-pointer border ${isOut ? 'bg-rose-950 text-rose-400 border-rose-500/30' : (isLow ? 'bg-amber-950 text-amber-400 border-amber-500/30' : 'bg-emerald-950 text-emerald-400 border-emerald-500/30')}" title="Click to Quick Edit Stock">
+                                    ${isOut ? 'OUT OF STOCK' : `${totalVariantStock} units`}
+                                </span>
+                                <button onclick="store.quickUpdateProduct(${p.id}, { stock: ${totalVariantStock + 5} }); renderProductsTable(); showToast('Added +5 units to ${p.sku}');" class="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-amber-400 text-[10px] font-bold" title="Add 5 units">+5</button>
+                            </div>
+                        </td>
+                        <td class="py-3.5 px-4">
+                            <select onchange="store.quickUpdateProduct(${p.id}, { status: this.value }); renderProductsTable(); showToast('Status updated to ' + this.value);" class="bg-zinc-900 border border-zinc-700 text-[10px] font-bold rounded-lg px-2 py-1 text-zinc-300 focus:outline-none focus:border-amber-400">
+                                <option value="published" ${p.status === 'published' ? 'selected' : ''}>Active</option>
+                                <option value="hidden" ${p.status === 'hidden' ? 'selected' : ''}>Hidden</option>
+                                <option value="draft" ${p.status === 'draft' ? 'selected' : ''}>Draft</option>
+                            </select>
+                        </td>
+                        <td class="py-3.5 px-4 text-right space-x-1.5 whitespace-nowrap">
+                            <button onclick="openProductModal(${p.id})" class="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs transition" title="Edit Full Specifications">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="duplicateProduct(${p.id})" class="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition" title="Duplicate Product">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                            <a href="product-detail.html?id=${p.id}" target="_blank" class="p-1.5 rounded-lg border border-zinc-700 hover:border-amber-400 text-zinc-400 hover:text-white text-xs transition inline-block" title="View Storefront">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                            <button onclick="deleteProductWithConfirm(${p.id})" class="p-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 text-rose-400 text-xs transition" title="Delete">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function deleteProductWithConfirm(id) {
+            const p = store.getProduct(id);
+            if (!p) return;
+            if (confirm(`Are you sure you want to permanently delete "${p.name}"?`)) {
+                store.deleteProduct(id);
+                showToast(`Product "${p.name}" deleted.`);
+                renderProductsTable();
+            }
+        }
+
+        function toggleSelectAll(master) {
+            document.querySelectorAll('.row-cb').forEach(cb => {
+                cb.checked = master.checked;
+            });
+            updateBulkCount();
+        }
+
+        function handleRowCheckbox(cb) {
+            updateBulkCount();
+        }
+
+        function updateBulkCount() {
+            const checked = document.querySelectorAll('.row-cb:checked');
+            selectedProductIds = Array.from(checked).map(cb => Number(cb.value));
+            document.getElementById('selected-count').textContent = selectedProductIds.length;
+        }
+
+        function applyBulkAction(action) {
+            if (selectedProductIds.length === 0) {
+                showToast('Please select at least one product using checkboxes.', 'error');
+                return;
+            }
+
+            let products = store.getProducts();
+            if (action === 'delete') {
+                if (!confirm(`Delete ${selectedProductIds.length} selected products?`)) return;
+                products = products.filter(p => !selectedProductIds.includes(p.id));
+                store.saveProducts(products);
+                showToast(`Deleted ${selectedProductIds.length} products.`);
+            } else if (action === 'publish' || action === 'hide') {
+                const targetStatus = action === 'publish' ? 'published' : 'hidden';
+                products.forEach(p => {
+                    if (selectedProductIds.includes(p.id)) p.status = targetStatus;
+                });
+                store.saveProducts(products);
+                showToast(`Updated status to ${targetStatus} for ${selectedProductIds.length} products.`);
+            }
+
+            selectedProductIds = [];
+            document.getElementById('select-all-cb').checked = false;
+            updateBulkCount();
+            renderProductsTable();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateCategoryDropdowns();
+            renderProductsTable();
+        });
+    </script>
+</body>
+</html>

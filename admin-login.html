@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Portal — Khushi Collection</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="bg-[#080B11] text-zinc-100 min-h-screen flex items-center justify-center p-4 antialiased selection:bg-amber-500 selection:text-black">
+
+    <div class="max-w-md w-full my-8 space-y-6">
+        
+        <!-- Brand Header -->
+        <div class="text-center space-y-2">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 text-2xl shadow-xl mb-2">
+                <i class="fa-solid fa-crown"></i>
+            </div>
+            <h1 class="text-2xl font-serif font-extrabold tracking-wider text-white">KHUSHI COLLECTION</h1>
+            <p class="text-xs uppercase font-bold tracking-widest text-amber-400" id="portal-subheading">Private Owner Portal</p>
+        </div>
+
+        <!-- Dynamic Card: Standard Login OR Initial Setup -->
+        <div class="luxury-card p-8 rounded-3xl border-amber-500/30 shadow-2xl space-y-6">
+            
+            <!-- Standard Login View -->
+            <div id="login-view" class="space-y-5">
+                <div class="text-center pb-2 border-b border-zinc-800">
+                    <h2 class="text-base font-serif font-bold text-white">Owner & Staff Authentication</h2>
+                    <p class="text-[11px] text-zinc-400 mt-0.5">Enter authorized credentials to access administrative systems</p>
+                </div>
+
+                <form onsubmit="handleLoginSubmit(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1.5">Authorized Email Address *</label>
+                        <div class="relative">
+                            <input type="email" id="login-email" required placeholder="owner@khushicollection.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-2.5 pl-10 pr-4 text-white focus:outline-none focus:border-amber-400 text-xs">
+                            <i class="fa-solid fa-envelope absolute left-3.5 top-3 text-zinc-400"></i>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1.5">Password *</label>
+                        <div class="relative">
+                            <input type="password" id="login-password" required placeholder="••••••••••••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-2.5 pl-10 pr-10 text-white focus:outline-none focus:border-amber-400 text-xs font-mono">
+                            <i class="fa-solid fa-lock absolute left-3.5 top-3 text-zinc-400"></i>
+                            <button type="button" onclick="togglePassVisibility('login-password', this)" class="absolute right-3.5 top-3 text-zinc-400 hover:text-white">
+                                <i class="fa-solid fa-eye text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="login-error-alert" class="hidden p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-300 text-xs space-y-1">
+                        <div class="flex items-center gap-2 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> <span id="login-error-title">Access Denied</span></div>
+                        <p class="text-[11px] text-rose-200" id="login-error-msg"></p>
+                    </div>
+
+                    <button type="submit" id="login-submit-btn" class="w-full py-3.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl">
+                        <i class="fa-solid fa-shield-halved text-xs"></i>
+                        <span>Login Securely</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- First-Time Owner Setup View (Shown ONLY if no owner account exists yet) -->
+            <div id="setup-view" class="hidden space-y-5">
+                <div class="text-center pb-2 border-b border-zinc-800">
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-400/20 text-amber-400 border border-amber-400/30">Initial System Deployment</span>
+                    <h2 class="text-base font-serif font-bold text-white mt-2">Create Primary Store Owner</h2>
+                    <p class="text-[11px] text-zinc-400 mt-0.5">Configure the master store owner account. This setup can only be performed once.</p>
+                </div>
+
+                <form onsubmit="handleInitialSetupSubmit(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Owner Full Name *</label>
+                        <input type="text" id="setup-name" required placeholder="Khushi Fatima" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400">
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Owner Email *</label>
+                        <input type="email" id="setup-email" required placeholder="owner@khushicollection.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400">
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Master Password (Min 8 chars) *</label>
+                        <input type="password" id="setup-password" required minlength="8" placeholder="Create strong master password" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono focus:outline-none focus:border-amber-400">
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Confirm Password *</label>
+                        <input type="password" id="setup-confirm-password" required minlength="8" placeholder="Repeat master password" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono focus:outline-none focus:border-amber-400">
+                    </div>
+
+                    <div id="setup-error-alert" class="hidden p-3 rounded-xl bg-rose-950 border border-rose-500/40 text-rose-200 text-xs"></div>
+
+                    <button type="submit" class="w-full py-3.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-widest shadow-xl">
+                        👑 Establish Store Owner Account
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Footer Notice -->
+        <div class="text-center text-[11px] text-zinc-600 space-y-1">
+            <p>Protected by end-to-end authorization & failed login rate-limiting.</p>
+            <a href="index.html" class="text-zinc-500 hover:text-amber-400 transition">&larr; Return to Customer Storefront</a>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="store.js"></script>
+    <script>
+        function togglePassVisibility(id, btn) {
+            const input = document.getElementById(id);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.innerHTML = '<i class="fa-solid fa-eye-slash text-xs"></i>';
+            } else {
+                input.type = 'password';
+                btn.innerHTML = '<i class="fa-solid fa-eye text-xs"></i>';
+            }
+        }
+
+        function checkOwnerStatus() {
+            // If already authenticated as owner/staff, go straight to dashboard
+            const currentUser = store.getCurrentUser();
+            if (currentUser && ['OWNER', 'MANAGER', 'STAFF'].includes(currentUser.role)) {
+                window.location.replace('admin-dashboard.html');
+                return;
+            }
+
+            const loginView = document.getElementById('login-view');
+            const setupView = document.getElementById('setup-view');
+
+            if (!store.hasOwner()) {
+                // First-time deployment: Show Setup
+                loginView.classList.add('hidden');
+                setupView.classList.remove('hidden');
+                document.getElementById('portal-subheading').textContent = 'Initial System Setup';
+            } else {
+                loginView.classList.remove('hidden');
+                setupView.classList.add('hidden');
+                document.getElementById('portal-subheading').textContent = 'Private Owner Portal';
+            }
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-password').value;
+            const errBox = document.getElementById('login-error-alert');
+            const errMsg = document.getElementById('login-error-msg');
+
+            const res = store.login(email, pass);
+            if (res.success) {
+                showToast(`Welcome back, ${res.user.name}! Authenticated as ${res.user.role}.`);
+                setTimeout(() => {
+                    window.location.replace('admin-dashboard.html');
+                }, 400);
+            } else {
+                errBox.classList.remove('hidden');
+                errMsg.textContent = res.message;
+                if (res.locked) {
+                    document.getElementById('login-submit-btn').disabled = true;
+                    document.getElementById('login-submit-btn').classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            }
+        }
+
+        function handleInitialSetupSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('setup-name').value.trim();
+            const email = document.getElementById('setup-email').value.trim();
+            const pass = document.getElementById('setup-password').value;
+            const confirmPass = document.getElementById('setup-confirm-password').value;
+            const errBox = document.getElementById('setup-error-alert');
+
+            if (pass !== confirmPass) {
+                errBox.classList.remove('hidden');
+                errBox.textContent = 'Passwords do not match.';
+                return;
+            }
+
+            const res = store.setupInitialOwner({ name, email, password: pass });
+            if (res.success) {
+                showToast('Master Store Owner account created successfully!');
+                setTimeout(() => {
+                    window.location.replace('admin-dashboard.html');
+                }, 500);
+            } else {
+                errBox.classList.remove('hidden');
+                errBox.textContent = res.message;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', checkOwnerStatus);
+    </script>
+</body>
+</html>

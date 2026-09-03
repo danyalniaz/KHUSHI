@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khushi Collection — Timeless Luxury Crafted For Royalty</title>
+    <meta name="description" content="Khushi Collection is Pakistan's premiere haute couture house, delivering handcrafted velvet ensembles, raw silk kurtas, and pure Arabian oud.">
+
+    <!-- OpenGraph & SEO -->
+    <meta property="og:title" content="Khushi Collection — Timeless Luxury Crafted For Royalty">
+    <meta property="og:description" content="Handcrafted velvet ensembles, bespoke prince suits, and pure agarwood oud. Nationwide express delivery.">
+    <meta property="og:type" content="website">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            50: '#FDFCF7', 100: '#FAF7EC', 200: '#F3EDD0',
+                            300: '#E8DCAC', 400: '#DEC985', 500: '#D4AF37',
+                            600: '#B7950B', 700: '#8E7308', 800: '#675206', 900: '#433404'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Cormorant Garamond', 'Georgia', 'serif'],
+                        cinzel: ['Cinzel', 'Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & FontAwesome 6 Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+
+    <style>
+        body {
+            background-color: #06090E;
+            color: #F4F4F5;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+        .glass-nav {
+            background: rgba(6, 9, 14, 0.95);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+        }
+        .luxury-card {
+            background: linear-gradient(180deg, rgba(16, 22, 34, 0.8) 0%, rgba(8, 12, 18, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .luxury-card:hover {
+            border-color: rgba(212, 175, 55, 0.45);
+            transform: translateY(-4px);
+            box-shadow: 0 14px 35px -10px rgba(212, 175, 55, 0.18);
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #ECC94B 0%, #D4AF37 50%, #B7791F 100%);
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+            transform: translateY(-1px);
+        }
+        .gold-border {
+            border-color: rgba(212, 175, 55, 0.35);
+        }
+        .gold-glow {
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+        .badge-sale {
+            background: linear-gradient(135deg, #E53E3E 0%, #9B2C2C 100%);
+            color: #fff;
+        }
+        .badge-new {
+            background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
+            color: #000;
+        }
+        .badge-hot {
+            background: linear-gradient(135deg, #DD6B20 0%, #9C4221 100%);
+            color: #fff;
+        }
+        /* Nav Gold Hover Underline */
+        .nav-link-hover {
+            position: relative;
+        }
+        .nav-link-hover::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #D4AF37;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link-hover:hover::after {
+            width: 100%;
+        }
+        /* Mega Menu Dropdown */
+        .nav-group:hover .mega-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .mega-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: all 0.25s ease-out;
+            pointer-events: none;
+        }
+        /* Product hover swap */
+        .product-image-container img {
+            transition: opacity 0.4s ease, transform 0.6s ease;
+        }
+        .product-card:hover .product-image-container img:first-child {
+            opacity: 0;
+        }
+        .product-card:hover .product-image-container img:last-child {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+                        /* Ken Burns effect & Smooth Hero Slide Transitions */
+        .hero-slide {
+            opacity: 0;
+            visibility: hidden;
+            z-index: 0;
+            transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1), visibility 800ms ease;
+            pointer-events: none;
+        }
+        .hero-slide.active-slide {
+            opacity: 1 !important;
+            visibility: visible !important;
+            z-index: 10 !important;
+            pointer-events: auto !important;
+        }
+        .hero-slide img {
+            transform: scale(1);
+            transition: transform 8s ease-out;
+        }
+        .hero-slide.active-slide img {
+            transform: scale(1.06);
+        }
+        .hero-progress-bar {
+            width: 0%;
+            transition: width 6s linear;
+        }
+        .hero-progress-bar.active {
+            width: 100%;
+        }
+        .countdown-box {
+            background: rgba(14, 20, 32, 0.9);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: inset 0 0 12px rgba(212, 175, 55, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-[#06090E] text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-black">
+
+    <!-- ==================================================================== -->
+    <!-- 1. RESTORED ORIGINAL TOP ANNOUNCEMENT BAR                           -->
+    <!-- ==================================================================== -->
+    <div id="announcement-banner" class="relative bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600 text-black py-2 px-4 text-xs font-bold tracking-wider text-center shadow-md flex items-center justify-between z-50">
+        <div class="flex-1 text-center font-semibold">
+            <span>✨ FREE NATIONWIDE EXPRESS DELIVERY ON ORDERS OVER RS. 5,000 &bull; WHATSAPP CONCIERGE: +92 300 1234567 ✨</span>
+        </div>
+        <button onclick="document.getElementById('announcement-banner').style.display='none';" class="text-black/80 hover:text-black ml-3 text-sm p-1" title="Dismiss">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- 2 & 3. RESTORED ORIGINAL PREMIUM HEADER & CENTERED NAVIGATION       -->
+    <!-- ==================================================================== -->
+    <header class="sticky top-0 z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Main Header Row -->
+            <div class="flex items-center justify-between h-20 gap-6">
+                
+                <!-- Brand Logo (Left) -->
+                <a href="index.html" class="flex items-center gap-3 flex-shrink-0 group">
+                    <img src="static/images/logo.svg" alt="Khushi Collection" class="h-12 sm:h-14 w-auto transition transform group-hover:scale-105">
+                </a>
+
+                <!-- Large Centered Live Search (Desktop) -->
+                <div class="hidden md:flex flex-1 max-w-2xl mx-4 relative">
+                    <div class="relative w-full">
+                        <input type="text" id="desktop-search-input"
+                               placeholder="Search luxury velvet, raw silk, imperial oud, watches, khussas..." 
+                               autocomplete="off"
+                               class="w-full bg-zinc-900/90 border border-zinc-700/80 rounded-full py-2.5 pl-11 pr-12 text-xs text-zinc-100 placeholder-zinc-400 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition shadow-inner">
+                        <button type="button" onclick="const q = document.getElementById('desktop-search-input').value.trim(); if(q) window.location.href='shop.html?q=' + encodeURIComponent(q);" class="absolute left-4 top-2.5 text-zinc-400 hover:text-amber-400 text-xs transition p-0.5" title="Search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <button type="button" onclick="openSearchModal()" class="absolute right-3.5 top-2 text-[10px] uppercase font-bold text-zinc-400 hover:text-amber-400 bg-zinc-800 px-2 py-1 rounded-full border border-zinc-700">
+                            Ctrl+K
+                        </button>
+                    </div>
+
+                    <!-- Instant Live Search Dropdown -->
+                    <div id="desktop-search-dropdown" class="hidden absolute top-full left-0 right-0 mt-2 rounded-2xl glass-nav border border-amber-500/25 shadow-2xl z-50 overflow-hidden text-xs"></div>
+                </div>
+
+                <!-- Customer Action Icons (Right) -->
+                <div class="flex items-center gap-4 sm:gap-6">
+                    <!-- Account -->
+                    <button onclick="openAccountModal()" class="hidden sm:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-amber-400 font-medium transition" title="My Account">
+                        <i class="fa-regular fa-user text-amber-400 text-sm"></i>
+                        <span>Account</span>
+                    </button>
+
+                    <!-- Track Order -->
+                    <a href="track-order.html" class="hidden lg:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-amber-400 font-medium transition" title="Track Live Order">
+                        <i class="fa-solid fa-truck-fast text-amber-400 text-sm"></i>
+                        <span>Track Order</span>
+                    </a>
+
+                    <!-- Wishlist -->
+                    <a href="shop.html?view=wishlist" class="relative p-2 text-zinc-300 hover:text-amber-400 transition" title="Saved Wishlist">
+                        <i class="fa-regular fa-heart text-lg"></i>
+                        <span class="wishlist-badge-count hidden absolute top-0 right-0 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow">0</span>
+                    </a>
+
+                    <!-- Shopping Bag -->
+                    <button onclick="openCartDrawer()" class="relative p-2 text-zinc-300 hover:text-amber-400 transition flex items-center gap-2 group" title="Shopping Bag">
+                        <div class="relative">
+                            <i class="fa-solid fa-bag-shopping text-xl text-amber-400 group-hover:scale-110 transition"></i>
+                            <span class="cart-badge-count hidden absolute -top-1 -right-2 w-4 h-4 rounded-full bg-amber-500 text-black text-[10px] font-extrabold flex items-center justify-center shadow-lg">0</span>
+                        </div>
+                        <div class="hidden sm:flex flex-col text-left">
+                            <span class="text-[10px] font-semibold uppercase tracking-wider text-zinc-400">Bag</span>
+                            <span class="text-xs font-bold text-amber-400" id="header-bag-subtotal">Rs. 0</span>
+                        </div>
+                    </button>
+
+                    <!-- Mobile Hamburger -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden text-zinc-300 hover:text-amber-400 text-xl p-2">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Centered Navigation Categories Bar with Mega Menus -->
+            <nav id="header-category-links" class="hidden md:flex items-center justify-center space-x-8 py-3 border-t border-zinc-800/80 text-xs font-semibold uppercase tracking-widest text-zinc-300 relative">
+                
+                <!-- WOMEN MEGA MENU -->
+                <div class="nav-group group py-1">
+                    <a href="shop.html?category=women" class="nav-link-hover hover:text-amber-400 transition flex items-center gap-1">
+                        WOMEN <i class="fa-solid fa-chevron-down text-[8px] opacity-70"></i>
+                    </a>
+                    <div class="mega-menu absolute top-full left-0 right-0 bg-[#080C14]/95 backdrop-blur-2xl border border-amber-500/20 shadow-2xl p-6 rounded-2xl grid grid-cols-4 gap-6 text-left z-50">
+                        <div>
+                            <h4 class="text-amber-400 font-serif font-bold uppercase tracking-wider text-xs pb-2 border-b border-zinc-800 mb-3">Pret & Stitched</h4>
+                            <ul class="space-y-2 text-xs text-zinc-300">
+                                <li><a href="shop.html?category=women&sub=Luxury%20Pret" class="hover:text-amber-400">Luxury Pret</a></li>
+                                <li><a href="shop.html?category=women&sub=Formal%20Couture" class="hover:text-amber-400">Formal Couture</a></li>
+                                <li><a href="shop.html?category=women&sub=Festive" class="hover:text-amber-400">Festive 3-Piece</a></li>
+                                <li><a href="shop.html?category=women&sub=Velvet" class="hover:text-amber-400">Embroidered Velvet</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-amber-400 font-serif font-bold uppercase tracking-wider text-xs pb-2 border-b border-zinc-800 mb-3">Couture Silhouettes</h4>
+                            <ul class="space-y-2 text-xs text-zinc-300">
+                                <li><a href="shop.html?category=women&sub=Bridal%20Anarkali" class="hover:text-amber-400">Bridal Anarkalis</a></li>
+                                <li><a href="shop.html?category=women&sub=Sarees" class="hover:text-amber-400">Chiffon Sarees</a></li>
+                                <li><a href="shop.html?category=women&sub=Lehengas" class="hover:text-amber-400">Banarasi Lehengas</a></li>
+                                <li><a href="shop.html?category=women&sub=Kaftans" class="hover:text-amber-400">Embellished Kaftans</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-amber-400 font-serif font-bold uppercase tracking-wider text-xs pb-2 border-b border-zinc-800 mb-3">Curated Edits</h4>
+                            <ul class="space-y-2 text-xs text-zinc-300">
+                                <li><a href="shop.html?category=women&sort=newest" class="hover:text-amber-400 text-amber-300 font-semibold">New Arrivals</a></li>
+                                <li><a href="shop.html?category=women&sort=popular" class="hover:text-amber-400">Best Sellers</a></li>
+                                <li><a href="shop.html?collection=wedding-edit" class="hover:text-amber-400">Wedding Edit 2026</a></li>
+                                <li><a href="shop.html?filter=sale" class="hover:text-rose-400 text-rose-400">Seasonal Sale</a></li>
+                            </ul>
+                        </div>
+                        <div class="rounded-xl overflow-hidden relative group/banner aspect-[4/3]">
+                            <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&auto=format&fit=crop&q=80" alt="Women Festive" class="w-full h-full object-cover group-hover/banner:scale-105 transition duration-500 brightness-75">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent p-4 flex flex-col justify-end">
+                                <span class="text-[10px] text-amber-400 font-bold uppercase">Festive Royal</span>
+                                <h5 class="text-xs font-serif font-bold text-white">Velvet Shawl Suits</h5>
+                                <a href="shop.html?category=women" class="text-[10px] text-amber-300 hover:underline mt-1">Explore &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEN MEGA MENU -->
+                <div class="nav-group group py-1">
+                    <a href="shop.html?category=men" class="nav-link-hover hover:text-amber-400 transition flex items-center gap-1">
+                        MEN <i class="fa-solid fa-chevron-down text-[8px] opacity-70"></i>
+                    </a>
+                    <div class="mega-menu absolute top-full left-0 right-0 bg-[#080C14]/95 backdrop-blur-2xl border border-amber-500/20 shadow-2xl p-6 rounded-2xl grid grid-cols-4 gap-6 text-left z-50">
+                        <div>
+                            <h4 class="text-amber-400 font-serif font-bold uppercase tracking-wider text-xs pb-2 border-b border-zinc-800 mb-3">Traditional Wear</h4>
+                            <ul class="space-y-2 text-xs text-zinc-300">
+                                <li><a href="shop.html?category=men&sub=Shalwar%20Kameez" class="hover:text-amber-400">Shalwar Kameez</a></li>
+                                <li><a href="shop.html?category=men&sub=Raw%20Silk%20Kurta" class="hover:text-amber-400">Raw Silk Kurtas</a></li>
+                                <li><a href="shop.html?category=men&sub=Giza%20Cotton" class="hover:text-amber-400">Giza Cotton Cuts</a></li>
+                                <li><a href="shop.html?category=men&sub=Linen" class="hover:text-amber-400">Italian Linen Sets</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-amber-400 font-serif font-bold uppercase tracking-wider text-xs pb-2 border-b border-zinc-800 mb-3">Formal & Groom</h4>
+                            <ul class="space-y-2 text-xs text-zinc-300">
+                                <li><a href="shop.html?category=men&sub=Waistcoats" class="hover:text-amber-400">Jamawar Waistcoats</a></li>
+                                <li><a href="shop.html?category=men&sub=Prince%20Suit" class="hover:text-amber-400">Bespoke Prince Suits</a></li>
+                                <li><a href="shop.html?category=men&sub=Sherwani" class="hover:text-amber-400">Tailored Sherwanis</a></li>
+                                <li><a href="shop.html?category=men&sub=Tuxedo" class="hover:text-amber-400">Velvet Evening Tuxedos</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-amber-400 font-serif font-bold uppercase tracking-wider text-xs pb-2 border-b border-zinc-800 mb-3">Bespoke Men Edit</h4>
+                            <ul class="space-y-2 text-xs text-zinc-300">
+                                <li><a href="shop.html?collection=heritage-men" class="hover:text-amber-400 text-amber-300 font-semibold">Heritage Men Drop</a></li>
+                                <li><a href="shop.html?category=shoes" class="hover:text-amber-400">Peshawari Chappals</a></li>
+                                <li><a href="shop.html?category=watches" class="hover:text-amber-400">Luxury Watches</a></li>
+                                <li><a href="shop.html?category=perfumes" class="hover:text-amber-400">Pure Arabic Ouds</a></li>
+                            </ul>
+                        </div>
+                        <div class="rounded-xl overflow-hidden relative group/banner aspect-[4/3]">
+                            <img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=600&auto=format&fit=crop&q=80" alt="Men Heritage" class="w-full h-full object-cover group-hover/banner:scale-105 transition duration-500 brightness-75">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent p-4 flex flex-col justify-end">
+                                <span class="text-[10px] text-amber-400 font-bold uppercase">Heritage Menswear</span>
+                                <h5 class="text-xs font-serif font-bold text-white">Bespoke Raw Silk</h5>
+                                <a href="shop.html?category=men" class="text-[10px] text-amber-300 hover:underline mt-1">Shop Men &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="shop.html?category=kids" class="nav-link-hover hover:text-amber-400 transition">KIDS</a>
+                <a href="shop.html?category=shoes" class="nav-link-hover hover:text-amber-400 transition">SHOES</a>
+                <a href="shop.html?category=watches" class="nav-link-hover hover:text-amber-400 transition">WATCHES</a>
+                <a href="shop.html?category=perfumes" class="nav-link-hover hover:text-amber-400 transition">PERFUMES</a>
+                <a href="shop.html?category=bags" class="nav-link-hover hover:text-amber-400 transition">BAGS</a>
+                <a href="shop.html?filter=sale" class="nav-link-hover text-rose-400 hover:text-rose-300 transition font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-fire text-xs"></i> SALE
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Search Bar (Phone Only) -->
+    <div class="md:hidden px-4 py-3 bg-zinc-900/95 border-b border-zinc-800 relative z-30">
+        <div class="relative">
+            <input type="text" id="mobile-search-input"
+                   placeholder="Search velvet, kurtas, ouds, watches..." 
+                   autocomplete="off"
+                   class="w-full bg-zinc-950 border border-zinc-700 rounded-full py-2.5 pl-10 pr-10 text-xs text-white placeholder-zinc-400 focus:outline-none focus:border-amber-400">
+            <button type="button" onclick="const q = document.getElementById('mobile-search-input').value.trim(); if(q) window.location.href='shop.html?q=' + encodeURIComponent(q);" class="absolute left-3.5 top-2.5 text-zinc-400 hover:text-amber-400 text-xs p-0.5">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+        <div id="mobile-search-dropdown" class="hidden absolute left-4 right-4 mt-2 rounded-2xl glass-nav border border-amber-500/25 shadow-2xl z-50 overflow-hidden text-xs"></div>
+    </div>
+
+    <!-- MAIN HOMEPAGE CONTENT -->
+    <main class="flex-grow pb-20 md:pb-12 space-y-20">
+        
+                        <!-- ==================================================================== -->
+        <!-- 4. CINEMATIC LUXURY HERO SECTION (GUARANTEED VISIBLE CONTENT)       -->
+        <!-- ==================================================================== -->
+        <section class="relative overflow-hidden bg-[#06090E] w-full" id="hero-carousel-section" aria-label="Khushi Collection Showcase">
+            <div class="relative h-[82vh] sm:h-[86vh] lg:h-[90vh] min-h-[640px] max-h-[960px] flex items-center w-full">
+                
+                <!-- ==================== SLIDE 01: FESTIVE ROYAL DROP ==================== -->
+                <div class="hero-slide active-slide absolute inset-0 w-full h-full" id="slide-0" data-index="0">
+                    <!-- 1. Background Image (Layer 0) -->
+                    <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1920&auto=format&fit=crop&q=85" alt="Khushi Collection Festive Royal Drop" class="absolute inset-0 w-full h-full object-cover object-[center_28%] brightness-[0.78]">
+                    
+                    <!-- 2. Dark Cinematic Overlay (Layer 1) - Darker on Left, Medium in Center, Lighter on Right -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06090E] via-[#06090E]/70 to-transparent z-10 pointer-events-none"></div>
+
+                    <!-- 3. Foreground Content (Layer 2) - Positioned Left-Center with High Contrast -->
+                    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full h-full flex items-center">
+                        <div class="max-w-2xl space-y-6 text-left py-12">
+                            
+                            <!-- Gold Badge -->
+                            <div>
+                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-amber-400/15 text-amber-300 border border-amber-400/40 uppercase tracking-[0.2em] shadow-lg backdrop-blur-md">
+                                    <span class="text-amber-400">✦</span> FESTIVE ROYAL DROP 2026
+                                </span>
+                            </div>
+
+                            <!-- Main Heading -->
+                            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-extrabold text-white leading-[1.1] tracking-tight">
+                                Timeless Luxury <br>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-100 gold-glow">Crafted For Royalty</span>
+                            </h1>
+
+                            <!-- Description -->
+                            <p class="text-sm sm:text-base text-zinc-200 font-normal leading-relaxed max-w-xl text-shadow">
+                                Discover heritage-inspired fashion, exquisite craftsmanship, luxurious fabrics and timeless pieces designed for modern royalty.
+                            </p>
+
+                            <!-- Three CTA Buttons -->
+                            <div class="flex flex-wrap items-center gap-4 pt-3">
+                                <a href="shop.html?category=women" class="group px-7 py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
+                                    <span>SHOP WOMEN</span>
+                                    <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
+                                </a>
+                                <a href="shop.html?category=men" class="group px-7 py-4 rounded-full bg-zinc-900/90 hover:bg-zinc-800 text-zinc-100 border border-zinc-700/90 hover:border-amber-400 text-xs font-bold uppercase tracking-widest backdrop-blur-md transition flex items-center gap-2.5">
+                                    <span>SHOP MEN</span>
+                                    <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
+                                </a>
+                                <a href="shop.html?filter=sale" class="group px-6 py-4 rounded-full bg-rose-950/90 hover:bg-rose-900 text-rose-200 border border-rose-500/50 text-xs font-bold uppercase tracking-widest transition flex items-center gap-2 shadow-xl">
+                                    <i class="fa-solid fa-fire text-xs animate-pulse text-rose-400"></i>
+                                    <span>FLASH SALE</span>
+                                    <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== SLIDE 02: WOMEN'S COUTURE ==================== -->
+                <div class="hero-slide absolute inset-0 w-full h-full" id="slide-1" data-index="1">
+                    <img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=1920&auto=format&fit=crop&q=85" alt="Khushi Collection Women's Couture" class="absolute inset-0 w-full h-full object-cover object-[center_35%] brightness-[0.78]">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06090E] via-[#06090E]/70 to-transparent z-10 pointer-events-none"></div>
+
+                    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full h-full flex items-center">
+                        <div class="max-w-2xl space-y-6 text-left py-12">
+                            <div>
+                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-amber-400/15 text-amber-300 border border-amber-400/40 uppercase tracking-[0.2em] shadow-lg backdrop-blur-md">
+                                    <span class="text-amber-400">✦</span> WOMEN'S COUTURE
+                                </span>
+                            </div>
+                            <h2 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-extrabold text-white leading-[1.1] tracking-tight">
+                                Elegance <br>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-100 gold-glow">In Every Thread</span>
+                            </h2>
+                            <p class="text-sm sm:text-base text-zinc-200 font-normal leading-relaxed max-w-xl text-shadow">
+                                Discover refined silhouettes, intricate embroidery and luxurious fabrics designed to leave an everlasting impression.
+                            </p>
+                            <div class="flex flex-wrap items-center gap-4 pt-3">
+                                <a href="shop.html?category=women" class="group px-8 py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
+                                    <span>EXPLORE WOMEN</span>
+                                    <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== SLIDE 03: MEN'S HERITAGE ==================== -->
+                <div class="hero-slide absolute inset-0 w-full h-full" id="slide-2" data-index="2">
+                    <img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=1920&auto=format&fit=crop&q=85" alt="Khushi Collection Men's Heritage" class="absolute inset-0 w-full h-full object-cover object-[center_25%] brightness-[0.78]">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06090E] via-[#06090E]/70 to-transparent z-10 pointer-events-none"></div>
+
+                    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full h-full flex items-center">
+                        <div class="max-w-2xl space-y-6 text-left py-12">
+                            <div>
+                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-amber-400/15 text-amber-300 border border-amber-400/40 uppercase tracking-[0.2em] shadow-lg backdrop-blur-md">
+                                    <span class="text-amber-400">✦</span> MEN'S HERITAGE
+                                </span>
+                            </div>
+                            <h2 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-extrabold text-white leading-[1.1] tracking-tight">
+                                Heritage <br>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-100 gold-glow">Reimagined</span>
+                            </h2>
+                            <p class="text-sm sm:text-base text-zinc-200 font-normal leading-relaxed max-w-xl text-shadow">
+                                Classic Pakistani menswear crafted for the modern gentleman. Bespoke raw silk kurtas, tailored jamawar waistcoats, and regal prince suits.
+                            </p>
+                            <div class="flex flex-wrap items-center gap-4 pt-3">
+                                <a href="shop.html?category=men" class="group px-8 py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
+                                    <span>SHOP MEN</span>
+                                    <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== SLIDE 04: THE ART OF OUD ==================== -->
+                <div class="hero-slide absolute inset-0 w-full h-full" id="slide-3" data-index="3">
+                    <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=1920&auto=format&fit=crop&q=85" alt="Khushi Collection The Art of Oud" class="absolute inset-0 w-full h-full object-cover object-center brightness-[0.78]">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06090E] via-[#06090E]/70 to-transparent z-10 pointer-events-none"></div>
+
+                    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full h-full flex items-center">
+                        <div class="max-w-2xl space-y-6 text-left py-12">
+                            <div>
+                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-amber-400/15 text-amber-300 border border-amber-400/40 uppercase tracking-[0.2em] shadow-lg backdrop-blur-md">
+                                    <span class="text-amber-400">✦</span> THE ART OF OUD
+                                </span>
+                            </div>
+                            <h2 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-extrabold text-white leading-[1.1] tracking-tight">
+                                Find Your <br>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-100 gold-glow">Signature Scent</span>
+                            </h2>
+                            <p class="text-sm sm:text-base text-zinc-200 font-normal leading-relaxed max-w-xl text-shadow">
+                                Discover sophisticated oriental fragrances created to leave an impression. Cambodian agarwood, Damascus rose, and saffron extraits.
+                            </p>
+                            <div class="flex flex-wrap items-center gap-4 pt-3">
+                                <a href="shop.html?category=perfumes" class="group px-8 py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
+                                    <span>EXPLORE PERFUMES</span>
+                                    <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== SLIDE 05: KHUSHI GRAND SALE ==================== -->
+                <div class="hero-slide absolute inset-0 w-full h-full" id="slide-4" data-index="4">
+                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&auto=format&fit=crop&q=85" alt="Khushi Collection Grand Sale" class="absolute inset-0 w-full h-full object-cover object-[center_30%] brightness-[0.78]">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent w-full lg:w-4/5 z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06090E] via-[#06090E]/70 to-transparent z-10 pointer-events-none"></div>
+
+                    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full h-full flex items-center">
+                        <div class="max-w-2xl space-y-6 text-left py-12">
+                            <div>
+                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/50 uppercase tracking-[0.2em] shadow-lg backdrop-blur-md">
+                                    <i class="fa-solid fa-fire text-xs text-rose-400 animate-pulse"></i> KHUSHI GRAND SALE
+                                </span>
+                            </div>
+                            <h2 class="text-4xl sm:text-6xl lg:text-7xl font-serif font-extrabold text-white leading-[1.1] tracking-tight">
+                                Luxury Worth <br>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-amber-300 to-amber-100 gold-glow">Discovering</span>
+                            </h2>
+                            <p class="text-sm sm:text-base text-zinc-200 font-normal leading-relaxed max-w-xl text-shadow">
+                                Exclusive pieces and selected styles at exceptional prices. Up to 40% off limited couture editions, velvet shawls, and chronographs.
+                            </p>
+                            <div class="flex flex-wrap items-center gap-4 pt-3">
+                                <a href="shop.html?filter=sale" class="group px-8 py-4 rounded-full btn-gold text-xs uppercase tracking-widest font-extrabold shadow-2xl hover:scale-105 transition transform flex items-center gap-2.5">
+                                    <span>SHOP SALE</span>
+                                    <i class="fa-solid fa-arrow-right text-[11px] group-hover:translate-x-1.5 transition-transform"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Arrows (Desktop 40-50px from edge) -->
+                <button onclick="prevSlide()" aria-label="Previous Slide" class="absolute left-4 sm:left-8 lg:left-12 top-1/2 -translate-y-1/2 z-30 w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/90 text-white hover:border-amber-400 hover:text-amber-400 hover:bg-black/90 hover:scale-105 transition shadow-2xl flex items-center justify-center group focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <i class="fa-solid fa-chevron-left text-sm group-hover:-translate-x-0.5 transition-transform"></i>
+                </button>
+                <button onclick="nextSlide()" aria-label="Next Slide" class="absolute right-4 sm:right-8 lg:right-12 top-1/2 -translate-y-1/2 z-30 w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/90 text-white hover:border-amber-400 hover:text-amber-400 hover:bg-black/90 hover:scale-105 transition shadow-2xl flex items-center justify-center group focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <i class="fa-solid fa-chevron-right text-sm group-hover:translate-x-0.5 transition-transform"></i>
+                </button>
+
+                <!-- Bottom-Center Scroll Indicator -->
+                <div class="hidden sm:flex absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex-col items-center gap-1.5 pointer-events-none opacity-80">
+                    <span class="text-[9px] font-bold uppercase tracking-[0.25em] text-zinc-400">SCROLL TO DISCOVER</span>
+                    <i class="fa-solid fa-chevron-down text-[10px] text-amber-400 animate-bounce"></i>
+                </div>
+
+                <!-- Slide Indicator & Progress Bar (Bottom-Right) -->
+                <div class="absolute bottom-6 sm:bottom-8 right-4 sm:right-8 z-30 flex items-center gap-3.5 bg-black/70 backdrop-blur-md px-4 py-2.5 rounded-full border border-zinc-800 shadow-2xl">
+                    <span id="hero-slide-counter" class="text-xs font-mono font-bold text-amber-400 tracking-wider">01 / 05</span>
+                    
+                    <!-- Progress Bar Line -->
+                    <div class="w-12 h-1 bg-zinc-800 rounded-full overflow-hidden relative">
+                        <div id="hero-slide-progress" class="h-full bg-gradient-to-r from-amber-400 to-amber-200 rounded-full hero-progress-bar"></div>
+                    </div>
+
+                    <!-- Clickable Indicator Dots -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="setSlide(0)" id="dot-0" aria-label="Go to Slide 1" class="w-2.5 h-2.5 rounded-full bg-amber-400 transition-all"></button>
+                        <button onclick="setSlide(1)" id="dot-1" aria-label="Go to Slide 2" class="w-2 h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all"></button>
+                        <button onclick="setSlide(2)" id="dot-2" aria-label="Go to Slide 3" class="w-2 h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all"></button>
+                        <button onclick="setSlide(3)" id="dot-3" aria-label="Go to Slide 4" class="w-2 h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all"></button>
+                        <button onclick="setSlide(4)" id="dot-4" aria-label="Go to Slide 5" class="w-2 h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all"></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 5. EXPLORE BY CATEGORY                                              -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block mb-1">Couture Departments</span>
+                    <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Explore By Category</h2>
+                </div>
+                <a href="shop.html" class="text-xs text-amber-400 hover:text-amber-300 font-semibold uppercase tracking-wider mt-2 md:mt-0 flex items-center gap-1.5">
+                    <span>View All Collections</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4" id="home-categories-container"></div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 6. CURATED COLLECTIONS                                              -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10 space-y-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Atelier Curations</span>
+                <h2 class="text-2xl sm:text-4xl font-serif font-bold text-white">Curated Collections</h2>
+                <p class="text-xs text-zinc-400">Signature edits handpicked by Khushi Collection stylists for royal occasions.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="home-curated-collections-grid"></div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 7. FLASH SALE                                                       -->
+        <!-- ==================================================================== -->
+        <section id="flash-sale-section" class="py-14 bg-gradient-to-b from-rose-950/25 via-[#0D121D] to-[#06090E] border-y border-rose-900/30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-rose-950/80 text-rose-400 border border-rose-500/30 uppercase tracking-widest mb-2">
+                            <i class="fa-solid fa-fire text-xs animate-pulse"></i> Limited Time Offer
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-serif font-extrabold text-white">🔥 KHUSHI GRAND FLASH SALE</h2>
+                        <p class="text-xs text-zinc-400 mt-1">Up to 40% OFF on Luxury Pret, Formal Shawls & Timepieces.</p>
+                    </div>
+
+                    <!-- Countdown Box -->
+                    <div id="flash-timer-box" class="flex items-center gap-3">
+                        <div class="countdown-box px-3.5 py-2 rounded-xl text-center min-w-[62px]">
+                            <span id="flash-hours" class="block text-2xl font-mono font-bold text-white">18</span>
+                            <span class="text-[9px] uppercase tracking-wider text-zinc-400">Hours</span>
+                        </div>
+                        <span class="text-xl font-bold text-rose-500">:</span>
+                        <div class="countdown-box px-3.5 py-2 rounded-xl text-center min-w-[62px]">
+                            <span id="flash-mins" class="block text-2xl font-mono font-bold text-white">42</span>
+                            <span class="text-[9px] uppercase tracking-wider text-zinc-400">Mins</span>
+                        </div>
+                        <span class="text-xl font-bold text-rose-500">:</span>
+                        <div class="countdown-box px-3.5 py-2 rounded-xl text-center min-w-[62px]">
+                            <span id="flash-secs" class="block text-2xl font-mono font-bold text-white">15</span>
+                            <span class="text-[9px] uppercase tracking-wider text-zinc-400">Secs</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" id="flash-sale-products-grid"></div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 8. NEW ARRIVALS                                                     -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block mb-1">Runway Exclusives</span>
+                    <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">New Arrivals</h2>
+                </div>
+                <a href="shop.html?sort=newest" class="text-xs text-amber-400 hover:text-amber-300 font-semibold uppercase tracking-wider mt-2 md:mt-0 flex items-center gap-1.5">
+                    <span>View All New Drop</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" id="new-arrivals-grid"></div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 9. BEST SELLERS                                                     -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block mb-1">Client Favorites</span>
+                    <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Best Sellers</h2>
+                </div>
+                <div class="flex items-center gap-2 overflow-x-auto pb-1" id="bestseller-tabs">
+                    <button onclick="filterBestsellers('all', this)" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition border bg-amber-400 text-black border-amber-400">All</button>
+                    <button onclick="filterBestsellers('women', this)" class="px-3.5 py-1.5 rounded-full text-xs font-medium transition border bg-zinc-900 text-zinc-300 border-zinc-700 hover:border-amber-400">Women</button>
+                    <button onclick="filterBestsellers('men', this)" class="px-3.5 py-1.5 rounded-full text-xs font-medium transition border bg-zinc-900 text-zinc-300 border-zinc-700 hover:border-amber-400">Men</button>
+                    <button onclick="filterBestsellers('perfumes', this)" class="px-3.5 py-1.5 rounded-full text-xs font-medium transition border bg-zinc-900 text-zinc-300 border-zinc-700 hover:border-amber-400">Oud</button>
+                    <button onclick="filterBestsellers('watches', this)" class="px-3.5 py-1.5 rounded-full text-xs font-medium transition border bg-zinc-900 text-zinc-300 border-zinc-700 hover:border-amber-400">Watches</button>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" id="bestsellers-grid"></div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 10. SHOP BY OCCASION                                                -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-8 space-y-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Dressing For Memories</span>
+                <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Shop By Occasion</h2>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3.5" id="home-occasions-grid"></div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 11 & 12. WOMEN'S LUXURY & MEN'S HERITAGE EDITORIAL BANNERS          -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Women's Luxury -->
+                <div class="luxury-card rounded-3xl overflow-hidden relative group min-h-[380px] flex flex-col justify-end p-8 border border-amber-500/20 shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=1000&auto=format&fit=crop&q=80" alt="Women Luxury" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700 brightness-50">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                    <div class="relative z-10 space-y-3">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-amber-400">Women's Couture</span>
+                        <h3 class="text-2xl sm:text-3xl font-serif font-bold text-white">Elegance in Every Thread</h3>
+                        <p class="text-xs text-zinc-300 font-light max-w-sm">From regal banarasi lehengas to velvet formal kaftans, embrace true Pakistani elegance.</p>
+                        <a href="shop.html?category=women" class="inline-block px-6 py-2.5 rounded-full btn-gold text-xs font-bold uppercase tracking-wider shadow">
+                            Explore Women &rarr;
+                        </a>
+                    </div>
+                </div>
+                <!-- Men's Heritage -->
+                <div class="luxury-card rounded-3xl overflow-hidden relative group min-h-[380px] flex flex-col justify-end p-8 border border-amber-500/20 shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1000&auto=format&fit=crop&q=80" alt="Men Heritage" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700 brightness-50">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                    <div class="relative z-10 space-y-3">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-amber-400">Men's Sartorial</span>
+                        <h3 class="text-2xl sm:text-3xl font-serif font-bold text-white">Heritage, Reimagined</h3>
+                        <p class="text-xs text-zinc-300 font-light max-w-sm">Bespoke prince suits, monogram waistcoats, and hand-stitched Korean raw silk sets.</p>
+                        <a href="shop.html?category=men" class="inline-block px-6 py-2.5 rounded-full btn-gold text-xs font-bold uppercase tracking-wider shadow">
+                            Explore Men &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 13. "THE ART OF OUD" & INTERACTIVE FRAGRANCE FINDER                 -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="luxury-card rounded-3xl p-8 sm:p-12 border border-amber-500/30 relative overflow-hidden bg-gradient-to-r from-zinc-950 via-[#0E1420] to-zinc-950">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7 space-y-4">
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-amber-400/10 text-amber-400 border border-amber-400/30 uppercase tracking-widest">
+                            <i class="fa-solid fa-sparkles text-[10px]"></i> Fragrance Concierge
+                        </span>
+                        <h2 class="text-3xl sm:text-4xl font-serif font-extrabold text-white">Find Your Signature Scent</h2>
+                        <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-xl">
+                            Answer 4 sensory questions to let our master perfumers match you with the exact Cambodian Oud, Damascus Rose, or White Musk formulation for your persona.
+                        </p>
+                        <div class="pt-2 flex flex-wrap gap-4">
+                            <button onclick="openFragranceQuiz()" class="px-7 py-3 rounded-full btn-gold text-xs font-bold uppercase tracking-wider shadow-xl flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Take Scent Finder Quiz
+                            </button>
+                            <a href="shop.html?category=perfumes" class="px-6 py-3 rounded-full bg-zinc-900 border border-zinc-700 text-xs font-bold uppercase tracking-wider text-zinc-300 hover:text-white transition">
+                                Browse All Perfumes
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-5 flex justify-center">
+                        <div class="relative w-64 h-80 rounded-2xl overflow-hidden shadow-2xl border border-amber-500/30 transform hover:scale-105 transition duration-500">
+                            <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80" alt="Imperial Oud" class="w-full h-full object-cover">
+                            <div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black to-transparent text-center">
+                                <span class="text-[10px] text-amber-400 uppercase font-bold">Imperial Oud (100ml)</span>
+                                <p class="text-xs font-bold text-white">14+ Hours Longevity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 14. PERSONALIZED RECENTLY VIEWED                                    -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="recently-viewed-section">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block mb-1">Your Personal History</span>
+                    <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Recently Viewed</h2>
+                </div>
+                <button onclick="store.clearRecentlyViewed && store.clearRecentlyViewed(); location.reload();" class="text-[11px] text-zinc-500 hover:text-zinc-300 underline">
+                    Clear History
+                </button>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" id="recently-viewed-grid"></div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 15. THE KHUSHI EXPERIENCE (BRAND EXPERIENCE SECTION)                -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10 space-y-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Atelier Standards</span>
+                <h2 class="text-2xl sm:text-4xl font-serif font-bold text-white">The Khushi Experience</h2>
+                <p class="text-xs text-zinc-400">Our promise of exceptional Eastern haute couture craftsmanship and VIP care.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="luxury-card p-6 rounded-3xl text-center space-y-3">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-lg shadow">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <h3 class="text-sm font-serif font-bold text-white uppercase tracking-wider">Personal Shopping</h3>
+                    <p class="text-xs text-zinc-400 leading-relaxed">Personalized styling assistance tailored for your wedding, formal gala, or festive occasion.</p>
+                </div>
+
+                <div class="luxury-card p-6 rounded-3xl text-center space-y-3">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-lg shadow">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <h3 class="text-sm font-serif font-bold text-white uppercase tracking-wider">Nationwide Delivery</h3>
+                    <p class="text-xs text-zinc-400 leading-relaxed">Reliable express door-to-door courier service across all cities in Pakistan within 2-4 days.</p>
+                </div>
+
+                <div class="luxury-card p-6 rounded-3xl text-center space-y-3">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-lg shadow">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <h3 class="text-sm font-serif font-bold text-white uppercase tracking-wider">Premium Packaging</h3>
+                    <p class="text-xs text-zinc-400 leading-relaxed">Every order is hand-inspected and presented with gold-crested luxury gift box packaging.</p>
+                </div>
+
+                <div class="luxury-card p-6 rounded-3xl text-center space-y-3">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-lg shadow">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h3 class="text-sm font-serif font-bold text-white uppercase tracking-wider">Concierge Service</h3>
+                    <p class="text-xs text-zinc-400 leading-relaxed">Dedicated 24/7 WhatsApp VIP concierge support before, during, and after your purchase.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 16. PATRON TESTIMONIALS & VERIFIED REVIEWS                          -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10 space-y-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Patron Testimonials</span>
+                <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Words From Our Royal Clientele</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="home-reviews-grid"></div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 17. THE KHUSHI STORY (ABOUT SECTION)                                -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="luxury-card rounded-3xl p-8 sm:p-12 border border-amber-500/25 overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                    
+                    <!-- Left: Large Editorial Fashion Image -->
+                    <div class="lg:col-span-5">
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-amber-500/30 aspect-[4/5] group">
+                            <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=900&auto=format&fit=crop&q=80" alt="Khushi Story Bridal" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 brightness-90">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <span class="text-[10px] font-mono text-amber-400 uppercase tracking-widest">Lahore Haute Couture Atelier</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Storytelling & Brand Values -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="space-y-2">
+                            <span class="text-xs font-bold uppercase tracking-widest text-amber-400">The Khushi Story</span>
+                            <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">Crafting Pakistani Luxury, Reimagined</h2>
+                            <div class="w-16 h-0.5 bg-gradient-to-r from-amber-400 to-transparent"></div>
+                        </div>
+
+                        <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
+                            Khushi Collection was born out of a devotion to Pakistan's rich artisanal heritage. We celebrate the master craftsmanship of traditional hand-embroidery, delicate dabka, authentic tilla needlework, and pure agarwood distillation, harmonized seamlessly with modern luxury tailoring.
+                        </p>
+
+                        <!-- 3 Small Brand Values -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                            <div class="p-3.5 rounded-2xl bg-zinc-900/80 border border-zinc-800 space-y-1">
+                                <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Craftsmanship</h4>
+                                <p class="text-[11px] text-zinc-400 leading-snug">Thoughtfully crafted pieces inspired by Pakistani heritage.</p>
+                            </div>
+                            <div class="p-3.5 rounded-2xl bg-zinc-900/80 border border-zinc-800 space-y-1">
+                                <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Heritage</h4>
+                                <p class="text-[11px] text-zinc-400 leading-snug">Traditional artistry interpreted for the modern generation.</p>
+                            </div>
+                            <div class="p-3.5 rounded-2xl bg-zinc-900/80 border border-zinc-800 space-y-1">
+                                <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Timeless Luxury</h4>
+                                <p class="text-[11px] text-zinc-400 leading-snug">Pieces designed to remain elegant beyond passing seasons.</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <a href="about.html" class="inline-flex items-center gap-2 px-7 py-3 rounded-full btn-gold text-xs font-bold uppercase tracking-widest shadow-xl">
+                                <span>DISCOVER OUR STORY</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 18. KHUSHI JOURNAL (EDITORIAL MAGAZINE)                             -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block mb-1">Fashion Editorial</span>
+                    <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">The Khushi Journal</h2>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="home-journal-grid"></div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 19. FOLLOW THE KHUSHI WORLD (INSTAGRAM SOCIAL LOOKBOOK)             -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-8 space-y-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Social Lookbook</span>
+                <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Follow the Khushi World</h2>
+                <p class="text-xs text-zinc-400">Tag <span class="text-amber-400 font-bold">@KhushiCollection</span> to be featured on our royal feed.</p>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+                <div class="aspect-square rounded-2xl overflow-hidden relative group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500&auto=format&fit=crop&q=80" alt="Insta 1" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-lg">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                </div>
+                <div class="aspect-square rounded-2xl overflow-hidden relative group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=500&auto=format&fit=crop&q=80" alt="Insta 2" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-lg">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                </div>
+                <div class="aspect-square rounded-2xl overflow-hidden relative group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500&auto=format&fit=crop&q=80" alt="Insta 3" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-lg">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                </div>
+                <div class="aspect-square rounded-2xl overflow-hidden relative group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500&auto=format&fit=crop&q=80" alt="Insta 4" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-lg">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                </div>
+                <div class="aspect-square rounded-2xl overflow-hidden relative group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&auto=format&fit=crop&q=80" alt="Insta 5" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-lg">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                </div>
+                <div class="aspect-square rounded-2xl overflow-hidden relative group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&auto=format&fit=crop&q=80" alt="Insta 6" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-lg">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 20. VIP NEWSLETTER CLUB                                             -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="luxury-card rounded-3xl p-8 sm:p-12 text-center max-w-3xl mx-auto border border-amber-500/20 space-y-4">
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">VIP Privileges</span>
+                <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">Enter the World of Khushi</h2>
+                <p class="text-xs text-zinc-400 max-w-md mx-auto">Be the first to discover new bridal collections, private preview invitations, and bespoke styling advice.</p>
+                <form onsubmit="event.preventDefault(); showToast('Thank you for subscribing to Khushi VIP Club!', 'success'); this.reset();" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto pt-2">
+                    <input type="email" required placeholder="Enter your VIP email address..." class="flex-1 bg-zinc-900 border border-zinc-700 rounded-full px-5 py-3 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+                    <button type="submit" class="px-7 py-3 rounded-full btn-gold text-xs font-bold uppercase tracking-wider shadow">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 21. LET'S CONNECT (CONTACT / CONCIERGE SECTION)                     -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="luxury-card rounded-3xl p-8 sm:p-12 border border-amber-500/25">
+                <div class="text-center max-w-2xl mx-auto mb-10 space-y-2">
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Personal Assistance</span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">LET'S CONNECT</h2>
+                    <p class="text-xs text-zinc-400">Our concierge team is here to assist you with styling, order inquiries, and bespoke fittings.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                    
+                    <!-- Left: Concierge Info -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-serif font-bold text-white">Khushi Concierge</h3>
+                            <p class="text-xs text-zinc-400 leading-relaxed">Reach out to our personal styling advisors in Lahore for instant assistance.</p>
+                        </div>
+
+                        <div class="space-y-4 text-xs text-zinc-300">
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-8 h-8 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase font-bold block">Phone</span>
+                                    <span class="font-bold text-white">+92 300 1234567</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-8 h-8 rounded-full bg-emerald-400/10 border border-emerald-400/30 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase font-bold block">WhatsApp Concierge</span>
+                                    <span class="font-bold text-white">+92 300 1234567</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-8 h-8 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase font-bold block">Email Support</span>
+                                    <span class="font-bold text-white">support@khushicollection.com</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-8 h-8 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase font-bold block">Atelier Address</span>
+                                    <span class="font-bold text-white">Suite 104, Gulberg Galleria, Main Boulevard, Lahore</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-8 h-8 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase font-bold block">Opening Hours</span>
+                                    <span class="font-bold text-white">Monday – Saturday: 11:00 AM – 8:00 PM</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <a href="https://wa.me/923001234567?text=Hi%20Khushi%20Collection,%20I%20would%20like%20concierge%20assistance." target="_blank" class="w-full py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl transition">
+                                <i class="fa-brands fa-whatsapp text-sm"></i> CHAT ON WHATSAPP
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right: Contact Form -->
+                    <div class="lg:col-span-7 bg-zinc-900/60 p-6 sm:p-8 rounded-2xl border border-zinc-800">
+                        <form onsubmit="event.preventDefault(); showToast('Thank you! Your message has been sent to our concierge team.', 'success'); this.reset();" class="space-y-4 text-xs">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-zinc-300 font-bold uppercase text-[10px] mb-1.5">Full Name *</label>
+                                    <input type="text" required placeholder="Khushi Fatima" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-400">
+                                </div>
+                                <div>
+                                    <label class="block text-zinc-300 font-bold uppercase text-[10px] mb-1.5">Email Address *</label>
+                                    <input type="email" required placeholder="client@example.com" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-400">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-zinc-300 font-bold uppercase text-[10px] mb-1.5">Phone Number *</label>
+                                    <input type="tel" required placeholder="0300 1234567" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-400">
+                                </div>
+                                <div>
+                                    <label class="block text-zinc-300 font-bold uppercase text-[10px] mb-1.5">Subject</label>
+                                    <input type="text" placeholder="Bridal Inquiry / Custom Sizing" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-400">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-zinc-300 font-bold uppercase text-[10px] mb-1.5">Your Message *</label>
+                                <textarea rows="4" required placeholder="How may our stylists assist you today?" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-400"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-3.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-widest shadow-xl">
+                                SEND MESSAGE &rarr;
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- 22. VISIT OUR STORE (STORE LOCATION)                                -->
+        <!-- ==================================================================== -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="luxury-card rounded-3xl p-8 border border-zinc-800 space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Flagship Boutique</span>
+                        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">VISIT OUR STORE</h2>
+                        <p class="text-xs text-zinc-400 mt-1">Experience our bespoke fabrics and bridal couture in person in Lahore.</p>
+                    </div>
+                    <a href="https://maps.google.com/?q=Gulberg+Galleria+Lahore" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 rounded-full btn-gold text-xs font-bold uppercase tracking-wider shadow">
+                        <i class="fa-solid fa-diamond-turn-right"></i> GET DIRECTIONS
+                    </a>
+                </div>
+
+                <!-- Dark Map Placeholder Component -->
+                <div class="relative w-full h-72 sm:h-80 rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 flex items-center justify-center text-center p-6 group">
+                    <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
+                    <div class="relative z-10 space-y-3 max-w-md">
+                        <div class="w-14 h-14 rounded-full bg-amber-400/20 border-2 border-amber-400 text-amber-400 flex items-center justify-center mx-auto text-xl shadow-2xl animate-bounce">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <h4 class="text-base font-serif font-bold text-white">Khushi Collection Flagship Atelier</h4>
+                        <p class="text-xs text-zinc-300">Suite 104, Gulberg Galleria, Main Boulevard, Lahore</p>
+                        <p class="text-[11px] text-amber-300 font-mono font-semibold">Open Mon – Sat: 11:00 AM – 8:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================================================================== -->
+    <!-- 23. RESTORED COMPLETE PREMIUM FOOTER                                -->
+    <!-- ==================================================================== -->
+    <footer class="bg-[#04060A] border-t border-zinc-800/80 pt-16 pb-24 md:pb-12 text-xs text-zinc-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+            
+            <!-- Left: Brand Info & Contact -->
+            <div class="lg:col-span-2 space-y-4">
+                <img src="static/images/logo.svg" alt="Khushi Collection" class="h-12 w-auto">
+                <p class="text-zinc-400 text-xs leading-relaxed max-w-sm">
+                    Khushi Collection is Pakistan's premiere haute couture house, delivering handcrafted velvet formals, raw silk pret, and pure Arabian oud to royalty worldwide.
+                </p>
+                <div class="space-y-1.5 text-xs text-zinc-400">
+                    <p><i class="fa-solid fa-phone text-amber-400 mr-2"></i> +92 300 1234567</p>
+                    <p><i class="fa-brands fa-whatsapp text-emerald-400 mr-2"></i> +92 300 1234567</p>
+                    <p><i class="fa-solid fa-envelope text-amber-400 mr-2"></i> support@khushicollection.com</p>
+                    <p><i class="fa-solid fa-location-dot text-amber-400 mr-2"></i> Suite 104, Gulberg Galleria, Lahore</p>
+                </div>
+            </div>
+
+            <!-- Column 1: Collections -->
+            <div class="space-y-3">
+                <h4 class="text-white font-serif font-bold text-sm tracking-wider uppercase">Collections</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="shop.html?category=women" class="hover:text-amber-400">Women Couture</a></li>
+                    <li><a href="shop.html?category=men" class="hover:text-amber-400">Men Heritage</a></li>
+                    <li><a href="shop.html?category=kids" class="hover:text-amber-400">Kids Festive</a></li>
+                    <li><a href="shop.html?category=perfumes" class="hover:text-amber-400">Imperial Oud</a></li>
+                    <li><a href="shop.html?category=watches" class="hover:text-amber-400">Chronographs</a></li>
+                    <li><a href="shop.html?category=shoes" class="hover:text-amber-400">Handmade Khussas</a></li>
+                    <li><a href="shop.html?filter=sale" class="text-rose-400 hover:text-rose-300">Flash Sale</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 2: Customer Care -->
+            <div class="space-y-3">
+                <h4 class="text-white font-serif font-bold text-sm tracking-wider uppercase">Customer Care</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="track-order.html" class="hover:text-amber-400">Track Your Order</a></li>
+                    <li><a href="size-guide.html" class="hover:text-amber-400">Bespoke Size Guide</a></li>
+                    <li><a href="faq.html" class="hover:text-amber-400">Help & FAQs</a></li>
+                    <li><a href="contact.html" class="hover:text-amber-400">Contact Concierge</a></li>
+                    <li><a href="about.html" class="hover:text-amber-400">About Our Heritage</a></li>
+                    <li><a href="faq.html#returns" class="hover:text-amber-400">7-Day Easy Returns</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Stay Connected & Payment -->
+            <div class="space-y-4">
+                <h4 class="text-white font-serif font-bold text-sm tracking-wider uppercase">Stay Connected</h4>
+                <div class="flex items-center gap-3">
+                    <a href="https://instagram.com" target="_blank" class="w-8 h-8 rounded-full bg-zinc-900 hover:bg-amber-400 hover:text-black border border-zinc-700 flex items-center justify-center transition text-xs">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://facebook.com" target="_blank" class="w-8 h-8 rounded-full bg-zinc-900 hover:bg-amber-400 hover:text-black border border-zinc-700 flex items-center justify-center transition text-xs">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://tiktok.com" target="_blank" class="w-8 h-8 rounded-full bg-zinc-900 hover:bg-amber-400 hover:text-black border border-zinc-700 flex items-center justify-center transition text-xs">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                    <a href="https://wa.me/923001234567" target="_blank" class="w-8 h-8 rounded-full bg-zinc-900 hover:bg-emerald-500 hover:text-white border border-zinc-700 flex items-center justify-center transition text-xs">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                </div>
+
+                <div class="pt-2 space-y-2">
+                    <h5 class="text-white font-bold text-xs uppercase tracking-wider">Payment Methods</h5>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-amber-400">COD</span>
+                        <span class="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-emerald-400">EasyPaisa</span>
+                        <span class="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-rose-400">JazzCash</span>
+                        <span class="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-blue-400">Bank Wire</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-zinc-900 text-center flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-600">
+            <p>&copy; 2026 Khushi Collection Pvt Ltd. All Rights Reserved.</p>
+            <p class="text-zinc-500">Handcrafted in Pakistan &bull; Dispatched Worldwide</p>
+        </div>
+    </footer>
+
+    <!-- FLOATING WHATSAPP CONCIERGE -->
+    <div class="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-40">
+        <button onclick="window.open('https://wa.me/923001234567?text=Hi%20Khushi%20Collection,%20I%20need%20assistance.', '_blank')" class="w-14 h-14 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition transform border-2 border-emerald-400/40" title="WhatsApp Luxury Concierge">
+            <i class="fa-brands fa-whatsapp"></i>
+        </button>
+    </div>
+
+    <!-- FIXED MOBILE BOTTOM NAVIGATION BAR -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#06090E]/95 backdrop-blur-xl border-t border-zinc-800 flex items-center justify-around py-2 px-2 text-[10px] font-semibold text-zinc-400">
+        <a href="index.html" class="flex flex-col items-center gap-1 text-amber-400">
+            <i class="fa-solid fa-house text-base"></i>
+            <span>Home</span>
+        </a>
+        <a href="shop.html" class="flex flex-col items-center gap-1 hover:text-amber-400">
+            <i class="fa-solid fa-gem text-base"></i>
+            <span>Shop</span>
+        </a>
+        <button onclick="openSearchModal()" class="flex flex-col items-center gap-1 hover:text-amber-400">
+            <i class="fa-solid fa-magnifying-glass text-base"></i>
+            <span>Search</span>
+        </button>
+        <a href="shop.html?view=wishlist" class="flex flex-col items-center gap-1 hover:text-amber-400 relative">
+            <i class="fa-regular fa-heart text-base"></i>
+            <span class="wishlist-badge-count hidden absolute -top-1 -right-2 w-3.5 h-3.5 rounded-full bg-rose-500 text-white text-[8px] font-bold flex items-center justify-center">0</span>
+            <span>Wishlist</span>
+        </a>
+        <button onclick="openCartDrawer()" class="flex flex-col items-center gap-1 hover:text-amber-400 relative">
+            <i class="fa-solid fa-bag-shopping text-base text-amber-400"></i>
+            <span class="cart-badge-count hidden absolute -top-1 -right-2 w-3.5 h-3.5 rounded-full bg-amber-500 text-black text-[8px] font-extrabold flex items-center justify-center">0</span>
+            <span>Bag</span>
+        </button>
+    </div>
+
+    <!-- SMART SEARCH MODAL (Ctrl+K) -->
+    <div id="smart-search-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-start justify-center pt-20 px-4">
+        <div class="luxury-card w-full max-w-2xl rounded-3xl p-6 border border-amber-500/30 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+                <div class="flex items-center gap-3 flex-1">
+                    <i class="fa-solid fa-magnifying-glass text-amber-400 text-base"></i>
+                    <input type="text" id="modal-search-input" placeholder="Search by velvet, raw silk, oud, SKU, collection..." class="w-full bg-transparent text-sm text-white focus:outline-none placeholder-zinc-500">
+                </div>
+                <button onclick="closeSearchModal()" class="text-zinc-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+            <div id="modal-search-tags-section" class="space-y-3 text-xs">
+                <span class="text-zinc-500 uppercase font-bold text-[10px]">Popular Searches</span>
+                <div class="flex flex-wrap gap-2" id="modal-popular-searches-row"></div>
+            </div>
+            <div id="modal-search-results" class="max-h-80 overflow-y-auto divide-y divide-zinc-800"></div>
+        </div>
+    </div>
+
+    <!-- DELUXE QUICK VIEW MODAL -->
+    <div id="quick-view-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="luxury-card w-full max-w-3xl rounded-3xl p-6 sm:p-8 border border-amber-500/30 shadow-2xl relative">
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="quick-view-body"></div>
+        </div>
+    </div>
+
+    <!-- FRAGRANCE QUIZ MODAL -->
+    <div id="fragrance-quiz-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="luxury-card w-full max-w-lg rounded-3xl p-6 sm:p-8 border border-amber-500/40 shadow-2xl space-y-6">
+            <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+                    <h3 class="text-base font-serif font-bold text-white">Find Your Signature Fragrance</h3>
+                </div>
+                <button onclick="closeFragranceQuiz()" class="text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="quiz-step-container" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-bold text-zinc-300 uppercase text-[10px] mb-2">1. Preferred Scent Note</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="setQuizAnswer('scent_family', 'Oud', this)" class="p-3 rounded-xl bg-zinc-900 border border-zinc-700 hover:border-amber-400 text-left font-semibold">🪵 Cambodian Oud</button>
+                        <button onclick="setQuizAnswer('scent_family', 'Rose', this)" class="p-3 rounded-xl bg-zinc-900 border border-zinc-700 hover:border-amber-400 text-left font-semibold">🌹 Damascus Rose</button>
+                        <button onclick="setQuizAnswer('scent_family', 'Saffron', this)" class="p-3 rounded-xl bg-zinc-900 border border-zinc-700 hover:border-amber-400 text-left font-semibold">✨ Amber Saffron</button>
+                        <button onclick="setQuizAnswer('scent_family', 'Jasmine', this)" class="p-3 rounded-xl bg-zinc-900 border border-zinc-700 hover:border-amber-400 text-left font-semibold">🌸 White Jasmine</button>
+                    </div>
+                </div>
+                <button onclick="evaluateFragranceQuiz()" class="w-full py-3.5 rounded-full btn-gold text-xs font-bold uppercase tracking-wider shadow-xl mt-4">
+                    Reveal My Signature Scent &rarr;
+                </button>
+            </div>
+            <div id="quiz-result-container" class="hidden space-y-4 text-center"></div>
+        </div>
+    </div>
+
+    <!-- CART DRAWER -->
+    <div id="cart-drawer-overlay" onclick="closeCartDrawer()" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md z-50 bg-[#0C101A] border-l border-zinc-800 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+        <div class="p-6 border-b border-zinc-800 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping text-amber-400"></i>
+                <h3 class="font-serif font-bold text-white text-base">Shopping Bag</h3>
+            </div>
+            <button onclick="closeCartDrawer()" class="text-zinc-400 hover:text-white p-1">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+        <div class="p-6 flex-1 overflow-y-auto divide-y divide-zinc-800/80 space-y-4" id="drawer-items-list"></div>
+        <div class="p-6 border-t border-zinc-800 bg-[#0A0D14] space-y-4">
+            <div class="flex items-center justify-between text-xs text-zinc-400">
+                <span>Estimated Subtotal:</span>
+                <span class="text-base font-bold text-amber-400 font-mono" id="drawer-subtotal-val">Rs. 0</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <a href="cart.html" onclick="closeCartDrawer()" class="py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-center text-xs font-bold uppercase text-zinc-300 transition">View Bag</a>
+                <a href="checkout.html" class="py-3 rounded-xl btn-gold text-center text-xs font-extrabold uppercase tracking-wider shadow">Checkout &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOMER ACCOUNT MODAL -->
+    <div id="account-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="luxury-card w-full max-w-md rounded-3xl p-6 border border-amber-500/30 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
+                <h3 class="font-serif font-bold text-white text-base flex items-center gap-2">
+                    <i class="fa-regular fa-user text-amber-400"></i> Khushi Account & Concierge
+                </h3>
+                <button onclick="closeAccountModal()" class="text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="space-y-2 text-xs">
+                <a href="track-order.html" class="flex items-center justify-between p-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 transition">
+                    <span class="flex items-center gap-2.5"><i class="fa-solid fa-truck-fast text-amber-400"></i> Track Existing Order</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-zinc-500"></i>
+                </a>
+                <a href="shop.html?view=wishlist" class="flex items-center justify-between p-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 transition">
+                    <span class="flex items-center gap-2.5"><i class="fa-regular fa-heart text-rose-400"></i> Saved Wishlist</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-zinc-500"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="store.js"></script>
+    <script>
+                // Advanced Hero Carousel Controller (6s Autoplay + Progress + Touch Swipe + Keyboard)
+        let currentSlide = 0;
+        const totalSlides = 5;
+        const slideDuration = 6000;
+        let sliderTimer = null;
+        let progressTimer = null;
+        let isHovered = false;
+
+        function triggerProgressBar() {
+            const bar = document.getElementById('hero-slide-progress');
+            if (!bar) return;
+            bar.classList.remove('active');
+            bar.style.transition = 'none';
+            bar.style.width = '0%';
+            void bar.offsetWidth; // Trigger reflow
+            bar.style.transition = `width ${slideDuration}ms linear`;
+            bar.classList.add('active');
+        }
+
+        function showSlide(idx) {
+            currentSlide = (idx + totalSlides) % totalSlides;
+            for (let i = 0; i < totalSlides; i++) {
+                const el = document.getElementById(`slide-${i}`);
+                const dot = document.getElementById(`dot-${i}`);
+                if (el) {
+                    if (i === currentSlide) {
+                        el.classList.add('active-slide');
+                    } else {
+                        el.classList.remove('active-slide');
+                    }
+                }
+                if (dot) {
+                    dot.className = (i === currentSlide) 
+                        ? 'w-2.5 h-2.5 rounded-full bg-amber-400 transition-all shadow-[0_0_8px_rgba(212,175,55,0.8)]' 
+                        : 'w-2 h-2 rounded-full bg-zinc-600 hover:bg-zinc-400 transition-all';
+                }
+            }
+            const counter = document.getElementById('hero-slide-counter');
+            if (counter) counter.textContent = `0${currentSlide + 1} / 0${totalSlides}`;
+            
+            triggerProgressBar();
+        }
+
+        function nextSlide() { showSlide(currentSlide + 1); resetAutoplay(); }
+        function prevSlide() { showSlide(currentSlide - 1); resetAutoplay(); }
+        function setSlide(i) { showSlide(i); resetAutoplay(); }
+
+        function startAutoplay() {
+            clearInterval(sliderTimer);
+            sliderTimer = setInterval(() => {
+                if (!isHovered) showSlide(currentSlide + 1);
+            }, slideDuration);
+            triggerProgressBar();
+        }
+
+        function resetAutoplay() {
+            clearInterval(sliderTimer);
+            startAutoplay();
+        }
+
+        function pauseAutoplay() {
+            isHovered = true;
+            const bar = document.getElementById('hero-slide-progress');
+            if (bar) {
+                const computed = window.getComputedStyle(bar).width;
+                bar.style.transition = 'none';
+                bar.style.width = computed;
+            }
+        }
+
+        function resumeAutoplay() {
+            isHovered = false;
+            resetAutoplay();
+        }
+
+        const heroEl = document.getElementById('hero-carousel-section');
+        if (heroEl) {
+            heroEl.addEventListener('mouseenter', pauseAutoplay);
+            heroEl.addEventListener('mouseleave', resumeAutoplay);
+            heroEl.addEventListener('focusin', pauseAutoplay);
+            heroEl.addEventListener('focusout', resumeAutoplay);
+
+            // Touch Swipe Support for Mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+            heroEl.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            heroEl.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 50) nextSlide();
+                else if (touchEndX - touchStartX > 50) prevSlide();
+            }, { passive: true });
+        }
+
+        // Keyboard Arrow Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            else if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        startAutoplay();
+
+
+
+        // Real Flash Sale Countdown Engine
+        function initRealFlashTimer() {
+            function tick() {
+                const state = store.getFlashSaleState();
+                const hoursEl = document.getElementById('flash-hours');
+                const minsEl = document.getElementById('flash-mins');
+                const secsEl = document.getElementById('flash-secs');
+                if (hoursEl && minsEl && secsEl) {
+                    hoursEl.textContent = String(state.hours).padStart(2, '0');
+                    minsEl.textContent = String(state.mins).padStart(2, '0');
+                    secsEl.textContent = String(state.secs).padStart(2, '0');
+                }
+            }
+            tick();
+            setInterval(tick, 1000);
+        }
+
+        // Product Card Generator
+        function renderProductCard(p, badgeHtml = '') {
+            const secondary = p.secondary_image || p.thumbnail;
+            const inWish = store.getWishlist().includes(p.id);
+
+            return `
+                <div class="product-card luxury-card rounded-2xl overflow-hidden flex flex-col group relative">
+                    <div class="absolute top-3 left-3 z-10 flex flex-col gap-1">
+                        ${badgeHtml}
+                    </div>
+
+                    <button onclick="const res = store.toggleWishlist(${p.id}); showToast(res.message); const icon = this.querySelector('i'); icon.classList.toggle('fa-solid', res.inWishlist); icon.classList.toggle('text-rose-500', res.inWishlist); icon.classList.toggle('fa-regular', !res.inWishlist);" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/80 flex items-center justify-center text-zinc-300 hover:text-rose-500 transition shadow">
+                        <i class="${inWish ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-xs"></i>
+                    </button>
+
+                    <a href="product-detail.html?id=${p.id}" class="product-image-container block aspect-[4/5] bg-zinc-950 relative overflow-hidden">
+                        <img src="${p.thumbnail}" alt="${p.name}" class="w-full h-full object-cover transition-opacity duration-500">
+                        <img src="${secondary}" alt="${p.name}" class="w-full h-full object-cover absolute inset-0 opacity-0 transition-opacity duration-500">
+                    </a>
+
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between text-[10px] text-zinc-400">
+                                <span class="uppercase font-bold tracking-wider">${p.brand || 'Khushi Collection'}</span>
+                                <span class="flex items-center text-amber-400"><i class="fa-solid fa-star text-[9px] mr-1"></i> ${p.rating || 4.9}</span>
+                            </div>
+
+                            <h4 class="text-xs sm:text-sm font-semibold text-zinc-100 group-hover:text-amber-400 transition truncate mt-1">
+                                <a href="product-detail.html?id=${p.id}">${p.name}</a>
+                            </h4>
+
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="text-sm sm:text-base font-bold text-amber-400">Rs. ${(p.sale_price || p.price).toLocaleString()}</span>
+                                ${p.sale_price ? `<span class="text-xs line-through text-zinc-500">Rs. ${p.price.toLocaleString()}</span>` : ''}
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2">
+                            <button onclick="openQuickView(${p.id})" class="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition" title="Quick View">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                            <button onclick="store.addToCart(${p.id}); showToast('Added to your bag!'); openCartDrawer();" class="flex-1 py-2 px-3 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow">
+                                <i class="fa-solid fa-bag-shopping text-[11px]"></i> ADD TO CART
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Quick View Modal
+        function openQuickView(productId) {
+            const p = store.getProduct(productId);
+            if (!p) return;
+            const modal = document.getElementById('quick-view-modal');
+            const body = document.getElementById('quick-view-body');
+            const price = p.sale_price || p.price;
+
+            body.innerHTML = `
+                <div class="aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-xl">
+                    <img src="${p.thumbnail}" class="w-full h-full object-cover">
+                </div>
+                <div class="space-y-4 text-xs">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-amber-400 tracking-widest">${p.brand || 'Khushi Collection'}</span>
+                        <h3 class="text-xl font-serif font-bold text-white mt-1">${p.name}</h3>
+                        <div class="flex items-center gap-3 mt-1.5 text-zinc-400">
+                            <span class="text-amber-400 font-bold"><i class="fa-solid fa-star text-xs mr-1"></i> ${p.rating || 4.9}</span>
+                            <span class="font-mono text-zinc-500">${p.sku}</span>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-serif font-bold text-amber-400">Rs. ${price.toLocaleString()}</div>
+                    <p class="text-zinc-300 leading-relaxed font-light line-clamp-3">${p.description}</p>
+                    <div class="pt-3 border-t border-zinc-800 flex gap-3">
+                        <button onclick="store.addToCart(${p.id}); closeQuickView(); showToast('Added to bag!'); openCartDrawer();" class="flex-1 py-3 rounded-xl btn-gold text-xs font-bold uppercase tracking-widest shadow">
+                            Add to Bag
+                        </button>
+                        <a href="product-detail.html?id=${p.id}" class="px-4 py-3 rounded-xl border border-zinc-700 hover:border-amber-400 text-zinc-300 font-bold uppercase">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+        function closeQuickView() { document.getElementById('quick-view-modal').classList.add('hidden'); }
+
+        // Cart Drawer
+        function openCartDrawer() {
+            renderCartDrawer();
+            document.getElementById('cart-drawer').classList.remove('translate-x-full');
+            document.getElementById('cart-drawer-overlay').classList.remove('hidden');
+        }
+        function closeCartDrawer() {
+            document.getElementById('cart-drawer').classList.add('translate-x-full');
+            document.getElementById('cart-drawer-overlay').classList.add('hidden');
+        }
+        function renderCartDrawer() {
+            const cart = store.getCart();
+            const items = Object.values(cart);
+            const container = document.getElementById('drawer-items-list');
+            const subtotalVal = store.getCartSubtotal();
+            const headerBag = document.getElementById('header-bag-subtotal');
+            if (headerBag) headerBag.textContent = `Rs. ${subtotalVal.toLocaleString()}`;
+            document.getElementById('drawer-subtotal-val').textContent = `Rs. ${subtotalVal.toLocaleString()}`;
+
+            if (items.length === 0) {
+                container.innerHTML = `<div class="py-16 text-center text-zinc-400">Your bag is empty</div>`;
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="flex gap-4 py-3.5 first:pt-0">
+                    <img src="${item.thumbnail}" class="w-14 h-18 object-cover rounded-lg border border-zinc-800 flex-shrink-0">
+                    <div class="flex-1 min-w-0">
+                        <h5 class="text-xs font-semibold text-white truncate">${item.name}</h5>
+                        <p class="text-[11px] text-zinc-400 mt-0.5">${item.size} / ${item.color}</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="text-xs font-bold text-amber-400">Rs. ${(item.price * item.quantity).toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Live Search Setup
+        function setupLiveSearch(inputId, dropdownId) {
+            const input = document.getElementById(inputId);
+            const dropdown = document.getElementById(dropdownId);
+            if (!input || !dropdown) return;
+
+            input.addEventListener('input', (e) => {
+                const q = e.target.value.toLowerCase().trim();
+                if (q.length < 1) {
+                    dropdown.classList.add('hidden');
+                    return;
+                }
+                const products = store.getProducts();
+                const matched = products.filter(p => (p.name||'').toLowerCase().includes(q) || (p.sku||'').toLowerCase().includes(q) || (p.category||'').toLowerCase().includes(q));
+                dropdown.classList.remove('hidden');
+
+                if (matched.length === 0) {
+                    dropdown.innerHTML = `<div class="p-6 text-center text-zinc-400">No luxury pieces found for "${q}"</div>`;
+                    return;
+                }
+                dropdown.innerHTML = `
+                    <div class="p-2.5 border-b border-zinc-800 text-[10px] font-bold text-amber-400 uppercase tracking-widest bg-zinc-950/80 flex justify-between items-center">
+                        <span>Matching Results (${matched.length})</span>
+                        <a href="shop.html?q=${encodeURIComponent(q)}" class="hover:underline text-amber-300">View All &rarr;</a>
+                    </div>
+                    <div class="max-h-80 overflow-y-auto divide-y divide-zinc-800/80">
+                        ${matched.slice(0, 6).map(m => `
+                            <a href="product-detail.html?id=${m.id}" class="flex items-center gap-3 p-3 hover:bg-zinc-800/60 transition text-left">
+                                <img src="${m.thumbnail}" class="w-10 h-12 object-cover rounded-lg border border-zinc-800 flex-shrink-0">
+                                <div class="flex-1 min-w-0">
+                                    <h5 class="font-semibold text-white truncate text-xs">${m.name}</h5>
+                                    <span class="text-[10px] text-zinc-400 font-mono">${m.sku}</span>
+                                    <span class="text-xs font-bold text-amber-400 block mt-0.5">Rs. ${(m.sale_price || m.price).toLocaleString()}</span>
+                                </div>
+                            </a>
+                        `).join('')}
+                    </div>
+                `;
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const q = input.value.trim();
+                    if (q) window.location.href = `shop.html?q=${encodeURIComponent(q)}`;
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!input.contains(e.target) && !dropdown.contains(e.target)) dropdown.classList.add('hidden');
+            });
+        }
+
+        function openSearchModal() {
+            document.getElementById('smart-search-modal').classList.remove('hidden');
+            const popRow = document.getElementById('modal-popular-searches-row');
+            if (popRow) {
+                popRow.innerHTML = store.getPopularSearches().map(t => `
+                    <button onclick="window.location.href='shop.html?q=${encodeURIComponent(t)}'" class="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-amber-400 text-xs">${t}</button>
+                `).join('');
+            }
+        }
+        function closeSearchModal() { document.getElementById('smart-search-modal').classList.add('hidden'); }
+        function openAccountModal() { document.getElementById('account-modal').classList.remove('hidden'); }
+        function closeAccountModal() { document.getElementById('account-modal').classList.add('hidden'); }
+        function toggleMobileMenu() {
+            const nav = document.getElementById('header-category-links');
+            if (nav) nav.classList.toggle('hidden');
+        }
+
+        // Best Sellers Tab Filter
+        function filterBestsellers(category, btn) {
+            document.querySelectorAll('#bestseller-tabs button').forEach(b => {
+                b.className = 'px-3.5 py-1.5 rounded-full text-xs font-medium transition border bg-zinc-900 text-zinc-300 border-zinc-700 hover:border-amber-400';
+            });
+            btn.className = 'px-3.5 py-1.5 rounded-full text-xs font-bold transition border bg-amber-400 text-black border-amber-400';
+
+            const products = store.getProducts();
+            let list = products.filter(p => p.is_bestseller);
+            if (category !== 'all') list = list.filter(p => p.category === category);
+            if (list.length === 0) list = products.filter(p => p.category === category);
+
+            document.getElementById('bestsellers-grid').innerHTML = list.slice(0, 4).map(p => 
+                renderProductCard(p, `<span class="badge-hot px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase shadow">Hot</span>`)
+            ).join('');
+        }
+
+        // Fragrance Quiz
+        let quizAnswers = {};
+        function openFragranceQuiz() {
+            quizAnswers = {};
+            document.getElementById('quiz-step-container').classList.remove('hidden');
+            document.getElementById('quiz-result-container').classList.add('hidden');
+            document.getElementById('fragrance-quiz-modal').classList.remove('hidden');
+        }
+        function closeFragranceQuiz() { document.getElementById('fragrance-quiz-modal').classList.add('hidden'); }
+        function setQuizAnswer(key, val, btn) {
+            quizAnswers[key] = val;
+            btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('border-amber-400', 'bg-amber-400/20', 'text-amber-400'));
+            btn.classList.add('border-amber-400', 'bg-amber-400/20', 'text-amber-400');
+        }
+        function evaluateFragranceQuiz() {
+            const rec = store.findFragranceRecommendation(quizAnswers);
+            document.getElementById('quiz-step-container').classList.add('hidden');
+            const resBox = document.getElementById('quiz-result-container');
+            resBox.classList.remove('hidden');
+            if (rec) {
+                resBox.innerHTML = `
+                    <div class="space-y-3">
+                        <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Your Signature Scent</span>
+                        <div class="w-28 h-36 mx-auto rounded-2xl overflow-hidden border border-amber-500/40">
+                            <img src="${rec.thumbnail}" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="text-base font-serif font-bold text-white">${rec.name}</h4>
+                        <span class="text-xs font-bold text-amber-400 block">Rs. ${(rec.sale_price || rec.price).toLocaleString()}</span>
+                        <button onclick="store.addToCart(${rec.id}); closeFragranceQuiz(); showToast('Added to bag!'); openCartDrawer();" class="px-6 py-2.5 rounded-full btn-gold text-xs font-bold uppercase">Add to Bag</button>
+                    </div>
+                `;
+            }
+        }
+
+        // DOMContentLoaded Setup
+        document.addEventListener('DOMContentLoaded', () => {
+            store.init();
+            let products = store.getProducts();
+            if (!products || products.length === 0) products = DEFAULT_PRODUCTS;
+            let categories = store.getCategories();
+            if (!categories || categories.length === 0) categories = DEFAULT_CATEGORIES;
+
+            const headerBag = document.getElementById('header-bag-subtotal');
+            if (headerBag) headerBag.textContent = `Rs. ${store.getCartSubtotal().toLocaleString()}`;
+
+            initRealFlashTimer();
+
+            // Categories
+            const catContainer = document.getElementById('home-categories-container');
+            if (catContainer) {
+                catContainer.innerHTML = categories.map(c => `
+                    <a href="shop.html?category=${c.slug}" class="group luxury-card rounded-2xl p-4 flex flex-col items-center text-center transition transform hover:-translate-y-1">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-amber-500/30 group-hover:border-amber-400 p-1 transition transform group-hover:scale-105">
+                            <img src="${c.image_url}" class="w-full h-full object-cover rounded-full">
+                        </div>
+                        <h3 class="text-xs font-semibold text-zinc-100 group-hover:text-amber-400 transition mt-2.5">${c.name}</h3>
+                    </a>
+                `).join('');
+            }
+
+            // Curated Collections
+            const colGrid = document.getElementById('home-curated-collections-grid');
+            if (colGrid) {
+                const cols = store.getCollections ? store.getCollections() : DEFAULT_COLLECTIONS;
+                colGrid.innerHTML = cols.slice(0, 6).map(c => `
+                    <div class="luxury-card rounded-3xl overflow-hidden group relative min-h-[300px] flex flex-col justify-end p-6 border border-zinc-800 hover:border-amber-500/40">
+                        <img src="${c.image_url}" alt="${c.name}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700 brightness-50">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                        <div class="relative z-10 space-y-2">
+                            <span class="text-[10px] uppercase font-bold text-amber-400 tracking-widest">${c.tagline}</span>
+                            <h4 class="text-xl font-serif font-bold text-white">${c.name}</h4>
+                            <p class="text-xs text-zinc-300 line-clamp-2">${c.description}</p>
+                            <a href="shop.html?category=${c.category}&collection=${c.slug}" class="inline-block text-xs text-amber-300 font-bold hover:underline pt-1">
+                                Explore Collection (${c.count} pieces) &rarr;
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Flash Sale
+            const flashContainer = document.getElementById('flash-sale-products-grid');
+            if (flashContainer) {
+                const flashItems = products.filter(p => p.is_flash_sale || p.sale_price).slice(0, 4);
+                flashContainer.innerHTML = flashItems.map(p => 
+                    renderProductCard(p, `<span class="badge-sale px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase shadow">${Math.round(((p.price - (p.sale_price||p.price))/p.price)*100)}% OFF</span>`)
+                ).join('');
+            }
+
+            // New Arrivals
+            const newContainer = document.getElementById('new-arrivals-grid');
+            if (newContainer) {
+                const newItems = products.filter(p => p.is_new).slice(0, 4);
+                newContainer.innerHTML = newItems.map(p => 
+                    renderProductCard(p, `<span class="badge-new px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase shadow">New</span>`)
+                ).join('');
+            }
+
+            // Best Sellers
+            const bestContainer = document.getElementById('bestsellers-grid');
+            if (bestContainer) {
+                const bestItems = products.filter(p => p.is_bestseller).slice(0, 4);
+                bestContainer.innerHTML = bestItems.map(p => 
+                    renderProductCard(p, `<span class="badge-hot px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase shadow">Hot</span>`)
+                ).join('');
+            }
+
+            // Occasions
+            const occGrid = document.getElementById('home-occasions-grid');
+            if (occGrid) {
+                const occs = store.getOccasions ? store.getOccasions() : DEFAULT_OCCASIONS;
+                occGrid.innerHTML = occs.map(o => `
+                    <a href="shop.html?occasion=${o.slug}" class="luxury-card rounded-2xl p-3 flex flex-col items-center justify-center space-y-2 hover:border-amber-400 transition text-center">
+                        <div class="w-10 h-10 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center text-sm">
+                            <i class="fa-solid ${o.icon}"></i>
+                        </div>
+                        <span class="text-xs font-semibold text-zinc-200">${o.name}</span>
+                    </a>
+                `).join('');
+            }
+
+            // Recently Viewed
+            const recentGrid = document.getElementById('recently-viewed-grid');
+            if (recentGrid) {
+                const recent = store.getRecentlyViewed();
+                const toShow = recent.length > 0 ? recent : products.slice(0, 4);
+                recentGrid.innerHTML = toShow.slice(0, 4).map(p => renderProductCard(p)).join('');
+            }
+
+            // Reviews
+            const revGrid = document.getElementById('home-reviews-grid');
+            if (revGrid) {
+                const reviews = store.getReviews ? store.getReviews() : DEFAULT_REVIEWS;
+                revGrid.innerHTML = reviews.map(r => `
+                    <div class="luxury-card rounded-2xl p-5 space-y-3 border border-zinc-800/80">
+                        <div class="flex items-center justify-between text-amber-400 text-xs">
+                            <div>${'<i class="fa-solid fa-star"></i>'.repeat(r.rating)}</div>
+                            <span class="text-[10px] text-zinc-500">${r.date}</span>
+                        </div>
+                        <p class="text-xs text-zinc-300 leading-relaxed italic font-light">"${r.review}"</p>
+                        <div class="pt-2 border-t border-zinc-800/60 flex items-center justify-between">
+                            <div>
+                                <h5 class="text-xs font-bold text-white">${r.name}</h5>
+                                <span class="text-[10px] text-zinc-500">${r.city}</span>
+                            </div>
+                            <span class="text-[10px] text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-500/30">
+                                <i class="fa-solid fa-check"></i> Verified
+                            </span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Journal
+            const jGrid = document.getElementById('home-journal-grid');
+            if (jGrid) {
+                const articles = store.getJournalArticles ? store.getJournalArticles() : DEFAULT_JOURNAL;
+                jGrid.innerHTML = articles.map(a => `
+                    <div class="luxury-card rounded-2xl overflow-hidden group flex flex-col justify-between">
+                        <div class="aspect-[16/10] overflow-hidden">
+                            <img src="${a.image}" alt="${a.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between text-[10px] text-zinc-400">
+                                    <span class="text-amber-400 font-bold uppercase">${a.category}</span>
+                                    <span>${a.read_time}</span>
+                                </div>
+                                <h4 class="text-xs font-semibold text-white group-hover:text-amber-400 transition mt-1 line-clamp-2">${a.title}</h4>
+                            </div>
+                            <a href="javascript:void(0)" onclick="showToast('Read this feature in our upcoming Khushi Magazine issue!');" class="text-[11px] text-amber-300 font-bold hover:underline pt-2 block">
+                                Read Article &rarr;
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            setupLiveSearch('desktop-search-input', 'desktop-search-dropdown');
+            setupLiveSearch('mobile-search-input', 'mobile-search-dropdown');
+            store.applyStorefrontSettings();
+        });
+    </script>
+</body>
+</html>

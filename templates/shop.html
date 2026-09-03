@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+
+{% block title %}Shop All Collections — Khushi Collection{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<div class="bg-zinc-950/80 border-b border-zinc-800/80 py-3.5 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex items-center gap-2 text-xs text-zinc-400">
+        <a href="{{ url_for('storefront.home') }}" class="hover:text-amber-400">Home</a>
+        <i class="fa-solid fa-chevron-right text-[9px] text-zinc-600"></i>
+        <a href="{{ url_for('storefront.shop') }}" class="hover:text-amber-400">Shop</a>
+        {% if active_category %}
+        <i class="fa-solid fa-chevron-right text-[9px] text-zinc-600"></i>
+        <span class="text-amber-400 font-semibold">{{ active_category.name }}</span>
+        {% endif %}
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex flex-col lg:flex-row gap-8">
+        
+        <!-- Daraz-style Sidebar Filters -->
+        <aside class="w-full lg:w-64 flex-shrink-0 space-y-6">
+            <div class="luxury-card p-5 rounded-2xl space-y-6">
+                <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-amber-400 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders"></i> Filter Catalog
+                    </h3>
+                    <a href="{{ url_for('storefront.shop') }}" class="text-[11px] text-zinc-400 hover:text-rose-400 transition">Reset All</a>
+                </div>
+
+                <!-- Category Filter -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-200 mb-3">Categories</h4>
+                    <ul class="space-y-1.5 text-xs max-h-56 overflow-y-auto pr-1">
+                        <li>
+                            <a href="{{ url_for('storefront.shop', q=search_query) }}" class="flex items-center justify-between py-1 px-2 rounded-lg {% if not category_slug %}bg-amber-400/10 text-amber-400 font-bold{% else %}text-zinc-400 hover:text-white{% endif %}">
+                                <span>All Products</span>
+                            </a>
+                        </li>
+                        {% for cat in all_categories %}
+                        <li>
+                            <a href="{{ url_for('storefront.shop', category=cat.slug, q=search_query) }}" class="flex items-center justify-between py-1 px-2 rounded-lg {% if category_slug == cat.slug %}bg-amber-400/10 text-amber-400 font-bold{% else %}text-zinc-400 hover:text-white{% endif %} transition">
+                                <span>{{ cat.name }}</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Price Range Filter -->
+                <div class="pt-4 border-t border-zinc-800">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-200 mb-3">Price (PKR)</h4>
+                    <form method="GET" action="{{ url_for('storefront.shop') }}" class="space-y-2">
+                        {% if category_slug %}<input type="hidden" name="category" value="{{ category_slug }}">{% endif %}
+                        {% if search_query %}<input type="hidden" name="q" value="{{ search_query }}">{% endif %}
+                        {% if sort_by %}<input type="hidden" name="sort" value="{{ sort_by }}">{% endif %}
+
+                        <div class="flex items-center gap-2">
+                            <input type="number" name="min_price" value="{{ min_price or '' }}" placeholder="Min" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+                            <span class="text-zinc-500">-</span>
+                            <input type="number" name="max_price" value="{{ max_price or '' }}" placeholder="Max" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+                        </div>
+                        <button type="submit" class="w-full py-1.5 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider shadow">Apply Price</button>
+                    </form>
+                </div>
+
+                <!-- Size Filter -->
+                <div class="pt-4 border-t border-zinc-800">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-200 mb-3">Select Size</h4>
+                    <div class="flex flex-wrap gap-1.5">
+                        {% for sz in available_sizes %}
+                        <a href="{{ url_for('storefront.shop', category=category_slug, q=search_query, size=sz if selected_size != sz else '', sort=sort_by) }}" 
+                           class="px-2.5 py-1 text-xs rounded-lg border {% if selected_size == sz %}border-amber-400 bg-amber-400/20 text-amber-400 font-bold{% else %}border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500{% endif %} transition">
+                            {{ sz }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Brands -->
+                {% if brands %}
+                <div class="pt-4 border-t border-zinc-800">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-200 mb-3">Brand</h4>
+                    <div class="space-y-1.5 max-h-40 overflow-y-auto text-xs text-zinc-400">
+                        {% for b in brands %}
+                        <a href="{{ url_for('storefront.shop', category=category_slug, q=search_query, brand=b if brand != b else '', sort=sort_by) }}" class="flex items-center gap-2 py-1 px-1.5 rounded hover:bg-zinc-800 transition {% if brand == b %}text-amber-400 font-bold{% endif %}">
+                            <i class="fa-regular {% if brand == b %}fa-square-check text-amber-400{% else %}fa-square text-zinc-600{% endif %}"></i>
+                            <span>{{ b }}</span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Availability -->
+                <div class="pt-4 border-t border-zinc-800">
+                    <a href="{{ url_for('storefront.shop', category=category_slug, q=search_query, availability='in_stock' if availability != 'in_stock' else '', sort=sort_by) }}" class="flex items-center justify-between text-xs py-1 px-1.5 rounded hover:bg-zinc-800 transition {% if availability == 'in_stock' %}text-emerald-400 font-bold{% else %}text-zinc-400{% endif %}">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle text-[8px] text-emerald-400"></i>
+                            <span>In Stock Only</span>
+                        </span>
+                        {% if availability == 'in_stock' %}<i class="fa-solid fa-check"></i>{% endif %}
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Product Section -->
+        <div class="flex-1">
+            
+            <!-- Filter Bar & Sorting Controls -->
+            <div class="luxury-card p-4 rounded-2xl mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-zinc-400">
+                    Showing <span class="text-white font-bold">{{ products|length }}</span> of <span class="text-amber-400 font-bold">{{ total_products }}</span> items
+                    {% if search_query %} for "<span class="text-white font-semibold">{{ search_query }}</span>"{% endif %}
+                </p>
+
+                <!-- Sort dropdown -->
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                    <label class="text-xs text-zinc-400 uppercase font-semibold tracking-wider">Sort by:</label>
+                    <form method="GET" action="{{ url_for('storefront.shop') }}" class="inline">
+                        {% if category_slug %}<input type="hidden" name="category" value="{{ category_slug }}">{% endif %}
+                        {% if search_query %}<input type="hidden" name="q" value="{{ search_query }}">{% endif %}
+                        {% if min_price %}<input type="hidden" name="min_price" value="{{ min_price }}">{% endif %}
+                        {% if max_price %}<input type="hidden" name="max_price" value="{{ max_price }}">{% endif %}
+                        {% if selected_size %}<input type="hidden" name="size" value="{{ selected_size }}">{% endif %}
+                        {% if brand %}<input type="hidden" name="brand" value="{{ brand }}">{% endif %}
+                        
+                        <select name="sort" onchange="this.form.submit()" class="bg-zinc-900 border border-zinc-700 text-xs text-white rounded-xl px-3 py-1.5 focus:outline-none focus:border-amber-400">
+                            <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest Drops</option>
+                            <option value="popular" {% if sort_by == 'popular' %}selected{% endif %}>Most Popular</option>
+                            <option value="price_low" {% if sort_by == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                            <option value="price_high" {% if sort_by == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                            <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Best Rated</option>
+                            <option value="discount" {% if sort_by == 'discount' %}selected{% endif %}>Highest Discount</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            {% if products %}
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                {% for product in products %}
+                <div class="product-card luxury-card rounded-2xl overflow-hidden flex flex-col group relative">
+                    <!-- Badges -->
+                    <div class="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
+                        {% if product.sale_price %}
+                        <span class="badge-sale px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider shadow-lg">
+                            {{ (((product.price - product.sale_price) / product.price) * 100)|int }}% OFF
+                        </span>
+                        {% elif product.is_new %}
+                        <span class="badge-new px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider shadow-lg">New</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Wishlist button -->
+                    <button onclick="toggleWishlist({{ product.id }}, this)" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/80 flex items-center justify-center text-zinc-300 hover:text-rose-500 transition shadow">
+                        <i class="fa-regular fa-heart text-xs"></i>
+                    </button>
+
+                    <!-- Image -->
+                    <a href="{{ url_for('storefront.product_detail', slug=product.slug) }}" class="product-image-container block aspect-[4/5] bg-zinc-950">
+                        <img src="{{ product.thumbnail }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+                    </a>
+
+                    <!-- Information -->
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold tracking-wider text-zinc-400">{{ product.brand or 'Khushi Collection' }}</span>
+                            <h4 class="text-xs sm:text-sm font-semibold text-zinc-100 group-hover:text-amber-400 transition truncate mt-0.5">
+                                <a href="{{ url_for('storefront.product_detail', slug=product.slug) }}">{{ product.name }}</a>
+                            </h4>
+                            
+                            <!-- Rating -->
+                            <div class="flex items-center gap-1.5 mt-1.5">
+                                <div class="flex text-amber-400 text-[10px]">
+                                    <i class="fa-solid fa-star"></i>
+                                    <span class="text-xs font-bold text-zinc-200 ml-1">{{ product.rating }}</span>
+                                </div>
+                                <span class="text-[10px] text-zinc-500">({{ product.reviews_count }})</span>
+                            </div>
+
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="text-sm sm:text-base font-bold text-amber-400">Rs. {{ "{:,}".format(product.sale_price|int if product.sale_price else product.price|int) }}</span>
+                                {% if product.sale_price %}
+                                <span class="text-xs line-through text-zinc-500">Rs. {{ "{:,}".format(product.price|int) }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Card Action buttons -->
+                        <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2">
+                            <button onclick="openQuickView({{ product.id }})" class="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition" title="Quick View">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                            <button onclick="addToCart({{ product.id }})" class="flex-1 py-2 px-3 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow">
+                                <i class="fa-solid fa-bag-shopping text-[11px]"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if total_pages > 1 %}
+            <div class="mt-12 flex justify-center items-center gap-2">
+                {% if page > 1 %}
+                <a href="{{ url_for('storefront.shop', page=page-1, category=category_slug, q=search_query, sort=sort_by) }}" class="px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-semibold hover:border-amber-400 transition">
+                    &larr; Prev
+                </a>
+                {% endif %}
+
+                {% for p in range(1, total_pages + 1) %}
+                <a href="{{ url_for('storefront.shop', page=p, category=category_slug, q=search_query, sort=sort_by) }}" class="w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold transition {% if p == page %}btn-gold text-black{% else %}bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-amber-400{% endif %}">
+                    {{ p }}
+                </a>
+                {% endfor %}
+
+                {% if page < total_pages %}
+                <a href="{{ url_for('storefront.shop', page=page+1, category=category_slug, q=search_query, sort=sort_by) }}" class="px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-semibold hover:border-amber-400 transition">
+                    Next &rarr;
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% else %}
+            <!-- Empty state -->
+            <div class="luxury-card p-12 rounded-3xl text-center">
+                <div class="w-16 h-16 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 mx-auto mb-4 text-2xl">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <h3 class="text-lg font-serif font-bold text-white">No products found</h3>
+                <p class="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">We couldn't find any items matching your selected criteria. Try adjusting your filters or search keywords.</p>
+                <a href="{{ url_for('storefront.shop') }}" class="inline-block mt-6 px-6 py-2.5 rounded-full btn-gold text-xs font-bold uppercase tracking-wider">
+                    Reset All Filters
+                </a>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

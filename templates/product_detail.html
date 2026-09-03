@@ -1,0 +1,362 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} — Khushi Collection Luxury Fashion{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<div class="bg-zinc-950/80 border-b border-zinc-800/80 py-3.5 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex items-center gap-2 text-xs text-zinc-400">
+        <a href="{{ url_for('storefront.home') }}" class="hover:text-amber-400">Home</a>
+        <i class="fa-solid fa-chevron-right text-[9px] text-zinc-600"></i>
+        <a href="{{ url_for('storefront.shop') }}" class="hover:text-amber-400">Shop</a>
+        <i class="fa-solid fa-chevron-right text-[9px] text-zinc-600"></i>
+        <a href="{{ url_for('storefront.shop', category=product.category_slug) }}" class="hover:text-amber-400">{{ product.category_name }}</a>
+        <i class="fa-solid fa-chevron-right text-[9px] text-zinc-600"></i>
+        <span class="text-amber-400 font-semibold truncate max-w-xs">{{ product.name }}</span>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        
+        <!-- Left: Image Gallery (7 cols) -->
+        <div class="lg:col-span-7 space-y-4">
+            <div class="relative rounded-3xl overflow-hidden bg-zinc-950 border border-amber-500/20 shadow-2xl group">
+                <img id="main-product-image" src="{{ images[0] if images else product.thumbnail }}" alt="{{ product.name }}" class="w-full h-[480px] sm:h-[620px] object-cover object-top transition duration-500 transform group-hover:scale-105">
+                
+                {% if product.sale_price %}
+                <span class="absolute top-4 left-4 badge-sale px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg">
+                    {{ (((product.price - product.sale_price) / product.price) * 100)|int }}% OFF
+                </span>
+                {% endif %}
+
+                {% if product.video_url %}
+                <a href="{{ product.video_url }}" target="_blank" class="absolute bottom-4 right-4 bg-black/70 backdrop-blur-md border border-amber-400/40 text-amber-400 px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2 shadow hover:bg-black transition">
+                    <i class="fa-solid fa-circle-play text-sm"></i> Watch Runway Video
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Thumbnail Selector Carousel -->
+            {% if images|length > 1 %}
+            <div class="flex items-center gap-3 overflow-x-auto pb-2">
+                {% for img in images %}
+                <button type="button" onclick="switchMainImage('{{ img }}', this)" class="thumb-btn flex-shrink-0 w-20 h-24 rounded-xl overflow-hidden border-2 transition {% if loop.first %}border-amber-400 ring-2 ring-amber-400/30{% else %}border-zinc-800 opacity-60 hover:opacity-100{% endif %}">
+                    <img src="{{ img }}" alt="Thumbnail {{ loop.index }}" class="w-full h-full object-cover">
+                </button>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Right: Purchase Controls & Details (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-6">
+            <div>
+                <!-- Brand & Stock status -->
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-400">{{ product.brand or 'Khushi Couture' }}</span>
+                    <span class="text-xs px-3 py-1 rounded-full font-bold {% if product.stock > product.low_stock_threshold %}bg-emerald-950/80 text-emerald-400 border border-emerald-500/30{% elif product.stock > 0 %}bg-amber-950/80 text-amber-400 border border-amber-500/30{% else %}bg-rose-950/80 text-rose-400 border border-rose-500/30{% endif %}">
+                        {% if product.stock > product.low_stock_threshold %}
+                            <i class="fa-solid fa-circle-check mr-1 text-[10px]"></i> In Stock
+                        {% elif product.stock > 0 %}
+                            <i class="fa-solid fa-triangle-exclamation mr-1 text-[10px]"></i> Only {{ product.stock }} left!
+                        {% else %}
+                            <i class="fa-solid fa-circle-xmark mr-1 text-[10px]"></i> Out of Stock
+                        {% endif %}
+                    </span>
+                </div>
+
+                <h1 class="text-2xl sm:text-3xl font-serif font-bold text-white mt-2 leading-tight">{{ product.name }}</h1>
+
+                <!-- Rating & SKU -->
+                <div class="flex items-center justify-between text-xs text-zinc-400 mt-3 pb-4 border-b border-zinc-800">
+                    <div class="flex items-center gap-2">
+                        <div class="flex text-amber-400 text-xs">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i>
+                        </div>
+                        <span class="text-white font-bold text-xs">{{ product.rating }}</span>
+                        <a href="#reviews" class="text-zinc-400 hover:text-amber-400 underline">({{ product.reviews_count }} verified reviews)</a>
+                    </div>
+                    <span class="font-mono text-zinc-500 text-[11px]">SKU: {{ product.sku }}</span>
+                </div>
+
+                <!-- Price section -->
+                <div class="flex items-baseline gap-3 my-5">
+                    <span class="text-3xl font-bold text-amber-400">Rs. {{ "{:,}".format(product.sale_price|int if product.sale_price else product.price|int) }}</span>
+                    {% if product.sale_price %}
+                    <span class="text-base line-through text-zinc-500">Rs. {{ "{:,}".format(product.price|int) }}</span>
+                    <span class="text-xs font-extrabold text-rose-400 bg-rose-950/80 px-2 py-0.5 rounded border border-rose-500/30">
+                        Save Rs. {{ "{:,}".format((product.price - product.sale_price)|int) }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <p class="text-xs text-zinc-300 leading-relaxed font-light">{{ product.description }}</p>
+
+                <!-- Sizes -->
+                {% if sizes %}
+                <div class="mt-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="text-xs font-bold uppercase tracking-wider text-zinc-300">Select Size</label>
+                        <a href="{{ url_for('storefront.size_guide') }}" target="_blank" class="text-xs text-amber-400 hover:underline flex items-center gap-1">
+                            <i class="fa-solid fa-ruler-horizontal text-[10px]"></i> Size Guide
+                        </a>
+                    </div>
+                    <div class="flex flex-wrap gap-2" id="detail-size-selector">
+                        {% for s in sizes %}
+                        <button type="button" onclick="selectVariantOption(this, 'size')" data-val="{{ s }}" class="size-btn px-4 py-2 rounded-xl border text-xs font-semibold transition {% if loop.first %}border-amber-400 bg-amber-400/10 text-amber-400{% else %}border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500{% endif %}">
+                            {{ s }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Colors -->
+                {% if colors %}
+                <div class="mt-5">
+                    <label class="text-xs font-bold uppercase tracking-wider text-zinc-300 block mb-2">Select Shade / Color</label>
+                    <div class="flex flex-wrap gap-3" id="detail-color-selector">
+                        {% for c in colors %}
+                        <button type="button" onclick="selectVariantOption(this, 'color')" data-val="{{ c.name }}" title="{{ c.name }}" class="color-btn w-8 h-8 rounded-full border-2 transition relative flex items-center justify-center {% if loop.first %}ring-2 ring-amber-400 ring-offset-2 ring-offset-[#0A0D14]{% else %}border-zinc-700{% endif %}" style="background-color: {{ c.hex }};">
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Quantity & Actions -->
+                <div class="mt-8 space-y-3">
+                    <div class="flex items-center gap-3">
+                        <!-- Qty -->
+                        <div class="flex items-center border border-zinc-700 rounded-xl overflow-hidden bg-zinc-900 h-12">
+                            <button type="button" onclick="adjustProductQty(-1)" class="px-3.5 text-zinc-400 hover:bg-zinc-800 transition">-</button>
+                            <span id="detail-product-qty" class="px-4 text-xs font-bold text-white">1</span>
+                            <button type="button" onclick="adjustProductQty(1)" class="px-3.5 text-zinc-400 hover:bg-zinc-800 transition">+</button>
+                        </div>
+
+                        <!-- Add to Bag -->
+                        <button type="button" onclick="handleDetailAddToCart()" class="flex-1 h-12 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl">
+                            <i class="fa-solid fa-bag-shopping"></i> Add to Bag
+                        </button>
+
+                        <!-- Wishlist -->
+                        <button type="button" onclick="toggleWishlist({{ product.id }}, this)" class="h-12 w-12 rounded-xl bg-zinc-900 border border-zinc-700 hover:border-rose-500 text-zinc-300 hover:text-rose-500 flex items-center justify-center text-base transition">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    </div>
+
+                    <!-- Direct Buy Now -->
+                    <button type="button" onclick="handleBuyNow()" class="w-full h-12 rounded-xl border border-amber-400/80 hover:bg-amber-400/10 text-amber-400 text-xs font-bold uppercase tracking-widest transition">
+                        Instant Checkout / Buy Now
+                    </button>
+                </div>
+
+                <!-- Trust Guarantee Pills -->
+                <div class="grid grid-cols-2 gap-3 mt-6 pt-6 border-t border-zinc-800 text-[11px] text-zinc-400">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-truck text-amber-400"></i>
+                        <span>Nationwide Express Courier</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-left text-amber-400"></i>
+                        <span>7-Day Hassle-Free Exchange</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-amber-400"></i>
+                        <span>100% Genuine Designer Fabric</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+                        <a href="https://wa.me/{{ store_settings.get('store_whatsapp', '923001234567') }}?text={{ ('Interested in ' ~ product.name)|urlencode }}" target="_blank" class="hover:underline">
+                            Inquire on WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Specifications, Delivery, and Return Policy Tabs -->
+    <div class="mt-16 luxury-card rounded-3xl p-6 sm:p-10">
+        <div class="border-b border-zinc-800 flex gap-6 text-xs uppercase tracking-wider font-bold">
+            <button onclick="switchTab('specs', this)" class="tab-btn pb-3 text-amber-400 border-b-2 border-amber-400 transition">Specifications</button>
+            <button onclick="switchTab('delivery', this)" class="tab-btn pb-3 text-zinc-400 hover:text-white transition">Delivery & Shipping</button>
+            <button onclick="switchTab('returns', this)" class="tab-btn pb-3 text-zinc-400 hover:text-white transition">Returns & Exchange</button>
+        </div>
+
+        <div id="tab-specs" class="tab-content pt-6">
+            {% if specifications %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
+                {% for key, val in specifications.items() %}
+                <div class="flex justify-between py-2.5 px-4 rounded-xl bg-zinc-900/60 border border-zinc-800 text-xs">
+                    <span class="text-zinc-400 font-medium">{{ key }}</span>
+                    <span class="text-zinc-100 font-bold">{{ val }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-xs text-zinc-400">Premium collection piece carefully tailored according to highest Pakistani couture standards.</p>
+            {% endif %}
+        </div>
+
+        <div id="tab-delivery" class="tab-content pt-6 hidden text-xs text-zinc-300 space-y-3 leading-relaxed max-w-2xl">
+            <p>• <strong>Islamabad & Rawalpindi:</strong> Delivery within 24 to 48 hours (Rs. 150).</p>
+            <p>• <strong>Lahore:</strong> Same day / Next day dispatch (Rs. 180).</p>
+            <p>• <strong>Karachi & Other Major Cities:</strong> 2 to 4 business days via Trax / Leopard / TCS (Rs. 250).</p>
+            <p>• <strong>Free Delivery:</strong> Applied automatically on all orders above Rs. 5,000.</p>
+        </div>
+
+        <div id="tab-returns" class="tab-content pt-6 hidden text-xs text-zinc-300 space-y-3 leading-relaxed max-w-2xl">
+            <p>• We want you to love your purchase! If the size doesn't fit or you need an alternate color, request an exchange within <strong>7 days</strong> of parcel receipt.</p>
+            <p>• Items must be unworn, in original luxury presentation packaging with all designer tags attached.</p>
+            <p>• For speedy support, simply message our WhatsApp helpline with your Order ID.</p>
+        </div>
+    </div>
+
+    <!-- Verified Customer Reviews -->
+    <div id="reviews" class="mt-16">
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Client Feedback</span>
+                <h3 class="text-2xl font-serif font-bold text-white">Verified Customer Reviews</h3>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Review List (2 cols) -->
+            <div class="lg:col-span-2 space-y-4">
+                {% if reviews %}
+                    {% for rev in reviews %}
+                    <div class="luxury-card p-5 rounded-2xl space-y-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-white">{{ rev.customer_name }}</span>
+                                <span class="text-[10px] text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded font-semibold border border-emerald-500/20">
+                                    <i class="fa-solid fa-check-double text-[9px] mr-1"></i> Verified Purchase
+                                </span>
+                            </div>
+                            <div class="flex text-amber-400 text-xs">
+                                {% for i in range(rev.rating) %}
+                                <i class="fa-solid fa-star"></i>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p class="text-xs text-zinc-300 leading-relaxed font-light">{{ rev.comment }}</p>
+                        <span class="text-[10px] text-zinc-500 block pt-1">{{ rev.created_at[:10] }}</span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="p-8 rounded-2xl bg-zinc-900/60 border border-zinc-800 text-center text-xs text-zinc-400">
+                        No reviews yet. Be the first to review this magnificent piece!
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Write a Review Form (1 col) -->
+            <div class="luxury-card p-6 rounded-2xl space-y-4 h-fit">
+                <h4 class="text-sm font-serif font-bold text-white">Add Your Experience</h4>
+                <form onsubmit="event.preventDefault(); showToast('Thank you! Your verified review has been submitted.', 'success'); this.reset();" class="space-y-3">
+                    <div>
+                        <label class="text-[11px] text-zinc-400 block mb-1">Your Full Name</label>
+                        <input type="text" required placeholder="Khushi Fatima" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-zinc-400 block mb-1">Star Rating</label>
+                        <select class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                            <option value="5">★★★★★ (5/5) Masterpiece</option>
+                            <option value="4">★★★★☆ (4/5) Very Good</option>
+                            <option value="3">★★★☆☆ (3/5) Average</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-zinc-400 block mb-1">Review Comments</label>
+                        <textarea rows="3" required placeholder="Tell other fashion lovers about the fabric, fit, and elegance..." class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-2.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    {% if related_products %}
+    <div class="mt-20">
+        <h3 class="text-2xl font-serif font-bold text-white mb-6">You May Also Like</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {% for rp in related_products %}
+            <div class="product-card luxury-card rounded-2xl overflow-hidden flex flex-col group">
+                <a href="{{ url_for('storefront.product_detail', slug=rp.slug) }}" class="aspect-[4/5] block bg-zinc-950">
+                    <img src="{{ rp.thumbnail }}" alt="{{ rp.name }}" class="w-full h-full object-cover">
+                </a>
+                <div class="p-4 flex-1 flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] text-zinc-400 uppercase font-bold">{{ rp.brand }}</span>
+                        <h5 class="text-xs font-semibold text-white truncate mt-0.5">
+                            <a href="{{ url_for('storefront.product_detail', slug=rp.slug) }}">{{ rp.name }}</a>
+                        </h5>
+                        <span class="text-xs font-bold text-amber-400 block mt-1">Rs. {{ "{:,}".format(rp.sale_price|int if rp.sale_price else rp.price|int) }}</span>
+                    </div>
+                    <button onclick="addToCart({{ rp.id }})" class="mt-3 w-full py-1.5 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider">Add to Bag</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let currentQty = 1;
+
+    function adjustProductQty(delta) {
+        currentQty = Math.max(1, currentQty + delta);
+        document.getElementById('detail-product-qty').textContent = currentQty;
+    }
+
+    function switchMainImage(url, btn) {
+        document.getElementById('main-product-image').src = url;
+        document.querySelectorAll('.thumb-btn').forEach(b => {
+            b.className = 'thumb-btn flex-shrink-0 w-20 h-24 rounded-xl overflow-hidden border-2 border-zinc-800 opacity-60 hover:opacity-100 transition';
+        });
+        btn.className = 'thumb-btn flex-shrink-0 w-20 h-24 rounded-xl overflow-hidden border-2 border-amber-400 ring-2 ring-amber-400/30 transition';
+    }
+
+    function switchTab(tabName, btn) {
+        document.querySelectorAll('.tab-btn').forEach(b => {
+            b.className = 'tab-btn pb-3 text-zinc-400 hover:text-white transition';
+        });
+        btn.className = 'tab-btn pb-3 text-amber-400 border-b-2 border-amber-400 transition';
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+    }
+
+    function handleDetailAddToCart() {
+        const sizeBtn = document.querySelector('#detail-size-selector .border-amber-400');
+        const colorBtn = document.querySelector('#detail-color-selector .ring-amber-400');
+        const size = sizeBtn ? sizeBtn.getAttribute('data-val') : '';
+        const color = colorBtn ? colorBtn.getAttribute('data-val') : '';
+        addToCart({{ product.id }}, currentQty, size, color);
+    }
+
+    async function handleBuyNow() {
+        const sizeBtn = document.querySelector('#detail-size-selector .border-amber-400');
+        const colorBtn = document.querySelector('#detail-color-selector .ring-amber-400');
+        const size = sizeBtn ? sizeBtn.getAttribute('data-val') : '';
+        const color = colorBtn ? colorBtn.getAttribute('data-val') : '';
+        
+        await fetch('/api/cart/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ product_id: {{ product.id }}, quantity: currentQty, size, color })
+        });
+        window.location.href = "{{ url_for('storefront.checkout') }}";
+    }
+</script>
+{% endblock %}

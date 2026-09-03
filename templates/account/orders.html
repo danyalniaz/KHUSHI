@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}My Orders — Khushi Collection{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="pb-6 border-b border-zinc-800 mb-8 flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-serif font-bold text-white">Order History</h1>
+            <p class="text-xs text-zinc-400 mt-1">Review past orders, track delivery parcels, and view official invoices</p>
+        </div>
+        <a href="{{ url_for('account.dashboard') }}" class="text-xs text-amber-400 hover:underline">
+            &larr; Back to Account
+        </a>
+    </div>
+
+    {% if orders %}
+    <div class="space-y-4">
+        {% for o in orders %}
+        <div class="luxury-card p-6 rounded-3xl space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-zinc-800">
+                <div>
+                    <span class="text-xs text-zinc-400 uppercase font-bold">Order Reference</span>
+                    <h3 class="text-lg font-mono font-bold text-amber-400">#{{ o.order_number }}</h3>
+                    <span class="text-[11px] text-zinc-400">{{ o.created_at }}</span>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider {% if o.order_status == 'delivered' %}bg-emerald-950 text-emerald-400 border border-emerald-500/30{% elif o.order_status in ('shipped', 'on_the_way') %}bg-amber-950 text-amber-400 border border-amber-500/30{% else %}bg-zinc-800 text-zinc-300 border border-zinc-700{% endif %}">
+                        {{ o.order_status.replace('_', ' ').title() }}
+                    </span>
+                    <a href="{{ url_for('storefront.track_order', order_id=o.order_number, phone=o.customer_phone) }}" class="py-1.5 px-3.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider shadow">
+                        Track &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-zinc-300">
+                <div>
+                    <p><strong class="text-zinc-400">Shipped To:</strong> {{ o.customer_name }}, {{ o.address }}, {{ o.city }}</p>
+                    <p class="mt-0.5"><strong class="text-zinc-400">Payment:</strong> {{ o.payment_method|upper }} ({{ o.payment_status|title }})</p>
+                </div>
+                <div class="text-right sm:text-right">
+                    <span class="text-[11px] text-zinc-400 block">Total Amount Paid</span>
+                    <span class="text-lg font-serif font-bold text-white">Rs. {{ "{:,}".format(o.total_amount|int) }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="luxury-card p-12 rounded-3xl text-center">
+        <p class="text-xs text-zinc-400">No orders placed yet.</p>
+        <a href="{{ url_for('storefront.shop') }}" class="inline-block mt-4 px-6 py-2.5 rounded-full btn-gold text-xs font-bold uppercase">Browse Catalog</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
