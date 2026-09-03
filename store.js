@@ -162,6 +162,4724 @@ const DEFAULT_PRODUCTS = [
         "category": "women",
         "subcategory": "Dresses",
         "category_name": "Women Couture",
+        "brand": "Khushi Collection",
+        "sku": "KC-WMN-001",
+        "price": 18500,
+        "sale_price": 14950,
+        "cost_price": 10175,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 23,
+        "thumbnail": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Signature hand-embroidered velvet 3-piece suit with plush border shawl and tailored raw silk pants.",
+        "description": "Signature hand-embroidered velvet 3-piece suit with plush border shawl and tailored raw silk pants. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "colors": [
+            {
+                "name": "Emerald Green",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Ruby Maroon",
+                "hex": "#881337"
+            },
+            {
+                "name": "Midnight Black",
+                "hex": "#09090b"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Imperial Zardozi Raw Silk Peshwas",
+        "slug": "imperial-zardozi-raw-silk-peshwas",
+        "category": "women",
+        "subcategory": "Dresses",
+        "category_name": "Women Couture",
+        "brand": "Khushi Collection",
+        "sku": "KC-WMN-002",
+        "price": 28500,
+        "sale_price": 24500,
+        "cost_price": 15675,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 28,
+        "thumbnail": "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Floor-length 16-kali pure raw silk peshwas heavily encrusted with dabka, kora, and French knot sequins.",
+        "description": "Floor-length 16-kali pure raw silk peshwas heavily encrusted with dabka, kora, and French knot sequins. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "colors": [
+            {
+                "name": "Royal Plum",
+                "hex": "#701a75"
+            },
+            {
+                "name": "Sapphire Azure",
+                "hex": "#0284c7"
+            },
+            {
+                "name": "Antique Gold",
+                "hex": "#ca8a04"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Noor-e-Jahan Bamberg Chiffon Saree",
+        "slug": "noor-e-jahan-bamberg-chiffon-saree",
+        "category": "women",
+        "subcategory": "Sarees",
+        "category_name": "Women Couture",
+        "brand": "Khushi Collection",
+        "sku": "KC-WMN-003",
+        "price": 22000,
+        "sale_price": 18900,
+        "cost_price": 12100,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 33,
+        "thumbnail": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Pure 80gm Bamberg chiffon 6-yard saree with hand-cut scalloped borders and embroidered blouse piece.",
+        "description": "Pure 80gm Bamberg chiffon 6-yard saree with hand-cut scalloped borders and embroidered blouse piece. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Free Size / Custom"
+        ],
+        "colors": [
+            {
+                "name": "Crimson Scarlet",
+                "hex": "#991b1b"
+            },
+            {
+                "name": "Navy Midnight",
+                "hex": "#1e1b4b"
+            },
+            {
+                "name": "Bottle Green",
+                "hex": "#14532d"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Gul-e-Rana Embroidered Organza Angrakha",
+        "slug": "gul-e-rana-embroidered-organza-angrakha",
+        "category": "women",
+        "subcategory": "Dresses",
+        "category_name": "Women Couture",
+        "brand": "Khushi Collection",
+        "sku": "KC-WMN-004",
+        "price": 19500,
+        "sale_price": 16200,
+        "cost_price": 10725,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.9,
+        "reviews_count": 38,
+        "thumbnail": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Sheer organza flared angrakha with resham florals and pearl handwork paired with crushed silk sharara.",
+        "description": "Sheer organza flared angrakha with resham florals and pearl handwork paired with crushed silk sharara. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "colors": [
+            {
+                "name": "Rose Quartz",
+                "hex": "#f43f5e"
+            },
+            {
+                "name": "Sunset Ochre",
+                "hex": "#d97706"
+            },
+            {
+                "name": "Lilac Bloom",
+                "hex": "#a855f7"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Mughal Jaal Silk Shalwar Kameez",
+        "slug": "mughal-jaal-silk-shalwar-kameez",
+        "category": "women",
+        "subcategory": "Shalwar Kameez",
+        "category_name": "Women Couture",
+        "brand": "Khushi Collection",
+        "sku": "KC-WMN-005",
+        "price": 14500,
+        "sale_price": 11900,
+        "cost_price": 7975,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 43,
+        "thumbnail": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Straight silhouette silk tunic with Kashmiri tilla neckline and traditional tulip shalwar.",
+        "description": "Straight silhouette silk tunic with Kashmiri tilla neckline and traditional tulip shalwar. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "colors": [
+            {
+                "name": "Charcoal Jet",
+                "hex": "#1c1917"
+            },
+            {
+                "name": "Cobalt Royal",
+                "hex": "#1e3a8a"
+            },
+            {
+                "name": "Forest Emerald",
+                "hex": "#047857"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Shahtush Kashmiri Handwoven Wrap Kaftan",
+        "slug": "shahtush-kashmiri-handwoven-wrap-kaftan",
+        "category": "women",
+        "subcategory": "Abayas",
+        "category_name": "Women Couture",
+        "brand": "Khushi Collection",
+        "sku": "KC-WMN-006",
+        "price": 24000,
+        "sale_price": 19800,
+        "cost_price": 13200,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 48,
+        "thumbnail": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Flowing Moroccan cut kaftan in fine blended wool with handmade metallic bullion tassel belt.",
+        "description": "Flowing Moroccan cut kaftan in fine blended wool with handmade metallic bullion tassel belt. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Free Size"
+        ],
+        "colors": [
+            {
+                "name": "Obsidian",
+                "hex": "#0f172a"
+            },
+            {
+                "name": "Rich Maroon",
+                "hex": "#450a0a"
+            },
+            {
+                "name": "Deep Pine",
+                "hex": "#14532d"
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "name": "Zar-Baf Handcrafted Bridal Lehenga",
+        "slug": "zar-baf-handcrafted-bridal-lehenga",
+        "category": "women",
+        "subcategory": "Dresses",
+        "category_name": "Women Couture",
+        "brand": "Khushi Collection",
+        "sku": "KC-WMN-007",
+        "price": 45000,
+        "sale_price": 39500,
+        "cost_price": 24750,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 53,
+        "thumbnail": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Grand bridal lehenga set adorned with 3D floral crystals, mukesh net dupatta, and heirloom zardozi blouse.",
+        "description": "Grand bridal lehenga set adorned with 3D floral crystals, mukesh net dupatta, and heirloom zardozi blouse. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "Custom"
+        ],
+        "colors": [
+            {
+                "name": "Deep Bridal Red",
+                "hex": "#b91c1c"
+            },
+            {
+                "name": "Plum Royale",
+                "hex": "#831843"
+            },
+            {
+                "name": "Antique Rust",
+                "hex": "#78350f"
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "name": "Aab-e-Rawaan Tissue Silk Tunic",
+        "slug": "aab-e-rawaan-tissue-silk-tunic",
+        "category": "women",
+        "subcategory": "Tops",
+        "category_name": "Women Couture",
+        "brand": "Khushi Collection",
+        "sku": "KC-WMN-008",
+        "price": 12500,
+        "sale_price": null,
+        "cost_price": 6875,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 58,
+        "thumbnail": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Contemporary high-slit raw tissue tunic featuring scalloped resham cuffs and mother-of-pearl buttons.",
+        "description": "Contemporary high-slit raw tissue tunic featuring scalloped resham cuffs and mother-of-pearl buttons. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "colors": [
+            {
+                "name": "Champagne Gold",
+                "hex": "#fef08a"
+            },
+            {
+                "name": "Icy Frost Blue",
+                "hex": "#bae6fd"
+            },
+            {
+                "name": "Blush Petal",
+                "hex": "#fbcfe8"
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "name": "Nawabi Jamawar Flared Gharara Suit",
+        "slug": "nawabi-jamawar-flared-gharara-suit",
+        "category": "women",
+        "subcategory": "Dresses",
+        "category_name": "Women Couture",
+        "brand": "Khushi Collection",
+        "sku": "KC-WMN-009",
+        "price": 21500,
+        "sale_price": 17800,
+        "cost_price": 11825,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 63,
+        "thumbnail": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Classic 2-tiered woven Banarsi jamawar gharara with pure katan silk kurta and sitara organza dupatta.",
+        "description": "Classic 2-tiered woven Banarsi jamawar gharara with pure katan silk kurta and sitara organza dupatta. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "S",
+            "M",
+            "L"
+        ],
+        "colors": [
+            {
+                "name": "Emerald Velvet",
+                "hex": "#065f46"
+            },
+            {
+                "name": "Persian Rose",
+                "hex": "#831843"
+            },
+            {
+                "name": "Royal Midnight",
+                "hex": "#1e1b4b"
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "name": "Mehr-un-Nisa Chikan Kari Luxury Pret",
+        "slug": "mehr-un-nisa-chikan-kari-luxury-pret",
+        "category": "women",
+        "subcategory": "Shalwar Kameez",
+        "category_name": "Women Couture",
+        "brand": "Khushi Collection",
+        "sku": "KC-WMN-010",
+        "price": 13900,
+        "sale_price": 11500,
+        "cost_price": 7645,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 68,
+        "thumbnail": "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Intricate shadow-work chikan embroidery with crochet lace inlays on soft lawn and silk dupatta.",
+        "description": "Intricate shadow-work chikan embroidery with crochet lace inlays on soft lawn and silk dupatta. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "colors": [
+            {
+                "name": "Pure Ivory",
+                "hex": "#f8fafc"
+            },
+            {
+                "name": "Butter Buttercup",
+                "hex": "#fef3c7"
+            },
+            {
+                "name": "Soft Pink",
+                "hex": "#fce7f3"
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "name": "Shah Bano Banarasi Brocade Anarkali",
+        "slug": "shah-bano-banarasi-brocade-anarkali",
+        "category": "women",
+        "subcategory": "Dresses",
+        "category_name": "Women Couture",
+        "brand": "Khushi Collection",
+        "sku": "KC-WMN-011",
+        "price": 26000,
+        "sale_price": 21900,
+        "cost_price": 14300,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 73,
+        "thumbnail": "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Heavily flared brocade Anarkali with woven gold tilla motifs and contrasting marori border.",
+        "description": "Heavily flared brocade Anarkali with woven gold tilla motifs and contrasting marori border. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "S",
+            "M",
+            "L"
+        ],
+        "colors": [
+            {
+                "name": "Ruby Velvet",
+                "hex": "#4c0519"
+            },
+            {
+                "name": "Bottle Emerald",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Indigo Royal",
+                "hex": "#312e81"
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "name": "Falaknaz Embroidered Velvet Kaftan",
+        "slug": "falaknaz-embroidered-velvet-kaftan",
+        "category": "women",
+        "subcategory": "Abayas",
+        "category_name": "Women Couture",
+        "brand": "Khushi Collection",
+        "sku": "KC-WMN-012",
+        "price": 17500,
+        "sale_price": 14200,
+        "cost_price": 9625,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.85,
+        "reviews_count": 78,
+        "thumbnail": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Plush micro-velvet slipover kaftan with gold corded embroidery along neck and hemline.",
+        "description": "Plush micro-velvet slipover kaftan with gold corded embroidery along neck and hemline. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Free Size"
+        ],
+        "colors": [
+            {
+                "name": "Jet Black",
+                "hex": "#18181b"
+            },
+            {
+                "name": "Velvet Plum",
+                "hex": "#701a75"
+            },
+            {
+                "name": "Pine Green",
+                "hex": "#064e3b"
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "name": "Nawabi Korean Raw Silk Kurta Set",
+        "slug": "nawabi-korean-raw-silk-kurta-set",
+        "category": "men",
+        "subcategory": "Shalwar Kameez",
+        "category_name": "Men Heritage",
+        "brand": "Khushi Collection",
+        "sku": "KC-MEN-001",
+        "price": 11500,
+        "sale_price": 9200,
+        "cost_price": 6325,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 23,
+        "thumbnail": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Bespoke tailored Korean raw silk 2-piece kurta pajama with metallic crest monogram buttons.",
+        "description": "Bespoke tailored Korean raw silk 2-piece kurta pajama with metallic crest monogram buttons. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "colors": [
+            {
+                "name": "Midnight Navy",
+                "hex": "#0f172a"
+            },
+            {
+                "name": "Gunmetal Charcoal",
+                "hex": "#1e293b"
+            },
+            {
+                "name": "Slate Taupe",
+                "hex": "#3f3f46"
+            }
+        ]
+    },
+    {
+        "id": 14,
+        "name": "Royal Jamawar Embroidered Waistcoat",
+        "slug": "royal-jamawar-embroidered-waistcoat",
+        "category": "men",
+        "subcategory": "Waistcoats",
+        "category_name": "Men Heritage",
+        "brand": "Khushi Collection",
+        "sku": "KC-MEN-002",
+        "price": 9500,
+        "sale_price": 7800,
+        "cost_price": 5225,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 28,
+        "thumbnail": "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Handwoven gold and copper brocade jamawar waistcoat with velvet inner collar lining.",
+        "description": "Handwoven gold and copper brocade jamawar waistcoat with velvet inner collar lining. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "38",
+            "40",
+            "42",
+            "44",
+            "46"
+        ],
+        "colors": [
+            {
+                "name": "Antique Bronze",
+                "hex": "#78350f"
+            },
+            {
+                "name": "Emerald Green",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Royal Navy",
+                "hex": "#1e1b4b"
+            }
+        ]
+    },
+    {
+        "id": 15,
+        "name": "Sultanate Handcrafted Velvet Prince Suit",
+        "slug": "sultanate-handcrafted-velvet-prince-suit",
+        "category": "men",
+        "subcategory": "Suits",
+        "category_name": "Men Heritage",
+        "brand": "Khushi Collection",
+        "sku": "KC-MEN-003",
+        "price": 32000,
+        "sale_price": 27500,
+        "cost_price": 17600,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 33,
+        "thumbnail": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Bespoke royal prince jacket in Italian micro-velvet with hand-worked zardozi mandarin collar.",
+        "description": "Bespoke royal prince jacket in Italian micro-velvet with hand-worked zardozi mandarin collar. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "38",
+            "40",
+            "42",
+            "44"
+        ],
+        "colors": [
+            {
+                "name": "Black Obsidian",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Maroon Crimson",
+                "hex": "#450a0a"
+            },
+            {
+                "name": "Dark Spruce",
+                "hex": "#14532d"
+            }
+        ]
+    },
+    {
+        "id": 16,
+        "name": "Lakhnavi Chikan Shadow-Work Kurta",
+        "slug": "lakhnavi-chikan-shadow-work-kurta",
+        "category": "men",
+        "subcategory": "Shalwar Kameez",
+        "category_name": "Men Heritage",
+        "brand": "Khushi Collection",
+        "sku": "KC-MEN-004",
+        "price": 8900,
+        "sale_price": null,
+        "cost_price": 4895,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 38,
+        "thumbnail": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Subtle tone-on-tone embroidered chikan kurta on Egyptian giza cotton with mother-of-pearl studs.",
+        "description": "Subtle tone-on-tone embroidered chikan kurta on Egyptian giza cotton with mother-of-pearl studs. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "colors": [
+            {
+                "name": "Pure White",
+                "hex": "#f8fafc"
+            },
+            {
+                "name": "Warm Cream",
+                "hex": "#fef3c7"
+            },
+            {
+                "name": "Ice Blue",
+                "hex": "#e0f2fe"
+            }
+        ]
+    },
+    {
+        "id": 17,
+        "name": "Mughal Royal Embroidered Sherwani",
+        "slug": "mughal-royal-embroidered-sherwani",
+        "category": "men",
+        "subcategory": "Suits",
+        "category_name": "Men Heritage",
+        "brand": "Khushi Collection",
+        "sku": "KC-MEN-005",
+        "price": 42000,
+        "sale_price": 36000,
+        "cost_price": 23100,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 43,
+        "thumbnail": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Grand wedding sherwani in woven ivory self-jacquard with hand-stitched antique tilla work.",
+        "description": "Grand wedding sherwani in woven ivory self-jacquard with hand-stitched antique tilla work. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "38",
+            "40",
+            "42",
+            "44",
+            "46"
+        ],
+        "colors": [
+            {
+                "name": "Off-White Ivory",
+                "hex": "#fafaf9"
+            },
+            {
+                "name": "Silver Birch",
+                "hex": "#e2e8f0"
+            },
+            {
+                "name": "Gold Champagne",
+                "hex": "#d4af37"
+            }
+        ]
+    },
+    {
+        "id": 18,
+        "name": "Bespoke Egyptian Cotton Kurta Pajama",
+        "slug": "bespoke-egyptian-cotton-kurta-pajama",
+        "category": "men",
+        "subcategory": "Shalwar Kameez",
+        "category_name": "Men Heritage",
+        "brand": "Khushi Collection",
+        "sku": "KC-MEN-006",
+        "price": 7500,
+        "sale_price": 6200,
+        "cost_price": 4125,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 48,
+        "thumbnail": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Ultra-breathable 120s count giza cotton kurta with classic band collar and matching trouser.",
+        "description": "Ultra-breathable 120s count giza cotton kurta with classic band collar and matching trouser. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "colors": [
+            {
+                "name": "Deep Navy",
+                "hex": "#0f172a"
+            },
+            {
+                "name": "Steel Blue",
+                "hex": "#1e3a8a"
+            },
+            {
+                "name": "Olive Drab",
+                "hex": "#064e3b"
+            }
+        ]
+    },
+    {
+        "id": 19,
+        "name": "Imperial Silk Matka Festive Waistcoat",
+        "slug": "imperial-silk-matka-festive-waistcoat",
+        "category": "men",
+        "subcategory": "Waistcoats",
+        "category_name": "Men Heritage",
+        "brand": "Khushi Collection",
+        "sku": "KC-MEN-007",
+        "price": 8800,
+        "sale_price": 7200,
+        "cost_price": 4840,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 53,
+        "thumbnail": "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Textured matka silk waistcoat with tonal thread embroidery and welt pocket square.",
+        "description": "Textured matka silk waistcoat with tonal thread embroidery and welt pocket square. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "38",
+            "40",
+            "42",
+            "44"
+        ],
+        "colors": [
+            {
+                "name": "Cerulean Blue",
+                "hex": "#0284c7"
+            },
+            {
+                "name": "Indigo Dark",
+                "hex": "#4338ca"
+            },
+            {
+                "name": "Rust Amber",
+                "hex": "#b45309"
+            }
+        ]
+    },
+    {
+        "id": 20,
+        "name": "Heritage Textured Woollen Nehru Jacket",
+        "slug": "heritage-textured-woollen-nehru-jacket",
+        "category": "men",
+        "subcategory": "Jackets",
+        "category_name": "Men Heritage",
+        "brand": "Khushi Collection",
+        "sku": "KC-MEN-008",
+        "price": 14500,
+        "sale_price": 11900,
+        "cost_price": 7975,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.95,
+        "reviews_count": 58,
+        "thumbnail": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Pure blended wool tailored Nehru jacket with metallic brass buttons and silk interior.",
+        "description": "Pure blended wool tailored Nehru jacket with metallic brass buttons and silk interior. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "38",
+            "40",
+            "42",
+            "44",
+            "46"
+        ],
+        "colors": [
+            {
+                "name": "Charcoal Black",
+                "hex": "#27272a"
+            },
+            {
+                "name": "Heather Grey",
+                "hex": "#374151"
+            },
+            {
+                "name": "Camel Brown",
+                "hex": "#713f12"
+            }
+        ]
+    },
+    {
+        "id": 21,
+        "name": "Peshawari Royal Boski Stitched Suit",
+        "slug": "peshawari-royal-boski-stitched-suit",
+        "category": "men",
+        "subcategory": "Shalwar Kameez",
+        "category_name": "Men Heritage",
+        "brand": "Khushi Collection",
+        "sku": "KC-MEN-009",
+        "price": 16500,
+        "sale_price": 13800,
+        "cost_price": 9075,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 63,
+        "thumbnail": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Authentic Chinese 8-pound Boski silk suit crafted with master tailoring and horn buttons.",
+        "description": "Authentic Chinese 8-pound Boski silk suit crafted with master tailoring and horn buttons. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "colors": [
+            {
+                "name": "Cream Butter",
+                "hex": "#fef9c3"
+            },
+            {
+                "name": "Pearl White",
+                "hex": "#f8fafc"
+            },
+            {
+                "name": "Pale Gold",
+                "hex": "#fef08a"
+            }
+        ]
+    },
+    {
+        "id": 22,
+        "name": "Embroidered Collar Silk Tunic Kurta",
+        "slug": "embroidered-collar-silk-tunic-kurta",
+        "category": "men",
+        "subcategory": "Shalwar Kameez",
+        "category_name": "Men Heritage",
+        "brand": "Khushi Collection",
+        "sku": "KC-MEN-010",
+        "price": 9200,
+        "sale_price": 7600,
+        "cost_price": 5060,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 68,
+        "thumbnail": "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Subtle kora dabka embroidery on band collar and cuff plackets in medium weight raw silk.",
+        "description": "Subtle kora dabka embroidery on band collar and cuff plackets in medium weight raw silk. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "colors": [
+            {
+                "name": "Teal Ocean",
+                "hex": "#155e75"
+            },
+            {
+                "name": "Dark Spruce",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Deep Burgundy",
+                "hex": "#4a044e"
+            }
+        ]
+    },
+    {
+        "id": 23,
+        "name": "Karandi Winter Embroidered 2-Piece",
+        "slug": "karandi-winter-embroidered-2-piece",
+        "category": "men",
+        "subcategory": "Shalwar Kameez",
+        "category_name": "Men Heritage",
+        "brand": "Khushi Collection",
+        "sku": "KC-MEN-011",
+        "price": 12500,
+        "sale_price": 10200,
+        "cost_price": 6875,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 73,
+        "thumbnail": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Pure handloom Karandi winter suit featuring subtle anchor thread embroidery on chest pocket.",
+        "description": "Pure handloom Karandi winter suit featuring subtle anchor thread embroidery on chest pocket. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "colors": [
+            {
+                "name": "Charcoal Slate",
+                "hex": "#1c1917"
+            },
+            {
+                "name": "Midnight Shadow",
+                "hex": "#334155"
+            },
+            {
+                "name": "Mocha Brown",
+                "hex": "#451a03"
+            }
+        ]
+    },
+    {
+        "id": 24,
+        "name": "Designer Velvet Shawl For Groom",
+        "slug": "designer-velvet-shawl-for-groom",
+        "category": "men",
+        "subcategory": "Waistcoats",
+        "category_name": "Men Heritage",
+        "brand": "Khushi Collection",
+        "sku": "KC-MEN-012",
+        "price": 15500,
+        "sale_price": 12800,
+        "cost_price": 8525,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.85,
+        "reviews_count": 78,
+        "thumbnail": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Heavyweight velvet shawl with four-sided zardozi borders and antique gold tassel fringe.",
+        "description": "Heavyweight velvet shawl with four-sided zardozi borders and antique gold tassel fringe. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Free Size"
+        ],
+        "colors": [
+            {
+                "name": "Groom Maroon",
+                "hex": "#450a0a"
+            },
+            {
+                "name": "Emerald Velvet",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Onyx Black",
+                "hex": "#09090b"
+            }
+        ]
+    },
+    {
+        "id": 25,
+        "name": "Junior Prince Silk Kurta & Waistcoat Set",
+        "slug": "junior-prince-silk-kurta-waistcoat-set",
+        "category": "kids",
+        "subcategory": "Boys",
+        "category_name": "Kids Festive",
+        "brand": "Khushi Collection",
+        "sku": "KC-KID-001",
+        "price": 6500,
+        "sale_price": 5200,
+        "cost_price": 3575,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 23,
+        "thumbnail": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Boys festive 3-piece set in pure raw silk with jacquard waistcoat and matching pocket square.",
+        "description": "Boys festive 3-piece set in pure raw silk with jacquard waistcoat and matching pocket square. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "2-3 Yrs",
+            "4-5 Yrs",
+            "6-7 Yrs",
+            "8-9 Yrs",
+            "10-12 Yrs"
+        ],
+        "colors": [
+            {
+                "name": "Navy Blue",
+                "hex": "#0f172a"
+            },
+            {
+                "name": "Bottle Green",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Gold Ochre",
+                "hex": "#78350f"
+            }
+        ]
+    },
+    {
+        "id": 26,
+        "name": "Little Princess Embroidered Net Lehenga Set",
+        "slug": "little-princess-embroidered-net-lehenga-set",
+        "category": "kids",
+        "subcategory": "Girls",
+        "category_name": "Kids Festive",
+        "brand": "Khushi Collection",
+        "sku": "KC-KID-002",
+        "price": 8500,
+        "sale_price": 6900,
+        "cost_price": 4675,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 28,
+        "thumbnail": "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Flared shimmer net lehenga with resham flower motifs, cotton lining, and chiffon dupatta.",
+        "description": "Flared shimmer net lehenga with resham flower motifs, cotton lining, and chiffon dupatta. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "3-4 Yrs",
+            "5-6 Yrs",
+            "7-8 Yrs",
+            "9-10 Yrs"
+        ],
+        "colors": [
+            {
+                "name": "Candy Rose",
+                "hex": "#f43f5e"
+            },
+            {
+                "name": "Lavender Princess",
+                "hex": "#a855f7"
+            },
+            {
+                "name": "Sky Turquoise",
+                "hex": "#0ea5e9"
+            }
+        ]
+    },
+    {
+        "id": 27,
+        "name": "Boys Embroidered Cotton Kurta Pajama",
+        "slug": "boys-embroidered-cotton-kurta-pajama",
+        "category": "kids",
+        "subcategory": "Boys",
+        "category_name": "Kids Festive",
+        "brand": "Khushi Collection",
+        "sku": "KC-KID-003",
+        "price": 4800,
+        "sale_price": 3900,
+        "cost_price": 2640,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 33,
+        "thumbnail": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Soft 100% organic cotton kurta with hand embroidered neckline and elasticated pajama.",
+        "description": "Soft 100% organic cotton kurta with hand embroidered neckline and elasticated pajama. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "2-3 Yrs",
+            "4-5 Yrs",
+            "6-7 Yrs",
+            "8-10 Yrs"
+        ],
+        "colors": [
+            {
+                "name": "Snow White",
+                "hex": "#f8fafc"
+            },
+            {
+                "name": "Vanilla Cream",
+                "hex": "#fef3c7"
+            },
+            {
+                "name": "Powder Blue",
+                "hex": "#e0f2fe"
+            }
+        ]
+    },
+    {
+        "id": 28,
+        "name": "Girls Mirror-Work Chiffon Anarkali",
+        "slug": "girls-mirror-work-chiffon-anarkali",
+        "category": "kids",
+        "subcategory": "Girls",
+        "category_name": "Kids Festive",
+        "brand": "Khushi Collection",
+        "sku": "KC-KID-004",
+        "price": 7200,
+        "sale_price": 5800,
+        "cost_price": 3960,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.9,
+        "reviews_count": 38,
+        "thumbnail": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Lightweight flared festive frock with real mirror work borders and soft malmal lining.",
+        "description": "Lightweight flared festive frock with real mirror work borders and soft malmal lining. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "3-4 Yrs",
+            "5-6 Yrs",
+            "7-8 Yrs",
+            "9-11 Yrs"
+        ],
+        "colors": [
+            {
+                "name": "Coral Peach",
+                "hex": "#fb7185"
+            },
+            {
+                "name": "Baby Blue",
+                "hex": "#38bdf8"
+            },
+            {
+                "name": "Marigold Yellow",
+                "hex": "#fbbf24"
+            }
+        ]
+    },
+    {
+        "id": 29,
+        "name": "Infant Festive Silk Romper Kurta Set",
+        "slug": "infant-festive-silk-romper-kurta-set",
+        "category": "kids",
+        "subcategory": "Baby",
+        "category_name": "Kids Festive",
+        "brand": "Khushi Collection",
+        "sku": "KC-KID-005",
+        "price": 3800,
+        "sale_price": 2900,
+        "cost_price": 2090,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 43,
+        "thumbnail": "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Gentle baby silk romper with snap-button placket and miniature embroidered motif.",
+        "description": "Gentle baby silk romper with snap-button placket and miniature embroidered motif. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "0-6 Mos",
+            "6-12 Mos",
+            "12-18 Mos",
+            "18-24 Mos"
+        ],
+        "colors": [
+            {
+                "name": "Pale Gold",
+                "hex": "#fef08a"
+            },
+            {
+                "name": "Ice Blue",
+                "hex": "#bae6fd"
+            },
+            {
+                "name": "Soft Rose",
+                "hex": "#fbcfe8"
+            }
+        ]
+    },
+    {
+        "id": 30,
+        "name": "Young Sultan Velvet Sherwani Jacket",
+        "slug": "young-sultan-velvet-sherwani-jacket",
+        "category": "kids",
+        "subcategory": "Boys",
+        "category_name": "Kids Festive",
+        "brand": "Khushi Collection",
+        "sku": "KC-KID-006",
+        "price": 9500,
+        "sale_price": 7800,
+        "cost_price": 5225,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 48,
+        "thumbnail": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Boys miniature velvet sherwani with golden tilla embellishments and metallic buttons.",
+        "description": "Boys miniature velvet sherwani with golden tilla embellishments and metallic buttons. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "4-5 Yrs",
+            "6-7 Yrs",
+            "8-9 Yrs",
+            "10-12 Yrs"
+        ],
+        "colors": [
+            {
+                "name": "Royal Maroon",
+                "hex": "#450a0a"
+            },
+            {
+                "name": "Midnight Blue",
+                "hex": "#0f172a"
+            },
+            {
+                "name": "Emerald Pine",
+                "hex": "#064e3b"
+            }
+        ]
+    },
+    {
+        "id": 31,
+        "name": "Girls Handcrafted Jamawar Gharara",
+        "slug": "girls-handcrafted-jamawar-gharara",
+        "category": "kids",
+        "subcategory": "Girls",
+        "category_name": "Kids Festive",
+        "brand": "Khushi Collection",
+        "sku": "KC-KID-007",
+        "price": 8900,
+        "sale_price": 7200,
+        "cost_price": 4895,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 53,
+        "thumbnail": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Traditional Banarsi weave gharara paired with raw silk embroidered peplum top.",
+        "description": "Traditional Banarsi weave gharara paired with raw silk embroidered peplum top. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "4-5 Yrs",
+            "6-7 Yrs",
+            "8-9 Yrs",
+            "10-12 Yrs"
+        ],
+        "colors": [
+            {
+                "name": "Plum Purple",
+                "hex": "#701a75"
+            },
+            {
+                "name": "Emerald Silk",
+                "hex": "#065f46"
+            },
+            {
+                "name": "Festive Crimson",
+                "hex": "#991b1b"
+            }
+        ]
+    },
+    {
+        "id": 32,
+        "name": "Boys Linen Casual Summer Kurta",
+        "slug": "boys-linen-casual-summer-kurta",
+        "category": "kids",
+        "subcategory": "Boys",
+        "category_name": "Kids Festive",
+        "brand": "Khushi Collection",
+        "sku": "KC-KID-008",
+        "price": 3900,
+        "sale_price": null,
+        "cost_price": 2145,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 58,
+        "thumbnail": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Breathable natural linen kurta with wood-finish buttons and turn-up sleeve tabs.",
+        "description": "Breathable natural linen kurta with wood-finish buttons and turn-up sleeve tabs. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "2-3 Yrs",
+            "4-5 Yrs",
+            "6-7 Yrs",
+            "8-10 Yrs"
+        ],
+        "colors": [
+            {
+                "name": "Misty Grey",
+                "hex": "#e2e8f0"
+            },
+            {
+                "name": "Pistachio Mint",
+                "hex": "#d1fae5"
+            },
+            {
+                "name": "Apricot Warm",
+                "hex": "#ffedd5"
+            }
+        ]
+    },
+    {
+        "id": 33,
+        "name": "Girls Tissue Organza Tiered Frock",
+        "slug": "girls-tissue-organza-tiered-frock",
+        "category": "kids",
+        "subcategory": "Girls",
+        "category_name": "Kids Festive",
+        "brand": "Khushi Collection",
+        "sku": "KC-KID-009",
+        "price": 7800,
+        "sale_price": 6200,
+        "cost_price": 4290,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 63,
+        "thumbnail": "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "3-layer flared organza party frock with golden shimmer border and satin inner lining.",
+        "description": "3-layer flared organza party frock with golden shimmer border and satin inner lining. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "3-4 Yrs",
+            "5-6 Yrs",
+            "7-8 Yrs",
+            "9-11 Yrs"
+        ],
+        "colors": [
+            {
+                "name": "Blush Powder",
+                "hex": "#fce7f3"
+            },
+            {
+                "name": "Pale Gold",
+                "hex": "#fef3c7"
+            },
+            {
+                "name": "Periwinkle",
+                "hex": "#e0e7ff"
+            }
+        ]
+    },
+    {
+        "id": 34,
+        "name": "Boys Embroidered Shalwar Kameez Set",
+        "slug": "boys-embroidered-shalwar-kameez-set",
+        "category": "kids",
+        "subcategory": "Boys",
+        "category_name": "Kids Festive",
+        "brand": "Khushi Collection",
+        "sku": "KC-KID-010",
+        "price": 5200,
+        "sale_price": 4400,
+        "cost_price": 2860,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 68,
+        "thumbnail": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Classic band collar shalwar kameez with embroidered placket and cuff detailing.",
+        "description": "Classic band collar shalwar kameez with embroidered placket and cuff detailing. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "3-4 Yrs",
+            "5-6 Yrs",
+            "7-8 Yrs",
+            "9-10 Yrs"
+        ],
+        "colors": [
+            {
+                "name": "Royal Cobalt",
+                "hex": "#0284c7"
+            },
+            {
+                "name": "Forest Green",
+                "hex": "#166534"
+            },
+            {
+                "name": "Slate Grey",
+                "hex": "#475569"
+            }
+        ]
+    },
+    {
+        "id": 35,
+        "name": "Girls Embroidered Velvet Frock Set",
+        "slug": "girls-embroidered-velvet-frock-set",
+        "category": "kids",
+        "subcategory": "Girls",
+        "category_name": "Kids Festive",
+        "brand": "Khushi Collection",
+        "sku": "KC-KID-011",
+        "price": 8200,
+        "sale_price": 6800,
+        "cost_price": 4510,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 73,
+        "thumbnail": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Warm micro-velvet winter festive frock with dabka gold border and churidar pajama.",
+        "description": "Warm micro-velvet winter festive frock with dabka gold border and churidar pajama. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "3-4 Yrs",
+            "5-6 Yrs",
+            "7-8 Yrs",
+            "9-11 Yrs"
+        ],
+        "colors": [
+            {
+                "name": "Ruby Velvet",
+                "hex": "#881337"
+            },
+            {
+                "name": "Emerald Green",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Jet Black",
+                "hex": "#09090b"
+            }
+        ]
+    },
+    {
+        "id": 36,
+        "name": "Infant Cotton Festive Kurta Pajama",
+        "slug": "infant-cotton-festive-kurta-pajama",
+        "category": "kids",
+        "subcategory": "Baby",
+        "category_name": "Kids Festive",
+        "brand": "Khushi Collection",
+        "sku": "KC-KID-012",
+        "price": 3400,
+        "sale_price": 2800,
+        "cost_price": 1870,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.85,
+        "reviews_count": 78,
+        "thumbnail": "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "100% fine cotton soft-touch kurta pajama set tailored for sensitive newborn baby skin.",
+        "description": "100% fine cotton soft-touch kurta pajama set tailored for sensitive newborn baby skin. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "0-3 Mos",
+            "3-6 Mos",
+            "6-12 Mos",
+            "12-18 Mos"
+        ],
+        "colors": [
+            {
+                "name": "Snow Ivory",
+                "hex": "#f8fafc"
+            },
+            {
+                "name": "Vanilla Butter",
+                "hex": "#fef9c3"
+            },
+            {
+                "name": "Soft Sky",
+                "hex": "#dbeafe"
+            }
+        ]
+    },
+    {
+        "id": 37,
+        "name": "Maharani Pure Leather Hand-Embroidered Khussa",
+        "slug": "maharani-pure-leather-hand-embroidered-khussa",
+        "category": "shoes",
+        "subcategory": "Women Khussas",
+        "category_name": "Handcrafted Footwear",
+        "brand": "Khushi Collection",
+        "sku": "KC-SHOE-001",
+        "price": 6500,
+        "sale_price": 5200,
+        "cost_price": 3575,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 23,
+        "thumbnail": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Artisanal hand-stitched vegetable tanned cow leather khussa encrusted with real tilla, beads, and dabka.",
+        "description": "Artisanal hand-stitched vegetable tanned cow leather khussa encrusted with real tilla, beads, and dabka. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "41"
+        ],
+        "colors": [
+            {
+                "name": "Antique Gold",
+                "hex": "#ca8a04"
+            },
+            {
+                "name": "Bridal Ruby",
+                "hex": "#881337"
+            },
+            {
+                "name": "Emerald Forest",
+                "hex": "#064e3b"
+            }
+        ]
+    },
+    {
+        "id": 38,
+        "name": "Peshawari Traditional Zalmi Chappal",
+        "slug": "peshawari-traditional-zalmi-chappal",
+        "category": "shoes",
+        "subcategory": "Men Peshawari",
+        "category_name": "Handcrafted Footwear",
+        "brand": "Khushi Collection",
+        "sku": "KC-SHOE-002",
+        "price": 7500,
+        "sale_price": 6200,
+        "cost_price": 4125,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 28,
+        "thumbnail": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Master crafted double-sole cowhide leather Peshawari chappal with ergonomic memory arch cushion.",
+        "description": "Master crafted double-sole cowhide leather Peshawari chappal with ergonomic memory arch cushion. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45"
+        ],
+        "colors": [
+            {
+                "name": "Tan Mustard",
+                "hex": "#78350f"
+            },
+            {
+                "name": "Obsidian Black",
+                "hex": "#18181b"
+            },
+            {
+                "name": "Deep Mahogany",
+                "hex": "#451a03"
+            }
+        ]
+    },
+    {
+        "id": 39,
+        "name": "Zari Velvet Bridal Stiletto Mules",
+        "slug": "zari-velvet-bridal-stiletto-mules",
+        "category": "shoes",
+        "subcategory": "Bridal Heels",
+        "category_name": "Handcrafted Footwear",
+        "brand": "Khushi Collection",
+        "sku": "KC-SHOE-003",
+        "price": 9500,
+        "sale_price": 7900,
+        "cost_price": 5225,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 33,
+        "thumbnail": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "3.5-inch flare heel wrapped in micro velvet with crystal brooch strap and padded insole.",
+        "description": "3.5-inch flare heel wrapped in micro velvet with crystal brooch strap and padded insole. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "36",
+            "37",
+            "38",
+            "39",
+            "40"
+        ],
+        "colors": [
+            {
+                "name": "Crimson Red",
+                "hex": "#881337"
+            },
+            {
+                "name": "Jet Black",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Metallic Champagne",
+                "hex": "#d4af37"
+            }
+        ]
+    },
+    {
+        "id": 40,
+        "name": "Kaptaan Special Matt Finish Chappal",
+        "slug": "kaptaan-special-matt-finish-chappal",
+        "category": "shoes",
+        "subcategory": "Men Peshawari",
+        "category_name": "Handcrafted Footwear",
+        "brand": "Khushi Collection",
+        "sku": "KC-SHOE-004",
+        "price": 6900,
+        "sale_price": 5600,
+        "cost_price": 3795,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.9,
+        "reviews_count": 38,
+        "thumbnail": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Signature single sole Kaptaan cut chappal in matte steerhide leather with tire sole grip.",
+        "description": "Signature single sole Kaptaan cut chappal in matte steerhide leather with tire sole grip. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45"
+        ],
+        "colors": [
+            {
+                "name": "Matte Charcoal",
+                "hex": "#27272a"
+            },
+            {
+                "name": "Mustard Leather",
+                "hex": "#713f12"
+            },
+            {
+                "name": "Midnight Navy",
+                "hex": "#0f172a"
+            }
+        ]
+    },
+    {
+        "id": 41,
+        "name": "Shehnai Mirror Handcrafted Bridal Khussa",
+        "slug": "shehnai-mirror-handcrafted-bridal-khussa",
+        "category": "shoes",
+        "subcategory": "Women Khussas",
+        "category_name": "Handcrafted Footwear",
+        "brand": "Khushi Collection",
+        "sku": "KC-SHOE-005",
+        "price": 5800,
+        "sale_price": 4800,
+        "cost_price": 3190,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 43,
+        "thumbnail": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Reflective real mirror mosaic embroidered khussa with genuine non-slip buff leather base.",
+        "description": "Reflective real mirror mosaic embroidered khussa with genuine non-slip buff leather base. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "41"
+        ],
+        "colors": [
+            {
+                "name": "Pearl Silver",
+                "hex": "#f8fafc"
+            },
+            {
+                "name": "Gold Tilla",
+                "hex": "#fef08a"
+            },
+            {
+                "name": "Rose Pink",
+                "hex": "#fbcfe8"
+            }
+        ]
+    },
+    {
+        "id": 42,
+        "name": "Noroz Genuine Calfskin Dress Loafers",
+        "slug": "noroz-genuine-calfskin-dress-loafers",
+        "category": "shoes",
+        "subcategory": "Men Peshawari",
+        "category_name": "Handcrafted Footwear",
+        "brand": "Khushi Collection",
+        "sku": "KC-SHOE-006",
+        "price": 11500,
+        "sale_price": 9400,
+        "cost_price": 6325,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 48,
+        "thumbnail": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Full-grain calfskin leather horsebit slip-on loafers with leather stacked dress heel.",
+        "description": "Full-grain calfskin leather horsebit slip-on loafers with leather stacked dress heel. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45"
+        ],
+        "colors": [
+            {
+                "name": "Obsidian Black",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Cognac Brown",
+                "hex": "#451a03"
+            },
+            {
+                "name": "Dark Chocolate",
+                "hex": "#78350f"
+            }
+        ]
+    },
+    {
+        "id": 43,
+        "name": "Ghungroo Embroidered Festive Mules",
+        "slug": "ghungroo-embroidered-festive-mules",
+        "category": "shoes",
+        "subcategory": "Handcrafted Mules",
+        "category_name": "Handcrafted Footwear",
+        "brand": "Khushi Collection",
+        "sku": "KC-SHOE-007",
+        "price": 6200,
+        "sale_price": 4900,
+        "cost_price": 3410,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 53,
+        "thumbnail": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Open back slip-on mules adorned with brass micro ghungroos and cushioned memory foam.",
+        "description": "Open back slip-on mules adorned with brass micro ghungroos and cushioned memory foam. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "36",
+            "37",
+            "38",
+            "39",
+            "40"
+        ],
+        "colors": [
+            {
+                "name": "Emerald Velvet",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Ruby Maroon",
+                "hex": "#881337"
+            },
+            {
+                "name": "Jet Velvet",
+                "hex": "#09090b"
+            }
+        ]
+    },
+    {
+        "id": 44,
+        "name": "Shahi Tilla Velvet Khussa",
+        "slug": "shahi-tilla-velvet-khussa",
+        "category": "shoes",
+        "subcategory": "Women Khussas",
+        "category_name": "Handcrafted Footwear",
+        "brand": "Khushi Collection",
+        "sku": "KC-SHOE-008",
+        "price": 5900,
+        "sale_price": 4700,
+        "cost_price": 3245,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.95,
+        "reviews_count": 58,
+        "thumbnail": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Dense gold tilla embroidered work on premium velvet upper with soft padded innersole.",
+        "description": "Dense gold tilla embroidered work on premium velvet upper with soft padded innersole. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "41"
+        ],
+        "colors": [
+            {
+                "name": "Plum Velvet",
+                "hex": "#701a75"
+            },
+            {
+                "name": "Navy Blue",
+                "hex": "#0f172a"
+            },
+            {
+                "name": "Deep Red",
+                "hex": "#881337"
+            }
+        ]
+    },
+    {
+        "id": 45,
+        "name": "Charsadda Classic Cut Hand-Stitched Chappal",
+        "slug": "charsadda-classic-cut-hand-stitched-chappal",
+        "category": "shoes",
+        "subcategory": "Men Peshawari",
+        "category_name": "Handcrafted Footwear",
+        "brand": "Khushi Collection",
+        "sku": "KC-SHOE-009",
+        "price": 6800,
+        "sale_price": 5400,
+        "cost_price": 3740,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 63,
+        "thumbnail": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Authentic Charsadda curved toe design handcrafted by heritage shoemakers.",
+        "description": "Authentic Charsadda curved toe design handcrafted by heritage shoemakers. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45"
+        ],
+        "colors": [
+            {
+                "name": "Tan Mustard",
+                "hex": "#78350f"
+            },
+            {
+                "name": "Pitch Black",
+                "hex": "#18181b"
+            },
+            {
+                "name": "Ash Grey",
+                "hex": "#3f3f46"
+            }
+        ]
+    },
+    {
+        "id": 46,
+        "name": "Crystal Brooch Satin Bridal Block Heels",
+        "slug": "crystal-brooch-satin-bridal-block-heels",
+        "category": "shoes",
+        "subcategory": "Bridal Heels",
+        "category_name": "Handcrafted Footwear",
+        "brand": "Khushi Collection",
+        "sku": "KC-SHOE-010",
+        "price": 8900,
+        "sale_price": 7400,
+        "cost_price": 4895,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 68,
+        "thumbnail": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "2.5-inch comfortable block heel in Italian satin with luminous Austrian crystal cluster.",
+        "description": "2.5-inch comfortable block heel in Italian satin with luminous Austrian crystal cluster. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "36",
+            "37",
+            "38",
+            "39",
+            "40"
+        ],
+        "colors": [
+            {
+                "name": "Bridal White",
+                "hex": "#f8fafc"
+            },
+            {
+                "name": "Champagne Gold",
+                "hex": "#fef08a"
+            },
+            {
+                "name": "Powder Rose",
+                "hex": "#fbcfe8"
+            }
+        ]
+    },
+    {
+        "id": 47,
+        "name": "Hand-Tooled Leather Derby Shoes",
+        "slug": "hand-tooled-leather-derby-shoes",
+        "category": "shoes",
+        "subcategory": "Men Peshawari",
+        "category_name": "Handcrafted Footwear",
+        "brand": "Khushi Collection",
+        "sku": "KC-SHOE-011",
+        "price": 12500,
+        "sale_price": 10500,
+        "cost_price": 6875,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 73,
+        "thumbnail": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Semi-brogue formal derby shoes crafted in hand-burnished crust calfskin leather.",
+        "description": "Semi-brogue formal derby shoes crafted in hand-burnished crust calfskin leather. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45"
+        ],
+        "colors": [
+            {
+                "name": "Glossy Black",
+                "hex": "#18181b"
+            },
+            {
+                "name": "Oxblood Burgundy",
+                "hex": "#451a03"
+            },
+            {
+                "name": "Antique Tan",
+                "hex": "#78350f"
+            }
+        ]
+    },
+    {
+        "id": 48,
+        "name": "Floral Resham Embroidered Velvet Khussa",
+        "slug": "floral-resham-embroidered-velvet-khussa",
+        "category": "shoes",
+        "subcategory": "Women Khussas",
+        "category_name": "Handcrafted Footwear",
+        "brand": "Khushi Collection",
+        "sku": "KC-SHOE-012",
+        "price": 5400,
+        "sale_price": 4400,
+        "cost_price": 2970,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.85,
+        "reviews_count": 78,
+        "thumbnail": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Delicate multicolored resham floral bouquet embroidery with cushioned leather sole.",
+        "description": "Delicate multicolored resham floral bouquet embroidery with cushioned leather sole. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "41"
+        ],
+        "colors": [
+            {
+                "name": "Deep Emerald",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Plum Royale",
+                "hex": "#701a75"
+            },
+            {
+                "name": "Midnight Onyx",
+                "hex": "#18181b"
+            }
+        ]
+    },
+    {
+        "id": 49,
+        "name": "Khushi Sultanate Royal Chronograph 41mm",
+        "slug": "khushi-sultanate-royal-chronograph-41mm",
+        "category": "watches",
+        "subcategory": "Men Chronographs",
+        "category_name": "Khushi Timepieces",
+        "brand": "Khushi Collection",
+        "sku": "KC-WAT-001",
+        "price": 24500,
+        "sale_price": 19800,
+        "cost_price": 13475,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 23,
+        "thumbnail": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Precision Japanese quartz chronograph with sapphire crystal glass, 316L solid steel case, and sunburst emerald dial.",
+        "description": "Precision Japanese quartz chronograph with sapphire crystal glass, 316L solid steel case, and sunburst emerald dial. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "41mm (Adjustable Bracelet)"
+        ],
+        "colors": [
+            {
+                "name": "Emerald Sunburst",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Obsidian Black",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Royal Midnight Blue",
+                "hex": "#1e3a8a"
+            }
+        ]
+    },
+    {
+        "id": 50,
+        "name": "Noor Diamond-Bezel Rose Gold Timepiece",
+        "slug": "noor-diamond-bezel-rose-gold-timepiece",
+        "category": "watches",
+        "subcategory": "Women Luxury Timepieces",
+        "category_name": "Khushi Timepieces",
+        "brand": "Khushi Collection",
+        "sku": "KC-WAT-002",
+        "price": 19500,
+        "sale_price": 15900,
+        "cost_price": 10725,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 28,
+        "thumbnail": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Swiss quartz movement with mother-of-pearl dial and Austrian crystal pav\u00e9 bezel in 18K rose gold PVD coating.",
+        "description": "Swiss quartz movement with mother-of-pearl dial and Austrian crystal pav\u00e9 bezel in 18K rose gold PVD coating. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "34mm (Slender Mesh Band)"
+        ],
+        "colors": [
+            {
+                "name": "Rose Gold",
+                "hex": "#fb7185"
+            },
+            {
+                "name": "Yellow Gold",
+                "hex": "#d4af37"
+            },
+            {
+                "name": "Sterling Silver",
+                "hex": "#f8fafc"
+            }
+        ]
+    },
+    {
+        "id": 51,
+        "name": "Imperium Skeleton Automatic Mechanical Watch",
+        "slug": "imperium-skeleton-automatic-mechanical-watch",
+        "category": "watches",
+        "subcategory": "Automatic Mechanical",
+        "category_name": "Khushi Timepieces",
+        "brand": "Khushi Collection",
+        "sku": "KC-WAT-003",
+        "price": 34000,
+        "sale_price": 28500,
+        "cost_price": 18700,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 33,
+        "thumbnail": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Self-winding 24-jewel skeleton movement visible through front and exhibition caseback with Italian leather strap.",
+        "description": "Self-winding 24-jewel skeleton movement visible through front and exhibition caseback with Italian leather strap. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "42mm (Genuine Leather)"
+        ],
+        "colors": [
+            {
+                "name": "Black / Gold",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Cognac Brown",
+                "hex": "#78350f"
+            },
+            {
+                "name": "Steel Silver",
+                "hex": "#475569"
+            }
+        ]
+    },
+    {
+        "id": 52,
+        "name": "Regal Gold Day-Date Jubilee Bracelet Watch",
+        "slug": "regal-gold-day-date-jubilee-bracelet-watch",
+        "category": "watches",
+        "subcategory": "Men Chronographs",
+        "category_name": "Khushi Timepieces",
+        "brand": "Khushi Collection",
+        "sku": "KC-WAT-004",
+        "price": 22000,
+        "sale_price": 17900,
+        "cost_price": 12100,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.9,
+        "reviews_count": 38,
+        "thumbnail": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Fluted bezel classic luxury timepiece with magnifying cyclops date lens and dual-tone jubilee link.",
+        "description": "Fluted bezel classic luxury timepiece with magnifying cyclops date lens and dual-tone jubilee link. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "40mm (Solid Links)"
+        ],
+        "colors": [
+            {
+                "name": "Two-Tone Gold",
+                "hex": "#ca8a04"
+            },
+            {
+                "name": "All Silver 316L",
+                "hex": "#475569"
+            },
+            {
+                "name": "PVD Matte Black",
+                "hex": "#09090b"
+            }
+        ]
+    },
+    {
+        "id": 53,
+        "name": "Lumi\u00e8re Petite Oval Bangle Watch",
+        "slug": "lumi-re-petite-oval-bangle-watch",
+        "category": "watches",
+        "subcategory": "Women Luxury Timepieces",
+        "category_name": "Khushi Timepieces",
+        "brand": "Khushi Collection",
+        "sku": "KC-WAT-005",
+        "price": 16800,
+        "sale_price": 13500,
+        "cost_price": 9240,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 43,
+        "thumbnail": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Jewellery-grade polished oval case with integrated bangle clasp and sapphire crystal glass.",
+        "description": "Jewellery-grade polished oval case with integrated bangle clasp and sapphire crystal glass. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "26mm (Bangle Clasp)"
+        ],
+        "colors": [
+            {
+                "name": "Yellow Gold",
+                "hex": "#d4af37"
+            },
+            {
+                "name": "Rose Gold",
+                "hex": "#fb7185"
+            },
+            {
+                "name": "Rhodium Silver",
+                "hex": "#e2e8f0"
+            }
+        ]
+    },
+    {
+        "id": 54,
+        "name": "Heritage Aviator Chrono Dual-Time Watch",
+        "slug": "heritage-aviator-chrono-dual-time-watch",
+        "category": "watches",
+        "subcategory": "Men Chronographs",
+        "category_name": "Khushi Timepieces",
+        "brand": "Khushi Collection",
+        "sku": "KC-WAT-006",
+        "price": 26500,
+        "sale_price": 21900,
+        "cost_price": 14575,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 48,
+        "thumbnail": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Dual-time zone GMT chronograph with ceramic rotating bezel and luminous hands for night vision.",
+        "description": "Dual-time zone GMT chronograph with ceramic rotating bezel and luminous hands for night vision. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "42mm (316L Steel)"
+        ],
+        "colors": [
+            {
+                "name": "Pepsi Navy/Red",
+                "hex": "#0f172a"
+            },
+            {
+                "name": "Ceramic Black",
+                "hex": "#18181b"
+            },
+            {
+                "name": "Emerald Green",
+                "hex": "#064e3b"
+            }
+        ]
+    },
+    {
+        "id": 55,
+        "name": "Celestial Moonphase Minimalist Watch",
+        "slug": "celestial-moonphase-minimalist-watch",
+        "category": "watches",
+        "subcategory": "Automatic Mechanical",
+        "category_name": "Khushi Timepieces",
+        "brand": "Khushi Collection",
+        "sku": "KC-WAT-007",
+        "price": 28000,
+        "sale_price": 23500,
+        "cost_price": 15400,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 53,
+        "thumbnail": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Genuine rotating moonphase dial displaying lunar calendar cycles with sapphire exhibition back.",
+        "description": "Genuine rotating moonphase dial displaying lunar calendar cycles with sapphire exhibition back. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "40mm (Alligator Grain)"
+        ],
+        "colors": [
+            {
+                "name": "Midnight Blue Dial",
+                "hex": "#1e1b4b"
+            },
+            {
+                "name": "Silver Dial",
+                "hex": "#18181b"
+            },
+            {
+                "name": "Rose Gold Case",
+                "hex": "#78350f"
+            }
+        ]
+    },
+    {
+        "id": 56,
+        "name": "Princess Emerald Pav\u00e9 Diamond Watch",
+        "slug": "princess-emerald-pav-diamond-watch",
+        "category": "watches",
+        "subcategory": "Women Luxury Timepieces",
+        "category_name": "Khushi Timepieces",
+        "brand": "Khushi Collection",
+        "sku": "KC-WAT-008",
+        "price": 21500,
+        "sale_price": 17800,
+        "cost_price": 11825,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.95,
+        "reviews_count": 58,
+        "thumbnail": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Emerald green guilloch\u00e9 dial with baguette crystal indexes and polished jubilee bracelet.",
+        "description": "Emerald green guilloch\u00e9 dial with baguette crystal indexes and polished jubilee bracelet. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "32mm (Steel Bracelet)"
+        ],
+        "colors": [
+            {
+                "name": "Emerald Gold",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Champagne Gold",
+                "hex": "#d4af37"
+            },
+            {
+                "name": "Onyx Silver",
+                "hex": "#09090b"
+            }
+        ]
+    },
+    {
+        "id": 57,
+        "name": "Vanguard Carbon Fiber Diver 200M",
+        "slug": "vanguard-carbon-fiber-diver-200m",
+        "category": "watches",
+        "subcategory": "Men Chronographs",
+        "category_name": "Khushi Timepieces",
+        "brand": "Khushi Collection",
+        "sku": "KC-WAT-009",
+        "price": 29500,
+        "sale_price": 24900,
+        "cost_price": 16225,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 63,
+        "thumbnail": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "20 ATM water-resistant diver watch with genuine forged carbon fiber dial and silicone strap.",
+        "description": "20 ATM water-resistant diver watch with genuine forged carbon fiber dial and silicone strap. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "43mm (High-Grade Silicone)"
+        ],
+        "colors": [
+            {
+                "name": "Stealth Carbon",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Safety Orange",
+                "hex": "#ea580c"
+            },
+            {
+                "name": "Deep Sea Blue",
+                "hex": "#0284c7"
+            }
+        ]
+    },
+    {
+        "id": 58,
+        "name": "Etoile Roman Numeral Classic Slim Watch",
+        "slug": "etoile-roman-numeral-classic-slim-watch",
+        "category": "watches",
+        "subcategory": "Women Luxury Timepieces",
+        "category_name": "Khushi Timepieces",
+        "brand": "Khushi Collection",
+        "sku": "KC-WAT-010",
+        "price": 14900,
+        "sale_price": 12200,
+        "cost_price": 8195,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 68,
+        "thumbnail": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Ultra-slim 6mm profile dress watch with traditional Roman numerals and saffiano leather strap.",
+        "description": "Ultra-slim 6mm profile dress watch with traditional Roman numerals and saffiano leather strap. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "30mm (Slim Leather)"
+        ],
+        "colors": [
+            {
+                "name": "White / Tan",
+                "hex": "#f8fafc"
+            },
+            {
+                "name": "Gold / Black",
+                "hex": "#78350f"
+            },
+            {
+                "name": "Rose / Grey",
+                "hex": "#09090b"
+            }
+        ]
+    },
+    {
+        "id": 59,
+        "name": "Monarch 24K Gold Plated Dress Chrono",
+        "slug": "monarch-24k-gold-plated-dress-chrono",
+        "category": "watches",
+        "subcategory": "Men Chronographs",
+        "category_name": "Khushi Timepieces",
+        "brand": "Khushi Collection",
+        "sku": "KC-WAT-011",
+        "price": 25500,
+        "sale_price": 20900,
+        "cost_price": 14025,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 73,
+        "thumbnail": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Triple-subdial chronograph bathed in heavy 24K gold vacuum plating with sapphire crystal.",
+        "description": "Triple-subdial chronograph bathed in heavy 24K gold vacuum plating with sapphire crystal. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "41mm (Solid Fold Clasp)"
+        ],
+        "colors": [
+            {
+                "name": "24K Pure Gold",
+                "hex": "#ca8a04"
+            },
+            {
+                "name": "Gold / Black Dial",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Gold / Sunburst Red",
+                "hex": "#450a0a"
+            }
+        ]
+    },
+    {
+        "id": 60,
+        "name": "Zenith Automatic Tourbillon Tribute",
+        "slug": "zenith-automatic-tourbillon-tribute",
+        "category": "watches",
+        "subcategory": "Automatic Mechanical",
+        "category_name": "Khushi Timepieces",
+        "brand": "Khushi Collection",
+        "sku": "KC-WAT-012",
+        "price": 38000,
+        "sale_price": 31500,
+        "cost_price": 20900,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.85,
+        "reviews_count": 78,
+        "thumbnail": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Horological masterpiece featuring exposed open-heart escapement balance wheel and blued screws.",
+        "description": "Horological masterpiece featuring exposed open-heart escapement balance wheel and blued screws. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "42.5mm (Deployant Clasp)"
+        ],
+        "colors": [
+            {
+                "name": "Black Obsidian",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Imperial Navy",
+                "hex": "#1e3a8a"
+            },
+            {
+                "name": "Rose Cognac",
+                "hex": "#78350f"
+            }
+        ]
+    },
+    {
+        "id": 61,
+        "name": "Imperial Cambodian Agarwood Oud 100ml",
+        "slug": "imperial-cambodian-agarwood-oud-100ml",
+        "category": "perfumes",
+        "subcategory": "Oriental Oud",
+        "category_name": "Haute Parfumerie",
+        "brand": "Khushi Collection",
+        "sku": "KC-PERF-001",
+        "price": 16500,
+        "sale_price": 13900,
+        "cost_price": 9075,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 23,
+        "thumbnail": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Pure 12-year aged wild Cambodian agarwood enriched with Damascus rose and ambergris. 28% extrait concentration.",
+        "description": "Pure 12-year aged wild Cambodian agarwood enriched with Damascus rose and ambergris. 28% extrait concentration. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "100ml / 3.4 oz",
+            "50ml / 1.7 oz",
+            "12ml Pure Attar"
+        ],
+        "colors": [
+            {
+                "name": "Aged Oud Flacon",
+                "hex": "#78350f"
+            },
+            {
+                "name": "Vintage Flask",
+                "hex": "#451a03"
+            },
+            {
+                "name": "Crystal Edition",
+                "hex": "#09090b"
+            }
+        ]
+    },
+    {
+        "id": 62,
+        "name": "Saffron & Royal Amber Extrait De Parfum",
+        "slug": "saffron-royal-amber-extrait-de-parfum",
+        "category": "perfumes",
+        "subcategory": "Oriental Oud",
+        "category_name": "Haute Parfumerie",
+        "brand": "Khushi Collection",
+        "sku": "KC-PERF-002",
+        "price": 14500,
+        "sale_price": 11800,
+        "cost_price": 7975,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 28,
+        "thumbnail": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Rich Kashmiri saffron, warm amber resin, smoked cedarwood, and Madagascar vanilla heart.",
+        "description": "Rich Kashmiri saffron, warm amber resin, smoked cedarwood, and Madagascar vanilla heart. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "100ml / 3.4 oz",
+            "50ml / 1.7 oz"
+        ],
+        "colors": [
+            {
+                "name": "Amber Gold Bottle",
+                "hex": "#d97706"
+            },
+            {
+                "name": "Smoked Glass",
+                "hex": "#b45309"
+            },
+            {
+                "name": "Collector Edition",
+                "hex": "#09090b"
+            }
+        ]
+    },
+    {
+        "id": 63,
+        "name": "Damascus Rose & Velvet Musk EDP",
+        "slug": "damascus-rose-velvet-musk-edp",
+        "category": "perfumes",
+        "subcategory": "Floral Eau De Parfum",
+        "category_name": "Haute Parfumerie",
+        "brand": "Khushi Collection",
+        "sku": "KC-PERF-003",
+        "price": 12500,
+        "sale_price": 9900,
+        "cost_price": 6875,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 33,
+        "thumbnail": "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Distilled Damascus rose petals, Italian bergamot, powdery white musk, and soft cashmeran.",
+        "description": "Distilled Damascus rose petals, Italian bergamot, powdery white musk, and soft cashmeran. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "100ml / 3.4 oz",
+            "50ml / 1.7 oz"
+        ],
+        "colors": [
+            {
+                "name": "Rose Velvet Flacon",
+                "hex": "#fb7185"
+            },
+            {
+                "name": "Frosted Pink",
+                "hex": "#f43f5e"
+            },
+            {
+                "name": "Petal Decant",
+                "hex": "#fda4af"
+            }
+        ]
+    },
+    {
+        "id": 64,
+        "name": "Sultan Smokey Birch & Leather Extrait",
+        "slug": "sultan-smokey-birch-leather-extrait",
+        "category": "perfumes",
+        "subcategory": "Men Fragrances",
+        "category_name": "Haute Parfumerie",
+        "brand": "Khushi Collection",
+        "sku": "KC-PERF-004",
+        "price": 15500,
+        "sale_price": 12900,
+        "cost_price": 8525,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.9,
+        "reviews_count": 38,
+        "thumbnail": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Intense birch tar, Tuscan leather, cracked black pepper, vetiver, and dark patchouli.",
+        "description": "Intense birch tar, Tuscan leather, cracked black pepper, vetiver, and dark patchouli. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "100ml / 3.4 oz",
+            "50ml / 1.7 oz"
+        ],
+        "colors": [
+            {
+                "name": "Matte Obsidian Black",
+                "hex": "#18181b"
+            },
+            {
+                "name": "Leather Wrapped",
+                "hex": "#27272a"
+            },
+            {
+                "name": "Crystal Flask",
+                "hex": "#451a03"
+            }
+        ]
+    },
+    {
+        "id": 65,
+        "name": "Pure Dehn Al Oud Concentrated Attar 12ml",
+        "slug": "pure-dehn-al-oud-concentrated-attar-12ml",
+        "category": "perfumes",
+        "subcategory": "Attar Concentrates",
+        "category_name": "Haute Parfumerie",
+        "brand": "Khushi Collection",
+        "sku": "KC-PERF-005",
+        "price": 18500,
+        "sale_price": 15500,
+        "cost_price": 10175,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 43,
+        "thumbnail": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "100% pure alcohol-free artisanal attar oil aged in oak barrels for over 15 years.",
+        "description": "100% pure alcohol-free artisanal attar oil aged in oak barrels for over 15 years. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "12ml Pure Oil",
+            "6ml Miniature"
+        ],
+        "colors": [
+            {
+                "name": "Crystal Attar Bottle with Dipstick",
+                "hex": "#78350f"
+            }
+        ]
+    },
+    {
+        "id": 66,
+        "name": "White Jasmine & Cardamom Eau De Parfum",
+        "slug": "white-jasmine-cardamom-eau-de-parfum",
+        "category": "perfumes",
+        "subcategory": "Floral Eau De Parfum",
+        "category_name": "Haute Parfumerie",
+        "brand": "Khushi Collection",
+        "sku": "KC-PERF-006",
+        "price": 11500,
+        "sale_price": 9200,
+        "cost_price": 6325,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 48,
+        "thumbnail": "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Nocturnal blooming Motia jasmine, crushed green cardamom pods, sandalwood, and sweet tonka.",
+        "description": "Nocturnal blooming Motia jasmine, crushed green cardamom pods, sandalwood, and sweet tonka. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "100ml / 3.4 oz",
+            "50ml / 1.7 oz"
+        ],
+        "colors": [
+            {
+                "name": "Frosted Ivory",
+                "hex": "#f8fafc"
+            },
+            {
+                "name": "Gold Trim Bottle",
+                "hex": "#fef3c7"
+            },
+            {
+                "name": "Travel Size",
+                "hex": "#e0e7ff"
+            }
+        ]
+    },
+    {
+        "id": 67,
+        "name": "Royal Taif Rose & Frankincense Elixir",
+        "slug": "royal-taif-rose-frankincense-elixir",
+        "category": "perfumes",
+        "subcategory": "Oriental Oud",
+        "category_name": "Haute Parfumerie",
+        "brand": "Khushi Collection",
+        "sku": "KC-PERF-007",
+        "price": 15800,
+        "sale_price": 13200,
+        "cost_price": 8690,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 53,
+        "thumbnail": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Wild Saudi Taif rose petals distilled with royal Hojari frankincense tears.",
+        "description": "Wild Saudi Taif rose petals distilled with royal Hojari frankincense tears. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "100ml / 3.4 oz",
+            "50ml / 1.7 oz"
+        ],
+        "colors": [
+            {
+                "name": "Taif Ruby Flacon",
+                "hex": "#be123c"
+            },
+            {
+                "name": "Rose Gold Edition",
+                "hex": "#881337"
+            }
+        ]
+    },
+    {
+        "id": 68,
+        "name": "Obsidian Black Pepper & Incense EDP",
+        "slug": "obsidian-black-pepper-incense-edp",
+        "category": "perfumes",
+        "subcategory": "Men Fragrances",
+        "category_name": "Haute Parfumerie",
+        "brand": "Khushi Collection",
+        "sku": "KC-PERF-008",
+        "price": 13800,
+        "sale_price": 11200,
+        "cost_price": 7590,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.95,
+        "reviews_count": 58,
+        "thumbnail": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Madagascan black pepper, Somali myrrh, guaiac wood, and crystalline amber.",
+        "description": "Madagascan black pepper, Somali myrrh, guaiac wood, and crystalline amber. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "100ml / 3.4 oz",
+            "50ml / 1.7 oz"
+        ],
+        "colors": [
+            {
+                "name": "Glossy Obsidian",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Matte Night",
+                "hex": "#27272a"
+            },
+            {
+                "name": "Discovery Flacon",
+                "hex": "#0f172a"
+            }
+        ]
+    },
+    {
+        "id": 69,
+        "name": "Shamama Pure Herbal Attar 12ml",
+        "slug": "shamama-pure-herbal-attar-12ml",
+        "category": "perfumes",
+        "subcategory": "Attar Concentrates",
+        "category_name": "Haute Parfumerie",
+        "brand": "Khushi Collection",
+        "sku": "KC-PERF-009",
+        "price": 14000,
+        "sale_price": 11500,
+        "cost_price": 7700,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 63,
+        "thumbnail": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Ancient formula of 40 Himalayan herbs and spices infused in pure sandalwood oil base.",
+        "description": "Ancient formula of 40 Himalayan herbs and spices infused in pure sandalwood oil base. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "12ml Pure Attar",
+            "6ml Miniature"
+        ],
+        "colors": [
+            {
+                "name": "Hand-Carved Brass Flacon",
+                "hex": "#78350f"
+            }
+        ]
+    },
+    {
+        "id": 70,
+        "name": "Fleur D'Oranger & White Tea Parfum",
+        "slug": "fleur-d-oranger-white-tea-parfum",
+        "category": "perfumes",
+        "subcategory": "Floral Eau De Parfum",
+        "category_name": "Haute Parfumerie",
+        "brand": "Khushi Collection",
+        "sku": "KC-PERF-010",
+        "price": 11900,
+        "sale_price": 9500,
+        "cost_price": 6545,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 68,
+        "thumbnail": "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Tunisian orange blossom, sparkling mandarin, white tea leaves, and clean cedarwood.",
+        "description": "Tunisian orange blossom, sparkling mandarin, white tea leaves, and clean cedarwood. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "100ml / 3.4 oz",
+            "50ml / 1.7 oz"
+        ],
+        "colors": [
+            {
+                "name": "Citrus Sunlight",
+                "hex": "#fed7aa"
+            },
+            {
+                "name": "Pearl Mist",
+                "hex": "#fef08a"
+            },
+            {
+                "name": "Crystal Atomizer",
+                "hex": "#f8fafc"
+            }
+        ]
+    },
+    {
+        "id": 71,
+        "name": "Tobacco & Honeyed Amber Extrait",
+        "slug": "tobacco-honeyed-amber-extrait",
+        "category": "perfumes",
+        "subcategory": "Oriental Oud",
+        "category_name": "Haute Parfumerie",
+        "brand": "Khushi Collection",
+        "sku": "KC-PERF-011",
+        "price": 16200,
+        "sale_price": 13400,
+        "cost_price": 8910,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 73,
+        "thumbnail": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Cuban tobacco leaves, organic wildflower honey, benzoin resin, and dark roasted cacao.",
+        "description": "Cuban tobacco leaves, organic wildflower honey, benzoin resin, and dark roasted cacao. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "100ml / 3.4 oz",
+            "50ml / 1.7 oz"
+        ],
+        "colors": [
+            {
+                "name": "Amber Havana Bottle",
+                "hex": "#451a03"
+            },
+            {
+                "name": "Smoked Brown Flacon",
+                "hex": "#78350f"
+            }
+        ]
+    },
+    {
+        "id": 72,
+        "name": "Kashmir Saffron & Rose Concentrated Attar",
+        "slug": "kashmir-saffron-rose-concentrated-attar",
+        "category": "perfumes",
+        "subcategory": "Attar Concentrates",
+        "category_name": "Haute Parfumerie",
+        "brand": "Khushi Collection",
+        "sku": "KC-PERF-012",
+        "price": 17200,
+        "sale_price": 14200,
+        "cost_price": 9460,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.85,
+        "reviews_count": 78,
+        "thumbnail": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Pure Kashmiri mongra saffron extract hand-blended with high-altitude Taif rose absolute.",
+        "description": "Pure Kashmiri mongra saffron extract hand-blended with high-altitude Taif rose absolute. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "12ml Pure Oil",
+            "6ml Travel"
+        ],
+        "colors": [
+            {
+                "name": "Gold Filigree Crystal Flacon",
+                "hex": "#ca8a04"
+            }
+        ]
+    },
+    {
+        "id": 73,
+        "name": "Khushi Structured Monogram Quilted Tote",
+        "slug": "khushi-structured-monogram-quilted-tote",
+        "category": "bags",
+        "subcategory": "Luxury Totes",
+        "category_name": "Luxury Handbags",
+        "brand": "Khushi Collection",
+        "sku": "KC-BAG-001",
+        "price": 14500,
+        "sale_price": 11900,
+        "cost_price": 7975,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 23,
+        "thumbnail": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Padded micro-grain vegan leather tote with 24K gold monogram lock hardware and detachable strap.",
+        "description": "Padded micro-grain vegan leather tote with 24K gold monogram lock hardware and detachable strap. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Medium (34cm x 26cm)",
+            "Large Carryall"
+        ],
+        "colors": [
+            {
+                "name": "Jet Black",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Cognac Brown",
+                "hex": "#78350f"
+            },
+            {
+                "name": "Emerald Pine",
+                "hex": "#064e3b"
+            }
+        ]
+    },
+    {
+        "id": 74,
+        "name": "Mughal Royal Zari Embroidered Bridal Clutch",
+        "slug": "mughal-royal-zari-embroidered-bridal-clutch",
+        "category": "bags",
+        "subcategory": "Bridal Clutches",
+        "category_name": "Luxury Handbags",
+        "brand": "Khushi Collection",
+        "sku": "KC-BAG-002",
+        "price": 8500,
+        "sale_price": 6900,
+        "cost_price": 4675,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 28,
+        "thumbnail": "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Handmade antique brass frame hardcase clutch adorned with heavy tilla embroidery and crystal clasp.",
+        "description": "Handmade antique brass frame hardcase clutch adorned with heavy tilla embroidery and crystal clasp. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Standard Box (20cm x 12cm)"
+        ],
+        "colors": [
+            {
+                "name": "Gold Champagne",
+                "hex": "#d4af37"
+            },
+            {
+                "name": "Bridal Ruby",
+                "hex": "#881337"
+            },
+            {
+                "name": "Emerald Forest",
+                "hex": "#064e3b"
+            }
+        ]
+    },
+    {
+        "id": 75,
+        "name": "Artisan Saffiano Leather Crossbody Bag",
+        "slug": "artisan-saffiano-leather-crossbody-bag",
+        "category": "bags",
+        "subcategory": "Crossbody",
+        "category_name": "Luxury Handbags",
+        "brand": "Khushi Collection",
+        "sku": "KC-BAG-003",
+        "price": 11200,
+        "sale_price": 8900,
+        "cost_price": 6160,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 33,
+        "thumbnail": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Scratch-resistant Italian saffiano leather bag with dual zipper compartments and adjustable strap.",
+        "description": "Scratch-resistant Italian saffiano leather bag with dual zipper compartments and adjustable strap. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Compact (22cm x 16cm)"
+        ],
+        "colors": [
+            {
+                "name": "Sapphire Navy",
+                "hex": "#1e3a8a"
+            },
+            {
+                "name": "Onyx Black",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Plum Berry",
+                "hex": "#701a75"
+            }
+        ]
+    },
+    {
+        "id": 76,
+        "name": "Velvet Hand-Worked Potli Bag",
+        "slug": "velvet-hand-worked-potli-bag",
+        "category": "bags",
+        "subcategory": "Bridal Clutches",
+        "category_name": "Luxury Handbags",
+        "brand": "Khushi Collection",
+        "sku": "KC-BAG-004",
+        "price": 4500,
+        "sale_price": 3600,
+        "cost_price": 2475,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.9,
+        "reviews_count": 38,
+        "thumbnail": "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Traditional drawstring potli bag encrusted with pearls, mirrors, and long dangling gold tassels.",
+        "description": "Traditional drawstring potli bag encrusted with pearls, mirrors, and long dangling gold tassels. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Standard Potli"
+        ],
+        "colors": [
+            {
+                "name": "Maroon Velvet",
+                "hex": "#881337"
+            },
+            {
+                "name": "Emerald Velvet",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Gold Zari",
+                "hex": "#ca8a04"
+            }
+        ]
+    },
+    {
+        "id": 77,
+        "name": "Executive Full-Grain Leather Briefcase",
+        "slug": "executive-full-grain-leather-briefcase",
+        "category": "bags",
+        "subcategory": "Luxury Totes",
+        "category_name": "Luxury Handbags",
+        "brand": "Khushi Collection",
+        "sku": "KC-BAG-005",
+        "price": 18500,
+        "sale_price": 15200,
+        "cost_price": 10175,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 43,
+        "thumbnail": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Premium steerhide leather executive bag with padded 15.6-inch laptop compartment and trolley strap.",
+        "description": "Premium steerhide leather executive bag with padded 15.6-inch laptop compartment and trolley strap. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Executive (40cm x 30cm)"
+        ],
+        "colors": [
+            {
+                "name": "Dark Chocolate",
+                "hex": "#451a03"
+            },
+            {
+                "name": "Jet Black",
+                "hex": "#09090b"
+            },
+            {
+                "name": "British Tan",
+                "hex": "#78350f"
+            }
+        ]
+    },
+    {
+        "id": 78,
+        "name": "Mother-of-Pearl Mosaic Evening Minaudi\u00e8re",
+        "slug": "mother-of-pearl-mosaic-evening-minaudi-re",
+        "category": "bags",
+        "subcategory": "Bridal Clutches",
+        "category_name": "Luxury Handbags",
+        "brand": "Khushi Collection",
+        "sku": "KC-BAG-006",
+        "price": 12500,
+        "sale_price": 9900,
+        "cost_price": 6875,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 48,
+        "thumbnail": "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Natural hand-cut mother-of-pearl hexagonal shell clutch with detachable snake chain.",
+        "description": "Natural hand-cut mother-of-pearl hexagonal shell clutch with detachable snake chain. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Evening Hardcase (19cm x 11cm)"
+        ],
+        "colors": [
+            {
+                "name": "Iridescent Pearl",
+                "hex": "#f8fafc"
+            },
+            {
+                "name": "Champagne Shimmer",
+                "hex": "#fef08a"
+            },
+            {
+                "name": "Silver Moon",
+                "hex": "#e2e8f0"
+            }
+        ]
+    },
+    {
+        "id": 79,
+        "name": "Crescent Curved Leather Shoulder Bag",
+        "slug": "crescent-curved-leather-shoulder-bag",
+        "category": "bags",
+        "subcategory": "Crossbody",
+        "category_name": "Luxury Handbags",
+        "brand": "Khushi Collection",
+        "sku": "KC-BAG-007",
+        "price": 10800,
+        "sale_price": 8600,
+        "cost_price": 5940,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 53,
+        "thumbnail": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Modern minimalist crescent hobo silhouette in buttery soft calf-grain leather with magnetic tab.",
+        "description": "Modern minimalist crescent hobo silhouette in buttery soft calf-grain leather with magnetic tab. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Medium (28cm x 18cm)"
+        ],
+        "colors": [
+            {
+                "name": "Black Noir",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Caramel Tan",
+                "hex": "#78350f"
+            },
+            {
+                "name": "Off-White Cream",
+                "hex": "#f8fafc"
+            }
+        ]
+    },
+    {
+        "id": 80,
+        "name": "Bespoke Handcrafted Leather Bifold Wallet",
+        "slug": "bespoke-handcrafted-leather-bifold-wallet",
+        "category": "bags",
+        "subcategory": "Wallets",
+        "category_name": "Luxury Handbags",
+        "brand": "Khushi Collection",
+        "sku": "KC-BAG-008",
+        "price": 4200,
+        "sale_price": 3400,
+        "cost_price": 2310,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.95,
+        "reviews_count": 58,
+        "thumbnail": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Ultra-slim 8-card RFID blocking wallet in vegetable tanned top-grain cowhide leather.",
+        "description": "Ultra-slim 8-card RFID blocking wallet in vegetable tanned top-grain cowhide leather. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Slim Pocket (11cm x 9cm)"
+        ],
+        "colors": [
+            {
+                "name": "Classic Black",
+                "hex": "#18181b"
+            },
+            {
+                "name": "Espresso Brown",
+                "hex": "#451a03"
+            },
+            {
+                "name": "Tan Saddle",
+                "hex": "#78350f"
+            }
+        ]
+    },
+    {
+        "id": 81,
+        "name": "Grand Shopper Canvas & Leather Tote",
+        "slug": "grand-shopper-canvas-leather-tote",
+        "category": "bags",
+        "subcategory": "Luxury Totes",
+        "category_name": "Luxury Handbags",
+        "brand": "Khushi Collection",
+        "sku": "KC-BAG-009",
+        "price": 13200,
+        "sale_price": 10800,
+        "cost_price": 7260,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 63,
+        "thumbnail": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Heavy-duty waterproof canvas tote with genuine leather trims and reinforced gold feet.",
+        "description": "Heavy-duty waterproof canvas tote with genuine leather trims and reinforced gold feet. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Large Shopper (42cm x 32cm)"
+        ],
+        "colors": [
+            {
+                "name": "Beige / Tan",
+                "hex": "#fef3c7"
+            },
+            {
+                "name": "Black / Gold",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Olive / Brown",
+                "hex": "#064e3b"
+            }
+        ]
+    },
+    {
+        "id": 82,
+        "name": "Embroidered Velvet Envelope Evening Clutch",
+        "slug": "embroidered-velvet-envelope-evening-clutch",
+        "category": "bags",
+        "subcategory": "Bridal Clutches",
+        "category_name": "Luxury Handbags",
+        "brand": "Khushi Collection",
+        "sku": "KC-BAG-010",
+        "price": 6800,
+        "sale_price": 5400,
+        "cost_price": 3740,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 68,
+        "thumbnail": "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Sleek envelope cut velvet clutch with geometric antique gold bullion thread embroidery.",
+        "description": "Sleek envelope cut velvet clutch with geometric antique gold bullion thread embroidery. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Envelope (24cm x 14cm)"
+        ],
+        "colors": [
+            {
+                "name": "Emerald Velvet",
+                "hex": "#064e3b"
+            },
+            {
+                "name": "Ruby Maroon",
+                "hex": "#881337"
+            },
+            {
+                "name": "Obsidian Black",
+                "hex": "#09090b"
+            }
+        ]
+    },
+    {
+        "id": 83,
+        "name": "Quilted Chain Strap Flap Bag",
+        "slug": "quilted-chain-strap-flap-bag",
+        "category": "bags",
+        "subcategory": "Crossbody",
+        "category_name": "Luxury Handbags",
+        "brand": "Khushi Collection",
+        "sku": "KC-BAG-011",
+        "price": 12900,
+        "sale_price": 10400,
+        "cost_price": 7095,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 73,
+        "thumbnail": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Diamond quilted micro-leather crossbody with adjustable double gold sliding chain strap.",
+        "description": "Diamond quilted micro-leather crossbody with adjustable double gold sliding chain strap. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Medium (26cm x 16cm)"
+        ],
+        "colors": [
+            {
+                "name": "Classic Black",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Ivory Cream",
+                "hex": "#f8fafc"
+            },
+            {
+                "name": "Bordeaux Red",
+                "hex": "#881337"
+            }
+        ]
+    },
+    {
+        "id": 84,
+        "name": "Zip-Around Leather Travel Organizer Wallet",
+        "slug": "zip-around-leather-travel-organizer-wallet",
+        "category": "bags",
+        "subcategory": "Wallets",
+        "category_name": "Luxury Handbags",
+        "brand": "Khushi Collection",
+        "sku": "KC-BAG-012",
+        "price": 5400,
+        "sale_price": 4300,
+        "cost_price": 2970,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.85,
+        "reviews_count": 78,
+        "thumbnail": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Full zip continental wallet with passport pocket, 12 card slots, and zippered coin purse.",
+        "description": "Full zip continental wallet with passport pocket, 12 card slots, and zippered coin purse. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "Long Wallet (20cm x 10cm)"
+        ],
+        "colors": [
+            {
+                "name": "Jet Black",
+                "hex": "#09090b"
+            },
+            {
+                "name": "Caramel Tan",
+                "hex": "#78350f"
+            },
+            {
+                "name": "Crimson Wine",
+                "hex": "#881337"
+            }
+        ]
+    },
+    {
+        "id": 85,
+        "name": "24K Gold Royal Radiance Facial Elixir 30ml",
+        "slug": "24k-gold-royal-radiance-facial-elixir-30ml",
+        "category": "beauty",
+        "subcategory": "Face Serums",
+        "category_name": "Royal Beauty & Care",
+        "brand": "Khushi Collection",
+        "sku": "KC-BEAU-001",
+        "price": 8500,
+        "sale_price": 6800,
+        "cost_price": 4675,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 23,
+        "thumbnail": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Infused with pure 24-karat gold flakes, rosehip oil, and squalane for an ethereal royal radiance.",
+        "description": "Infused with pure 24-karat gold flakes, rosehip oil, and squalane for an ethereal royal radiance. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "30ml / 1 fl. oz",
+            "50ml Luxury Size"
+        ],
+        "colors": [
+            {
+                "name": "24K Gold Dropper Bottle",
+                "hex": "#d4af37"
+            }
+        ]
+    },
+    {
+        "id": 86,
+        "name": "Saffron & Wild Honey Glow Night Concentrate",
+        "slug": "saffron-wild-honey-glow-night-concentrate",
+        "category": "beauty",
+        "subcategory": "Glow Oils",
+        "category_name": "Royal Beauty & Care",
+        "brand": "Khushi Collection",
+        "sku": "KC-BEAU-002",
+        "price": 7800,
+        "sale_price": 6200,
+        "cost_price": 4290,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 28,
+        "thumbnail": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Concentrated organic Kashmiri saffron threads and raw mountain honey in cold-pressed almond oil.",
+        "description": "Concentrated organic Kashmiri saffron threads and raw mountain honey in cold-pressed almond oil. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "30ml / 1 fl. oz"
+        ],
+        "colors": [
+            {
+                "name": "Amber Glass Dropper",
+                "hex": "#d97706"
+            }
+        ]
+    },
+    {
+        "id": 87,
+        "name": "Damascus Rose Distilled Hydrating Mist 150ml",
+        "slug": "damascus-rose-distilled-hydrating-mist-150ml",
+        "category": "beauty",
+        "subcategory": "Organic Care",
+        "category_name": "Royal Beauty & Care",
+        "brand": "Khushi Collection",
+        "sku": "KC-BEAU-003",
+        "price": 4500,
+        "sale_price": 3600,
+        "cost_price": 2475,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": true,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 33,
+        "thumbnail": "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "100% steam distilled organic Damascus rose water toning mist in fine atomizer bottle.",
+        "description": "100% steam distilled organic Damascus rose water toning mist in fine atomizer bottle. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "150ml / 5 fl. oz",
+            "50ml Travel Atomizer"
+        ],
+        "colors": [
+            {
+                "name": "Frosted Rose Bottle",
+                "hex": "#fda4af"
+            }
+        ]
+    },
+    {
+        "id": 88,
+        "name": "Imperial Agarwood & Shea Deep Restorative Balm",
+        "slug": "imperial-agarwood-shea-deep-restorative-balm",
+        "category": "beauty",
+        "subcategory": "Organic Care",
+        "category_name": "Royal Beauty & Care",
+        "brand": "Khushi Collection",
+        "sku": "KC-BEAU-004",
+        "price": 6200,
+        "sale_price": 4900,
+        "cost_price": 3410,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.9,
+        "reviews_count": 38,
+        "thumbnail": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Nourishing African shea butter infused with therapeutic oud oil and vitamin E.",
+        "description": "Nourishing African shea butter infused with therapeutic oud oil and vitamin E. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "100g / 3.5 oz"
+        ],
+        "colors": [
+            {
+                "name": "Gold Metal Tin Jar",
+                "hex": "#78350f"
+            }
+        ]
+    },
+    {
+        "id": 89,
+        "name": "Ubtan & Sandalwood Bridal Illuminating Polish",
+        "slug": "ubtan-sandalwood-bridal-illuminating-polish",
+        "category": "beauty",
+        "subcategory": "Organic Care",
+        "category_name": "Royal Beauty & Care",
+        "brand": "Khushi Collection",
+        "sku": "KC-BEAU-005",
+        "price": 3800,
+        "sale_price": 2900,
+        "cost_price": 2090,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 43,
+        "thumbnail": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Traditional turmeric, sandalwood, chickpea flour, and saffron exfoliating body polish.",
+        "description": "Traditional turmeric, sandalwood, chickpea flour, and saffron exfoliating body polish. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "200g / 7 oz"
+        ],
+        "colors": [
+            {
+                "name": "Heritage Ceramic Style Jar",
+                "hex": "#ca8a04"
+            }
+        ]
+    },
+    {
+        "id": 90,
+        "name": "Pure Argan & Rosemary Scalp Revitalizing Oil",
+        "slug": "pure-argan-rosemary-scalp-revitalizing-oil",
+        "category": "beauty",
+        "subcategory": "Glow Oils",
+        "category_name": "Royal Beauty & Care",
+        "brand": "Khushi Collection",
+        "sku": "KC-BEAU-006",
+        "price": 5400,
+        "sale_price": 4300,
+        "cost_price": 2970,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 48,
+        "thumbnail": "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Cold-pressed Moroccan argan oil blended with organic rosemary extract for dense lustrous hair.",
+        "description": "Cold-pressed Moroccan argan oil blended with organic rosemary extract for dense lustrous hair. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "100ml / 3.4 oz"
+        ],
+        "colors": [
+            {
+                "name": "Dark Amber Dropper",
+                "hex": "#15803d"
+            }
+        ]
+    },
+    {
+        "id": 91,
+        "name": "Hyaluronic & Peptide Royal Youth Serum 30ml",
+        "slug": "hyaluronic-peptide-royal-youth-serum-30ml",
+        "category": "beauty",
+        "subcategory": "Face Serums",
+        "category_name": "Royal Beauty & Care",
+        "brand": "Khushi Collection",
+        "sku": "KC-BEAU-007",
+        "price": 9200,
+        "sale_price": 7500,
+        "cost_price": 5060,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 53,
+        "thumbnail": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Multi-molecular hyaluronic acid combined with copper peptides for intense plumping and firming.",
+        "description": "Multi-molecular hyaluronic acid combined with copper peptides for intense plumping and firming. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "30ml / 1 fl. oz"
+        ],
+        "colors": [
+            {
+                "name": "Cobalt Blue Dropper",
+                "hex": "#0284c7"
+            }
+        ]
+    },
+    {
+        "id": 92,
+        "name": "Kashmiri Almond & Saffron Nourishing Cream",
+        "slug": "kashmiri-almond-saffron-nourishing-cream",
+        "category": "beauty",
+        "subcategory": "Organic Care",
+        "category_name": "Royal Beauty & Care",
+        "brand": "Khushi Collection",
+        "sku": "KC-BEAU-008",
+        "price": 6800,
+        "sale_price": 5400,
+        "cost_price": 3740,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.95,
+        "reviews_count": 58,
+        "thumbnail": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Rich whipped night cream with cold-pressed sweet almond oil and active saffron extracts.",
+        "description": "Rich whipped night cream with cold-pressed sweet almond oil and active saffron extracts. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "50g / 1.7 oz"
+        ],
+        "colors": [
+            {
+                "name": "Frosted Gold Lid Jar",
+                "hex": "#fef9c3"
+            }
+        ]
+    },
+    {
+        "id": 93,
+        "name": "Bakuchiol & Retinol Alternative Firming Oil",
+        "slug": "bakuchiol-retinol-alternative-firming-oil",
+        "category": "beauty",
+        "subcategory": "Glow Oils",
+        "category_name": "Royal Beauty & Care",
+        "brand": "Khushi Collection",
+        "sku": "KC-BEAU-009",
+        "price": 8200,
+        "sale_price": 6600,
+        "cost_price": 4510,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.85,
+        "reviews_count": 63,
+        "thumbnail": "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Natural plant-based bakuchiol retinol alternative in squalane for smoothing fine lines without irritation.",
+        "description": "Natural plant-based bakuchiol retinol alternative in squalane for smoothing fine lines without irritation. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "30ml / 1 fl. oz"
+        ],
+        "colors": [
+            {
+                "name": "Violet UV-Protected Dropper",
+                "hex": "#a855f7"
+            }
+        ]
+    },
+    {
+        "id": 94,
+        "name": "Pure Vitamin C 20% + Ferulic Radiance Serum",
+        "slug": "pure-vitamin-c-20-ferulic-radiance-serum",
+        "category": "beauty",
+        "subcategory": "Face Serums",
+        "category_name": "Royal Beauty & Care",
+        "brand": "Khushi Collection",
+        "sku": "KC-BEAU-010",
+        "price": 7900,
+        "sale_price": 6400,
+        "cost_price": 4345,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": false,
+        "is_flash_sale": false,
+        "rating": 4.9,
+        "reviews_count": 68,
+        "thumbnail": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Stabilized L-ascorbic acid and ferulic acid formula targeting dark spots and hyperpigmentation.",
+        "description": "Stabilized L-ascorbic acid and ferulic acid formula targeting dark spots and hyperpigmentation. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "30ml / 1 fl. oz"
+        ],
+        "colors": [
+            {
+                "name": "Amber Dropper Bottle",
+                "hex": "#f97316"
+            }
+        ]
+    },
+    {
+        "id": 95,
+        "name": "Organic Rosehip & Frankincense Rejuvenating Oil",
+        "slug": "organic-rosehip-frankincense-rejuvenating-oil",
+        "category": "beauty",
+        "subcategory": "Glow Oils",
+        "category_name": "Royal Beauty & Care",
+        "brand": "Khushi Collection",
+        "sku": "KC-BEAU-011",
+        "price": 7400,
+        "sale_price": 5900,
+        "cost_price": 4070,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": false,
+        "is_bestseller": true,
+        "is_flash_sale": false,
+        "rating": 4.95,
+        "reviews_count": 73,
+        "thumbnail": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Certified organic cold-pressed rosehip seed oil infused with sacred frankincense essential oil.",
+        "description": "Certified organic cold-pressed rosehip seed oil infused with sacred frankincense essential oil. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "30ml / 1 fl. oz"
+        ],
+        "colors": [
+            {
+                "name": "Muted Ruby Dropper",
+                "hex": "#e11d48"
+            }
+        ]
+    },
+    {
+        "id": 96,
+        "name": "24K Gold Infused Lip Treatment Oil",
+        "slug": "24k-gold-infused-lip-treatment-oil",
+        "category": "beauty",
+        "subcategory": "Organic Care",
+        "category_name": "Royal Beauty & Care",
+        "brand": "Khushi Collection",
+        "sku": "KC-BEAU-012",
+        "price": 3200,
+        "sale_price": 2500,
+        "cost_price": 1760,
+        "stock": 12,
+        "low_stock_threshold": 3,
+        "status": "published",
+        "is_featured": false,
+        "is_new": true,
+        "is_bestseller": false,
+        "is_flash_sale": true,
+        "rating": 4.85,
+        "reviews_count": 78,
+        "thumbnail": "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+        "images": [
+            "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80"
+        ],
+        "short_description": "Plumping nourishing lip oil with real suspended gold flakes, jojoba, and vitamin E.",
+        "description": "Plumping nourishing lip oil with real suspended gold flakes, jojoba, and vitamin E. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
+        "sizes": [
+            "10ml"
+        ],
+        "colors": [
+            {
+                "name": "Gold Rollerball / Wand",
+                "hex": "#fef08a"
+            }
+        ]
+    }
+];
+
+// Pre-configured Category Specific Attributes Schema
+const CATEGORY_ATTRIBUTE_SCHEMAS = {
+    clothes: [
+        { key: "gender", label: "Gender", type: "select", options: ["Women", "Men", "Unisex", "Girls", "Boys"] },
+        { key: "clothing_type", label: "Clothing Type", type: "select", options: ["3-Piece Stitched", "2-Piece Stitched", "Kurta", "Waistcoat", "Shalwar Kameez", "Saree", "Abaya", "Tops"] },
+        { key: "fabric", label: "Fabric", type: "text", placeholder: "e.g. Micro Velvet 9000, Korean Raw Silk, Pure Chiffon" },
+        { key: "material", label: "Material Composition", type: "text", placeholder: "e.g. 100% Cotton, Silk Blend" },
+        { key: "pattern", label: "Pattern", type: "select", options: ["Embroidered", "Solid", "Digital Print", "Block Print", "Jacquard"] },
+        { key: "fit", label: "Fit Type", type: "select", options: ["Regular Fit", "Slim Fit", "Relaxed Fit", "Custom Tailored"] },
+        { key: "sleeve_type", label: "Sleeve Type", type: "select", options: ["Full Sleeves", "Three-Quarter", "Half Sleeves", "Sleeveless"] },
+        { key: "neck_type", label: "Neckline / Collar", type: "select", options: ["Mandarin / Band Collar", "V-Neck", "Round Neck", "Boat Neck", "Embroidered Placket"] },
+        { key: "season", label: "Season", type: "select", options: ["Winter Festive", "All Season", "Summer Spring", "Festive Autumn"] },
+        { key: "occasion", label: "Occasion", type: "select", options: ["Wedding Formal", "Festive / Eid", "Party Wear", "Casual Luxury"] },
+        { key: "care_instructions", label: "Care Instructions", type: "text", placeholder: "e.g. Dry Clean Only, Gentle Cold Wash" },
+        { key: "country_of_origin", label: "Country of Origin", type: "text", placeholder: "e.g. Pakistan" }
+    ],
+    shoes: [
+        { key: "gender", label: "Gender", type: "select", options: ["Women", "Men", "Unisex", "Kids"] },
+        { key: "shoe_type", label: "Shoe Type", type: "select", options: ["Khussa", "Peshawari Chappal", "Mules", "Bridal Heels", "Loafers"] },
+        { key: "material", label: "Upper Material", type: "text", placeholder: "e.g. Pure Velvet with Tilla, Steerhide Cow Leather" },
+        { key: "sole_material", label: "Sole Material", type: "text", placeholder: "e.g. Genuine Cow Leather, Flexible Tyre Rubber" },
+        { key: "style", label: "Style", type: "select", options: ["Traditional Hand-Embroidered", "Modern Heritage", "Bridal Formal"] },
+        { key: "occasion", label: "Occasion", type: "select", options: ["Bridal / Wedding", "Festive", "Daily Luxury"] }
+    ],
+    watches: [
+        { key: "brand", label: "Watch Brand", type: "text", placeholder: "e.g. Khushi Timepieces" },
+        { key: "model", label: "Model Reference", type: "text", placeholder: "e.g. Royal Chronograph Heritage" },
+        { key: "movement", label: "Movement Type", type: "select", options: ["Japanese Quartz Chronograph", "Swiss Automatic", "Mechanical"] },
+        { key: "dial_color", label: "Dial Color", type: "text", placeholder: "e.g. Sunburst Emerald, Obsidian Black" },
+        { key: "strap_material", label: "Strap Material", type: "select", options: ["316L Stainless Steel", "Genuine Italian Leather", "Silicone Rubber"] },
+        { key: "case_material", label: "Case Material", type: "text", placeholder: "e.g. Medical-Grade 316L Stainless Steel" },
+        { key: "case_size", label: "Case Size", type: "text", placeholder: "e.g. 41mm" },
+        { key: "water_resistance", label: "Water Resistance", type: "select", options: ["5 ATM / 50M", "3 ATM / 30M", "10 ATM / 100M"] },
+        { key: "display_type", label: "Display Type", type: "select", options: ["Analog Chronograph", "Classic Three-Hand"] }
+    ],
+    perfumes: [
+        { key: "brand", label: "Parfumerie Brand", type: "text", placeholder: "e.g. Khushi Haute Parfumerie" },
+        { key: "fragrance_type", label: "Fragrance Type", type: "select", options: ["Eau De Parfum (EDP)", "Extrait De Parfum", "Pure Concentrated Attar"] },
+        { key: "gender", label: "Gender", type: "select", options: ["Unisex", "For Him", "For Her"] },
+        { key: "volume", label: "Volume / Size", type: "select", options: ["100ml / 3.4 fl. oz", "50ml / 1.7 fl. oz", "12ml Attar Bottle"] },
+        { key: "fragrance_family", label: "Fragrance Family", type: "select", options: ["Oriental Woody", "Amber Floral", "Rich Leather", "Fresh Citrus Spicy"] },
+        { key: "top_notes", label: "Top Notes", type: "text", placeholder: "e.g. Saffron, Damascus Rose, Bergamot" },
+        { key: "middle_notes", label: "Middle / Heart Notes", type: "text", placeholder: "e.g. Smoky Birch, Jasmine, Leather" },
+        { key: "base_notes", label: "Base Notes", type: "text", placeholder: "e.g. Aged Cambodian Oud, Ambergris, Madagascar Vanilla" },
+        { key: "concentration", label: "Oil Concentration", type: "text", placeholder: "e.g. 28% High Concentration" }
+    ],
+    bags: [
+        { key: "bag_type", label: "Bag Type", type: "select", options: ["Structured Tote", "Bridal Clutch", "Shoulder Bag", "Crossbody"] },
+        { key: "material", label: "Material", type: "text", placeholder: "e.g. Vegan Micro-grain Leather, Velvet Embroidered" },
+        { key: "dimensions", label: "Dimensions (W x H x D)", type: "text", placeholder: "e.g. 34cm x 26cm x 13cm" },
+        { key: "strap_type", label: "Strap Type", type: "select", options: ["Detachable Gold Chain", "Adjustable Leather Strap", "Dual Top Handle"] },
+        { key: "compartments", label: "Number of Compartments", type: "number", placeholder: "3" },
+        { key: "closure_type", label: "Closure Type", type: "select", options: ["Magnetic Snap", "Heavy Duty Metal Zipper", "Twist Lock"] }
+    ],
+    accessories: [
+        { key: "material", label: "Material", type: "text", placeholder: "e.g. Brass with 24K Gold Polish" },
+        { key: "finish", label: "Finish", type: "text", placeholder: "e.g. High Polish Gloss, Matte" }
+    ]
+};
+
+// Rich Luxury Product Catalog (Upgraded with 8-12 Gallery Images, Secondary Images, and Variant Matrices)
+const DEFAULT_PRODUCTS = [
+    {
+        "id": 1,
+        "name": "Khushi Royal Embroidered Velvet Shawl Suit",
+        "slug": "khushi-royal-embroidered-velvet-shawl-suit",
+        "category": "women",
+        "subcategory": "Dresses",
+        "category_name": "Women Couture",
         "brand": "Khushi Signature",
         "sku": "KC-WMN-001",
         "price": 18500,
