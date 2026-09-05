@@ -110,7 +110,7 @@ def get_public_settings():
         safe_settings['payments']['online_card']['secret_key'] = '••••••••••••••••'
     return jsonify({"success": True, "settings": safe_settings})
 
-@payments_bp.route('/api/settings', methods=['POST'])
+@payments_bp.route('/api/settings', methods=['POST', 'PUT'])
 @owner_required
 def update_owner_settings():
     data = request.get_json() or {}
@@ -121,6 +121,26 @@ def update_owner_settings():
             VALUES (?, ?, CURRENT_TIMESTAMP)
             ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
         ''', (key, val_str))
+
+    # Synchronize individual legacy setting keys for other routes
+    if 'delivery' in data and isinstance(data['delivery'], dict) and 'free_delivery_threshold' in data['delivery']:
+        execute_db('''
+            INSERT INTO settings (setting_key, setting_value, updated_at)
+            VALUES ('free_delivery_threshold', ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+        ''', (str(data['delivery']['free_delivery_threshold']),))
+    if 'contact_support' in data and isinstance(data['contact_support'], dict) and 'whatsapp_number' in data['contact_support']:
+        execute_db('''
+            INSERT INTO settings (setting_key, setting_value, updated_at)
+            VALUES ('store_whatsapp', ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+        ''', (str(data['contact_support']['whatsapp_number']),))
+    if 'store_profile' in data and isinstance(data['store_profile'], dict) and 'store_name' in data['store_profile']:
+        execute_db('''
+            INSERT INTO settings (setting_key, setting_value, updated_at)
+            VALUES ('store_name', ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+        ''', (str(data['store_profile']['store_name']),))
     
     log_audit_action('SETTINGS_UPDATED', 'Store settings and payment options updated by Owner', user_id=session.get('user_id'), user_email=session.get('user_email'), ip_address=request.remote_addr)
     return jsonify({"success": True, "message": "Store settings updated successfully."})

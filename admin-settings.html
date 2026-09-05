@@ -69,7 +69,16 @@
                 <h1 class="text-base sm:text-lg font-serif font-bold text-white">Owner Control Center & Settings</h1>
                 <p class="text-[11px] text-zinc-400">Configure store identity, payment gateways, delivery rates, and notifications</p>
             </div>
-            <div id="admin-user-pill"></div>
+            <div class="flex items-center gap-3">
+                <span id="settings-save-status" class="hidden text-xs font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-3 py-1.5 rounded-xl items-center gap-1.5 transition-all duration-300">
+                    <i class="fa-solid fa-check"></i> <span>Settings Saved</span>
+                </span>
+                <button type="button" id="btn-save-all-settings" onclick="saveAllSettingsFromPage()" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl btn-gold text-zinc-950 font-bold text-xs tracking-wider uppercase shadow-lg shadow-amber-500/20 flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer">
+                    <i class="fa-solid fa-floppy-disk text-sm"></i>
+                    <span>Save All Settings</span>
+                </button>
+                <div id="admin-user-pill"></div>
+            </div>
         </header>
 
         <main class="p-6 sm:p-8 space-y-6 max-w-6xl">
@@ -674,177 +683,290 @@
         }
 
         function populateSettingsForm() {
-            const s = store.getSettings();
-            
-            // Profile
-            document.getElementById('cfg-store-name').value = s.store_profile.store_name || '';
-            document.getElementById('cfg-owner-name').value = s.store_profile.owner_name || '';
-            document.getElementById('cfg-phone').value = s.store_profile.phone || '';
-            document.getElementById('cfg-whatsapp').value = s.store_profile.whatsapp || '';
-            document.getElementById('cfg-email').value = s.store_profile.email || '';
-            document.getElementById('cfg-city-country').value = `${s.store_profile.city || ''}, ${s.store_profile.country || ''}`;
-            document.getElementById('cfg-address').value = s.store_profile.address || '';
-            document.getElementById('cfg-maps-url').value = s.store_profile.maps_url || '';
-            document.getElementById('cfg-hours').value = s.store_profile.business_hours || '';
-            document.getElementById('cfg-logo-url').value = s.store_profile.logo_url || '';
-            document.getElementById('cfg-favicon-url').value = s.store_profile.favicon_url || '';
-            document.getElementById('cfg-store-desc').value = s.store_profile.store_description || '';
-            document.getElementById('cfg-footer-desc').value = s.store_profile.footer_description || '';
+            try {
+                const s = store.getSettings() || {};
+                const sp = s.store_profile || {};
+                const cs = s.contact_support || {};
+                const pay = s.payments || {};
+                const cod = pay.cod || {};
+                const card = pay.online_card || {};
+                const bank = pay.bank_transfer || {};
+                const ep = pay.easypaisa || {};
+                const jc = pay.jazzcash || {};
+                const del = s.delivery || {};
+                const tax = s.taxes || {};
+                const notif = s.notifications || {};
+                const tpl = notif.templates || {};
+                const soc = s.social_media || {};
 
-            // Contact
-            document.getElementById('cfg-cs-phone').value = s.contact_support.support_phone || '';
-            document.getElementById('cfg-cs-whatsapp').value = s.contact_support.whatsapp_number || '';
-            document.getElementById('cfg-cs-email').value = s.contact_support.support_email || '';
-            document.getElementById('cfg-cs-hours').value = s.contact_support.working_hours || '';
-            document.getElementById('cfg-cs-address').value = s.contact_support.business_address || '';
+                const setVal = (id, val) => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = (val !== undefined && val !== null) ? val : '';
+                };
+                const setChk = (id, checked) => {
+                    const el = document.getElementById(id);
+                    if (el) el.checked = !!checked;
+                };
 
-            // Gateways
-            document.getElementById('chk-method-cod').checked = !!s.payments.cod.enabled;
-            document.getElementById('chk-method-card').checked = !!s.payments.online_card.enabled;
-            document.getElementById('chk-method-bank').checked = !!s.payments.bank_transfer.enabled;
-            document.getElementById('chk-method-easypaisa').checked = !!s.payments.easypaisa.enabled;
-            document.getElementById('chk-method-jazzcash').checked = !!s.payments.jazzcash.enabled;
+                // Profile
+                setVal('cfg-store-name', sp.store_name);
+                setVal('cfg-owner-name', sp.owner_name);
+                setVal('cfg-phone', sp.phone);
+                setVal('cfg-whatsapp', sp.whatsapp);
+                setVal('cfg-email', sp.email);
+                setVal('cfg-city-country', `${sp.city || 'Lahore'}, ${sp.country || 'Pakistan'}`);
+                setVal('cfg-address', sp.address);
+                setVal('cfg-maps-url', sp.maps_url);
+                setVal('cfg-hours', sp.business_hours);
+                setVal('cfg-logo-url', sp.logo_url);
+                setVal('cfg-favicon-url', sp.favicon_url);
+                setVal('cfg-store-desc', sp.store_description);
+                setVal('cfg-footer-desc', sp.footer_description);
 
-            document.getElementById('cfg-card-mode').value = s.payments.online_card.mode || 'TEST';
-            toggleTestModeWarning(document.getElementById('cfg-card-mode').value);
-            document.getElementById('cfg-card-name').value = s.payments.online_card.gateway_name || '';
-            document.getElementById('cfg-card-merch-id').value = s.payments.online_card.merchant_id || '';
-            document.getElementById('cfg-card-pub-key').value = s.payments.online_card.public_key || '';
-            document.getElementById('cfg-card-sec-key').value = s.payments.online_card.secret_key || '';
+                // Contact
+                setVal('cfg-cs-phone', cs.support_phone || sp.phone);
+                setVal('cfg-cs-whatsapp', cs.whatsapp_number || sp.whatsapp);
+                setVal('cfg-cs-email', cs.support_email || sp.email);
+                setVal('cfg-cs-hours', cs.working_hours || sp.business_hours);
+                setVal('cfg-cs-address', cs.business_address || sp.address);
 
-            // COD
-            document.getElementById('cfg-cod-min').value = s.payments.cod.min_amount || 500;
-            document.getElementById('cfg-cod-max').value = s.payments.cod.max_amount || 100000;
-            document.getElementById('cfg-cod-fee').value = s.payments.cod.cod_fee || 0;
-            document.getElementById('cfg-cod-cities').value = s.payments.cod.available_cities || 'All Cities';
+                // Gateways
+                setChk('chk-method-cod', cod.enabled !== false);
+                setChk('chk-method-card', card.enabled);
+                setChk('chk-method-bank', bank.enabled);
+                setChk('chk-method-easypaisa', ep.enabled);
+                setChk('chk-method-jazzcash', jc.enabled);
 
-            // Bank & Wallets
-            document.getElementById('cfg-bank-name').value = s.payments.bank_transfer.bank_name || '';
-            document.getElementById('cfg-bank-title').value = s.payments.bank_transfer.account_title || '';
-            document.getElementById('cfg-bank-acc').value = s.payments.bank_transfer.account_number || '';
-            document.getElementById('cfg-bank-iban').value = s.payments.bank_transfer.iban || '';
-            document.getElementById('cfg-bank-branch').value = s.payments.bank_transfer.branch || '';
-            document.getElementById('cfg-bank-instructions').value = s.payments.bank_transfer.instructions || '';
+                const cardMode = card.mode || 'TEST';
+                setVal('cfg-card-mode', cardMode);
+                toggleTestModeWarning(cardMode);
+                setVal('cfg-card-name', card.gateway_name);
+                setVal('cfg-card-merch-id', card.merchant_id);
+                setVal('cfg-card-pub-key', card.public_key);
+                setVal('cfg-card-sec-key', card.secret_key);
 
-            document.getElementById('cfg-ep-title').value = s.payments.easypaisa.account_name || '';
-            document.getElementById('cfg-ep-number').value = s.payments.easypaisa.account_number || '';
-            document.getElementById('cfg-jc-title').value = s.payments.jazzcash.account_name || '';
-            document.getElementById('cfg-jc-number').value = s.payments.jazzcash.account_number || '';
+                // COD
+                setVal('cfg-cod-min', cod.min_amount !== undefined ? cod.min_amount : 500);
+                setVal('cfg-cod-max', cod.max_amount !== undefined ? cod.max_amount : 100000);
+                setVal('cfg-cod-fee', cod.cod_fee !== undefined ? cod.cod_fee : 0);
+                setVal('cfg-cod-cities', cod.available_cities || 'All Cities');
 
-            // Delivery
-            document.getElementById('cfg-ship-free-thresh').value = s.delivery.free_delivery_threshold || 5000;
-            document.getElementById('cfg-ship-def-fee').value = s.delivery.default_delivery_fee || 250;
-            document.getElementById('cfg-ship-time').value = s.delivery.estimated_delivery_time || '2 - 4 Working Days';
-            document.getElementById('cfg-ship-express').value = s.delivery.express_delivery_fee || 500;
+                // Bank & Wallets
+                setVal('cfg-bank-name', bank.bank_name);
+                setVal('cfg-bank-title', bank.account_title);
+                setVal('cfg-bank-acc', bank.account_number);
+                setVal('cfg-bank-iban', bank.iban);
+                setVal('cfg-bank-branch', bank.branch);
+                setVal('cfg-bank-instructions', bank.instructions);
 
-            // Taxes
-            document.getElementById('chk-tax-enabled').checked = !!s.taxes.enabled;
-            document.getElementById('cfg-tax-name').value = s.taxes.tax_name || 'GST';
-            document.getElementById('cfg-tax-rate').value = s.taxes.tax_percentage || 0;
+                setVal('cfg-ep-title', ep.account_name);
+                setVal('cfg-ep-number', ep.account_number);
+                setVal('cfg-jc-title', jc.account_name);
+                setVal('cfg-jc-number', jc.account_number);
 
-            // Notifications
-            document.getElementById('chk-notif-sms').checked = !!s.notifications.sms_enabled;
-            document.getElementById('chk-notif-wa').checked = !!s.notifications.whatsapp_enabled;
-            document.getElementById('chk-notif-em').checked = !!s.notifications.email_enabled;
-            document.getElementById('tpl-confirmed').value = s.notifications.templates.order_confirmed || '';
-            document.getElementById('tpl-shipped').value = s.notifications.templates.order_shipped || '';
-            document.getElementById('tpl-ontheway').value = s.notifications.templates.order_on_the_way || '';
-            document.getElementById('tpl-delivered').value = s.notifications.templates.order_delivered || '';
+                // Delivery
+                setVal('cfg-ship-free-thresh', del.free_delivery_threshold !== undefined ? del.free_delivery_threshold : 5000);
+                setVal('cfg-ship-def-fee', del.default_delivery_fee !== undefined ? del.default_delivery_fee : 250);
+                setVal('cfg-ship-time', del.estimated_delivery_time || '2 - 4 Working Days');
+                setVal('cfg-ship-express', del.express_delivery_fee !== undefined ? del.express_delivery_fee : 500);
 
-            // Social
-            document.getElementById('cfg-soc-insta').value = s.social_media.instagram || '';
-            document.getElementById('cfg-soc-fb').value = s.social_media.facebook || '';
-            document.getElementById('cfg-soc-tt').value = s.social_media.tiktok || '';
-            document.getElementById('cfg-soc-yt').value = s.social_media.youtube || '';
+                // Taxes
+                setChk('chk-tax-enabled', tax.enabled);
+                setVal('cfg-tax-name', tax.tax_name || 'GST');
+                setVal('cfg-tax-rate', tax.tax_percentage !== undefined ? tax.tax_percentage : 0);
+
+                // Notifications
+                setChk('chk-notif-sms', notif.sms_enabled);
+                setChk('chk-notif-wa', notif.whatsapp_enabled !== false);
+                setChk('chk-notif-em', notif.email_enabled);
+                setVal('tpl-confirmed', tpl.order_confirmed || 'Dear {{customer_name}}, your order {{order_id}} of Rs. {{order_total}} is confirmed! Track status in your account.');
+                setVal('tpl-shipped', tpl.order_shipped || 'Your order {{order_id}} has been shipped via {{courier}} (Tracking # {{tracking_number}}). Estimated delivery: {{delivery_time}}.');
+                setVal('tpl-ontheway', tpl.order_on_the_way || 'Rider is on the way with your order {{order_id}}. Please keep exact cash of Rs. {{order_total}} ready.');
+                setVal('tpl-delivered', tpl.order_delivered || 'Your order {{order_id}} has been delivered. Thank you for choosing Khushi Collection!');
+
+                // Social
+                setVal('cfg-soc-insta', soc.instagram);
+                setVal('cfg-soc-fb', soc.facebook);
+                setVal('cfg-soc-tt', soc.tiktok);
+                setVal('cfg-soc-yt', soc.youtube);
+            } catch (err) {
+                console.error('Failed to populate settings form:', err);
+            }
+        }
+
+        function collectAllSettingsFromPage() {
+            const current = store.getSettings() || {};
+            const cityCountryVal = (document.getElementById('cfg-city-country')?.value || 'Lahore, Pakistan').split(',');
+            const city = cityCountryVal[0]?.trim() || 'Lahore';
+            const country = cityCountryVal[1]?.trim() || 'Pakistan';
+
+            const getV = (id, fallback = '') => {
+                const el = document.getElementById(id);
+                return el ? el.value.trim() : fallback;
+            };
+            const getNum = (id, fallback = 0) => {
+                const el = document.getElementById(id);
+                if (!el) return fallback;
+                const n = Number(el.value);
+                return isNaN(n) ? fallback : n;
+            };
+            const getC = (id, fallback = false) => {
+                const el = document.getElementById(id);
+                return el ? el.checked : fallback;
+            };
+
+            const updated = {
+                ...current,
+                store_profile: {
+                    ...(current.store_profile || {}),
+                    store_name: getV('cfg-store-name', current.store_profile?.store_name || 'Khushi Collection'),
+                    owner_name: getV('cfg-owner-name', current.store_profile?.owner_name || 'Khushi Owner'),
+                    phone: getV('cfg-phone', current.store_profile?.phone || '+92 300 1234567'),
+                    whatsapp: getV('cfg-whatsapp', current.store_profile?.whatsapp || '+92 300 1234567'),
+                    email: getV('cfg-email', current.store_profile?.email || 'support@khushicollection.com'),
+                    city: city,
+                    country: country,
+                    address: getV('cfg-address', current.store_profile?.address || 'Suite 104, Gulberg Galleria, Lahore'),
+                    maps_url: getV('cfg-maps-url', current.store_profile?.maps_url || ''),
+                    business_hours: getV('cfg-hours', current.store_profile?.business_hours || 'Mon - Sat: 11:00 AM - 10:00 PM'),
+                    logo_url: getV('cfg-logo-url', current.store_profile?.logo_url || ''),
+                    favicon_url: getV('cfg-favicon-url', current.store_profile?.favicon_url || ''),
+                    store_description: getV('cfg-store-desc', current.store_profile?.store_description || ''),
+                    footer_description: getV('cfg-footer-desc', current.store_profile?.footer_description || '')
+                },
+                contact_support: {
+                    ...(current.contact_support || {}),
+                    support_phone: getV('cfg-cs-phone', current.contact_support?.support_phone || getV('cfg-phone')),
+                    whatsapp_number: getV('cfg-cs-whatsapp', current.contact_support?.whatsapp_number || getV('cfg-whatsapp')),
+                    support_email: getV('cfg-cs-email', current.contact_support?.support_email || getV('cfg-email')),
+                    working_hours: getV('cfg-cs-hours', current.contact_support?.working_hours || getV('cfg-hours')),
+                    business_address: getV('cfg-cs-address', current.contact_support?.business_address || getV('cfg-address')),
+                    whatsapp_business: getV('cfg-cs-whatsapp', current.contact_support?.whatsapp_business || getV('cfg-whatsapp'))
+                },
+                payments: {
+                    ...(current.payments || {}),
+                    cod: {
+                        ...(current.payments?.cod || {}),
+                        enabled: getC('chk-method-cod', true),
+                        min_amount: getNum('cfg-cod-min', 500),
+                        max_amount: getNum('cfg-cod-max', 100000),
+                        cod_fee: getNum('cfg-cod-fee', 0),
+                        available_cities: getV('cfg-cod-cities', 'All Cities')
+                    },
+                    online_card: {
+                        ...(current.payments?.online_card || {}),
+                        enabled: getC('chk-method-card', false),
+                        mode: getV('cfg-card-mode', 'TEST'),
+                        gateway_name: getV('cfg-card-name', 'Stripe / PayFast'),
+                        merchant_id: getV('cfg-card-merch-id', ''),
+                        public_key: getV('cfg-card-pub-key', ''),
+                        secret_key: getV('cfg-card-sec-key', '')
+                    },
+                    bank_transfer: {
+                        ...(current.payments?.bank_transfer || {}),
+                        enabled: getC('chk-method-bank', true),
+                        bank_name: getV('cfg-bank-name', 'Meezan Bank Limited'),
+                        account_title: getV('cfg-bank-title', 'Khushi Collection PVT LTD'),
+                        account_number: getV('cfg-bank-acc', '01020304050607'),
+                        iban: getV('cfg-bank-iban', 'PK36MEZN0001020304050607'),
+                        branch: getV('cfg-bank-branch', 'Gulberg III Branch, Lahore'),
+                        instructions: getV('cfg-bank-instructions', 'Upload proof of payment after transferring')
+                    },
+                    easypaisa: {
+                        ...(current.payments?.easypaisa || {}),
+                        enabled: getC('chk-method-easypaisa', true),
+                        account_name: getV('cfg-ep-title', 'Khushi Collection'),
+                        account_number: getV('cfg-ep-number', '03001234567')
+                    },
+                    jazzcash: {
+                        ...(current.payments?.jazzcash || {}),
+                        enabled: getC('chk-method-jazzcash', true),
+                        account_name: getV('cfg-jc-title', 'Khushi Collection'),
+                        account_number: getV('cfg-jc-number', '03001234567')
+                    }
+                },
+                delivery: {
+                    ...(current.delivery || {}),
+                    free_delivery_threshold: getNum('cfg-ship-free-thresh', 5000),
+                    default_delivery_fee: getNum('cfg-ship-def-fee', 250),
+                    estimated_delivery_time: getV('cfg-ship-time', '2 - 4 Working Days'),
+                    express_delivery_fee: getNum('cfg-ship-express', 500)
+                },
+                taxes: {
+                    ...(current.taxes || {}),
+                    enabled: getC('chk-tax-enabled', false),
+                    tax_name: getV('cfg-tax-name', 'GST'),
+                    tax_percentage: getNum('cfg-tax-rate', 0)
+                },
+                notifications: {
+                    ...(current.notifications || {}),
+                    sms_enabled: getC('chk-notif-sms', false),
+                    whatsapp_enabled: getC('chk-notif-wa', true),
+                    email_enabled: getC('chk-notif-em', true),
+                    templates: {
+                        ...(current.notifications?.templates || {}),
+                        order_confirmed: getV('tpl-confirmed', 'Dear {{customer_name}}, your order {{order_id}} is confirmed!'),
+                        order_shipped: getV('tpl-shipped', 'Your order {{order_id}} has been shipped!'),
+                        order_on_the_way: getV('tpl-ontheway', 'Rider is on the way with your order {{order_id}}.'),
+                        order_delivered: getV('tpl-delivered', 'Your order {{order_id}} has been delivered. Thank you!')
+                    }
+                },
+                social_media: {
+                    ...(current.social_media || {}),
+                    instagram: getV('cfg-soc-insta', ''),
+                    facebook: getV('cfg-soc-fb', ''),
+                    tiktok: getV('cfg-soc-tt', ''),
+                    youtube: getV('cfg-soc-yt', '')
+                }
+            };
+
+            return updated;
+        }
+
+        function saveAllSettingsFromPage() {
+            try {
+                const btn = document.getElementById('btn-save-all-settings');
+                const statusEl = document.getElementById('settings-save-status');
+                
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Saving...</span>';
+                }
+
+                const allSettings = collectAllSettingsFromPage();
+                store.saveSettings(allSettings);
+
+                if (statusEl) {
+                    statusEl.classList.remove('hidden');
+                    statusEl.classList.add('flex');
+                    setTimeout(() => {
+                        statusEl.classList.add('hidden');
+                        statusEl.classList.remove('flex');
+                    }, 4000);
+                }
+
+                if (btn) {
+                    btn.innerHTML = '<i class="fa-solid fa-check text-emerald-950"></i><span>Saved!</span>';
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-floppy-disk text-sm"></i><span>Save All Settings</span>';
+                    }, 2000);
+                }
+
+                if (typeof showToast === 'function') {
+                    showToast('All owner settings saved & synced successfully!');
+                }
+            } catch (err) {
+                console.error('Error saving all settings:', err);
+                if (typeof showToast === 'function') {
+                    showToast('Error saving settings: ' + err.message);
+                }
+            }
         }
 
         function handleSaveSettings(e, section) {
-            e.preventDefault();
-            const s = store.getSettings();
-
-            if (section === 'store_profile') {
-                const parts = document.getElementById('cfg-city-country').value.split(',');
-                s.store_profile = {
-                    ...s.store_profile,
-                    store_name: document.getElementById('cfg-store-name').value.trim(),
-                    owner_name: document.getElementById('cfg-owner-name').value.trim(),
-                    phone: document.getElementById('cfg-phone').value.trim(),
-                    whatsapp: document.getElementById('cfg-whatsapp').value.trim(),
-                    email: document.getElementById('cfg-email').value.trim(),
-                    city: parts[0] ? parts[0].trim() : 'Lahore',
-                    country: parts[1] ? parts[1].trim() : 'Pakistan',
-                    address: document.getElementById('cfg-address').value.trim(),
-                    maps_url: document.getElementById('cfg-maps-url').value.trim(),
-                    business_hours: document.getElementById('cfg-hours').value.trim(),
-                    logo_url: document.getElementById('cfg-logo-url').value.trim(),
-                    favicon_url: document.getElementById('cfg-favicon-url').value.trim(),
-                    store_description: document.getElementById('cfg-store-desc').value.trim(),
-                    footer_description: document.getElementById('cfg-footer-desc').value.trim()
-                };
-            } else if (section === 'contact_support') {
-                s.contact_support = {
-                    support_phone: document.getElementById('cfg-cs-phone').value.trim(),
-                    whatsapp_number: document.getElementById('cfg-cs-whatsapp').value.trim(),
-                    support_email: document.getElementById('cfg-cs-email').value.trim(),
-                    working_hours: document.getElementById('cfg-cs-hours').value.trim(),
-                    business_address: document.getElementById('cfg-cs-address').value.trim(),
-                    whatsapp_business: document.getElementById('cfg-cs-whatsapp').value.trim()
-                };
-            } else if (section === 'payment_gateways') {
-                s.payments.cod.enabled = document.getElementById('chk-method-cod').checked;
-                s.payments.online_card.enabled = document.getElementById('chk-method-card').checked;
-                s.payments.bank_transfer.enabled = document.getElementById('chk-method-bank').checked;
-                s.payments.easypaisa.enabled = document.getElementById('chk-method-easypaisa').checked;
-                s.payments.jazzcash.enabled = document.getElementById('chk-method-jazzcash').checked;
-
-                s.payments.online_card.mode = document.getElementById('cfg-card-mode').value;
-                s.payments.online_card.gateway_name = document.getElementById('cfg-card-name').value.trim();
-                s.payments.online_card.merchant_id = document.getElementById('cfg-card-merch-id').value.trim();
-                s.payments.online_card.public_key = document.getElementById('cfg-card-pub-key').value.trim();
-                s.payments.online_card.secret_key = document.getElementById('cfg-card-sec-key').value.trim();
-            } else if (section === 'cod_rules') {
-                s.payments.cod.min_amount = Number(document.getElementById('cfg-cod-min').value);
-                s.payments.cod.max_amount = Number(document.getElementById('cfg-cod-max').value);
-                s.payments.cod.cod_fee = Number(document.getElementById('cfg-cod-fee').value);
-                s.payments.cod.available_cities = document.getElementById('cfg-cod-cities').value.trim();
-            } else if (section === 'bank_wallets') {
-                s.payments.bank_transfer.bank_name = document.getElementById('cfg-bank-name').value.trim();
-                s.payments.bank_transfer.account_title = document.getElementById('cfg-bank-title').value.trim();
-                s.payments.bank_transfer.account_number = document.getElementById('cfg-bank-acc').value.trim();
-                s.payments.bank_transfer.iban = document.getElementById('cfg-bank-iban').value.trim();
-                s.payments.bank_transfer.branch = document.getElementById('cfg-bank-branch').value.trim();
-                s.payments.bank_transfer.instructions = document.getElementById('cfg-bank-instructions').value.trim();
-
-                s.payments.easypaisa.account_name = document.getElementById('cfg-ep-title').value.trim();
-                s.payments.easypaisa.account_number = document.getElementById('cfg-ep-number').value.trim();
-                s.payments.jazzcash.account_name = document.getElementById('cfg-jc-title').value.trim();
-                s.payments.jazzcash.account_number = document.getElementById('cfg-jc-number').value.trim();
-            } else if (section === 'delivery') {
-                s.delivery.free_delivery_threshold = Number(document.getElementById('cfg-ship-free-thresh').value);
-                s.delivery.default_delivery_fee = Number(document.getElementById('cfg-ship-def-fee').value);
-                s.delivery.estimated_delivery_time = document.getElementById('cfg-ship-time').value.trim();
-                s.delivery.express_delivery_fee = Number(document.getElementById('cfg-ship-express').value);
-            } else if (section === 'taxes') {
-                s.taxes.enabled = document.getElementById('chk-tax-enabled').checked;
-                s.taxes.tax_name = document.getElementById('cfg-tax-name').value.trim();
-                s.taxes.tax_percentage = Number(document.getElementById('cfg-tax-rate').value);
-            } else if (section === 'notifications') {
-                s.notifications.sms_enabled = document.getElementById('chk-notif-sms').checked;
-                s.notifications.whatsapp_enabled = document.getElementById('chk-notif-wa').checked;
-                s.notifications.email_enabled = document.getElementById('chk-notif-em').checked;
-                s.notifications.templates.order_confirmed = document.getElementById('tpl-confirmed').value.trim();
-                s.notifications.templates.order_shipped = document.getElementById('tpl-shipped').value.trim();
-                s.notifications.templates.order_on_the_way = document.getElementById('tpl-ontheway').value.trim();
-                s.notifications.templates.order_delivered = document.getElementById('tpl-delivered').value.trim();
-            } else if (section === 'social') {
-                s.social_media.instagram = document.getElementById('cfg-soc-insta').value.trim();
-                s.social_media.facebook = document.getElementById('cfg-soc-fb').value.trim();
-                s.social_media.tiktok = document.getElementById('cfg-soc-tt').value.trim();
-                s.social_media.youtube = document.getElementById('cfg-soc-yt').value.trim();
-            }
-
-            store.saveSettings(s);
-            showToast('Store settings updated successfully.');
+            if (e && e.preventDefault) e.preventDefault();
+            saveAllSettingsFromPage();
         }
 
         document.addEventListener('DOMContentLoaded', populateSettingsForm);

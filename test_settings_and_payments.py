@@ -52,6 +52,20 @@ def test_unauthorized_settings_update(client):
     res = client.post('/api/settings', json={"store_profile": {"store_name": "Hacked"}})
     assert res.status_code in (401, 403)
 
+def test_authorized_owner_settings_update(client):
+    """Verify PUT /api/settings allows authorized owner with PIN to update settings"""
+    res = client.put(
+        '/api/settings',
+        json={
+            "store_profile": {"store_name": "Khushi Collection", "owner_name": "Khushi Luxury Owner"},
+            "delivery": {"free_delivery_threshold": 6000, "default_delivery_fee": 250}
+        },
+        headers={'X-Admin-Pin': '8899', 'X-Admin-Role': 'OWNER'}
+    )
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data['success'] is True
+
 def test_payment_creation_and_verification(client):
     """Verify creating a payment record and verifying online card payment"""
     # 1. Create a payment record

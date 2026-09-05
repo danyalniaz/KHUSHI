@@ -1,10 +1,21 @@
 const DEFAULT_SETTINGS = {
     store_profile: {
         store_name: "Khushi Collection",
+        owner_name: "Khushi Fatima",
+        phone: "+92 300 1234567",
+        whatsapp: "+92 300 1234567",
+        email: "concierge@khushicollection.com",
+        city: "Lahore",
+        country: "Pakistan",
+        address: "Khushi Collection Flagship Atelier, M.M. Alam Road, Gulberg III, Lahore, Pakistan",
+        maps_url: "https://maps.google.com/?q=MM+Alam+Road+Lahore",
+        business_hours: "Monday – Saturday: 11:00 AM – 10:00 PM PKT",
+        logo_url: "static/images/logo.svg",
+        favicon_url: "static/images/favicon.png",
+        store_description: "Haute Couture & Bespoke Luxury Fashion",
         tagline: "Haute Couture & Bespoke Luxury Fashion",
         store_currency: "PKR",
         currency_symbol: "Rs.",
-        country: "Pakistan",
         timezone: "Asia/Karachi",
         footer_description: "Bespoke Pakistani bridal couture, luxury velvet ensembles, pure Kashmiri pashminas, artisanal khussas, and royal oud fragrances crafted for modern royalty."
     },
@@ -13,7 +24,8 @@ const DEFAULT_SETTINGS = {
         whatsapp_number: "+92 300 1234567",
         support_email: "concierge@khushicollection.com",
         business_address: "Khushi Collection Flagship Atelier, M.M. Alam Road, Gulberg III, Lahore, Pakistan",
-        working_hours: "Monday – Saturday: 11:00 AM – 10:00 PM PKT"
+        working_hours: "Monday – Saturday: 11:00 AM – 10:00 PM PKT",
+        whatsapp_business: "+92 300 1234567"
     },
     social_media: {
         instagram: "https://instagram.com/khushicollection",
@@ -24,8 +36,10 @@ const DEFAULT_SETTINGS = {
     payments: {
         cod: {
             enabled: true,
-            min_amount: 1000,
-            max_amount: 75000,
+            min_amount: 500,
+            max_amount: 100000,
+            cod_fee: 0,
+            available_cities: "All Cities",
             extra_fee: 0,
             instruction: "Pay in cash upon physical delivery. Please inspect your parcel in the presence of the courier agent."
         },
@@ -36,41 +50,64 @@ const DEFAULT_SETTINGS = {
             account_number: "02010109988776",
             iban: "PK44MEZN0002010109988776",
             branch: "Gulberg III Flagship Branch, Lahore",
+            instructions: "Kindly transfer the exact order amount and share the transaction screenshot via WhatsApp concierge at +92 300 1234567.",
             instruction: "Kindly transfer the exact order amount and share the transaction screenshot via WhatsApp concierge at +92 300 1234567."
         },
         easypaisa: {
             enabled: true,
+            account_name: "Khushi Official",
             account_title: "Khushi Official",
             account_number: "03001234567",
             instruction: "Send payment via EasyPaisa App / Till and WhatsApp proof of transaction."
         },
         jazzcash: {
             enabled: true,
+            account_name: "Khushi Official",
             account_title: "Khushi Official",
             account_number: "03001234567",
             instruction: "Send payment via JazzCash App / Till and WhatsApp confirmation SMS screenshot."
         },
         online_card: {
             enabled: true,
+            mode: "TEST",
+            gateway_name: "PayFast / Stripe",
+            merchant_id: "MERCH-KHUSHI-8821",
+            public_key: "pk_test_khushi_998822",
+            secret_key: "sk_test_khushi_secret_88",
             provider: "Visa / Mastercard 3D Secure",
             instruction: "Accepting all Pakistani and international Visa, Mastercard, and UnionPay cards."
         }
     },
     delivery: {
+        default_delivery_fee: 250,
         base_fee: 250,
         free_delivery_threshold: 5000,
+        estimated_delivery_time: "2 - 4 Working Days",
+        express_delivery_fee: 500,
         estimated_days_lahore: "1-2 Business Days",
         estimated_days_nationwide: "2-4 Business Days",
         estimated_days_international: "5-7 Business Days"
     },
     taxes: {
+        enabled: false,
+        tax_name: "GST",
+        tax_percentage: 0,
         vat_tax_percent: 0,
         prices_include_tax: true
     },
     notifications: {
+        sms_enabled: true,
+        whatsapp_enabled: true,
+        email_enabled: true,
         email_order_placed: true,
         sms_order_placed: true,
-        whatsapp_instant_notification: true
+        whatsapp_instant_notification: true,
+        templates: {
+            order_confirmed: "Dear {customer_name}, your Khushi Collection order #{order_number} has been confirmed. Thank you!",
+            order_shipped: "Dear {customer_name}, order #{order_number} has been dispatched with {courier_name}. Tracking: {tracking_number}.",
+            order_on_the_way: "Dear {customer_name}, rider is out for delivery with order #{order_number}. Please keep Rs. {total_amount} ready.",
+            order_delivered: "Dear {customer_name}, order #{order_number} has been delivered. We hope you love your purchase!"
+        }
     },
     onboarding: {
         completed: true
@@ -5144,6 +5181,7 @@ class KhushiStore {
             };
             localStorage.setItem('kc_owner', JSON.stringify(defaultOwner));
         }
+        this.applyStorefrontSettings();
     }
 
     // ====================================================================
@@ -5169,7 +5207,11 @@ class KhushiStore {
             },
             delivery: { ...DEFAULT_SETTINGS.delivery, ...(stored.delivery || {}) },
             taxes: { ...DEFAULT_SETTINGS.taxes, ...(stored.taxes || {}) },
-            notifications: { ...DEFAULT_SETTINGS.notifications, ...(stored.notifications || {}) },
+            notifications: {
+                ...DEFAULT_SETTINGS.notifications,
+                ...(stored.notifications || {}),
+                templates: { ...DEFAULT_SETTINGS.notifications.templates, ...(stored.notifications?.templates || {}) }
+            },
             onboarding: { ...DEFAULT_SETTINGS.onboarding, ...(stored.onboarding || {}) }
         };
     }
@@ -5193,37 +5235,88 @@ class KhushiStore {
             },
             delivery: { ...current.delivery, ...(newSettings.delivery || {}) },
             taxes: { ...current.taxes, ...(newSettings.taxes || {}) },
-            notifications: { ...current.notifications, ...(newSettings.notifications || {}) },
+            notifications: {
+                ...current.notifications,
+                ...(newSettings.notifications || {}),
+                templates: { ...(current.notifications?.templates || {}), ...(newSettings.notifications?.templates || {}) }
+            },
             onboarding: { ...current.onboarding, ...(newSettings.onboarding || {}) }
         };
 
         localStorage.setItem('kc_settings', JSON.stringify(merged));
         this.logAudit('SETTINGS_UPDATED', 'Store settings and payment gateways updated by Store Owner');
         this.applyStorefrontSettings();
+
+        // Asynchronously sync to backend /api/settings
+        try {
+            fetch('/api/settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Admin-Pin': '8899',
+                    'X-Admin-Role': 'OWNER'
+                },
+                body: JSON.stringify(merged)
+            }).catch(() => {});
+        } catch (e) {}
+
         return { success: true, message: 'Store settings updated successfully!' };
     }
 
     // Dynamic Storefront Synchronization across All Customer Pages
     applyStorefrontSettings() {
-        const s = this.getSettings();
-        const p = s.store_profile;
-        const c = s.contact_support;
-        const d = s.delivery;
+        try {
+            const s = this.getSettings();
+            const p = s.store_profile || {};
+            const c = s.contact_support || {};
+            const d = s.delivery || {};
+            const soc = s.social_media || {};
 
-        // Dynamic Elements replacement
-        document.querySelectorAll('.dyn-store-name').forEach(el => el.textContent = p.store_name);
-        document.querySelectorAll('.dyn-store-phone').forEach(el => el.textContent = c.support_phone);
-        document.querySelectorAll('.dyn-store-email').forEach(el => el.textContent = c.support_email);
-        document.querySelectorAll('.dyn-store-address').forEach(el => el.textContent = c.business_address);
-        document.querySelectorAll('.dyn-store-hours').forEach(el => el.textContent = c.working_hours);
-        document.querySelectorAll('.dyn-store-footer-desc').forEach(el => el.textContent = p.footer_description);
-        document.querySelectorAll('.dyn-free-threshold').forEach(el => el.textContent = `Rs. ${Number(d.free_delivery_threshold).toLocaleString()}`);
+            // Dynamic Elements replacement by class
+            if (p.store_name) document.querySelectorAll('.dyn-store-name').forEach(el => el.textContent = p.store_name);
+            if (c.support_phone) document.querySelectorAll('.dyn-store-phone').forEach(el => el.textContent = c.support_phone);
+            if (c.support_email) document.querySelectorAll('.dyn-store-email').forEach(el => el.textContent = c.support_email);
+            if (c.business_address) document.querySelectorAll('.dyn-store-address').forEach(el => el.textContent = c.business_address);
+            if (c.working_hours) document.querySelectorAll('.dyn-store-hours').forEach(el => el.textContent = c.working_hours);
+            if (p.footer_description) document.querySelectorAll('.dyn-store-footer-desc').forEach(el => el.textContent = p.footer_description);
+            if (d.free_delivery_threshold) document.querySelectorAll('.dyn-free-threshold').forEach(el => el.textContent = `Rs. ${Number(d.free_delivery_threshold).toLocaleString()}`);
 
-        // Update WhatsApp links
-        const cleanPhone = String(c.whatsapp_number).replace(/\D/g, '');
-        document.querySelectorAll('.dyn-whatsapp-link').forEach(link => {
-            link.href = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent("Hello Khushi Collection, I would like to inquire about your luxury catalog.")}`;
-        });
+            // Top announcement bar updates
+            const waNumber = (c.whatsapp_number || p.whatsapp || '923001234567').replace(/\D/g, '');
+            const threshold = Number(d.free_delivery_threshold) || 5000;
+
+            const bannerEl = document.getElementById('announcement-banner') || document.querySelector('.bg-gradient-to-r.from-amber-700');
+            if (bannerEl) {
+                const span = bannerEl.querySelector('span') || bannerEl;
+                if (span && span.textContent.includes('FREE NATIONWIDE')) {
+                    span.textContent = `✨ FREE NATIONWIDE EXPRESS DELIVERY ON ORDERS OVER RS. ${threshold.toLocaleString()} | WHATSAPP CONCIERGE: +${waNumber}`;
+                }
+            }
+
+            // Universal WhatsApp button links
+            if (waNumber) {
+                document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp.com"]').forEach(link => {
+                    const currentHref = link.getAttribute('href') || '';
+                    if (currentHref.includes('wa.me/')) {
+                        const queryIdx = currentHref.indexOf('?');
+                        const query = queryIdx !== -1 ? currentHref.substring(queryIdx) : '';
+                        link.href = `https://wa.me/${waNumber}${query}`;
+                    } else if (currentHref.includes('whatsapp.com')) {
+                        const queryIdx = currentHref.indexOf('text=');
+                        const query = queryIdx !== -1 ? currentHref.substring(queryIdx) : `text=${encodeURIComponent("Hello Khushi Collection, I would like to inquire about your luxury catalog.")}`;
+                        link.href = `https://api.whatsapp.com/send?phone=${waNumber}&${query}`;
+                    }
+                });
+            }
+
+            // Universal Social Links
+            if (soc.instagram) document.querySelectorAll('a[href*="instagram.com"]').forEach(a => a.href = soc.instagram);
+            if (soc.facebook) document.querySelectorAll('a[href*="facebook.com"]').forEach(a => a.href = soc.facebook);
+            if (soc.tiktok) document.querySelectorAll('a[href*="tiktok.com"]').forEach(a => a.href = soc.tiktok);
+            if (soc.youtube) document.querySelectorAll('a[href*="youtube.com"]').forEach(a => a.href = soc.youtube);
+        } catch (e) {
+            console.warn('Storefront settings sync notice:', e);
+        }
     }
 
     // ====================================================================
