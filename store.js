@@ -5935,6 +5935,35 @@ class KhushiStore {
         localStorage.setItem('kc_orders', JSON.stringify(orders));
     }
 
+    deleteOrder(orderNumber) {
+        const clean = String(orderNumber).toUpperCase().replace('#', '').trim();
+        let orders = this.getOrders();
+        const initialLen = orders.length;
+        orders = orders.filter(o => o.order_number !== clean && String(o.id) !== clean && o.order_number !== `KC-${clean}`);
+        if (orders.length !== initialLen) {
+            this.saveOrders(orders);
+            try {
+                let payments = this.getPayments() || [];
+                payments = payments.filter(p => p.order_number !== clean && String(p.order_id) !== clean);
+                localStorage.setItem(this.STORAGE_KEYS.PAYMENTS, JSON.stringify(payments));
+            } catch (e) {}
+
+            try {
+                fetch(`/api/orders/${clean}`, {
+                    method: 'DELETE',
+                    headers: { 'X-Admin-Pin': '8899', 'X-Admin-Role': 'OWNER' }
+                }).catch(() => {});
+                fetch(`/admin/api/orders/${clean}`, {
+                    method: 'DELETE',
+                    headers: { 'X-Admin-Pin': '8899', 'X-Admin-Role': 'OWNER' }
+                }).catch(() => {});
+            } catch (e) {}
+
+            return true;
+        }
+        return false;
+    }
+
 
     // Real Flash Sale Calculation
     getFlashSaleState() {

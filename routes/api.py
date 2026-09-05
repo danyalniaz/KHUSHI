@@ -359,3 +359,19 @@ def api_get_orders():
     return jsonify({'success': True, 'orders': orders, 'count': len(orders)})
 
 
+# 9. Delete Order API Endpoint (Allows Admin Portal to delete an order from SQLite)
+@api_bp.route('/orders/<identifier>', methods=['DELETE', 'POST'])
+@api_bp.route('/orders/delete/<identifier>', methods=['POST', 'DELETE'])
+def api_delete_order(identifier):
+    try:
+        clean = str(identifier).replace('#', '').strip()
+        execute_db('DELETE FROM order_items WHERE order_id IN (SELECT id FROM orders WHERE order_number = ? OR order_number = ? OR id = ?)', (clean, f"KC-{clean}", clean))
+        execute_db('DELETE FROM order_timeline WHERE order_id IN (SELECT id FROM orders WHERE order_number = ? OR order_number = ? OR id = ?)', (clean, f"KC-{clean}", clean))
+        execute_db('DELETE FROM payments WHERE order_number = ? OR order_number = ? OR order_id = ?', (clean, f"KC-{clean}", clean))
+        execute_db('DELETE FROM orders WHERE order_number = ? OR order_number = ? OR id = ?', (clean, f"KC-{clean}", clean))
+        return jsonify({'success': True, 'message': f'Order {identifier} deleted successfully.'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+

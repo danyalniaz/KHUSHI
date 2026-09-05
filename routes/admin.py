@@ -557,6 +557,20 @@ def update_order_status(id):
     flash(f"Order #{order['order_number']} status updated to '{new_status.replace('_', ' ').title()}'. Customer notification sent: \"{sms_content}\"", 'success')
     return redirect(url_for('admin.order_detail', id=id))
 
+@admin_bp.route('/api/orders/<identifier>', methods=['DELETE', 'POST'])
+@admin_bp.route('/orders/delete/<identifier>', methods=['POST', 'DELETE'])
+@owner_required
+def delete_order_endpoint(identifier):
+    try:
+        clean = str(identifier).replace('#', '').strip()
+        execute_db('DELETE FROM order_items WHERE order_id IN (SELECT id FROM orders WHERE order_number = ? OR order_number = ? OR id = ?)', (clean, f"KC-{clean}", clean))
+        execute_db('DELETE FROM order_timeline WHERE order_id IN (SELECT id FROM orders WHERE order_number = ? OR order_number = ? OR id = ?)', (clean, f"KC-{clean}", clean))
+        execute_db('DELETE FROM payments WHERE order_number = ? OR order_number = ? OR order_id = ?', (clean, f"KC-{clean}", clean))
+        execute_db('DELETE FROM orders WHERE order_number = ? OR order_number = ? OR id = ?', (clean, f"KC-{clean}", clean))
+        return jsonify({'success': True, 'message': f'Order {identifier} deleted successfully.'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 # 6. Customer Management
 @admin_bp.route('/customers')
 @admin_required(['super_admin', 'manager'])

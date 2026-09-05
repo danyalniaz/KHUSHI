@@ -180,7 +180,11 @@
                     <p id="modal-sms-preview" class="italic">"Hello Khushi Fatima, your Khushi Collection order #KC-10025 is now on the way. Thank you for shopping with Khushi Collection."</p>
                 </div>
 
-                <div class="flex items-center gap-3 pt-2">
+                <div class="flex items-center gap-2 pt-2">
+                    <button type="button" onclick="confirmDeleteOrder(activeProcessingOrder?.order_number)" class="py-3 px-3.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 border border-rose-500/40 text-rose-300 font-bold text-xs flex items-center gap-1.5 transition" title="Delete this order permanently">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span class="hidden sm:inline">Delete Order</span>
+                    </button>
                     <button type="submit" class="flex-1 py-3 rounded-xl btn-gold font-bold uppercase tracking-wider shadow">
                         Save Status & Dispatch SMS
                     </button>
@@ -282,6 +286,9 @@
                             <a href="invoice.html?order_id=${o.order_number}" target="_blank" class="py-1 px-2 rounded-lg border border-zinc-700 hover:border-amber-400 text-zinc-400 hover:text-white text-xs inline-block" title="Print Invoice">
                                 <i class="fa-solid fa-print"></i>
                             </a>
+                            <button onclick="confirmDeleteOrder('${o.order_number}')" class="py-1 px-2 rounded-lg bg-rose-950/60 border border-rose-500/30 hover:border-rose-400 text-rose-400 text-xs inline-block hover:bg-rose-900 transition" title="Delete Order">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
                         </td>
                     </tr>
                 `;
@@ -387,6 +394,30 @@
 
                 document.getElementById('process-modal').classList.add('hidden');
                 renderOrdersTable();
+            }
+        }
+
+        function closeProcessModal() {
+            const modal = document.getElementById('process-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function confirmDeleteOrder(orderNum) {
+            if (!orderNum) return;
+            const clean = String(orderNum).replace('#', '').trim();
+            if (confirm(`Are you sure you want to permanently delete Order #${clean}?\nThis action cannot be undone.`)) {
+                if (typeof store.deleteOrder === 'function') {
+                    store.deleteOrder(clean);
+                } else {
+                    let orders = store.getOrders() || [];
+                    orders = orders.filter(o => o.order_number !== clean && String(o.id) !== clean);
+                    store.saveOrders(orders);
+                }
+                closeProcessModal();
+                renderOrdersTable();
+                if (typeof showToast === 'function') {
+                    showToast(`Order #${clean} permanently deleted.`, 'info');
+                }
             }
         }
 

@@ -54,14 +54,14 @@
                     : 'bg-zinc-800 text-zinc-300 border-zinc-700';
 
                 container.innerHTML = `
-                    <div class="flex items-center gap-2.5">
-                        <span class="px-3 py-1 rounded-xl border ${roleBadgeClass} text-xs font-bold flex items-center gap-1.5 shadow-sm">
-                            ${user.role === 'OWNER' ? '👑' : '🛡️'} ${user.role}: ${user.name}
+                    <div class="flex items-center gap-1.5 sm:gap-2.5 flex-nowrap">
+                        <span class="px-2 sm:px-2.5 py-1 rounded-xl border ${roleBadgeClass} text-[11px] sm:text-xs font-bold flex items-center gap-1 shadow-sm whitespace-nowrap">
+                            ${user.role === 'OWNER' ? '👑' : '🛡️'} <span>${user.role === 'OWNER' ? 'Owner' : user.role}</span><span class="hidden md:inline font-normal text-zinc-300">: ${user.name}</span>
                         </span>
-                        <a href="admin-security.html" class="px-2.5 py-1.5 rounded-xl border border-zinc-700 hover:border-amber-400 text-zinc-400 hover:text-white text-xs font-semibold transition" title="Security Settings">
-                            <i class="fa-solid fa-lock"></i>
+                        <a href="admin-security.html" class="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl border border-zinc-700 hover:border-amber-400 text-zinc-400 hover:text-white text-xs font-semibold transition flex items-center justify-center" title="Security Settings">
+                            <i class="fa-solid fa-lock text-xs"></i>
                         </a>
-                        <button onclick="store.logout(); window.location.replace('admin-login.html');" class="px-3 py-1.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-500/30 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition" title="Log Out Securely">
+                        <button onclick="store.logout(); window.location.replace('admin-login.html');" class="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-500/30 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition" title="Log Out Securely">
                             <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
                             <span class="hidden sm:inline">Logout</span>
                         </button>
