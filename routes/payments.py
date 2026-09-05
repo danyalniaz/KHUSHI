@@ -99,6 +99,30 @@ def get_settings_from_db():
             settings[r['setting_key']] = json.loads(r['setting_value'])
         except Exception:
             settings[r['setting_key']] = r['setting_value']
+
+    # Ensure nested objects have full data from flat keys
+    sp = settings.setdefault('store_profile', {})
+    if isinstance(sp, dict):
+        if 'store_name' in settings and settings['store_name']: sp['store_name'] = settings['store_name']
+        if 'store_phone' in settings and settings['store_phone']: sp['phone'] = settings['store_phone']
+        if 'store_whatsapp' in settings and settings['store_whatsapp']: sp['whatsapp'] = settings['store_whatsapp']
+        if 'store_email' in settings and settings['store_email']: sp['email'] = settings['store_email']
+        if 'store_address' in settings and settings['store_address']: sp['address'] = settings['store_address']
+        if 'store_city' in settings and settings['store_city']: sp['city'] = settings['store_city']
+        if 'store_country' in settings and settings['store_country']: sp['country'] = settings['store_country']
+        if 'store_hours' in settings and settings['store_hours']: sp['business_hours'] = settings['store_hours']
+        if 'store_maps_url' in settings and settings['store_maps_url']: sp['maps_url'] = settings['store_maps_url']
+
+    cs = settings.setdefault('contact_support', {})
+    if isinstance(cs, dict):
+        if 'store_phone' in settings and settings['store_phone']: cs['support_phone'] = settings['store_phone']
+        if 'store_whatsapp' in settings and settings['store_whatsapp']: 
+            cs['whatsapp_number'] = settings['store_whatsapp']
+            cs['whatsapp_business'] = settings['store_whatsapp']
+        if 'store_email' in settings and settings['store_email']: cs['support_email'] = settings['store_email']
+        if 'store_address' in settings and settings['store_address']: cs['business_address'] = settings['store_address']
+        if 'store_hours' in settings and settings['store_hours']: cs['working_hours'] = settings['store_hours']
+
     return settings
 
 @payments_bp.route('/api/settings', methods=['GET'])
@@ -122,25 +146,131 @@ def update_owner_settings():
             ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
         ''', (key, val_str))
 
-    # Synchronize individual legacy setting keys for other routes
-    if 'delivery' in data and isinstance(data['delivery'], dict) and 'free_delivery_threshold' in data['delivery']:
-        execute_db('''
-            INSERT INTO settings (setting_key, setting_value, updated_at)
-            VALUES ('free_delivery_threshold', ?, CURRENT_TIMESTAMP)
-            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
-        ''', (str(data['delivery']['free_delivery_threshold']),))
-    if 'contact_support' in data and isinstance(data['contact_support'], dict) and 'whatsapp_number' in data['contact_support']:
-        execute_db('''
-            INSERT INTO settings (setting_key, setting_value, updated_at)
-            VALUES ('store_whatsapp', ?, CURRENT_TIMESTAMP)
-            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
-        ''', (str(data['contact_support']['whatsapp_number']),))
-    if 'store_profile' in data and isinstance(data['store_profile'], dict) and 'store_name' in data['store_profile']:
+    sp = data.get('store_profile') or {}
+    cs = data.get('contact_support') or {}
+    pay = data.get('payments') or {}
+    deliv = data.get('delivery') or {}
+
+    # Store Name
+    name_val = sp.get('store_name')
+    if name_val:
         execute_db('''
             INSERT INTO settings (setting_key, setting_value, updated_at)
             VALUES ('store_name', ?, CURRENT_TIMESTAMP)
             ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
-        ''', (str(data['store_profile']['store_name']),))
+        ''', (str(name_val),))
+
+    # Store Phone
+    phone_val = sp.get('phone') or cs.get('support_phone')
+    if phone_val:
+        execute_db('''
+            INSERT INTO settings (setting_key, setting_value, updated_at)
+            VALUES ('store_phone', ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+        ''', (str(phone_val),))
+
+    # Store WhatsApp
+    wa_val = sp.get('whatsapp') or cs.get('whatsapp_number') or cs.get('whatsapp_business')
+    if wa_val:
+        execute_db('''
+            INSERT INTO settings (setting_key, setting_value, updated_at)
+            VALUES ('store_whatsapp', ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+        ''', (str(wa_val),))
+
+    # Store Email
+    email_val = sp.get('email') or cs.get('support_email')
+    if email_val:
+        execute_db('''
+            INSERT INTO settings (setting_key, setting_value, updated_at)
+            VALUES ('store_email', ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+        ''', (str(email_val),))
+
+    # Store Address
+    addr_val = sp.get('address') or cs.get('business_address')
+    if addr_val:
+        execute_db('''
+            INSERT INTO settings (setting_key, setting_value, updated_at)
+            VALUES ('store_address', ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+        ''', (str(addr_val),))
+
+    # Store City
+    city_val = sp.get('city')
+    if city_val:
+        execute_db('''
+            INSERT INTO settings (setting_key, setting_value, updated_at)
+            VALUES ('store_city', ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+        ''', (str(city_val),))
+
+    # Store Hours
+    hours_val = sp.get('business_hours') or cs.get('working_hours')
+    if hours_val:
+        execute_db('''
+            INSERT INTO settings (setting_key, setting_value, updated_at)
+            VALUES ('store_hours', ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+        ''', (str(hours_val),))
+
+    # Store Maps URL
+    maps_val = sp.get('maps_url')
+    if maps_val:
+        execute_db('''
+            INSERT INTO settings (setting_key, setting_value, updated_at)
+            VALUES ('store_maps_url', ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+        ''', (str(maps_val),))
+
+    # Free Delivery Threshold
+    if 'free_delivery_threshold' in deliv:
+        execute_db('''
+            INSERT INTO settings (setting_key, setting_value, updated_at)
+            VALUES ('free_delivery_threshold', ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+        ''', (str(deliv['free_delivery_threshold']),))
+
+    # Default Delivery Fee
+    if 'default_delivery_fee' in deliv:
+        execute_db('''
+            INSERT INTO settings (setting_key, setting_value, updated_at)
+            VALUES ('base_delivery_fee', ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+        ''', (str(deliv['default_delivery_fee']),))
+
+    # Bank Transfer Keys
+    bank_info = pay.get('bank_transfer') or {}
+    if bank_info:
+        for b_field, s_key in [('bank_name', 'bank_name'), ('account_title', 'bank_account_title'), ('account_number', 'bank_account_number'), ('iban', 'bank_iban')]:
+            if b_field in bank_info:
+                execute_db('''
+                    INSERT INTO settings (setting_key, setting_value, updated_at)
+                    VALUES (?, ?, CURRENT_TIMESTAMP)
+                    ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+                ''', (s_key, str(bank_info[b_field])))
+
+    # EasyPaisa Keys
+    ep_info = pay.get('easypaisa') or {}
+    if ep_info:
+        for ep_field, s_key in [('account_name', 'easypaisa_title'), ('account_number', 'easypaisa_number')]:
+            if ep_field in ep_info:
+                execute_db('''
+                    INSERT INTO settings (setting_key, setting_value, updated_at)
+                    VALUES (?, ?, CURRENT_TIMESTAMP)
+                    ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+                ''', (s_key, str(ep_info[ep_field])))
+
+    # JazzCash Keys
+    jc_info = pay.get('jazzcash') or {}
+    if jc_info:
+        for jc_field, s_key in [('account_name', 'jazzcash_title'), ('account_number', 'jazzcash_number')]:
+            if jc_field in jc_info:
+                execute_db('''
+                    INSERT INTO settings (setting_key, setting_value, updated_at)
+                    VALUES (?, ?, CURRENT_TIMESTAMP)
+                    ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, updated_at = CURRENT_TIMESTAMP
+                ''', (s_key, str(jc_info[jc_field])))
     
     log_audit_action('SETTINGS_UPDATED', 'Store settings and payment options updated by Owner', user_id=session.get('user_id'), user_email=session.get('user_email'), ip_address=request.remote_addr)
     return jsonify({"success": True, "message": "Store settings updated successfully."})

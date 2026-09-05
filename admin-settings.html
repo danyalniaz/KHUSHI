@@ -64,24 +64,24 @@
 
     <!-- Main Workspace -->
     <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        <header class="h-20 bg-[#0B0F17]/80 border-b border-zinc-800/80 px-6 flex items-center justify-between sticky top-0 z-30 backdrop-blur-md">
-            <div>
-                <h1 class="text-base sm:text-lg font-serif font-bold text-white">Owner Control Center & Settings</h1>
-                <p class="text-[11px] text-zinc-400">Configure store identity, payment gateways, delivery rates, and notifications</p>
+        <header class="min-h-16 py-3 px-3 sm:px-6 bg-[#0B0F17]/90 border-b border-zinc-800/80 flex items-center justify-between gap-2.5 sticky top-0 z-30 backdrop-blur-md">
+            <div class="min-w-0 flex-1">
+                <h1 class="text-sm sm:text-base md:text-lg font-serif font-bold text-white truncate">Owner Control Center & Settings</h1>
+                <p class="hidden sm:block text-[11px] text-zinc-400 truncate">Configure store identity, payment gateways, delivery rates, and notifications</p>
             </div>
-            <div class="flex items-center gap-3">
-                <span id="settings-save-status" class="hidden text-xs font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-3 py-1.5 rounded-xl items-center gap-1.5 transition-all duration-300">
-                    <i class="fa-solid fa-check"></i> <span>Settings Saved</span>
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <span id="settings-save-status" class="hidden text-[11px] font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-2.5 py-1 rounded-xl items-center gap-1 transition-all duration-300 whitespace-nowrap">
+                    <i class="fa-solid fa-check"></i> <span class="hidden sm:inline">Saved</span>
                 </span>
-                <button type="button" id="btn-save-all-settings" onclick="saveAllSettingsFromPage()" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl btn-gold text-zinc-950 font-bold text-xs tracking-wider uppercase shadow-lg shadow-amber-500/20 flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer">
-                    <i class="fa-solid fa-floppy-disk text-sm"></i>
-                    <span>Save All Settings</span>
+                <button type="button" id="btn-save-all-settings" onclick="saveAllSettingsFromPage(this)" class="px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl btn-gold text-zinc-950 font-bold text-xs tracking-wider uppercase shadow-lg shadow-amber-500/20 flex items-center gap-1.5 hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer whitespace-nowrap">
+                    <i class="fa-solid fa-floppy-disk text-xs sm:text-sm"></i>
+                    <span>Save<span class="hidden sm:inline"> All Settings</span></span>
                 </button>
                 <div id="admin-user-pill"></div>
             </div>
         </header>
 
-        <main class="p-6 sm:p-8 space-y-6 max-w-6xl">
+        <main class="p-6 sm:p-8 space-y-6 max-w-6xl pb-24">
             
             <!-- Onboarding Progress Tracker Banner -->
             <div class="p-5 rounded-3xl luxury-card border-amber-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -795,8 +795,12 @@
                     const el1 = document.getElementById(id1);
                     const el2 = document.getElementById(id2);
                     if (el1 && el2) {
-                        el1.addEventListener('input', () => { el2.value = el1.value; });
-                        el2.addEventListener('input', () => { el1.value = el2.value; });
+                        const sync1to2 = () => { el2.value = el1.value; };
+                        const sync2to1 = () => { el1.value = el2.value; };
+                        ['input', 'change', 'blur'].forEach(ev => {
+                            el1.addEventListener(ev, sync1to2);
+                            el2.addEventListener(ev, sync2to1);
+                        });
                     }
                 };
                 bindSync('cfg-phone', 'cfg-cs-phone');
@@ -830,19 +834,53 @@
                 return el ? el.checked : fallback;
             };
 
-            const primaryPhone = getV('cfg-phone') || getV('cfg-cs-phone') || '+92 3434158605';
-            const primaryWa = getV('cfg-whatsapp') || getV('cfg-cs-whatsapp') || '+923434158605';
-            const primaryEmail = getV('cfg-email') || getV('cfg-cs-email') || 'support@khushicollection.com';
-            const primaryAddress = getV('cfg-address') || getV('cfg-cs-address') || 'Suite 104, Gulberg Galleria, Main Boulevard';
-            const primaryHours = getV('cfg-hours') || getV('cfg-cs-hours') || 'Mon - Sat: 11:00 AM - 10:00 PM | Sun: 02:00 PM - 09:00 PM';
-            const primaryMapsUrl = getV('cfg-maps-url', current.store_profile?.maps_url || 'https://yandex.com/maps/org/post_office_pabaini_/67741086615/');
+            const currP = current.store_profile || {};
+            const currC = current.contact_support || {};
+
+            // Dynamic detection of edited fields between Tab 1 and Tab 2
+            const phone1 = getV('cfg-phone');
+            const phone2 = getV('cfg-cs-phone');
+            let primaryPhone = phone1 || phone2;
+            if (phone2 && phone2 !== currC.support_phone) primaryPhone = phone2;
+            else if (phone1 && phone1 !== currP.phone) primaryPhone = phone1;
+            if (!primaryPhone) primaryPhone = currP.phone || currC.support_phone || '+92 3434158605';
+
+            const wa1 = getV('cfg-whatsapp');
+            const wa2 = getV('cfg-cs-whatsapp');
+            let primaryWa = wa1 || wa2;
+            if (wa2 && wa2 !== currC.whatsapp_number) primaryWa = wa2;
+            else if (wa1 && wa1 !== currP.whatsapp) primaryWa = wa1;
+            if (!primaryWa) primaryWa = currP.whatsapp || currC.whatsapp_number || '+923434158605';
+
+            const em1 = getV('cfg-email');
+            const em2 = getV('cfg-cs-email');
+            let primaryEmail = em1 || em2;
+            if (em2 && em2 !== currC.support_email) primaryEmail = em2;
+            else if (em1 && em1 !== currP.email) primaryEmail = em1;
+            if (!primaryEmail) primaryEmail = currP.email || currC.support_email || 'support@khushicollection.com';
+
+            const addr1 = getV('cfg-address');
+            const addr2 = getV('cfg-cs-address');
+            let primaryAddress = addr1 || addr2;
+            if (addr2 && addr2 !== currC.business_address) primaryAddress = addr2;
+            else if (addr1 && addr1 !== currP.address) primaryAddress = addr1;
+            if (!primaryAddress) primaryAddress = currP.address || currC.business_address || 'Suite 104, Gulberg Galleria, Main Boulevard';
+
+            const hrs1 = getV('cfg-hours');
+            const hrs2 = getV('cfg-cs-hours');
+            let primaryHours = hrs1 || hrs2;
+            if (hrs2 && hrs2 !== currC.working_hours) primaryHours = hrs2;
+            else if (hrs1 && hrs1 !== currP.business_hours) primaryHours = hrs1;
+            if (!primaryHours) primaryHours = currP.business_hours || currC.working_hours || 'Mon - Sat: 11:00 AM - 10:00 PM | Sun: 02:00 PM - 09:00 PM';
+
+            const primaryMapsUrl = getV('cfg-maps-url', currP.maps_url || 'https://yandex.com/maps/org/post_office_pabaini_/67741086615/');
 
             const updated = {
                 ...current,
                 store_profile: {
                     ...(current.store_profile || {}),
-                    store_name: getV('cfg-store-name', current.store_profile?.store_name || 'Khushi Collection'),
-                    owner_name: getV('cfg-owner-name', current.store_profile?.owner_name || 'Khushi Owner'),
+                    store_name: getV('cfg-store-name', currP.store_name || 'Khushi Collection'),
+                    owner_name: getV('cfg-owner-name', currP.owner_name || 'Khushi Owner'),
                     phone: primaryPhone,
                     whatsapp: primaryWa,
                     email: primaryEmail,
@@ -851,10 +889,10 @@
                     address: primaryAddress,
                     maps_url: primaryMapsUrl,
                     business_hours: primaryHours,
-                    logo_url: getV('cfg-logo-url', current.store_profile?.logo_url || ''),
-                    favicon_url: getV('cfg-favicon-url', current.store_profile?.favicon_url || ''),
-                    store_description: getV('cfg-store-desc', current.store_profile?.store_description || ''),
-                    footer_description: getV('cfg-footer-desc', current.store_profile?.footer_description || '')
+                    logo_url: getV('cfg-logo-url', currP.logo_url || ''),
+                    favicon_url: getV('cfg-favicon-url', currP.favicon_url || ''),
+                    store_description: getV('cfg-store-desc', currP.store_description || ''),
+                    footer_description: getV('cfg-footer-desc', currP.footer_description || '')
                 },
                 contact_support: {
                     ...(current.contact_support || {}),
@@ -945,15 +983,18 @@
             return updated;
         }
 
-        function saveAllSettingsFromPage() {
+        function saveAllSettingsFromPage(triggerBtn) {
             try {
-                const btn = document.getElementById('btn-save-all-settings');
+                const headerBtn = document.getElementById('btn-save-all-settings');
+                const mobileBtn = document.getElementById('btn-save-mobile-sticky');
                 const statusEl = document.getElementById('settings-save-status');
                 
-                if (btn) {
-                    btn.disabled = true;
-                    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Saving...</span>';
-                }
+                const buttons = [headerBtn, mobileBtn, triggerBtn].filter(Boolean);
+                buttons.forEach(b => {
+                    b.disabled = true;
+                    b.dataset.origHtml = b.innerHTML;
+                    b.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Saving...</span>';
+                });
 
                 const allSettings = collectAllSettingsFromPage();
                 store.saveSettings(allSettings);
@@ -967,31 +1008,44 @@
                     }, 4000);
                 }
 
-                if (btn) {
-                    btn.innerHTML = '<i class="fa-solid fa-check text-emerald-950"></i><span>Saved!</span>';
+                buttons.forEach(b => {
+                    b.innerHTML = '<i class="fa-solid fa-check text-emerald-950"></i><span>Saved!</span>';
                     setTimeout(() => {
-                        btn.disabled = false;
-                        btn.innerHTML = '<i class="fa-solid fa-floppy-disk text-sm"></i><span>Save All Settings</span>';
+                        b.disabled = false;
+                        if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
                     }, 2000);
-                }
+                });
 
                 if (typeof showToast === 'function') {
-                    showToast('All owner settings saved & synced successfully!');
+                    showToast('All owner settings saved & synced successfully!', 'success');
                 }
             } catch (err) {
                 console.error('Error saving all settings:', err);
                 if (typeof showToast === 'function') {
-                    showToast('Error saving settings: ' + err.message);
+                    showToast('Error saving settings: ' + err.message, 'error');
                 }
             }
         }
 
         function handleSaveSettings(e, section) {
             if (e && e.preventDefault) e.preventDefault();
-            saveAllSettingsFromPage();
+            const submitBtn = e?.submitter || (e?.target?.querySelector ? e.target.querySelector('button[type=submit]') : null);
+            saveAllSettingsFromPage(submitBtn);
         }
 
         document.addEventListener('DOMContentLoaded', populateSettingsForm);
     </script>
+
+    <!-- MOBILE STICKY SAVE BAR (Always accessible on mobile) -->
+    <div class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0B0F17]/95 border-t border-amber-500/30 p-2.5 backdrop-blur-md flex items-center justify-between gap-2 shadow-2xl">
+        <div class="text-[11px] text-zinc-400 font-medium pl-1 truncate">
+            <i class="fa-solid fa-sliders text-amber-400 mr-1"></i>
+            <span>Owner Settings</span>
+        </div>
+        <button type="button" id="btn-save-mobile-sticky" onclick="saveAllSettingsFromPage(this)" class="px-5 py-2.5 rounded-xl btn-gold text-zinc-950 font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 transition">
+            <i class="fa-solid fa-floppy-disk text-xs"></i>
+            <span>Save All Changes</span>
+        </button>
+    </div>
 </body>
 </html>

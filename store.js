@@ -5156,7 +5156,8 @@ class KhushiStore {
     }
 
     init() {
-        if (!localStorage.getItem(this.STORAGE_KEYS.PRODUCTS) || (JSON.parse(localStorage.getItem(this.STORAGE_KEYS.PRODUCTS) || "[]").length < 96)) {
+        const prodData = localStorage.getItem(this.STORAGE_KEYS.PRODUCTS);
+        if (!prodData || !Array.isArray(JSON.parse(prodData || "[]")) || JSON.parse(prodData || "[]").length === 0) {
             this.saveProducts(DEFAULT_PRODUCTS);
         }
         if (!localStorage.getItem(this.STORAGE_KEYS.CATEGORIES)) {
@@ -5194,10 +5195,33 @@ class KhushiStore {
                     const local = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.SETTINGS)) || {};
                     const merged = {
                         ...DEFAULT_SETTINGS,
-                        ...data.settings,
                         ...local,
-                        store_profile: { ...(DEFAULT_SETTINGS.store_profile || {}), ...(data.settings.store_profile || {}), ...(local.store_profile || {}) },
-                        contact_support: { ...(DEFAULT_SETTINGS.contact_support || {}), ...(data.settings.contact_support || {}), ...(local.contact_support || {}) }
+                        ...data.settings,
+                        store_profile: {
+                            ...(DEFAULT_SETTINGS.store_profile || {}),
+                            ...(local.store_profile || {}),
+                            ...(data.settings.store_profile || {})
+                        },
+                        contact_support: {
+                            ...(DEFAULT_SETTINGS.contact_support || {}),
+                            ...(local.contact_support || {}),
+                            ...(data.settings.contact_support || {})
+                        },
+                        payments: {
+                            ...(DEFAULT_SETTINGS.payments || {}),
+                            ...(local.payments || {}),
+                            ...(data.settings.payments || {})
+                        },
+                        delivery: {
+                            ...(DEFAULT_SETTINGS.delivery || {}),
+                            ...(local.delivery || {}),
+                            ...(data.settings.delivery || {})
+                        },
+                        social_media: {
+                            ...(DEFAULT_SETTINGS.social_media || {}),
+                            ...(local.social_media || {}),
+                            ...(data.settings.social_media || {})
+                        }
                     };
                     localStorage.setItem(this.STORAGE_KEYS.SETTINGS, JSON.stringify(merged));
                     this.applyStorefrontSettings();
@@ -5665,7 +5689,7 @@ class KhushiStore {
                 return DEFAULT_PRODUCTS;
             }
             const stored = JSON.parse(raw);
-            if (!Array.isArray(stored) || stored.length < 96) {
+            if (!Array.isArray(stored) || stored.length === 0) {
                 this.saveProducts(DEFAULT_PRODUCTS);
                 return DEFAULT_PRODUCTS;
             }
@@ -6464,6 +6488,7 @@ function handleImageError(img) {
 
 document.addEventListener('DOMContentLoaded', () => {
     store.updateBadgeCounts();
+    store.applyStorefrontSettings();
     document.querySelectorAll('img').forEach(img => {
         img.addEventListener('error', () => handleImageError(img));
     });
