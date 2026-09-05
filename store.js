@@ -5023,6 +5023,42 @@ const DEFAULT_POPULAR_SEARCHES = [
 // Pre-seeded Sample Orders
 const DEFAULT_ORDERS = [
     {
+        id: 1700000002,
+        order_number: "KC-76906",
+        customer_name: "Danyal Niaz",
+        customer_phone: "0356545654547",
+        customer_email: "danyalniaz16.56@gmail.com",
+        address: "ASSAMNFNB",
+        city: "Other Cities",
+        area: ",kzjdbxz sbajhSGU",
+        delivery_instructions: ",MAJFBDS",
+        subtotal: 5200,
+        discount_amount: 0,
+        delivery_fee: 0,
+        total_amount: 5200,
+        payment_method: "cod",
+        payment_status: "COD",
+        order_status: "pending",
+        tracking_number: "TRX-84106052",
+        courier_name: "Trax Logistics",
+        created_at: new Date().toISOString(),
+        items: [
+            {
+                id: 37,
+                product_id: 37,
+                name: "Maharani Pure Leather Hand-Embroidered Velvet Khussa",
+                thumbnail: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800",
+                price: 5200,
+                quantity: 1,
+                size: "36",
+                color: "Antique Gold"
+            }
+        ],
+        timeline: [
+            { status: "pending", title: "Order Placed", description: "Order recorded (COD - COD)", time: "10:43 PM", by: "Customer" }
+        ]
+    },
+    {
         id: 1700000001,
         order_number: "KC-10025",
         customer_name: "Khushi Fatima",

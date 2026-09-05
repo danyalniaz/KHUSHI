@@ -269,26 +269,58 @@
             `).join('');
 
             // Render Recent Orders
-            document.getElementById('dash-orders-tbody').innerHTML = orders.slice(0, 5).map(o => `
-                <tr class="hover:bg-zinc-800/30">
-                    <td class="py-3 px-3 font-mono font-bold text-amber-400">#${o.order_number}</td>
-                    <td class="py-3 px-3">
-                        <span class="font-bold text-white block">${o.customer_name}</span>
-                        <span class="text-[10px] text-zinc-400">${o.customer_phone}</span>
-                    </td>
-                    <td class="py-3 px-3">${o.city}</td>
-                    <td class="py-3 px-3 font-mono font-bold text-white">Rs. ${Number(o.total_amount).toLocaleString()}</td>
-                    <td class="py-3 px-3 uppercase text-[10px] text-zinc-400">${o.payment_method}</td>
-                    <td class="py-3 px-3">
-                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-400/10 text-amber-300 border border-amber-400/20">
-                            ${o.order_status.replace('_', ' ')}
-                        </span>
-                    </td>
-                    <td class="py-3 px-3 text-right">
-                        <a href="invoice.html?order_id=${o.order_number}" class="text-xs text-amber-400 hover:underline font-bold">Print &rarr;</a>
-                    </td>
-                </tr>
-            `).join('');
+            function renderDashboardOrders(ordersList) {
+                const tbody = document.getElementById('dash-orders-tbody');
+                if (!tbody) return;
+                if (!ordersList || ordersList.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-zinc-500 text-xs">No orders recorded yet.</td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = ordersList.slice(0, 5).map(o => `
+                    <tr class="hover:bg-zinc-800/30">
+                        <td class="py-3 px-3 font-mono font-bold text-amber-400">#${o.order_number || ''}</td>
+                        <td class="py-3 px-3">
+                            <span class="font-bold text-white block">${o.customer_name || 'Guest Client'}</span>
+                            <span class="text-[10px] text-zinc-400">${o.customer_phone || '—'}</span>
+                        </td>
+                        <td class="py-3 px-3">${o.city || '—'}</td>
+                        <td class="py-3 px-3 font-mono font-bold text-white">Rs. ${Number(o.total_amount || 0).toLocaleString()}</td>
+                        <td class="py-3 px-3 uppercase text-[10px] text-zinc-400">${o.payment_method || 'COD'}</td>
+                        <td class="py-3 px-3">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-400/10 text-amber-300 border border-amber-400/20">
+                                ${(o.order_status || 'pending').replace('_', ' ')}
+                            </span>
+                        </td>
+                        <td class="py-3 px-3 text-right">
+                            <a href="invoice.html?order_id=${o.order_number}" class="text-xs text-amber-400 hover:underline font-bold">Print &rarr;</a>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            renderDashboardOrders(orders);
+
+            // Background Real-Time Server Sync
+            fetch('/api/orders')
+                .then(r => r.json())
+                .then(data => {
+                    if (data && data.orders && data.orders.length > 0) {
+                        const localOrders = (store.getOrders ? store.getOrders() : []) || [];
+                        let hasNew = false;
+                        data.orders.forEach(bo => {
+                            if (!localOrders.some(lo => lo.order_number === bo.order_number)) {
+                                localOrders.unshift(bo);
+                                hasNew = true;
+                            }
+                        });
+                        if (hasNew) {
+                            if (store.saveOrders) store.saveOrders(localOrders);
+                            else localStorage.setItem('kc_orders', JSON.stringify(localOrders));
+                            document.getElementById('kpi-orders-count').textContent = localOrders.length;
+                            renderDashboardOrders(localOrders);
+                        }
+                    }
+                })
+                .catch(() => {});
 
             // Render Chart.js Sales Graph
             const ctx = document.getElementById('salesChart').getContext('2d');

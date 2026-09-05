@@ -311,7 +311,7 @@ def api_place_order():
     for item in items:
         execute_db('''
             INSERT INTO order_items (
-                order_id, product_id, product_name, price, quantity, size, color, thumbnail, subtotal
+                order_id, product_id, product_name, price, quantity, size, color, thumbnail, total
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             order_id,
@@ -327,14 +327,13 @@ def api_place_order():
 
     # Insert initial timeline
     execute_db('''
-        INSERT INTO order_timeline (order_id, status, title, description, time, by_user)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO order_timeline (order_id, status, title, description, created_by, created_at)
+        VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
     ''', (
         order_id,
         order_status,
         'Order Placed',
         f"Order received via online storefront ({payment_method.upper()})",
-        datetime.now().strftime('%I:%M %p'),
         'Customer'
     ))
 
@@ -344,4 +343,19 @@ def api_place_order():
         'order_number': order_number,
         'message': 'Order successfully recorded in database'
     })
+
+# 8. List Orders API Endpoint (Allows Admin Portal to fetch real-time orders from SQLite)
+@api_bp.route('/orders', methods=['GET'])
+def api_get_orders():
+    rows = query_db('SELECT * FROM orders ORDER BY id DESC')
+    orders = []
+    for r in rows:
+        ord_dict = dict(r)
+        items = query_db('SELECT * FROM order_items WHERE order_id = ?', (r['id'],))
+        ord_dict['items'] = [dict(it) for it in items]
+        timeline = query_db('SELECT * FROM order_timeline WHERE order_id = ? ORDER BY id ASC', (r['id'],))
+        ord_dict['timeline'] = [dict(tl) for tl in timeline]
+        orders.append(ord_dict)
+    return jsonify({'success': True, 'orders': orders, 'count': len(orders)})
+
 

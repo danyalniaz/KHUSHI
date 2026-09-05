@@ -204,16 +204,39 @@
         }
 
         function renderOrdersTable() {
-            const orders = store.getOrders();
-            const search = document.getElementById('order-search-inp').value.toLowerCase().trim();
+            const orders = (typeof store.getOrders === 'function' ? store.getOrders() : []) || [];
+            const searchInput = document.getElementById('order-search-inp');
+            const search = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
             const filtered = orders.filter(o => {
-                if (currentFilterStatus && o.order_status !== currentFilterStatus) return false;
-                if (search && !o.order_number.toLowerCase().includes(search) && !o.customer_name.toLowerCase().includes(search) && !o.customer_phone.includes(search)) return false;
+                if (!o) return false;
+                const status = (o.order_status || 'pending').toLowerCase();
+                if (currentFilterStatus && status !== currentFilterStatus.toLowerCase()) return false;
+                if (search) {
+                    const num = (o.order_number || '').toLowerCase();
+                    const name = (o.customer_name || '').toLowerCase();
+                    const phone = (o.customer_phone || '').toLowerCase();
+                    const city = (o.city || '').toLowerCase();
+                    if (!num.includes(search) && !name.includes(search) && !phone.includes(search) && !city.includes(search)) return false;
+                }
                 return true;
             });
 
             const tbody = document.getElementById('orders-tbody');
+            if (!tbody) return;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="py-12 text-center text-zinc-500 text-xs">
+                            <i class="fa-solid fa-box-open text-2xl mb-2 text-zinc-600 block"></i>
+                            <span>No customer orders found matching this view.</span>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
             tbody.innerHTML = filtered.map(o => {
                 const pStatus = (o.payment_status || 'COD').toUpperCase();
                 let pBadgeClass = 'bg-zinc-900 text-zinc-300 border border-zinc-700';
@@ -221,24 +244,26 @@
                 else if (pStatus === 'PENDING_VERIFICATION') pBadgeClass = 'bg-amber-950 text-amber-300 border border-amber-500/40';
                 else if (pStatus === 'PAYMENT_FAILED') pBadgeClass = 'bg-rose-950 text-rose-400 border border-rose-500/40';
 
+                const ordStatus = (o.order_status || 'pending').toLowerCase();
+
                 return `
                     <tr class="hover:bg-zinc-800/30 transition">
-                        <td class="py-3.5 px-4 font-mono font-bold text-amber-400">#${o.order_number}</td>
+                        <td class="py-3.5 px-4 font-mono font-bold text-amber-400">#${o.order_number || ''}</td>
                         <td class="py-3.5 px-4">
-                            <span class="font-bold text-white block">${o.customer_name}</span>
-                            <span class="text-[10px] text-zinc-400 font-mono">${o.customer_phone}</span>
+                            <span class="font-bold text-white block">${o.customer_name || 'Guest Client'}</span>
+                            <span class="text-[10px] text-zinc-400 font-mono">${o.customer_phone || '—'}</span>
                         </td>
-                        <td class="py-3.5 px-4">${o.city}</td>
-                        <td class="py-3.5 px-4 font-bold text-white">Rs. ${Number(o.total_amount).toLocaleString()}</td>
+                        <td class="py-3.5 px-4">${o.city || '—'}</td>
+                        <td class="py-3.5 px-4 font-bold text-white">Rs. ${Number(o.total_amount || 0).toLocaleString()}</td>
                         <td class="py-3.5 px-4">
-                            <span class="uppercase text-[10px] font-bold text-zinc-300 block">${o.payment_method}</span>
+                            <span class="uppercase text-[10px] font-bold text-zinc-300 block">${o.payment_method || 'COD'}</span>
                             <span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase inline-block mt-0.5 ${pBadgeClass}">
                                 ${pStatus}
                             </span>
                         </td>
                         <td class="py-3.5 px-4">
-                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${o.order_status === 'delivered' ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/30' : 'bg-amber-950 text-amber-400 border border-amber-500/30'}">
-                                ${o.order_status.replace('_', ' ')}
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${ordStatus === 'delivered' ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/30' : 'bg-amber-950 text-amber-400 border border-amber-500/30'}">
+                                ${ordStatus.replace('_', ' ')}
                             </span>
                         </td>
                         <td class="py-3.5 px-4 font-mono text-zinc-400 text-[11px]">${o.tracking_number || '—'}</td>
@@ -246,7 +271,7 @@
                             <button onclick="openProcessModal('${o.order_number}')" class="py-1 px-2.5 rounded-lg btn-gold text-xs font-bold uppercase" title="Update Status">
                                 Process
                             </button>
-                            <a href="https://wa.me/${(o.customer_phone || '').replace(/[^0-9]/g, '')}?text=Hello%20${encodeURIComponent(o.customer_name)},%20this%20is%20Khushi%20Collection%20regarding%20your%20Order%20%23${o.order_number}." target="_blank" class="py-1 px-2 rounded-lg bg-emerald-950/60 border border-emerald-500/40 hover:border-emerald-400 text-emerald-400 text-xs inline-block" title="Chat on WhatsApp">
+                            <a href="https://wa.me/${(o.customer_phone || '').replace(/[^0-9]/g, '')}?text=Hello%20${encodeURIComponent(o.customer_name || 'Valued Client')},%20this%20is%20Khushi%20Collection%20regarding%20your%20Order%20%23${o.order_number}." target="_blank" class="py-1 px-2 rounded-lg bg-emerald-950/60 border border-emerald-500/40 hover:border-emerald-400 text-emerald-400 text-xs inline-block" title="Chat on WhatsApp">
                                 <i class="fa-brands fa-whatsapp"></i>
                             </a>
                             <a href="invoice.html?order_id=${o.order_number}" target="_blank" class="py-1 px-2 rounded-lg border border-zinc-700 hover:border-amber-400 text-zinc-400 hover:text-white text-xs inline-block" title="Print Invoice">
@@ -341,6 +366,28 @@
             const openOrderId = urlParams.get('order_id');
             renderOrdersTable();
             if (openOrderId) openProcessModal(openOrderId);
+
+            // Real-Time Background Synchronization with Server Orders
+            fetch('/api/orders')
+                .then(r => r.json())
+                .then(data => {
+                    if (data && data.orders && data.orders.length > 0) {
+                        const localOrders = (store.getOrders ? store.getOrders() : []) || [];
+                        let hasNew = false;
+                        data.orders.forEach(bo => {
+                            if (!localOrders.some(lo => lo.order_number === bo.order_number)) {
+                                localOrders.unshift(bo);
+                                hasNew = true;
+                            }
+                        });
+                        if (hasNew) {
+                            if (store.saveOrders) store.saveOrders(localOrders);
+                            else localStorage.setItem('kc_orders', JSON.stringify(localOrders));
+                            renderOrdersTable();
+                        }
+                    }
+                })
+                .catch(() => {});
         });
     </script>
 </body>
