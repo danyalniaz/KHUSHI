@@ -78,9 +78,14 @@
     <!-- Header -->
     <header class="sticky top-0 z-40 glass-nav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-            <a href="index.html" class="flex items-center gap-3">
-                <img src="static/images/logo.svg" alt="Khushi Collection" class="h-12 w-auto">
-            </a>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMobileMenu()" class="md:hidden text-zinc-300 hover:text-amber-400 text-xl p-2" aria-label="Open Navigation Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="static/images/logo.svg" alt="Khushi Collection" class="h-10 sm:h-12 w-auto">
+                </a>
+            </div>
 
             <div class="hidden md:flex items-center space-x-6 text-xs font-semibold uppercase tracking-widest text-zinc-300">
                 <a href="index.html" class="hover:text-amber-400 transition">Home</a>
@@ -91,7 +96,7 @@
                 <a href="shop.html?filter=sale" class="text-rose-400 hover:text-rose-300 transition">Sale</a>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3 sm:gap-4">
                 <a href="track-order.html" class="hidden sm:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-amber-400 transition">
                     <i class="fa-solid fa-truck-fast text-amber-400 text-sm"></i>
                     <span>Track</span>
@@ -120,7 +125,7 @@
     </div>
 
     <!-- MAIN PRODUCT BODY -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-16">
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 pb-28 sm:pb-16 w-full space-y-12 sm:space-y-16">
         
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             
@@ -175,42 +180,47 @@
                 <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light" id="detail-short-desc"></p>
 
                 <!-- Size Selector -->
-                <div id="size-selection-box" class="space-y-2">
+                <div id="size-selection-box" class="space-y-2.5">
                     <div class="flex items-center justify-between text-xs">
-                        <span class="font-bold text-zinc-300 uppercase tracking-wider text-[11px]">Select Size:</span>
-                        <button onclick="openSizeGuideModal()" class="text-amber-400 hover:text-amber-300 underline text-xs">
-                            <i class="fa-solid fa-ruler-horizontal mr-1"></i> Size Guide
+                        <span class="font-bold text-zinc-300 uppercase tracking-wider text-[11px]">Select Size: <span id="selected-size-label" class="text-amber-400 font-semibold normal-case ml-1 font-sans"></span></span>
+                        <button onclick="openSizeGuideModal()" class="text-amber-400 hover:text-amber-300 underline text-xs flex items-center gap-1">
+                            <i class="fa-solid fa-ruler-horizontal text-[11px]"></i> Size Guide
                         </button>
                     </div>
                     <div class="flex flex-wrap gap-2.5" id="detail-sizes-list"></div>
                 </div>
 
                 <!-- Color Selector -->
-                <div id="color-selection-box" class="space-y-2">
-                    <span class="font-bold text-zinc-300 uppercase tracking-wider text-[11px] block">Select Color / Finish:</span>
+                <div id="color-selection-box" class="space-y-2.5">
+                    <span class="font-bold text-zinc-300 uppercase tracking-wider text-[11px] block">Select Color / Finish: <span id="selected-color-label" class="text-amber-400 font-semibold normal-case ml-1 font-sans"></span></span>
                     <div class="flex flex-wrap gap-2.5" id="detail-colors-list"></div>
                 </div>
 
                 <!-- Quantity & Add to Cart -->
                 <div class="space-y-3 pt-2">
-                    <div class="flex items-center gap-4">
-                        <div class="flex items-center border border-zinc-700 rounded-2xl bg-zinc-900 px-2 py-1.5">
-                            <button onclick="adjustDetailQty(-1)" class="px-3 py-1 text-zinc-400 hover:text-white font-bold text-base">-</button>
-                            <span id="detail-qty-val" class="px-4 text-sm font-bold text-white font-mono">1</span>
-                            <button onclick="adjustDetailQty(1)" class="px-3 py-1 text-zinc-400 hover:text-white font-bold text-base">+</button>
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <div class="flex items-center justify-between sm:justify-center border border-zinc-700 rounded-2xl bg-zinc-900 px-3 py-2 sm:py-1.5">
+                            <span class="text-xs text-zinc-400 sm:hidden">Quantity:</span>
+                            <div class="flex items-center">
+                                <button onclick="adjustDetailQty(-1)" class="w-8 h-8 flex items-center justify-center text-zinc-400 hover:text-white font-bold text-base">-</button>
+                                <span id="detail-qty-val" class="px-3 text-sm font-bold text-white font-mono">1</span>
+                                <button onclick="adjustDetailQty(1)" class="w-8 h-8 flex items-center justify-center text-zinc-400 hover:text-white font-bold text-base">+</button>
+                            </div>
                         </div>
 
-                        <button onclick="handleDetailAddToCart()" class="flex-1 py-4 px-6 rounded-2xl btn-gold text-xs uppercase tracking-widest font-extrabold shadow-xl flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-bag-shopping"></i> Add to Shopping Bag
-                        </button>
+                        <div class="flex items-center gap-3 flex-1">
+                            <button onclick="handleDetailAddToCart()" class="flex-1 py-3.5 sm:py-4 px-6 rounded-2xl btn-gold text-xs uppercase tracking-widest font-extrabold shadow-xl flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-bag-shopping"></i> Add to Shopping Bag
+                            </button>
 
-                        <button onclick="handleDetailWishlistToggle()" id="detail-wishlist-btn" class="w-14 h-14 rounded-2xl bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-rose-500 flex items-center justify-center text-lg transition shadow">
-                            <i class="fa-regular fa-heart"></i>
-                        </button>
+                            <button onclick="handleDetailWishlistToggle()" id="detail-wishlist-btn" class="w-12 sm:w-14 h-12 sm:h-14 rounded-2xl bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-rose-500 flex items-center justify-center text-base sm:text-lg transition shadow flex-shrink-0" title="Add to Wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                        </div>
                     </div>
 
-                    <button onclick="handleDetailBuyNow()" class="w-full py-3.5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-zinc-100 border border-amber-500/40 text-xs uppercase tracking-widest font-bold transition">
-                        Instant Checkout (Buy Now)
+                    <button onclick="handleDetailBuyNow()" class="w-full py-3.5 sm:py-4 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-amber-300 border border-amber-500/50 hover:border-amber-400 text-xs uppercase tracking-widest font-bold transition shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-bolt text-amber-400"></i> Instant Checkout (Buy Now)
                     </button>
                 </div>
 
@@ -314,17 +324,80 @@
         </div>
     </div>
 
+    <!-- Mobile Sticky Action Bar -->
+    <div class="fixed bottom-0 left-0 right-0 z-30 bg-zinc-950/95 backdrop-blur-md border-t border-zinc-800/90 p-3 sm:hidden shadow-[0_-10px_25px_rgba(0,0,0,0.8)]">
+        <div class="flex items-center justify-between gap-3 max-w-md mx-auto">
+            <div class="flex flex-col">
+                <span class="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold">Total Price</span>
+                <span class="text-base font-serif font-bold text-amber-400" id="mobile-sticky-price">Rs. 0</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="handleDetailAddToCart()" class="px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow">
+                    <i class="fa-solid fa-bag-shopping text-amber-400"></i> Bag
+                </button>
+                <button onclick="handleDetailBuyNow()" class="px-4 py-2.5 rounded-xl btn-gold text-black text-xs font-extrabold uppercase tracking-wider shadow flex items-center gap-1.5">
+                    <i class="fa-solid fa-bolt"></i> Buy Now
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
-    <footer class="bg-[#05070D] border-t border-zinc-800/80 py-10 text-xs text-zinc-500 text-center mt-auto">
+    <footer class="bg-[#05070D] border-t border-zinc-800/80 py-10 text-xs text-zinc-500 text-center mt-auto pb-24 sm:pb-10">
         <p>&copy; 2026 Khushi Collection Pvt Ltd. All Rights Reserved.</p>
     </footer>
+
+    <!-- MOBILE SLIDE-IN NAVIGATION DRAWER -->
+    <div id="mobile-nav-overlay" onclick="toggleMobileMenu()" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm transition-opacity"></div>
+    <div id="mobile-nav-drawer" class="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm z-50 bg-[#0A0D14] border-r border-zinc-800 p-6 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 overflow-y-auto">
+        <div class="space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-zinc-800">
+                <img src="static/images/logo.svg" alt="Khushi Collection" class="h-10 w-auto">
+                <button onclick="toggleMobileMenu()" class="text-zinc-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-1 text-sm font-semibold uppercase tracking-wider text-zinc-300">
+                <a href="index.html" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400 text-amber-400">Home</a>
+                <a href="shop.html" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">All Collections</a>
+                <a href="shop.html?category=women" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Women Couture</a>
+                <a href="shop.html?category=men" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Men Heritage</a>
+                <a href="shop.html?category=kids" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Kids Festive</a>
+                <a href="shop.html?category=perfumes" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Imperial Oud</a>
+                <a href="shop.html?category=watches" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Watches</a>
+                <a href="shop.html?category=shoes" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Khussas</a>
+                <a href="shop.html?category=bags" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Bags</a>
+                <a href="shop.html?filter=sale" class="block py-2.5 px-3 rounded-xl bg-rose-950/60 text-rose-300 font-bold">🔥 Seasonal Sale</a>
+            </div>
+
+            <div class="pt-4 border-t border-zinc-800 space-y-2 text-xs text-zinc-400">
+                <a href="track-order.html" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-zinc-900 hover:text-white">
+                    <i class="fa-solid fa-truck-fast text-amber-400"></i>
+                    <span>Track Your Order</span>
+                </a>
+                <a href="contact.html" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-zinc-900 hover:text-white">
+                    <i class="fa-solid fa-headset text-amber-400"></i>
+                    <span>Concierge & WhatsApp</span>
+                </a>
+                <a href="about.html" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-zinc-900 hover:text-white">
+                    <i class="fa-solid fa-book-open text-amber-400"></i>
+                    <span>The Khushi Story</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="pt-6 border-t border-zinc-900 text-center text-[11px] text-zinc-600">
+            <p>&copy; 2026 Khushi Collection Pvt Ltd</p>
+        </div>
+    </div>
 
     <!-- SCRIPTS -->
     <script src="store.js"></script>
     <script>
         let currentProduct = null;
-        let selectedSize = 'M';
-        let selectedColor = 'Standard';
+        let selectedSize = 'Standard';
+        let selectedColor = 'Default';
         let qty = 1;
 
         function getProductIdFromUrl() {
@@ -356,10 +429,46 @@
         function openSizeGuideModal() { document.getElementById('size-guide-modal').classList.remove('hidden'); }
         function closeSizeGuideModal() { document.getElementById('size-guide-modal').classList.add('hidden'); }
 
+        function toggleMobileMenu() {
+            const drawer = document.getElementById('mobile-nav-drawer');
+            const overlay = document.getElementById('mobile-nav-overlay');
+            if (!drawer || !overlay) return;
+            const isOpen = !drawer.classList.contains('-translate-x-full');
+            if (isOpen) {
+                drawer.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.style.overflow = '';
+            } else {
+                drawer.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function selectProductSize(sizeName, btn) {
+            selectedSize = sizeName;
+            const label = document.getElementById('selected-size-label');
+            if (label) label.textContent = sizeName;
+            document.querySelectorAll('#detail-sizes-list button').forEach(b => {
+                b.className = 'px-4 py-2 rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500 text-xs font-semibold transition';
+            });
+            btn.className = 'px-4 py-2 rounded-xl border border-amber-400 bg-amber-400/20 text-amber-300 font-bold shadow-[0_0_12px_rgba(212,175,55,0.25)] text-xs font-semibold transition';
+        }
+
+        function selectProductColor(colorName, btn) {
+            selectedColor = colorName;
+            const label = document.getElementById('selected-color-label');
+            if (label) label.textContent = colorName;
+            document.querySelectorAll('#detail-colors-list button').forEach(b => {
+                b.className = 'px-4 py-2 rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500 text-xs font-semibold flex items-center gap-2 transition';
+            });
+            btn.className = 'px-4 py-2 rounded-xl border border-amber-400 bg-amber-400/20 text-amber-300 font-bold shadow-[0_0_12px_rgba(212,175,55,0.25)] text-xs font-semibold flex items-center gap-2 transition';
+        }
+
         function handleDetailAddToCart() {
             if (!currentProduct) return;
             store.addToCart(currentProduct.id, qty, selectedSize, selectedColor);
-            showToast(`Added ${qty}x ${currentProduct.name} to your bag!`);
+            showToast(`Added ${qty}x ${currentProduct.name} (${selectedSize} / ${selectedColor}) to your bag!`);
         }
 
         function handleDetailBuyNow() {
@@ -375,6 +484,77 @@
             const btn = document.getElementById('detail-wishlist-btn');
             const icon = btn.querySelector('i');
             icon.className = res.inWishlist ? 'fa-solid fa-heart text-rose-500' : 'fa-regular fa-heart';
+        }
+
+        function renderBundleSection() {
+            const container = document.getElementById('bundle-items-container');
+            if (!container || !currentProduct) return;
+            const allProducts = store.getProducts();
+            const complementary = allProducts.filter(p => p.id !== currentProduct.id).slice(0, 2);
+            if (complementary.length < 2) return;
+
+            const p1 = currentProduct;
+            const p2 = complementary[0];
+            const p3 = complementary[1];
+            const price1 = p1.sale_price || p1.price;
+            const price2 = p2.sale_price || p2.price;
+            const price3 = p3.sale_price || p3.price;
+            const totalOriginal = price1 + price2 + price3;
+            const bundleTotal = Math.round(totalOriginal * 0.9);
+
+            container.innerHTML = `
+                <div class="md:col-span-2 flex items-center justify-between sm:justify-start gap-2 sm:gap-4 overflow-x-auto pb-2">
+                    <div class="flex items-center gap-2">
+                        <div class="w-16 sm:w-20 aspect-[4/5] rounded-xl overflow-hidden bg-zinc-950 border border-amber-500/30 flex-shrink-0">
+                            <img src="${p1.thumbnail}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-[11px] max-w-[100px] sm:max-w-[130px]">
+                            <span class="font-bold text-white block truncate">${p1.name}</span>
+                            <span class="text-amber-400 font-serif font-bold">Rs. ${price1.toLocaleString()}</span>
+                        </div>
+                    </div>
+                    <span class="text-zinc-500 font-bold text-lg">+</span>
+                    <div class="flex items-center gap-2">
+                        <div class="w-16 sm:w-20 aspect-[4/5] rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800 flex-shrink-0">
+                            <img src="${p2.thumbnail}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-[11px] max-w-[100px] sm:max-w-[130px]">
+                            <span class="font-bold text-white block truncate">${p2.name}</span>
+                            <span class="text-amber-400 font-serif font-bold">Rs. ${price2.toLocaleString()}</span>
+                        </div>
+                    </div>
+                    <span class="text-zinc-500 font-bold text-lg">+</span>
+                    <div class="flex items-center gap-2">
+                        <div class="w-16 sm:w-20 aspect-[4/5] rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800 flex-shrink-0">
+                            <img src="${p3.thumbnail}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-[11px] max-w-[100px] sm:max-w-[130px]">
+                            <span class="font-bold text-white block truncate">${p3.name}</span>
+                            <span class="text-amber-400 font-serif font-bold">Rs. ${price3.toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-1 bg-zinc-950/80 rounded-2xl p-4 border border-zinc-800 text-center space-y-2">
+                    <div class="text-xs text-zinc-400">
+                        Bundle Total: <span class="line-through text-zinc-500">Rs. ${totalOriginal.toLocaleString()}</span>
+                    </div>
+                    <div class="text-xl font-serif font-bold text-amber-400">
+                        Rs. ${bundleTotal.toLocaleString()}
+                        <span class="text-[10px] bg-amber-400/20 text-amber-300 font-bold px-2 py-0.5 rounded-full border border-amber-400/30 ml-1">10% OFF</span>
+                    </div>
+                    <button onclick="addBundleToCart(${p1.id}, ${p2.id}, ${p3.id})" class="w-full py-3 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider shadow">
+                        Add All 3 to Bag
+                    </button>
+                </div>
+            `;
+        }
+
+        function addBundleToCart(id1, id2, id3) {
+            store.addToCart(id1, 1);
+            store.addToCart(id2, 1);
+            store.addToCart(id3, 1);
+            showToast('Ensemble Bundle added to your shopping bag with 10% savings!');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -407,7 +587,12 @@
             document.getElementById('detail-brand').textContent = currentProduct.brand || 'Khushi Collection';
             document.getElementById('detail-sku').textContent = currentProduct.sku;
             document.getElementById('detail-title').textContent = currentProduct.name;
-            document.getElementById('detail-price').textContent = `Rs. ${(currentProduct.sale_price || currentProduct.price).toLocaleString()}`;
+            const currentPrice = currentProduct.sale_price || currentProduct.price;
+            document.getElementById('detail-price').textContent = `Rs. ${currentPrice.toLocaleString()}`;
+            
+            const stickyPrice = document.getElementById('mobile-sticky-price');
+            if (stickyPrice) stickyPrice.textContent = `Rs. ${currentPrice.toLocaleString()}`;
+
             document.getElementById('detail-short-desc').textContent = currentProduct.description || currentProduct.short_description;
             document.getElementById('tab-desc-content').textContent = currentProduct.description;
 
@@ -423,23 +608,41 @@
 
             // Sizes
             const sizesList = document.getElementById('detail-sizes-list');
-            const sizes = currentProduct.sizes || ['Standard'];
-            selectedSize = sizes[0];
-            sizesList.innerHTML = sizes.map((s, idx) => `
-                <button onclick="document.querySelectorAll('#detail-sizes-list button').forEach(b => b.className = 'px-4 py-2 rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-300 text-xs font-semibold'); this.className = 'px-4 py-2 rounded-xl border border-amber-400 bg-amber-400/20 text-amber-400 text-xs font-bold'; selectedSize = '${s}';" class="px-4 py-2 rounded-xl border ${idx === 0 ? 'border-amber-400 bg-amber-400/20 text-amber-400 font-bold' : 'border-zinc-700 bg-zinc-900 text-zinc-300'} text-xs font-semibold">
-                    ${s}
-                </button>
-            `).join('');
+            const sizes = (currentProduct.sizes && currentProduct.sizes.length > 0) ? currentProduct.sizes : ['Standard'];
+            const firstSize = sizes[0];
+            selectedSize = typeof firstSize === 'object' && firstSize !== null ? (firstSize.name || 'Standard') : String(firstSize);
+            const sizeLabel = document.getElementById('selected-size-label');
+            if (sizeLabel) sizeLabel.textContent = selectedSize;
+
+            sizesList.innerHTML = sizes.map((s, idx) => {
+                const sName = typeof s === 'object' && s !== null ? (s.name || 'Standard') : String(s);
+                const isSelected = idx === 0;
+                return `
+                    <button type="button" onclick="selectProductSize('${sName.replace(/'/g, "\\'")}', this)" class="px-4 py-2 rounded-xl border ${isSelected ? 'border-amber-400 bg-amber-400/20 text-amber-300 font-bold shadow-[0_0_12px_rgba(212,175,55,0.25)]' : 'border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500'} text-xs font-semibold transition">
+                        ${sName}
+                    </button>
+                `;
+            }).join('');
 
             // Colors
             const colorsList = document.getElementById('detail-colors-list');
-            const colors = currentProduct.colors || ['Black / Gold'];
-            selectedColor = colors[0];
-            colorsList.innerHTML = colors.map((c, idx) => `
-                <button onclick="document.querySelectorAll('#detail-colors-list button').forEach(b => b.className = 'px-4 py-2 rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-300 text-xs font-semibold'); this.className = 'px-4 py-2 rounded-xl border border-amber-400 bg-amber-400/20 text-amber-400 text-xs font-bold'; selectedColor = '${c}';" class="px-4 py-2 rounded-xl border ${idx === 0 ? 'border-amber-400 bg-amber-400/20 text-amber-400 font-bold' : 'border-zinc-700 bg-zinc-900 text-zinc-300'} text-xs font-semibold">
-                    ${c}
-                </button>
-            `).join('');
+            const colors = (currentProduct.colors && currentProduct.colors.length > 0) ? currentProduct.colors : ['Antique Gold'];
+            const firstColor = colors[0];
+            selectedColor = typeof firstColor === 'object' && firstColor !== null ? (firstColor.name || 'Antique Gold') : String(firstColor);
+            const colorLabel = document.getElementById('selected-color-label');
+            if (colorLabel) colorLabel.textContent = selectedColor;
+
+            colorsList.innerHTML = colors.map((c, idx) => {
+                const cName = typeof c === 'object' && c !== null ? (c.name || 'Standard') : String(c);
+                const cHex = typeof c === 'object' && c !== null ? (c.hex || '#d4af37') : '#d4af37';
+                const isSelected = idx === 0;
+                return `
+                    <button type="button" onclick="selectProductColor('${cName.replace(/'/g, "\\'")}', this)" class="px-4 py-2 rounded-xl border ${isSelected ? 'border-amber-400 bg-amber-400/20 text-amber-300 font-bold shadow-[0_0_12px_rgba(212,175,55,0.25)]' : 'border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500'} text-xs font-semibold flex items-center gap-2 transition">
+                        <span class="w-3.5 h-3.5 rounded-full border border-white/25 flex-shrink-0 shadow-sm" style="background-color: ${cHex};"></span>
+                        <span>${cName}</span>
+                    </button>
+                `;
+            }).join('');
 
             // Wishlist Heart state
             const inWish = store.getWishlist().includes(currentProduct.id);
@@ -451,6 +654,9 @@
             if (waBtn) {
                 waBtn.href = `https://wa.me/923001234567?text=Hi%20Khushi%20Collection,%20I%20am%20inquiring%20about%20${encodeURIComponent(currentProduct.name)}%20(SKU:%20${currentProduct.sku})`;
             }
+
+            // Render Bundle Section
+            renderBundleSection();
 
             // Related Products
             const related = store.getProducts().filter(p => p.category === currentProduct.category && p.id !== currentProduct.id).slice(0, 4);

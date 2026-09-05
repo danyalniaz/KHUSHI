@@ -454,18 +454,22 @@
 
             const container = document.getElementById('checkout-items');
             if (container) {
-                container.innerHTML = items.map(item => `
-                    <div class="flex items-center justify-between gap-3 pt-3 first:pt-0 text-xs">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <img src="${item.thumbnail}" class="w-10 h-12 object-cover rounded-lg border border-zinc-800 flex-shrink-0">
-                            <div class="truncate">
-                                <h5 class="text-white font-medium truncate">${item.name}</h5>
-                                <span class="text-[10px] text-zinc-400">Qty: ${item.quantity} | ${item.size} / ${item.color}</span>
+                container.innerHTML = items.map(item => {
+                    const sVal = typeof item.size === 'object' && item.size !== null ? (item.size.name || 'Standard') : (item.size && item.size !== '[object Object]' ? item.size : 'Standard');
+                    const cVal = typeof item.color === 'object' && item.color !== null ? (item.color.name || 'Default') : (item.color && item.color !== '[object Object]' ? item.color : 'Default');
+                    return `
+                        <div class="flex items-center justify-between gap-3 pt-3 first:pt-0 text-xs">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <img src="${item.thumbnail}" class="w-10 h-12 object-cover rounded-lg border border-zinc-800 flex-shrink-0">
+                                <div class="truncate">
+                                    <h5 class="text-white font-medium truncate">${item.name}</h5>
+                                    <span class="text-[10px] text-zinc-400">Qty: ${item.quantity} | ${sVal} / ${cVal}</span>
+                                </div>
                             </div>
+                            <span class="font-bold text-amber-400 whitespace-nowrap">Rs. ${(item.price * item.quantity).toLocaleString()}</span>
                         </div>
-                        <span class="font-bold text-amber-400 whitespace-nowrap">Rs. ${(item.price * item.quantity).toLocaleString()}</span>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             }
 
             const subtotal = store.getCartSubtotal();

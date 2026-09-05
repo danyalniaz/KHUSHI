@@ -123,6 +123,11 @@
             </div>
 
             <form onsubmit="handleStatusSubmit(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-zinc-400 mb-1">Ordered Items & Variants</label>
+                    <div id="modal-order-items-list" class="space-y-1.5 border border-zinc-800 bg-zinc-950/80 rounded-xl p-3 max-h-36 overflow-y-auto"></div>
+                </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="block font-semibold text-zinc-300 mb-1">Order Fulfillment Status</label>
@@ -294,6 +299,30 @@
             document.getElementById('modal-courier').value = order.courier_name || 'Trax Logistics';
             document.getElementById('modal-tracking').value = order.tracking_number || 'TRX-99882211';
             document.getElementById('modal-invoice-btn').href = `invoice.html?order_id=${order.order_number}`;
+
+            const itemsList = document.getElementById('modal-order-items-list');
+            if (itemsList) {
+                const items = order.items || [];
+                if (items.length === 0) {
+                    itemsList.innerHTML = '<p class="text-zinc-500 text-xs text-center py-2">No individual line items</p>';
+                } else {
+                    itemsList.innerHTML = items.map(it => {
+                        const s = typeof it.size === 'object' && it.size !== null ? (it.size.name || 'Std') : (it.size && it.size !== '[object Object]' ? it.size : 'Std');
+                        const c = typeof it.color === 'object' && it.color !== null ? (it.color.name || 'Default') : (it.color && it.color !== '[object Object]' ? it.color : 'Default');
+                        const price = Number(it.price || 0);
+                        const qty = Number(it.quantity || 1);
+                        return `
+                            <div class="flex items-center justify-between text-xs py-1 border-b border-zinc-800/60 last:border-none">
+                                <div class="min-w-0 pr-2">
+                                    <span class="text-white font-medium block truncate">${it.name || 'Item'}</span>
+                                    <span class="text-[10px] text-zinc-400">Qty: ${qty} | Size: <strong class="text-zinc-200">${s}</strong> | Color: <strong class="text-zinc-200">${c}</strong></span>
+                                </div>
+                                <span class="text-amber-400 font-bold whitespace-nowrap">Rs. ${(price * qty).toLocaleString()}</span>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
 
             updateSmsPreview();
             document.getElementById('process-modal').classList.remove('hidden');

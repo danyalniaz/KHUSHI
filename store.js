@@ -5572,7 +5572,35 @@ class KhushiStore {
     }
 
     getCart() {
-        return JSON.parse(localStorage.getItem('kc_cart')) || {};
+        try {
+            const raw = JSON.parse(localStorage.getItem('kc_cart')) || {};
+            let modified = false;
+            for (const k in raw) {
+                const item = raw[k];
+                if (item) {
+                    if (typeof item.color === 'object' && item.color !== null) {
+                        item.color = item.color.name || 'Default';
+                        modified = true;
+                    } else if (item.color === '[object Object]' || !item.color) {
+                        item.color = 'Default';
+                        modified = true;
+                    }
+                    if (typeof item.size === 'object' && item.size !== null) {
+                        item.size = item.size.name || 'Standard';
+                        modified = true;
+                    } else if (item.size === '[object Object]' || !item.size) {
+                        item.size = 'Standard';
+                        modified = true;
+                    }
+                }
+            }
+            if (modified) {
+                localStorage.setItem('kc_cart', JSON.stringify(raw));
+            }
+            return raw;
+        } catch (e) {
+            return {};
+        }
     }
 
     addToCart(productId, quantity = 1, size = '', color = '') {
@@ -5580,8 +5608,29 @@ class KhushiStore {
         if (!product) return { success: false, message: 'Product not found' };
 
         // Determine variant stock if matrix exists
-        const chosenSize = size || (product.sizes ? product.sizes[0] : 'Standard');
-        const chosenColor = color || (product.colors ? product.colors[0].name : 'Default');
+        let chosenSize = size;
+        if (typeof chosenSize === 'object' && chosenSize !== null) {
+            chosenSize = chosenSize.name || 'Standard';
+        } else if (!chosenSize || chosenSize === '[object Object]') {
+            if (product.sizes && product.sizes.length > 0) {
+                const first = product.sizes[0];
+                chosenSize = typeof first === 'object' && first !== null ? (first.name || 'Standard') : String(first);
+            } else {
+                chosenSize = 'Standard';
+            }
+        }
+
+        let chosenColor = color;
+        if (typeof chosenColor === 'object' && chosenColor !== null) {
+            chosenColor = chosenColor.name || 'Default';
+        } else if (!chosenColor || chosenColor === '[object Object]') {
+            if (product.colors && product.colors.length > 0) {
+                const first = product.colors[0];
+                chosenColor = typeof first === 'object' && first !== null ? (first.name || 'Default') : String(first);
+            } else {
+                chosenColor = 'Default';
+            }
+        }
 
         let availableStock = product.stock;
         let variantSku = product.sku;
