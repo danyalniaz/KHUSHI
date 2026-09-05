@@ -687,6 +687,15 @@
                 }
                 localStorage.removeItem('kc_active_coupon');
 
+                // Sync with backend API in background if server is running
+                try {
+                    fetch('/api/orders/place', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(newOrder)
+                    }).catch(e => console.log('Backend sync offline, stored in browser localStorage.'));
+                } catch (apiErr) {}
+
                 showToast('Order Placed Successfully! Redirecting...', 'success');
 
                 setTimeout(() => {

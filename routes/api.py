@@ -1,4 +1,5 @@
 import json
+import random
 from datetime import datetime
 from flask import Blueprint, request, jsonify, session
 from database import query_db, execute_db
@@ -263,3 +264,84 @@ def get_delivery_fee():
 
     fee = rates.get(city, rates.get('Other Cities', 250))
     return jsonify({'delivery_fee': fee, 'free': False, 'threshold': threshold})
+
+# 7. Place Order API Endpoint (Syncs JavaScript frontend orders with SQLite DB)
+@api_bp.route('/orders/place', methods=['POST'])
+def api_place_order():
+    data = request.get_json() or {}
+    order_number = data.get('order_number')
+    if not order_number:
+        order_number = f"KC-{random.randint(10000, 99999)}"
+
+    customer_name = data.get('customer_name', '').strip() or 'Valued Client'
+    customer_phone = data.get('customer_phone', '').strip()
+    customer_email = data.get('customer_email', '').strip()
+    address = data.get('address', '').strip()
+    city = data.get('city', '').strip() or 'Lahore'
+    area = data.get('area', '').strip()
+    delivery_instructions = data.get('delivery_instructions', '').strip()
+    subtotal = float(data.get('subtotal', 0))
+    discount_amount = float(data.get('discount_amount', 0))
+    delivery_fee = float(data.get('delivery_fee', 0))
+    total_amount = float(data.get('total_amount', subtotal - discount_amount + delivery_fee))
+    payment_method = data.get('payment_method', 'cod')
+    payment_status = data.get('payment_status', 'COD' if payment_method == 'cod' else 'pending')
+    order_status = data.get('order_status', 'pending')
+    tracking_number = data.get('tracking_number', f"TRX-{random.randint(10000000, 99999999)}")
+    courier_name = data.get('courier_name', 'Trax Logistics')
+    items = data.get('items', [])
+
+    # Insert into orders table
+    order_id = execute_db('''
+        INSERT INTO orders (
+            order_number, customer_name, customer_phone, customer_email,
+            address, city, area, delivery_instructions, subtotal,
+            discount_amount, delivery_fee, total_amount, payment_method,
+            payment_status, order_status, tracking_number, courier_name,
+            created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    ''', (
+        order_number, customer_name, customer_phone, customer_email,
+        address, city, area, delivery_instructions, subtotal,
+        discount_amount, delivery_fee, total_amount, payment_method,
+        payment_status, order_status, tracking_number, courier_name
+    ))
+
+    # Insert items
+    for item in items:
+        execute_db('''
+            INSERT INTO order_items (
+                order_id, product_id, product_name, price, quantity, size, color, thumbnail, subtotal
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            order_id,
+            item.get('product_id') or item.get('id'),
+            item.get('name', 'Luxury Item'),
+            float(item.get('price', 0)),
+            int(item.get('quantity', 1)),
+            item.get('size', ''),
+            item.get('color', ''),
+            item.get('thumbnail', ''),
+            float(item.get('price', 0)) * int(item.get('quantity', 1))
+        ))
+
+    # Insert initial timeline
+    execute_db('''
+        INSERT INTO order_timeline (order_id, status, title, description, time, by_user)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ''', (
+        order_id,
+        order_status,
+        'Order Placed',
+        f"Order received via online storefront ({payment_method.upper()})",
+        datetime.now().strftime('%I:%M %p'),
+        'Customer'
+    ))
+
+    return jsonify({
+        'success': True,
+        'order_id': order_id,
+        'order_number': order_number,
+        'message': 'Order successfully recorded in database'
+    })
+
