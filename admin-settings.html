@@ -789,6 +789,21 @@
                 setVal('cfg-soc-fb', soc.facebook);
                 setVal('cfg-soc-tt', soc.tiktok);
                 setVal('cfg-soc-yt', soc.youtube);
+
+                // Two-way synchronization between Store Profile (Tab 1) and Contact (Tab 2)
+                const bindSync = (id1, id2) => {
+                    const el1 = document.getElementById(id1);
+                    const el2 = document.getElementById(id2);
+                    if (el1 && el2) {
+                        el1.addEventListener('input', () => { el2.value = el1.value; });
+                        el2.addEventListener('input', () => { el1.value = el2.value; });
+                    }
+                };
+                bindSync('cfg-phone', 'cfg-cs-phone');
+                bindSync('cfg-whatsapp', 'cfg-cs-whatsapp');
+                bindSync('cfg-email', 'cfg-cs-email');
+                bindSync('cfg-address', 'cfg-cs-address');
+                bindSync('cfg-hours', 'cfg-cs-hours');
             } catch (err) {
                 console.error('Failed to populate settings form:', err);
             }
@@ -815,20 +830,27 @@
                 return el ? el.checked : fallback;
             };
 
+            const primaryPhone = getV('cfg-phone') || getV('cfg-cs-phone') || '+92 3434158605';
+            const primaryWa = getV('cfg-whatsapp') || getV('cfg-cs-whatsapp') || '+923434158605';
+            const primaryEmail = getV('cfg-email') || getV('cfg-cs-email') || 'support@khushicollection.com';
+            const primaryAddress = getV('cfg-address') || getV('cfg-cs-address') || 'Suite 104, Gulberg Galleria, Main Boulevard';
+            const primaryHours = getV('cfg-hours') || getV('cfg-cs-hours') || 'Mon - Sat: 11:00 AM - 10:00 PM | Sun: 02:00 PM - 09:00 PM';
+            const primaryMapsUrl = getV('cfg-maps-url', current.store_profile?.maps_url || 'https://yandex.com/maps/org/post_office_pabaini_/67741086615/');
+
             const updated = {
                 ...current,
                 store_profile: {
                     ...(current.store_profile || {}),
                     store_name: getV('cfg-store-name', current.store_profile?.store_name || 'Khushi Collection'),
                     owner_name: getV('cfg-owner-name', current.store_profile?.owner_name || 'Khushi Owner'),
-                    phone: getV('cfg-phone', current.store_profile?.phone || '+92 300 1234567'),
-                    whatsapp: getV('cfg-whatsapp', current.store_profile?.whatsapp || '+92 300 1234567'),
-                    email: getV('cfg-email', current.store_profile?.email || 'support@khushicollection.com'),
+                    phone: primaryPhone,
+                    whatsapp: primaryWa,
+                    email: primaryEmail,
                     city: city,
                     country: country,
-                    address: getV('cfg-address', current.store_profile?.address || 'Suite 104, Gulberg Galleria, Lahore'),
-                    maps_url: getV('cfg-maps-url', current.store_profile?.maps_url || ''),
-                    business_hours: getV('cfg-hours', current.store_profile?.business_hours || 'Mon - Sat: 11:00 AM - 10:00 PM'),
+                    address: primaryAddress,
+                    maps_url: primaryMapsUrl,
+                    business_hours: primaryHours,
                     logo_url: getV('cfg-logo-url', current.store_profile?.logo_url || ''),
                     favicon_url: getV('cfg-favicon-url', current.store_profile?.favicon_url || ''),
                     store_description: getV('cfg-store-desc', current.store_profile?.store_description || ''),
@@ -836,12 +858,12 @@
                 },
                 contact_support: {
                     ...(current.contact_support || {}),
-                    support_phone: getV('cfg-cs-phone', current.contact_support?.support_phone || getV('cfg-phone')),
-                    whatsapp_number: getV('cfg-cs-whatsapp', current.contact_support?.whatsapp_number || getV('cfg-whatsapp')),
-                    support_email: getV('cfg-cs-email', current.contact_support?.support_email || getV('cfg-email')),
-                    working_hours: getV('cfg-cs-hours', current.contact_support?.working_hours || getV('cfg-hours')),
-                    business_address: getV('cfg-cs-address', current.contact_support?.business_address || getV('cfg-address')),
-                    whatsapp_business: getV('cfg-cs-whatsapp', current.contact_support?.whatsapp_business || getV('cfg-whatsapp'))
+                    support_phone: primaryPhone,
+                    whatsapp_number: primaryWa,
+                    support_email: primaryEmail,
+                    working_hours: primaryHours,
+                    business_address: primaryAddress,
+                    whatsapp_business: primaryWa
                 },
                 payments: {
                     ...(current.payments || {}),

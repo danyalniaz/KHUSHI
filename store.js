@@ -2,16 +2,16 @@ const DEFAULT_SETTINGS = {
     store_profile: {
         store_name: "Khushi Collection",
         owner_name: "Khushi Fatima",
-        phone: "+92 300 1234567",
-        whatsapp: "+92 300 1234567",
-        email: "concierge@khushicollection.com",
-        city: "Lahore",
+        phone: "+92 3434158605",
+        whatsapp: "+923434158605",
+        email: "support@khushicollection.com",
+        city: "pabaini swabi",
         country: "Pakistan",
-        address: "Khushi Collection Flagship Atelier, M.M. Alam Road, Gulberg III, Lahore, Pakistan",
-        maps_url: "https://maps.google.com/?q=MM+Alam+Road+Lahore",
-        business_hours: "Monday – Saturday: 11:00 AM – 10:00 PM PKT",
+        address: "Suite 104, Gulberg Galleria, Main Boulevard",
+        maps_url: "https://yandex.com/maps/org/post_office_pabaini_/67741086615/",
+        business_hours: "Mon - Sat: 11:00 AM - 10:00 PM | Sun: 02:00 PM - 09:00 PM",
         logo_url: "static/images/logo.svg",
-        favicon_url: "static/images/favicon.png",
+        favicon_url: "static/images/logo.svg",
         store_description: "Haute Couture & Bespoke Luxury Fashion",
         tagline: "Haute Couture & Bespoke Luxury Fashion",
         store_currency: "PKR",
@@ -20,12 +20,12 @@ const DEFAULT_SETTINGS = {
         footer_description: "Bespoke Pakistani bridal couture, luxury velvet ensembles, pure Kashmiri pashminas, artisanal khussas, and royal oud fragrances crafted for modern royalty."
     },
     contact_support: {
-        support_phone: "+92 300 1234567",
-        whatsapp_number: "+92 300 1234567",
-        support_email: "concierge@khushicollection.com",
-        business_address: "Khushi Collection Flagship Atelier, M.M. Alam Road, Gulberg III, Lahore, Pakistan",
-        working_hours: "Monday – Saturday: 11:00 AM – 10:00 PM PKT",
-        whatsapp_business: "+92 300 1234567"
+        support_phone: "+92 3434158605",
+        whatsapp_number: "+923434158605",
+        support_email: "support@khushicollection.com",
+        business_address: "Suite 104, Gulberg Galleria, Main Boulevard",
+        working_hours: "Mon - Sat: 11:00 AM - 10:00 PM | Sun: 02:00 PM - 09:00 PM",
+        whatsapp_business: "+923434158605"
     },
     social_media: {
         instagram: "https://instagram.com/khushicollection",
@@ -5182,6 +5182,28 @@ class KhushiStore {
             localStorage.setItem('kc_owner', JSON.stringify(defaultOwner));
         }
         this.applyStorefrontSettings();
+        this.syncSettingsFromBackend();
+    }
+
+    async syncSettingsFromBackend() {
+        try {
+            const res = await fetch('/api/settings');
+            if (res.ok) {
+                const data = await res.json();
+                if (data.success && data.settings) {
+                    const local = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.SETTINGS)) || {};
+                    const merged = {
+                        ...DEFAULT_SETTINGS,
+                        ...data.settings,
+                        ...local,
+                        store_profile: { ...(DEFAULT_SETTINGS.store_profile || {}), ...(data.settings.store_profile || {}), ...(local.store_profile || {}) },
+                        contact_support: { ...(DEFAULT_SETTINGS.contact_support || {}), ...(data.settings.contact_support || {}), ...(local.contact_support || {}) }
+                    };
+                    localStorage.setItem(this.STORAGE_KEYS.SETTINGS, JSON.stringify(merged));
+                    this.applyStorefrontSettings();
+                }
+            }
+        } catch (e) {}
     }
 
     // ====================================================================
@@ -5272,41 +5294,64 @@ class KhushiStore {
             const d = s.delivery || {};
             const soc = s.social_media || {};
 
+            const storeName = p.store_name || 'Khushi Collection';
+            const phone = p.phone || c.support_phone || '+92 3434158605';
+            const rawWa = p.whatsapp || c.whatsapp_number || c.whatsapp_business || '+923434158605';
+            const waNumber = rawWa.replace(/\D/g, '') || '923434158605';
+            const email = p.email || c.support_email || 'support@khushicollection.com';
+            const address = p.address || c.business_address || 'Suite 104, Gulberg Galleria, Main Boulevard';
+            const hours = p.business_hours || c.working_hours || 'Mon - Sat: 11:00 AM - 10:00 PM | Sun: 02:00 PM - 09:00 PM';
+            const city = p.city || (address.toLowerCase().includes('swabi') ? 'pabaini swabi' : 'Lahore');
+            const mapsUrl = p.maps_url || 'https://yandex.com/maps/org/post_office_pabaini_/67741086615/';
+
             // Dynamic Elements replacement by class
-            if (p.store_name) document.querySelectorAll('.dyn-store-name').forEach(el => el.textContent = p.store_name);
-            if (c.support_phone) document.querySelectorAll('.dyn-store-phone').forEach(el => el.textContent = c.support_phone);
-            if (c.support_email) document.querySelectorAll('.dyn-store-email').forEach(el => el.textContent = c.support_email);
-            if (c.business_address) document.querySelectorAll('.dyn-store-address').forEach(el => el.textContent = c.business_address);
-            if (c.working_hours) document.querySelectorAll('.dyn-store-hours').forEach(el => el.textContent = c.working_hours);
+            document.querySelectorAll('.dyn-store-name').forEach(el => el.textContent = storeName);
+            document.querySelectorAll('.dyn-store-phone').forEach(el => el.textContent = phone);
+            document.querySelectorAll('.dyn-store-whatsapp').forEach(el => el.textContent = rawWa);
+            document.querySelectorAll('.dyn-store-email').forEach(el => el.textContent = email);
+            document.querySelectorAll('.dyn-store-address').forEach(el => el.textContent = address);
+            document.querySelectorAll('.dyn-store-hours').forEach(el => el.textContent = hours);
+            document.querySelectorAll('.dyn-store-city').forEach(el => el.textContent = city);
             if (p.footer_description) document.querySelectorAll('.dyn-store-footer-desc').forEach(el => el.textContent = p.footer_description);
             if (d.free_delivery_threshold) document.querySelectorAll('.dyn-free-threshold').forEach(el => el.textContent = `Rs. ${Number(d.free_delivery_threshold).toLocaleString()}`);
 
-            // Top announcement bar updates
-            const waNumber = (c.whatsapp_number || p.whatsapp || '923001234567').replace(/\D/g, '');
-            const threshold = Number(d.free_delivery_threshold) || 5000;
+            // Maps Links
+            if (mapsUrl) {
+                document.querySelectorAll('.dyn-maps-link, a[href*="maps.google.com"], a[href*="yandex.com/maps"]').forEach(el => {
+                    el.href = mapsUrl;
+                });
+            }
 
-            const bannerEl = document.getElementById('announcement-banner') || document.querySelector('.bg-gradient-to-r.from-amber-700');
+            // Top announcement bar updates
+            const threshold = Number(d.free_delivery_threshold) || 5000;
+            const bannerEl = document.getElementById('announcement-banner') || document.querySelector('.bg-gradient-to-r.from-amber-700') || document.querySelector('.bg-gradient-to-r.from-amber-600');
             if (bannerEl) {
-                const span = bannerEl.querySelector('span') || bannerEl;
-                if (span && span.textContent.includes('FREE NATIONWIDE')) {
-                    span.textContent = `✨ FREE NATIONWIDE EXPRESS DELIVERY ON ORDERS OVER RS. ${threshold.toLocaleString()} | WHATSAPP CONCIERGE: +${waNumber}`;
+                const span = bannerEl.querySelector('.dyn-announcement-txt') || bannerEl.querySelector('span') || bannerEl;
+                if (span) {
+                    span.textContent = `✨ FREE NATIONWIDE EXPRESS DELIVERY ON ORDERS OVER RS. ${threshold.toLocaleString()} • WHATSAPP CONCIERGE: +${waNumber} ✨`;
                 }
             }
 
             // Universal WhatsApp button links
-            if (waNumber) {
-                document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp.com"]').forEach(link => {
-                    const currentHref = link.getAttribute('href') || '';
-                    if (currentHref.includes('wa.me/')) {
-                        const queryIdx = currentHref.indexOf('?');
-                        const query = queryIdx !== -1 ? currentHref.substring(queryIdx) : '';
-                        link.href = `https://wa.me/${waNumber}${query}`;
-                    } else if (currentHref.includes('whatsapp.com')) {
-                        const queryIdx = currentHref.indexOf('text=');
-                        const query = queryIdx !== -1 ? currentHref.substring(queryIdx) : `text=${encodeURIComponent("Hello Khushi Collection, I would like to inquire about your luxury catalog.")}`;
-                        link.href = `https://api.whatsapp.com/send?phone=${waNumber}&${query}`;
-                    }
-                });
+            document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp.com"], .dyn-whatsapp-link').forEach(link => {
+                const currentHref = link.getAttribute('href') || '';
+                if (currentHref.includes('wa.me/')) {
+                    const queryIdx = currentHref.indexOf('?');
+                    const query = queryIdx !== -1 ? currentHref.substring(queryIdx) : '';
+                    link.href = `https://wa.me/${waNumber}${query}`;
+                } else if (currentHref.includes('whatsapp.com')) {
+                    const queryIdx = currentHref.indexOf('text=');
+                    const query = queryIdx !== -1 ? currentHref.substring(queryIdx) : `text=${encodeURIComponent("Hello Khushi Collection, I would like to inquire about your luxury catalog.")}`;
+                    link.href = `https://api.whatsapp.com/send?phone=${waNumber}&${query}`;
+                } else {
+                    link.href = `https://wa.me/${waNumber}?text=${encodeURIComponent("Hi Khushi Collection, I would like concierge assistance.")}`;
+                }
+            });
+
+            // Floating WhatsApp Concierge Button
+            const floatingBtn = document.getElementById('floating-whatsapp-btn');
+            if (floatingBtn) {
+                floatingBtn.onclick = () => this.openWhatsAppConcierge();
             }
 
             // Universal Social Links
@@ -5317,6 +5362,14 @@ class KhushiStore {
         } catch (e) {
             console.warn('Storefront settings sync notice:', e);
         }
+    }
+
+    openWhatsAppConcierge() {
+        const s = this.getSettings();
+        const p = s.store_profile || {};
+        const c = s.contact_support || {};
+        const raw = (p.whatsapp || c.whatsapp_number || '923434158605').replace(/\D/g, '');
+        window.open(`https://wa.me/${raw}?text=${encodeURIComponent('Hi Khushi Collection, I need assistance.')}`, '_blank');
     }
 
     // ====================================================================
