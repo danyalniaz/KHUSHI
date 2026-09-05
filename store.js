@@ -4898,6 +4898,170 @@ const DEFAULT_PRODUCTS = [
 // CORE STORE ENGINE CLASS & STATE MANAGEMENT
 // ========================================================================
 
+
+// Curated Atelier Collections
+const DEFAULT_COLLECTIONS = [
+    {
+        id: 1,
+        slug: "velvet-couture-2026",
+        title: "The Velvet Royalty Edition",
+        subtitle: "Micro-velvet handcrafted ensembles adorned with tilla and zardozi.",
+        image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        badge: "Couture Drop",
+        item_count: "12 Exclusive Pieces",
+        filter_category: "women"
+    },
+    {
+        id: 2,
+        slug: "raw-silk-heritage",
+        title: "Korean Raw Silk Sartorial",
+        subtitle: "Pure tailored raw silk kurtas, jamawar waistcoats, and Prince suits.",
+        image: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        badge: "Heritage Men",
+        item_count: "12 Bespoke Pieces",
+        filter_category: "men"
+    },
+    {
+        id: 3,
+        slug: "imperial-oud-extracts",
+        title: "Haute Parfumerie & Pure Oud",
+        subtitle: "Rare aged Cambodian agarwood, pure Taif rose, and saffron attars.",
+        image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        badge: "Private Reserve",
+        item_count: "12 Fragrances",
+        filter_category: "perfumes"
+    }
+];
+
+// Occasions Data
+const DEFAULT_OCCASIONS = [
+    { id: 1, name: "Barat & Bridal", slug: "bridal", icon: "fa-crown", count: "24 Pieces", image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600" },
+    { id: 2, name: "Mehndi & Sangeet", slug: "mehndi", icon: "fa-sun", count: "18 Pieces", image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600" },
+    { id: 3, name: "Walima Elegance", slug: "walima", icon: "fa-gem", count: "20 Pieces", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600" },
+    { id: 4, name: "Festive Eid", slug: "eid", icon: "fa-moon", count: "32 Pieces", image: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=600" },
+    { id: 5, name: "Sartorial Gala", slug: "gala", icon: "fa-champagne-glasses", count: "16 Pieces", image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600" },
+    { id: 6, name: "Formal Dinners", slug: "dinner", icon: "fa-utensils", count: "14 Pieces", image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600" },
+    { id: 7, name: "Casual Luxury", slug: "casual", icon: "fa-sparkles", count: "18 Pieces", image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600" }
+];
+
+// Journal Articles
+const DEFAULT_JOURNAL = [
+    {
+        id: 1,
+        title: "The Art of Zardozi: Preserving Mughal Embroidery in 2026",
+        category: "Atelier Heritage",
+        read_time: "4 min read",
+        date: "September 2026",
+        image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        excerpt: "Inside Khushi Collection's Lahore atelier, master artisans spend upwards of 280 hours handcrafting real silver and gold thread motifs on bridal velvet."
+    },
+    {
+        id: 2,
+        title: "Sartorial Mastery: The Perfect Cut for Pakistani Raw Silk",
+        category: "Men's Sartorial",
+        read_time: "5 min read",
+        date: "August 2026",
+        image: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        excerpt: "Why heavyweight Korean raw silk remains the quintessential royal fabric for celebratory kurtas and bespoke jamawar waistcoats."
+    },
+    {
+        id: 3,
+        title: "The Scent of Kings: A Guide to Pure Agarwood & Ambergris",
+        category: "Haute Parfumerie",
+        read_time: "6 min read",
+        date: "August 2026",
+        image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        excerpt: "From wild Cambodian agarwood harvests to slow distillation in copper pots, explore the sensory universe of luxury oriental perfumery."
+    }
+];
+
+// Customer Testimonials & Verified Reviews
+const DEFAULT_REVIEWS = [
+    {
+        id: 1,
+        name: "Zainab Qureshi",
+        city: "Islamabad",
+        rating: 5,
+        product: "Khushi Royal Embroidered Velvet Shawl Suit",
+        review: "The needlework and fabric weight are breathtaking. Wore this to my brother's Mehndi in Islamabad and received endless compliments. Truly heirloom quality!",
+        verified: true,
+        date: "2 days ago"
+    },
+    {
+        id: 2,
+        name: "Hamza Tariq",
+        city: "Lahore",
+        rating: 5,
+        product: "Heritage Korean Raw Silk Kurta Pajama",
+        review: "Impeccable bespoke cut. The off-white Korean silk has a gorgeous natural sheen and breathes effortlessly. Packaging came in a signature gold-crested box.",
+        verified: true,
+        date: "1 week ago"
+    },
+    {
+        id: 3,
+        name: "Ayesha Malik",
+        city: "Karachi",
+        rating: 5,
+        product: "Khushi Imperial Oud De Parfum (100ml)",
+        review: "The longevity of this Oud is unbelievable. 14+ hours of rich Cambodian oud, saffron, and amber. Compares with niche Parisian perfumeries.",
+        verified: true,
+        date: "2 weeks ago"
+    }
+];
+
+const DEFAULT_POPULAR_SEARCHES = [
+    "Velvet Shawl Suit",
+    "Raw Silk Kurta",
+    "Imperial Oud",
+    "Bridal Khussa",
+    "Prince Suit",
+    "Chronograph Watch",
+    "Chiffon Saree",
+    "Minaudière Bag"
+];
+
+// Pre-seeded Sample Orders
+const DEFAULT_ORDERS = [
+    {
+        id: 1700000001,
+        order_number: "KC-10025",
+        customer_name: "Khushi Fatima",
+        customer_phone: "03219876543",
+        customer_email: "khushi.fatima@example.com",
+        address: "House 45, Street 12, Sector F-7/2",
+        city: "Islamabad",
+        area: "F-7",
+        delivery_instructions: "Please call before arrival",
+        subtotal: 18500,
+        discount_amount: 1850,
+        delivery_fee: 0,
+        total_amount: 16650,
+        payment_method: "cod",
+        payment_status: "COD",
+        order_status: "shipped",
+        tracking_number: "TRX-99882211",
+        courier_name: "Trax Logistics",
+        created_at: new Date(Date.now() - 2 * 86400000).toISOString(),
+        items: [
+            {
+                id: 1,
+                product_id: 1,
+                name: "Khushi Royal Embroidered Velvet Shawl Suit",
+                thumbnail: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800",
+                price: 14950,
+                quantity: 1,
+                size: "M",
+                color: "Emerald Green"
+            }
+        ],
+        timeline: [
+            { status: "pending", title: "Order Placed", description: "Order recorded (COD)", time: "10:30 AM", by: "Customer" },
+            { status: "confirmed", title: "Order Confirmed", description: "Verified by concierge team", time: "11:15 AM", by: "Staff" },
+            { status: "shipped", title: "Dispatched", description: "Handed over to Trax Logistics (Tracking: TRX-99882211)", time: "03:45 PM", by: "Logistics" }
+        ]
+    }
+];
+
 class KhushiStore {
     constructor() {
         this.STORAGE_KEYS = {
