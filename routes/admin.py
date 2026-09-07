@@ -1417,8 +1417,45 @@ def change_password():
     if request.is_json:
         return jsonify({'success': True, 'message': 'Password changed successfully.'})
 
-    flash('Password changed successfully!', 'success')
-    return redirect(url_for('admin.security_center'))
+@admin_bp.route('/api/profile', methods=['PUT', 'POST'])
+@admin_required()
+def api_update_profile():
+    """Update current user's profile information (name, email). Requires password verification."""
+    data = request.get_json() or {}
+    new_name = data.get('name', '').strip()
+    new_email = data.get('email', '').strip().lower()
+    current_pass = data.get('current_password', '')
+
+    if not new_email or not current_pass:
+        return jsonify({'success': False, 'error': 'Email and current password are required.'}), 400
+
+    curr_user_id = session.get('user_id')
+    user = query_db('SELECT * FROM users WHERE id = ?', (curr_user_id,), one=True)
+    if not user or not check_password_hash(user['password_hash'], current_pass):
+        return jsonify({'success': False, 'error': 'Current password is incorrect.'}), 403
+
+    existing = query_db('SELECT id FROM users WHERE email = ? AND id != ?', (new_email, curr_user_id), one=True)
+    if existing:
+        return jsonify({'success': False, 'error': 'This email address is already in use by another account.'}), 400
+
+    execute_db('UPDATE users SET name = COALESCE(NULLIF(?, ""), name), email = ? WHERE id = ?', (new_name, new_email, curr_user_id))
+    session['user_email'] = new_email
+    if new_name:
+        session['user_name'] = new_name
+
+    log_audit_action('PROFILE_UPDATED', f"Profile updated: email changed to {new_email}",
+                     user_id=curr_user_id, user_email=new_email, role=user['role'], ip_address=request.remote_addr)
+
+    return jsonify({
+        'success': True,
+        'message': 'Profile updated successfully!',
+        'user': {
+            'id': curr_user_id,
+            'name': new_name or user['name'],
+            'email': new_email,
+            'role': str(user['role']).upper()
+        }
+    })
 
 @admin_bp.route('/api/password/forgot', methods=['POST'])
 def api_forgot_password():

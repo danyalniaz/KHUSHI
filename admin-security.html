@@ -74,8 +74,37 @@
 
         <main class="p-4 sm:p-8 space-y-8 max-w-6xl">
             
-            <!-- Grid: Password Change + Session Security -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Grid: Profile + Password Change + Session Security -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Update Profile & Email Card -->
+                <div class="luxury-card p-6 rounded-3xl space-y-4">
+                    <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
+                        <h3 class="text-sm font-serif font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-user-pen text-amber-400"></i> Admin Profile & Email
+                        </h3>
+                        <span class="text-[10px] text-amber-400 font-mono">Owner Identity</span>
+                    </div>
+
+                    <form onsubmit="handleUpdateProfileSubmit(event)" class="space-y-3 text-xs">
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Display Name</label>
+                            <input type="text" id="prof-name" placeholder="Super Admin" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white text-xs">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Administrator Email Address *</label>
+                            <input type="email" id="prof-email" required placeholder="your.email@gmail.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono text-xs">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Confirm with Current Password *</label>
+                            <input type="password" id="prof-pass" required placeholder="Current password" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono text-xs">
+                        </div>
+                        <div id="prof-msg" class="hidden p-2 rounded-lg text-xs font-semibold"></div>
+                        <button type="submit" id="prof-btn" class="w-full py-2.5 rounded-xl gold-gradient-btn font-bold uppercase tracking-wider mt-2 shadow">
+                            Save Email & Profile
+                        </button>
+                    </form>
+                </div>
+
                 <!-- Change Password Card -->
                 <div class="luxury-card p-6 rounded-3xl space-y-4">
                     <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
@@ -207,6 +236,52 @@
             t.innerHTML = `<i class="fa-solid ${isError ? 'fa-triangle-exclamation text-rose-400' : 'fa-circle-check text-amber-400'}"></i> <span>${msg}</span>`;
             t.classList.remove('hidden');
             setTimeout(() => t.classList.add('hidden'), 4000);
+        }
+
+        async function handleUpdateProfileSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('prof-name').value.trim();
+            const email = document.getElementById('prof-email').value.trim();
+            const curPass = document.getElementById('prof-pass').value;
+            const msgBox = document.getElementById('prof-msg');
+            const btn = document.getElementById('prof-btn');
+
+            msgBox.classList.add('hidden');
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/admin/api/profile', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, current_password: curPass })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
+                    msgBox.textContent = data.message || 'Profile and email updated successfully!';
+                    msgBox.classList.remove('hidden');
+                    document.getElementById('prof-pass').value = '';
+                    if (window.store && store.syncUserSession && data.user) {
+                        store.syncUserSession(data.user);
+                    }
+                    if (window.adminGuard) {
+                        adminGuard.user = data.user;
+                        adminGuard.renderUserPill();
+                    }
+                    loadAuditLogs();
+                } else {
+                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+                    msgBox.textContent = data.error || 'Failed to update profile.';
+                    msgBox.classList.remove('hidden');
+                }
+            } catch (err) {
+                msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+                msgBox.textContent = 'Server connection error.';
+                msgBox.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+            }
         }
 
         async function handleChangePasswordSubmit(e) {
@@ -395,9 +470,21 @@
             }
         }
 
+        function populateUserProfile() {
+            const user = (window.adminGuard && adminGuard.user) || (window.store && store.getCurrentUser ? store.getCurrentUser() : null);
+            if (user) {
+                const nameInput = document.getElementById('prof-name');
+                const emailInput = document.getElementById('prof-email');
+                if (nameInput && !nameInput.value) nameInput.value = user.name || '';
+                if (emailInput && !emailInput.value) emailInput.value = user.email || '';
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             loadSessions();
             loadAuditLogs();
+            populateUserProfile();
+            setTimeout(populateUserProfile, 500);
         });
     </script>
 </body>
