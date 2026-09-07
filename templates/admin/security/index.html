@@ -8,7 +8,36 @@
         <p class="text-xs text-zinc-400 mt-1">Configure security credentials, delegate staff roles, and inspect real-time audit logs</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Update Profile & Email Card -->
+        <div class="luxury-card p-6 rounded-3xl space-y-4">
+            <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
+                <h3 class="text-sm font-serif font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-user-pen text-amber-400"></i> Admin Profile & Email
+                </h3>
+                <span class="text-[10px] text-amber-400 font-mono">Owner Identity</span>
+            </div>
+
+            <form onsubmit="handleFlaskProfileUpdate(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Display Name</label>
+                    <input type="text" id="flask-prof-name" value="{{ session.get('user_name', '') }}" placeholder="Super Admin" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+                </div>
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Administrator Email *</label>
+                    <input type="email" id="flask-prof-email" value="{{ session.get('user_email', '') }}" required placeholder="your.email@gmail.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+                </div>
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Confirm with Current Password *</label>
+                    <input type="password" id="flask-prof-pass" required placeholder="Current password" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+                </div>
+                <div id="flask-prof-msg" class="hidden p-2 rounded-lg text-xs font-semibold"></div>
+                <button type="submit" id="flask-prof-btn" class="w-full py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider mt-2">
+                    Save Email & Profile
+                </button>
+            </form>
+        </div>
+
         <!-- Change Password Card -->
         <div class="luxury-card p-6 rounded-3xl space-y-4">
             <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
@@ -195,4 +224,46 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function handleFlaskProfileUpdate(e) {
+    e.preventDefault();
+    const name = document.getElementById('flask-prof-name').value.trim();
+    const email = document.getElementById('flask-prof-email').value.trim();
+    const curPass = document.getElementById('flask-prof-pass').value;
+    const msg = document.getElementById('flask-prof-msg');
+    const btn = document.getElementById('flask-prof-btn');
+
+    msg.classList.add('hidden');
+    btn.disabled = true;
+
+    try {
+        const res = await fetch('/admin/api/profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, current_password: curPass })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            msg.className = 'p-2 rounded-lg text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
+            msg.textContent = data.message || 'Profile updated successfully!';
+            msg.classList.remove('hidden');
+            document.getElementById('flask-prof-pass').value = '';
+            setTimeout(() => location.reload(), 800);
+        } else {
+            msg.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+            msg.textContent = data.error || 'Failed to update profile.';
+            msg.classList.remove('hidden');
+        }
+    } catch (err) {
+        msg.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+        msg.textContent = 'Server connection error.';
+        msg.classList.remove('hidden');
+    } finally {
+        btn.disabled = false;
+    }
+}
+</script>
 {% endblock %}
