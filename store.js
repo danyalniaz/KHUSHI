@@ -4941,32 +4941,50 @@ const DEFAULT_COLLECTIONS = [
     {
         id: 1,
         slug: "velvet-couture-2026",
+        name: "The Velvet Royalty Edition",
         title: "The Velvet Royalty Edition",
-        subtitle: "Micro-velvet handcrafted ensembles adorned with tilla and zardozi.",
-        image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        tagline: "Couture Drop",
         badge: "Couture Drop",
-        item_count: "12 Exclusive Pieces",
-        filter_category: "women"
+        description: "Micro-velvet handcrafted ensembles adorned with tilla, dabka and artisanal zardozi.",
+        subtitle: "Micro-velvet handcrafted ensembles adorned with tilla, dabka and artisanal zardozi.",
+        image_url: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+        category: "women",
+        filter_category: "women",
+        count: 12,
+        item_count: "12 Exclusive Pieces"
     },
     {
         id: 2,
         slug: "raw-silk-heritage",
+        name: "Korean Raw Silk Sartorial",
         title: "Korean Raw Silk Sartorial",
-        subtitle: "Pure tailored raw silk kurtas, jamawar waistcoats, and Prince suits.",
-        image: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        tagline: "Heritage Men",
         badge: "Heritage Men",
-        item_count: "12 Bespoke Pieces",
-        filter_category: "men"
+        description: "Pure tailored raw silk kurtas, jamawar waistcoats, and regal bespoke Prince suits.",
+        subtitle: "Pure tailored raw silk kurtas, jamawar waistcoats, and regal bespoke Prince suits.",
+        image_url: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        image: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+        category: "men",
+        filter_category: "men",
+        count: 12,
+        item_count: "12 Bespoke Pieces"
     },
     {
         id: 3,
         slug: "imperial-oud-extracts",
+        name: "Haute Parfumerie & Pure Oud",
         title: "Haute Parfumerie & Pure Oud",
-        subtitle: "Rare aged Cambodian agarwood, pure Taif rose, and saffron attars.",
-        image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        tagline: "Private Reserve",
         badge: "Private Reserve",
-        item_count: "12 Fragrances",
-        filter_category: "perfumes"
+        description: "Rare aged Cambodian agarwood, pure Taif rose attars, and royal saffron extraits.",
+        subtitle: "Rare aged Cambodian agarwood, pure Taif rose attars, and royal saffron extraits.",
+        image_url: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        category: "perfumes",
+        filter_category: "perfumes",
+        count: 12,
+        item_count: "12 Fragrances"
     }
 ];
 

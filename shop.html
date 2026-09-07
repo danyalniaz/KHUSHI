@@ -431,6 +431,7 @@
         let currentCategory = 'all';
         let currentSubcategory = null;
         let currentOccasion = null;
+        let currentCollection = null;
         let currentSearch = '';
         let currentSort = 'featured';
 
@@ -439,6 +440,7 @@
             if (params.get('category')) currentCategory = params.get('category');
             if (params.get('sub')) currentSubcategory = params.get('sub');
             if (params.get('occasion')) currentOccasion = params.get('occasion');
+            if (params.get('collection')) currentCollection = params.get('collection');
             if (params.get('q')) currentSearch = params.get('q');
             if (params.get('sort')) currentSort = params.get('sort');
             if (params.get('view') === 'wishlist') currentCategory = 'wishlist';
@@ -544,6 +546,15 @@
             } else {
                 const titleEl = document.getElementById('catalog-page-title');
                 if (titleEl) titleEl.textContent = 'Haute Couture Collections';
+            }
+
+            // Collection Title
+            if (currentCollection) {
+                const colObj = typeof store.getCollection === 'function' ? store.getCollection(currentCollection) : null;
+                if (colObj) {
+                    const titleEl = document.getElementById('catalog-page-title');
+                    if (titleEl) titleEl.textContent = `${colObj.name || colObj.title}`;
+                }
             }
 
             // Subcategory Filter

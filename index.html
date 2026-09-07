@@ -1779,21 +1779,30 @@
             // Curated Collections
             const colGrid = document.getElementById('home-curated-collections-grid');
             if (colGrid) {
-                const cols = store.getCollections ? store.getCollections() : DEFAULT_COLLECTIONS;
-                colGrid.innerHTML = cols.slice(0, 6).map(c => `
+                const cols = (typeof store !== 'undefined' && store.getCollections ? store.getCollections() : null) || (typeof DEFAULT_COLLECTIONS !== 'undefined' ? DEFAULT_COLLECTIONS : []);
+                colGrid.innerHTML = cols.slice(0, 6).map(c => {
+                    const img = c.image_url || c.image || 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800';
+                    const name = c.name || c.title || 'Curated Collection';
+                    const tagline = c.tagline || c.badge || 'Atelier Curation';
+                    const desc = c.description || c.subtitle || 'Signature handcrafted luxury pieces for royal occasions.';
+                    const cat = c.category || c.filter_category || 'women';
+                    const count = c.count || (parseInt(c.item_count) || 12);
+                    const slug = c.slug || 'velvet-couture-2026';
+                    return `
                     <div class="luxury-card rounded-3xl overflow-hidden group relative min-h-[300px] flex flex-col justify-end p-6 border border-zinc-800 hover:border-amber-500/40">
-                        <img src="${c.image_url}" alt="${c.name}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700 brightness-50">
+                        <img src="${img}" alt="${name}" onerror="handleImageError(this)" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700 brightness-50">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
                         <div class="relative z-10 space-y-2">
-                            <span class="text-[10px] uppercase font-bold text-amber-400 tracking-widest">${c.tagline}</span>
-                            <h4 class="text-xl font-serif font-bold text-white">${c.name}</h4>
-                            <p class="text-xs text-zinc-300 line-clamp-2">${c.description}</p>
-                            <a href="shop.html?category=${c.category}&collection=${c.slug}" class="inline-block text-xs text-amber-300 font-bold hover:underline pt-1">
-                                Explore Collection (${c.count} pieces) &rarr;
+                            <span class="text-[10px] uppercase font-bold text-amber-400 tracking-widest">${tagline}</span>
+                            <h4 class="text-xl font-serif font-bold text-white">${name}</h4>
+                            <p class="text-xs text-zinc-300 line-clamp-2">${desc}</p>
+                            <a href="shop.html?category=${cat}&collection=${slug}" class="inline-block text-xs text-amber-300 font-bold hover:underline pt-1">
+                                Explore Collection (${count} pieces) &rarr;
                             </a>
                         </div>
                     </div>
-                `).join('');
+                    `;
+                }).join('');
             }
 
             // Flash Sale
