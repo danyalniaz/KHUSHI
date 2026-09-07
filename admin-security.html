@@ -21,7 +21,7 @@
                 </a>
             </div>
 
-            <nav class="p-4 space-y-1 text-xs font-semibold">
+            <nav class="p-4 space-y-1 text-xs font-semibold max-h-[calc(100vh-140px)] overflow-y-auto">
                 <a href="admin-dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
                     <i class="fa-solid fa-chart-line w-4"></i>
                     <span>Dashboard</span>
@@ -38,9 +38,17 @@
                     <i class="fa-solid fa-folder-tree w-4"></i>
                     <span>Categories Manager</span>
                 </a>
+                <a href="admin-staff.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-users-gear w-4"></i>
+                    <span>Staff & Roles</span>
+                </a>
                 <a href="admin-security.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/30">
                     <i class="fa-solid fa-shield-halved w-4"></i>
-                    <span>Owner Security & Staff</span>
+                    <span>Owner Security</span>
+                </a>
+                <a href="admin-settings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-sliders w-4"></i>
+                    <span>Owner Settings</span>
                 </a>
                 <a href="index.html" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition pt-2 border-t border-zinc-800/60">
                     <i class="fa-solid fa-arrow-up-right-from-square w-4"></i>
@@ -50,7 +58,7 @@
         </div>
 
         <div class="p-4 border-t border-zinc-800/80 text-[11px] text-zinc-500">
-            Khushi Collection &bull; Security v2.4
+            Khushi Collection &bull; Security v3.0
         </div>
     </aside>
 
@@ -59,12 +67,12 @@
         <header class="min-h-16 py-3 px-3 sm:px-6 bg-[#0B0F17]/90 border-b border-zinc-800/80 flex items-center justify-between gap-2.5 sticky top-0 z-30 backdrop-blur-md">
             <div class="min-w-0 flex-1">
                 <h1 class="text-sm sm:text-base md:text-lg font-serif font-bold text-white truncate">Security Center & Audit Log</h1>
-                <p class="hidden sm:block text-[11px] text-zinc-400 truncate">Manage credentials, staff accounts, active sessions, and activity logs</p>
+                <p class="hidden sm:block text-[11px] text-zinc-400 truncate">Manage administrator credentials, active sessions, and immutable audit logs</p>
             </div>
             <div id="admin-user-pill" class="flex-shrink-0"></div>
         </header>
 
-        <main class="p-6 sm:p-8 space-y-8 max-w-6xl">
+        <main class="p-4 sm:p-8 space-y-8 max-w-6xl">
             
             <!-- Grid: Password Change + Session Security -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -74,24 +82,25 @@
                         <h3 class="text-sm font-serif font-bold text-white flex items-center gap-2">
                             <i class="fa-solid fa-key text-amber-400"></i> Change Password
                         </h3>
-                        <span class="text-[10px] text-zinc-400 font-mono">Encrypted</span>
+                        <span class="text-[10px] text-emerald-400 font-mono"><i class="fa-solid fa-shield"></i> Encrypted PBKDF2</span>
                     </div>
 
                     <form onsubmit="handleChangePasswordSubmit(event)" class="space-y-3 text-xs">
                         <div>
                             <label class="block font-semibold text-zinc-300 mb-1">Current Password *</label>
-                            <input type="password" id="cur-pass" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+                            <input type="password" id="cur-pass" required placeholder="Enter current password" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono text-xs">
                         </div>
                         <div>
-                            <label class="block font-semibold text-zinc-300 mb-1">New Password (Min 8 chars) *</label>
-                            <input type="password" id="new-pass" required minlength="8" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+                            <label class="block font-semibold text-zinc-300 mb-1">New Password (Min 8 characters) *</label>
+                            <input type="password" id="new-pass" required minlength="8" placeholder="••••••••••••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono text-xs">
                         </div>
                         <div>
                             <label class="block font-semibold text-zinc-300 mb-1">Confirm New Password *</label>
-                            <input type="password" id="confirm-pass" required minlength="8" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
+                            <input type="password" id="confirm-pass" required minlength="8" placeholder="••••••••••••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono text-xs">
                         </div>
-                        <button type="submit" class="w-full py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider mt-2">
-                            Update Password
+                        <div id="pass-msg" class="hidden p-2 rounded-lg text-xs font-semibold"></div>
+                        <button type="submit" id="pass-btn" class="w-full py-2.5 rounded-xl gold-gradient-btn font-bold uppercase tracking-wider mt-2 shadow">
+                            Update Administrator Password
                         </button>
                     </form>
                 </div>
@@ -103,254 +112,292 @@
                             <h3 class="text-sm font-serif font-bold text-white flex items-center gap-2">
                                 <i class="fa-solid fa-network-wired text-amber-400"></i> Active Sessions
                             </h3>
-                            <span class="text-[10px] text-emerald-400 font-bold uppercase">● Protected</span>
+                            <span class="text-[10px] text-emerald-400 font-bold uppercase flex items-center gap-1">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                Live Monitoring
+                            </span>
                         </div>
                         <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
-                            Revoke all active administrative tokens across other devices and browsers immediately if you suspect unauthorized access.
+                            View active administrative sessions across devices and terminate unrecognized sessions instantly.
                         </p>
                         
-                        <div class="p-3 mt-4 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs space-y-1">
-                            <div class="flex justify-between font-bold text-white">
-                                <span>Current Session</span>
-                                <span class="text-emerald-400">Active Now</span>
+                        <div class="mt-4 space-y-2 max-h-48 overflow-y-auto pr-1" id="active-sessions-list">
+                            <div class="p-3 rounded-xl bg-zinc-900/80 border border-zinc-800 text-xs text-center text-zinc-500">
+                                <i class="fa-solid fa-circle-notch fa-spin mr-1"></i> Loading active sessions...
                             </div>
-                            <p class="text-[11px] text-zinc-400 font-mono">Session Token: verified &bull; Role: OWNER</p>
                         </div>
                     </div>
 
-                    <button onclick="handleLogoutAllDevices()" class="w-full py-2.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-500/30 text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout All Devices
+                    <button onclick="handleLogoutOtherDevices()" id="revoke-others-btn" class="w-full py-2.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-500/30 text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i> Revoke All Other Sessions
                     </button>
                 </div>
             </div>
 
-            <!-- Staff Management Section (Owner Exclusive) -->
-            <div class="luxury-card p-6 sm:p-8 rounded-3xl space-y-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-800">
-                    <div>
-                        <h3 class="text-base font-serif font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-user-shield text-amber-400"></i> Staff Accounts & Permissions
-                        </h3>
-                        <p class="text-xs text-zinc-400 mt-0.5">Delegate limited management access to store managers or fulfillment staff</p>
+            <!-- Team & Staff Access Quick Banner -->
+            <div class="luxury-card p-6 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 border border-amber-400/20">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center text-xl flex-shrink-0">
+                        <i class="fa-solid fa-users-gear"></i>
                     </div>
-                    <button onclick="document.getElementById('staff-modal').classList.remove('hidden')" class="px-4 py-2 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
-                        <i class="fa-solid fa-plus"></i> Add Staff Account
-                    </button>
+                    <div>
+                        <h4 class="text-sm font-serif font-bold text-white">Staff Management & Role-Based Access Control</h4>
+                        <p class="text-xs text-zinc-400 mt-0.5">Delegate granular permissions across 9 functional categories for managers and fulfillment staff.</p>
+                    </div>
                 </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs text-zinc-300">
-                        <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 text-[10px]">
-                            <tr>
-                                <th class="py-2.5 px-3">Staff Name</th>
-                                <th class="py-2.5 px-3">Email</th>
-                                <th class="py-2.5 px-3">Role</th>
-                                <th class="py-2.5 px-3">Status</th>
-                                <th class="py-2.5 px-3">Created</th>
-                                <th class="py-2.5 px-3 text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-zinc-800/80" id="staff-table-tbody"></tbody>
-                    </table>
-                </div>
+                <a href="admin-staff.html" class="px-5 py-2.5 rounded-xl gold-gradient-btn text-xs font-bold uppercase tracking-wider whitespace-nowrap shadow flex items-center gap-2">
+                    <span>Manage Staff & Roles</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
             </div>
 
             <!-- Audit Trail Section -->
-            <div class="luxury-card p-6 sm:p-8 rounded-3xl space-y-4">
-                <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+            <div class="luxury-card p-5 sm:p-8 rounded-3xl space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-800">
                     <div>
                         <h3 class="text-base font-serif font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-amber-400"></i> Security Audit Trail
+                            <i class="fa-solid fa-list-check text-amber-400"></i> Immutable Audit Trail
                         </h3>
-                        <p class="text-xs text-zinc-400 mt-0.5">Chronological record of logins, price modifications, and operations</p>
+                        <p class="text-xs text-zinc-400 mt-0.5">Cryptographic log of all logins, setting changes, price modifications, and staff actions</p>
                     </div>
-                    <button onclick="renderAuditLogs()" class="text-xs text-amber-400 hover:underline font-semibold">
-                        <i class="fa-solid fa-rotate-right mr-1"></i> Refresh
-                    </button>
+                    <div class="flex items-center gap-2.5 flex-wrap">
+                        <input type="text" id="audit-search" oninput="debounceAuditSearch()" placeholder="Search action, email, IP..." class="bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-amber-400">
+                        <select id="audit-action-filter" onchange="loadAuditLogs()" class="bg-zinc-900 border border-zinc-700 rounded-xl px-2.5 py-1.5 text-xs text-zinc-300 focus:outline-none focus:border-amber-400">
+                            <option value="">All Actions</option>
+                            <option value="LOGIN_SUCCESS">LOGIN_SUCCESS</option>
+                            <option value="LOGIN_FAILED">LOGIN_FAILED</option>
+                            <option value="LOGOUT">LOGOUT</option>
+                            <option value="STAFF_INVITED">STAFF_INVITED</option>
+                            <option value="STAFF_PERMISSIONS_UPDATED">STAFF_PERMISSIONS_UPDATED</option>
+                            <option value="STAFF_STATUS_TOGGLED">STAFF_STATUS_TOGGLED</option>
+                            <option value="STAFF_DELETED">STAFF_DELETED</option>
+                            <option value="PASSWORD_CHANGED">PASSWORD_CHANGED</option>
+                            <option value="SESSION_REVOKED">SESSION_REVOKED</option>
+                            <option value="SETTINGS_UPDATED">SETTINGS_UPDATED</option>
+                        </select>
+                        <button onclick="loadAuditLogs()" class="p-1.5 rounded-xl border border-zinc-700 hover:border-amber-400 text-zinc-400 hover:text-white text-xs px-2.5" title="Refresh">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <div class="max-h-80 overflow-y-auto space-y-2 text-xs" id="audit-logs-container"></div>
-            </div>
-
-            <!-- Danger Zone Section -->
-            <div class="p-6 rounded-3xl bg-rose-950/20 border border-rose-500/30 space-y-4">
-                <div class="pb-2 border-b border-rose-900/40">
-                    <h3 class="text-sm font-serif font-bold text-rose-400 flex items-center gap-2">
-                        <i class="fa-solid fa-triangle-exclamation"></i> Danger Zone
-                    </h3>
-                    <p class="text-xs text-zinc-400 mt-0.5">Destructive actions require explicit confirmation and re-authentication</p>
-                </div>
-
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div>
-                        <h4 class="font-bold text-white text-xs">Reset Test Orders</h4>
-                        <p class="text-[11px] text-zinc-400">Clear test orders and reset to initial seed benchmark.</p>
+                <div class="max-h-96 overflow-y-auto space-y-2 text-xs" id="audit-logs-container">
+                    <div class="py-8 text-center text-zinc-500">
+                        <i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Loading security logs...
                     </div>
-                    <button onclick="handleResetTestOrders()" class="px-4 py-2 rounded-xl bg-rose-900/60 hover:bg-rose-800 text-rose-200 border border-rose-500/40 text-xs font-bold uppercase whitespace-nowrap">
-                        Reset Orders
-                    </button>
                 </div>
             </div>
 
         </main>
     </div>
 
-    <!-- Create Staff Modal -->
-    <div id="staff-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="luxury-card p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-4">
-            <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
-                <h3 class="text-base font-serif font-bold text-white">Create Staff Account</h3>
-                <button onclick="document.getElementById('staff-modal').classList.add('hidden')" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-
-            <form onsubmit="handleAddStaffSubmit(event)" class="space-y-3 text-xs">
-                <div>
-                    <label class="block font-semibold text-zinc-300 mb-1">Full Name *</label>
-                    <input type="text" id="staff-name" required placeholder="Staff Member Name" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
-                </div>
-                <div>
-                    <label class="block font-semibold text-zinc-300 mb-1">Email Address *</label>
-                    <input type="email" id="staff-email" required placeholder="staff@khushicollection.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
-                </div>
-                <div>
-                    <label class="block font-semibold text-zinc-300 mb-1">Assign Role *</label>
-                    <select id="staff-role" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-semibold">
-                        <option value="MANAGER">MANAGER (Products, Inventory, Orders)</option>
-                        <option value="STAFF">STAFF (Orders & Fulfillment Only)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block font-semibold text-zinc-300 mb-1">Temporary Password (Min 8 chars) *</label>
-                    <input type="password" id="staff-pass" required minlength="8" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono">
-                </div>
-                <button type="submit" class="w-full py-2.5 rounded-xl btn-gold font-bold uppercase tracking-wider mt-2">
-                    Create Account
-                </button>
-            </form>
-        </div>
-    </div>
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-zinc-900 border border-amber-400/40 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs flex items-center gap-2"></div>
 
     <!-- Scripts -->
     <script src="store.js"></script>
     <script src="admin-guard.js"></script>
     <script>
-        function renderStaffTable() {
-            const staffList = store.getStaff();
-            const tbody = document.getElementById('staff-table-tbody');
+        let searchTimer = null;
 
-            if (staffList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-zinc-500">No staff accounts created yet. Only the primary Store Owner is active.</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = staffList.map(s => `
-                <tr class="hover:bg-zinc-800/30">
-                    <td class="py-3 px-3 font-bold text-white">${s.name}</td>
-                    <td class="py-3 px-3 text-zinc-400 font-mono">${s.email}</td>
-                    <td class="py-3 px-3">
-                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.role === 'MANAGER' ? 'bg-amber-400/20 text-amber-400' : 'bg-zinc-800 text-zinc-300'}">
-                            ${s.role}
-                        </span>
-                    </td>
-                    <td class="py-3 px-3">
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${s.status === 'active' ? 'bg-emerald-950 text-emerald-400' : 'bg-rose-950 text-rose-400'}">
-                            ${s.status}
-                        </span>
-                    </td>
-                    <td class="py-3 px-3 text-zinc-500">${s.created_at ? s.created_at.slice(0,10) : '—'}</td>
-                    <td class="py-3 px-3 text-right space-x-2">
-                        <button onclick="store.toggleStaffStatus('${s.id}'); renderStaffTable();" class="text-xs text-zinc-400 hover:text-white">
-                            ${s.status === 'active' ? 'Disable' : 'Enable'}
-                        </button>
-                        <button onclick="if(confirm('Delete ${s.name}?')) { store.deleteStaff('${s.id}'); renderStaffTable(); }" class="text-xs text-rose-400 hover:underline">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+        function showToast(msg, isError = false) {
+            const t = document.getElementById('toast');
+            if (!t) return;
+            t.className = `fixed bottom-5 right-5 z-50 bg-zinc-900 border ${isError ? 'border-rose-500 text-rose-300' : 'border-amber-400 text-white'} px-4 py-3 rounded-2xl shadow-2xl text-xs flex items-center gap-2`;
+            t.innerHTML = `<i class="fa-solid ${isError ? 'fa-triangle-exclamation text-rose-400' : 'fa-circle-check text-amber-400'}"></i> <span>${msg}</span>`;
+            t.classList.remove('hidden');
+            setTimeout(() => t.classList.add('hidden'), 4000);
         }
 
-        function renderAuditLogs() {
-            const logs = store.getAuditLogs();
-            const box = document.getElementById('audit-logs-container');
-            box.innerHTML = logs.map(l => `
-                <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800 flex items-center justify-between">
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-1.5 py-0.5 rounded bg-zinc-800 text-[10px] font-mono font-bold text-amber-400">${l.action}</span>
-                            <span class="text-zinc-300 font-medium">${l.details}</span>
-                        </div>
-                        <span class="text-[10px] text-zinc-500 mt-1 block">By: ${l.user_email}</span>
-                    </div>
-                    <span class="text-[10px] text-zinc-500 font-mono whitespace-nowrap">${l.timestamp}</span>
-                </div>
-            `).join('');
-        }
-
-        function handleChangePasswordSubmit(e) {
+        async function handleChangePasswordSubmit(e) {
             e.preventDefault();
             const cur = document.getElementById('cur-pass').value;
             const nw = document.getElementById('new-pass').value;
             const conf = document.getElementById('confirm-pass').value;
+            const msgBox = document.getElementById('pass-msg');
+            const btn = document.getElementById('pass-btn');
 
             if (nw !== conf) {
-                showToast('New passwords do not match.', 'error');
+                msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+                msgBox.textContent = 'New passwords do not match.';
+                msgBox.classList.remove('hidden');
                 return;
             }
 
-            const res = store.changePassword(cur, nw);
-            if (res.success) {
-                showToast(res.message);
-                e.target.reset();
-            } else {
-                showToast(res.message, 'error');
-            }
-        }
+            msgBox.classList.add('hidden');
+            btn.disabled = true;
 
-        function handleAddStaffSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('staff-name').value.trim();
-            const email = document.getElementById('staff-email').value.trim();
-            const role = document.getElementById('staff-role').value;
-            const pass = document.getElementById('staff-pass').value;
+            try {
+                const res = await fetch('/admin/api/password/change', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ current_password: cur, new_password: nw, confirm_password: conf })
+                });
+                const data = await res.json();
 
-            const res = store.addStaff({ name, email, role, password: pass });
-            if (res.success) {
-                showToast(res.message);
-                document.getElementById('staff-modal').classList.add('hidden');
-                e.target.reset();
-                renderStaffTable();
-                renderAuditLogs();
-            } else {
-                showToast(res.message, 'error');
-            }
-        }
-
-        function handleLogoutAllDevices() {
-            if (confirm('Revoke all sessions and log out?')) {
-                store.logoutAllDevices();
-                window.location.replace('admin-login.html');
-            }
-        }
-
-        function handleResetTestOrders() {
-            const pass = prompt('Enter Owner Master Password to confirm reset:');
-            if (pass) {
-                const owner = store.getOwner();
-                if (owner && owner.password_hash === btoa(pass)) {
-                    localStorage.setItem('kc_orders', JSON.stringify(DEFAULT_ORDERS));
-                    store.logAudit('ORDERS_RESET', 'Orders reset to default test benchmark by Owner');
-                    showToast('Orders reset successfully.');
-                    renderAuditLogs();
+                if (res.ok && data.success) {
+                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
+                    msgBox.textContent = data.message || 'Password updated successfully!';
+                    msgBox.classList.remove('hidden');
+                    e.target.reset();
+                    loadAuditLogs();
                 } else {
-                    showToast('Incorrect password.', 'error');
+                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+                    msgBox.textContent = data.error || 'Failed to update password.';
+                    msgBox.classList.remove('hidden');
                 }
+            } catch (err) {
+                msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+                msgBox.textContent = 'Server connection error.';
+                msgBox.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function loadSessions() {
+            const box = document.getElementById('active-sessions-list');
+            try {
+                const res = await fetch('/admin/api/sessions');
+                if (res.ok) {
+                    const data = await res.json();
+                    const sessions = data.sessions || [];
+                    if (sessions.length === 0) {
+                        box.innerHTML = '<div class="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-xs text-zinc-500 text-center">No active sessions found.</div>';
+                        return;
+                    }
+                    box.innerHTML = sessions.map(s => {
+                        const device = parseUserAgent(s.user_agent);
+                        return `
+                            <div class="p-3 rounded-xl bg-zinc-900/80 border ${s.is_current ? 'border-amber-400/40 bg-amber-400/5' : 'border-zinc-800'} flex items-center justify-between text-xs">
+                                <div>
+                                    <div class="flex items-center gap-1.5 font-bold text-white">
+                                        <i class="fa-solid fa-laptop text-zinc-400 text-[10px]"></i>
+                                        <span>${device}</span>
+                                        ${s.is_current ? '<span class="px-1.5 py-0.2 rounded bg-amber-400/20 text-amber-400 border border-amber-400/30 text-[9px]">Current</span>' : ''}
+                                    </div>
+                                    <div class="text-[10px] text-zinc-500 mt-0.5 font-mono">
+                                        IP: ${s.ip_address || '127.0.0.1'} &bull; Last Active: ${s.last_active ? s.last_active.slice(11, 16) : 'Just now'}
+                                    </div>
+                                </div>
+                                ${!s.is_current ? `
+                                    <button onclick="revokeSession(${s.id})" class="px-2 py-1 rounded bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-500/30 text-[10px] font-bold uppercase transition">
+                                        Revoke
+                                    </button>
+                                ` : ''}
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function parseUserAgent(ua) {
+            if (!ua) return 'Web Browser';
+            if (ua.includes('Windows')) return 'Windows PC';
+            if (ua.includes('Mac')) return 'macOS Device';
+            if (ua.includes('Android')) return 'Android Mobile';
+            if (ua.includes('iPhone') || ua.includes('iPad')) return 'iOS Mobile';
+            if (ua.includes('Linux')) return 'Linux Device';
+            return 'Web Browser';
+        }
+
+        async function revokeSession(id) {
+            try {
+                const res = await fetch(`/admin/api/sessions/${id}/revoke`, { method: 'POST' });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    showToast('Session revoked successfully.');
+                    loadSessions();
+                    loadAuditLogs();
+                } else {
+                    showToast(data.error || 'Failed to revoke session', true);
+                }
+            } catch (e) {
+                showToast('Server connection error', true);
+            }
+        }
+
+        async function handleLogoutOtherDevices() {
+            if (!confirm('Terminate all other administrative sessions on other browsers/devices?')) return;
+            try {
+                const res = await fetch('/admin/api/sessions/revoke-others', { method: 'POST' });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    showToast(`Terminated ${data.revoked_count || 0} other session(s).`);
+                    loadSessions();
+                    loadAuditLogs();
+                } else {
+                    showToast(data.error || 'Failed to revoke other sessions', true);
+                }
+            } catch (e) {
+                showToast('Server connection error', true);
+            }
+        }
+
+        function debounceAuditSearch() {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(loadAuditLogs, 300);
+        }
+
+        async function loadAuditLogs() {
+            const box = document.getElementById('audit-logs-container');
+            const search = document.getElementById('audit-search').value.trim();
+            const action = document.getElementById('audit-action-filter').value;
+
+            const params = new URLSearchParams();
+            if (search) params.set('search', search);
+            if (action) params.set('action', action);
+
+            try {
+                const res = await fetch(`/admin/api/audit-logs?${params.toString()}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    const logs = data.logs || [];
+                    if (logs.length === 0) {
+                        box.innerHTML = '<div class="py-8 text-center text-zinc-500">No matching audit logs found.</div>';
+                        return;
+                    }
+                    box.innerHTML = logs.map(l => {
+                        let actionColor = 'text-amber-400 bg-amber-400/10 border-amber-400/20';
+                        if (l.action.includes('FAILED') || l.action.includes('LOCKED') || l.action.includes('DELETED')) {
+                            actionColor = 'text-rose-400 bg-rose-400/10 border-rose-400/20';
+                        } else if (l.action.includes('SUCCESS') || l.action.includes('CREATED')) {
+                            actionColor = 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20';
+                        }
+
+                        return `
+                            <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800 flex items-center justify-between gap-3">
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border ${actionColor}">
+                                            ${l.action}
+                                        </span>
+                                        <span class="text-zinc-200 font-medium truncate">${l.details}</span>
+                                    </div>
+                                    <div class="text-[10px] text-zinc-500 mt-1 flex items-center gap-3">
+                                        <span>User: <strong class="text-zinc-400">${l.user_email || 'System'}</strong></span>
+                                        ${l.role ? `<span>Role: ${l.role}</span>` : ''}
+                                        <span>IP: ${l.ip_address || '127.0.0.1'}</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] text-zinc-500 font-mono whitespace-nowrap flex-shrink-0">
+                                    ${l.timestamp ? l.timestamp.slice(0, 19).replace('T', ' ') : ''}
+                                </span>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (e) {
+                console.error(e);
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderStaffTable();
-            renderAuditLogs();
+            loadSessions();
+            loadAuditLogs();
         });
     </script>
 </body>

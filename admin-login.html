@@ -28,79 +28,127 @@
                 <i class="fa-solid fa-crown"></i>
             </a>
             <h1 class="text-2xl font-serif font-extrabold tracking-wider text-white">KHUSHI COLLECTION</h1>
-            <p class="text-xs uppercase font-bold tracking-widest text-amber-400">Private Owner Portal</p>
+            <p class="text-xs uppercase font-bold tracking-widest text-amber-400" id="portal-subtitle">Secure Administration Console</p>
         </div>
 
         <!-- Login Card -->
-        <div class="luxury-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 shadow-2xl space-y-5">
+        <div class="luxury-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 shadow-2xl space-y-5 bg-zinc-950/80 backdrop-blur-xl">
             
-            <!-- Auth Method Switcher Tabs (Password vs PIN) -->
-            <div class="flex rounded-xl bg-zinc-950 p-1 border border-zinc-800 text-xs">
-                <button type="button" onclick="switchTab('password')" id="tab-pass-btn" class="flex-1 py-2 rounded-lg font-bold transition bg-amber-400 text-black">
-                    <i class="fa-solid fa-key mr-1"></i> Email & Password
-                </button>
-                <button type="button" onclick="switchTab('pin')" id="tab-pin-btn" class="flex-1 py-2 rounded-lg font-bold text-zinc-400 hover:text-white transition">
-                    <i class="fa-solid fa-lock mr-1"></i> Quick PIN
-                </button>
-            </div>
-
-            <!-- Standard Password Form -->
-            <form id="pass-login-form" onsubmit="handleLogin(event)" class="space-y-4 text-xs">
+            <!-- 1. Standard Login Form -->
+            <form id="admin-login-form" onsubmit="handleSecureLogin(event)" class="space-y-4 text-xs">
                 <div>
-                    <label class="block font-semibold text-zinc-300 mb-1.5">Owner Email Address *</label>
+                    <label class="block font-semibold text-zinc-300 mb-1.5">Official Email Address *</label>
                     <div class="relative">
-                        <input type="email" id="login-email" required value="admin@khushicollection.com" placeholder="admin@khushicollection.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-amber-400 text-xs">
-                        <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-zinc-400"></i>
+                        <input type="email" id="login-email" required autocomplete="email" placeholder="name@khushicollection.com" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-amber-400 text-xs transition">
+                        <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-zinc-500"></i>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block font-semibold text-zinc-300 mb-1.5">Password *</label>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="block font-semibold text-zinc-300">Password *</label>
+                        <button type="button" onclick="openForgotPasswordModal()" class="text-[11px] text-amber-400 hover:text-amber-300 font-semibold transition">
+                            Forgot Password?
+                        </button>
+                    </div>
                     <div class="relative">
-                        <input type="password" id="login-password" required value="Admin@12345" placeholder="••••••••••••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-3 pl-10 pr-10 text-white focus:outline-none focus:border-amber-400 text-xs font-mono">
-                        <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-zinc-400"></i>
-                        <button type="button" onclick="togglePassVisibility('login-password', this)" class="absolute right-3.5 top-3.5 text-zinc-400 hover:text-white p-1">
+                        <input type="password" id="login-password" required autocomplete="current-password" placeholder="Enter your password" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-3 pl-10 pr-10 text-white focus:outline-none focus:border-amber-400 text-xs font-mono transition">
+                        <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-zinc-500"></i>
+                        <button type="button" onclick="togglePassVisibility('login-password', this)" class="absolute right-3.5 top-3.5 text-zinc-400 hover:text-white p-1" aria-label="Toggle password visibility">
                             <i class="fa-solid fa-eye text-xs"></i>
                         </button>
                     </div>
                 </div>
 
-                <div id="login-error-alert" class="hidden p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-300 text-xs">
-                    <div class="flex items-center gap-2 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> <span>Access Denied</span></div>
-                    <p class="text-[11px] text-rose-200 mt-1" id="login-error-msg"></p>
+                <!-- Remember Device Checkbox -->
+                <div class="flex items-center gap-2 pt-1">
+                    <input type="checkbox" id="remember-me" class="rounded border-zinc-700 bg-zinc-900 text-amber-500 focus:ring-amber-500 focus:ring-offset-zinc-900 h-4 w-4">
+                    <label for="remember-me" class="text-[11px] text-zinc-400 cursor-pointer">Remember this device for 14 days</label>
                 </div>
 
-                <button type="submit" id="login-submit-btn" class="w-full py-4 rounded-xl gold-gradient-btn text-xs font-extrabold uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl cursor-pointer">
-                    <i class="fa-solid fa-shield-halved text-xs"></i>
-                    <span>Log In to Admin Portal</span>
-                </button>
-            </form>
-
-            <!-- Quick PIN Form (Mobile Super-Fast Access) -->
-            <form id="pin-login-form" onsubmit="handlePinLogin(event)" class="hidden space-y-4 text-xs">
-                <div>
-                    <label class="block font-semibold text-zinc-300 mb-1.5">Owner Security PIN *</label>
-                    <div class="relative">
-                        <input type="password" id="login-pin" maxlength="6" placeholder="Enter 4-6 digit PIN (e.g. 8899)" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-amber-400 text-sm tracking-widest font-mono text-center">
-                        <i class="fa-solid fa-hashtag absolute left-3.5 top-3.5 text-zinc-400"></i>
+                <!-- Error Alert Box -->
+                <div id="login-error-alert" class="hidden p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-200 text-xs space-y-1">
+                    <div class="flex items-center gap-2 font-bold text-rose-300"><i class="fa-solid fa-triangle-exclamation"></i> <span>Authentication Failed</span></div>
+                    <p class="text-[11px] leading-relaxed" id="login-error-msg"></p>
+                    <div id="lockout-timer" class="hidden text-[11px] font-bold text-amber-300 pt-1">
+                        <i class="fa-solid fa-clock"></i> <span id="lockout-countdown"></span>
                     </div>
-                    <p class="text-[10px] text-zinc-500 mt-1 text-center">Default Master Owner PIN is <strong class="text-amber-400">8899</strong></p>
                 </div>
 
-                <div id="pin-error-alert" class="hidden p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-200 text-xs"></div>
-
-                <button type="submit" class="w-full py-4 rounded-xl gold-gradient-btn text-xs font-extrabold uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl cursor-pointer">
-                    <i class="fa-solid fa-bolt text-xs"></i>
-                    <span>Authenticate with PIN</span>
+                <!-- Submit Button -->
+                <button type="submit" id="login-submit-btn" class="w-full py-3.5 rounded-xl gold-gradient-btn text-xs font-extrabold uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl cursor-pointer hover:opacity-95 transition">
+                    <i class="fa-solid fa-shield-halved text-xs"></i>
+                    <span>Log In to Admin Console</span>
                 </button>
             </form>
 
-            <!-- 1-Tap Auto Fill Demo Helper -->
-            <div class="pt-2 border-t border-zinc-800/80 text-center">
-                <button type="button" onclick="autoFillDefaultOwner()" class="text-[11px] text-amber-400 hover:text-amber-300 font-semibold underline flex items-center justify-center gap-1.5 mx-auto py-1">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> 1-Tap Fill Default Credentials (admin@khushicollection.com)
+            <!-- 2. Staff Invitation Acceptance Form (Shown if ?invite=token in URL) -->
+            <form id="invite-accept-form" onsubmit="handleAcceptInvitation(event)" class="hidden space-y-4 text-xs">
+                <div class="p-3 rounded-xl bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs">
+                    <p class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-user-plus"></i> Staff Invitation</p>
+                    <p class="text-[11px] text-zinc-300 mt-1" id="invite-welcome-msg">Welcome to Khushi Collection. Set your administrative password below to activate your account.</p>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1.5">New Password (Minimum 8 characters) *</label>
+                    <div class="relative">
+                        <input type="password" id="invite-password" required minlength="8" placeholder="Create strong password" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-3 pl-10 pr-10 text-white focus:outline-none focus:border-amber-400 text-xs font-mono">
+                        <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-zinc-500"></i>
+                        <button type="button" onclick="togglePassVisibility('invite-password', this)" class="absolute right-3.5 top-3.5 text-zinc-400 hover:text-white p-1">
+                            <i class="fa-solid fa-eye text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1.5">Confirm Password *</label>
+                    <div class="relative">
+                        <input type="password" id="invite-confirm-password" required minlength="8" placeholder="Repeat password" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-amber-400 text-xs font-mono">
+                        <i class="fa-solid fa-check-double absolute left-3.5 top-3.5 text-zinc-500"></i>
+                    </div>
+                </div>
+
+                <div id="invite-error-alert" class="hidden p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-200 text-xs"></div>
+
+                <button type="submit" id="invite-submit-btn" class="w-full py-3.5 rounded-xl gold-gradient-btn text-xs font-extrabold uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl cursor-pointer">
+                    <i class="fa-solid fa-circle-check text-xs"></i>
+                    <span>Activate Account & Log In</span>
                 </button>
-            </div>
+            </form>
+
+            <!-- 3. Password Reset Form (Shown if ?reset=token in URL) -->
+            <form id="reset-password-form" onsubmit="handleResetPassword(event)" class="hidden space-y-4 text-xs">
+                <div class="p-3 rounded-xl bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 text-xs">
+                    <p class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-key"></i> Reset Your Password</p>
+                    <p class="text-[11px] text-zinc-300 mt-1">Enter your new secure password below to regain access.</p>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1.5">New Password (Min 8 characters) *</label>
+                    <div class="relative">
+                        <input type="password" id="reset-new-password" required minlength="8" placeholder="••••••••••••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-3 pl-10 pr-10 text-white focus:outline-none focus:border-amber-400 text-xs font-mono">
+                        <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-zinc-500"></i>
+                        <button type="button" onclick="togglePassVisibility('reset-new-password', this)" class="absolute right-3.5 top-3.5 text-zinc-400 hover:text-white p-1">
+                            <i class="fa-solid fa-eye text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1.5">Confirm New Password *</label>
+                    <div class="relative">
+                        <input type="password" id="reset-confirm-password" required minlength="8" placeholder="••••••••••••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-amber-400 text-xs font-mono">
+                        <i class="fa-solid fa-check-double absolute left-3.5 top-3.5 text-zinc-500"></i>
+                    </div>
+                </div>
+
+                <div id="reset-error-alert" class="hidden p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-200 text-xs"></div>
+
+                <button type="submit" id="reset-submit-btn" class="w-full py-3.5 rounded-xl gold-gradient-btn text-xs font-extrabold uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl cursor-pointer">
+                    <i class="fa-solid fa-lock-open text-xs"></i>
+                    <span>Set New Password & Proceed</span>
+                </button>
+            </form>
 
         </div>
 
@@ -114,27 +162,43 @@
 
     </div>
 
+    <!-- Forgot Password Modal -->
+    <div id="forgot-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="max-w-md w-full bg-zinc-900 border border-zinc-700 p-6 rounded-3xl shadow-2xl space-y-4 text-xs">
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+                <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
+                    <i class="fa-solid fa-key"></i>
+                    <span>Reset Administrator Password</span>
+                </div>
+                <button type="button" onclick="closeForgotPasswordModal()" class="text-zinc-400 hover:text-white text-base">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-zinc-400 text-xs leading-relaxed">
+                Enter your administrative email address. If an active account matches, a secure single-use password reset link will be generated.
+            </p>
+            <form onsubmit="handleForgotPassword(event)" class="space-y-3">
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Registered Admin Email</label>
+                    <input type="email" id="forgot-email" required placeholder="admin@khushicollection.com" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl py-2.5 px-3.5 text-white focus:outline-none focus:border-amber-400 text-xs">
+                </div>
+                <div id="forgot-alert" class="hidden p-3 rounded-xl text-xs"></div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeForgotPasswordModal()" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold">
+                        Cancel
+                    </button>
+                    <button type="submit" id="forgot-submit-btn" class="px-5 py-2 rounded-xl gold-gradient-btn text-xs font-bold uppercase tracking-wider">
+                        Send Reset Link
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="store.js"></script>
     <script>
-        function switchTab(mode) {
-            const passForm = document.getElementById('pass-login-form');
-            const pinForm = document.getElementById('pin-login-form');
-            const passBtn = document.getElementById('tab-pass-btn');
-            const pinBtn = document.getElementById('tab-pin-btn');
-
-            if (mode === 'pin') {
-                passForm.classList.add('hidden');
-                pinForm.classList.remove('hidden');
-                pinBtn.className = 'flex-1 py-2 rounded-lg font-bold transition bg-amber-400 text-black';
-                passBtn.className = 'flex-1 py-2 rounded-lg font-bold text-zinc-400 hover:text-white transition';
-            } else {
-                passForm.classList.remove('hidden');
-                pinForm.classList.add('hidden');
-                passBtn.className = 'flex-1 py-2 rounded-lg font-bold transition bg-amber-400 text-black';
-                pinBtn.className = 'flex-1 py-2 rounded-lg font-bold text-zinc-400 hover:text-white transition';
-            }
-        }
+        let lockoutInterval = null;
 
         function togglePassVisibility(id, btn) {
             const input = document.getElementById(id);
@@ -148,46 +212,194 @@
             }
         }
 
-        function autoFillDefaultOwner() {
-            document.getElementById('login-email').value = 'admin@khushicollection.com';
-            document.getElementById('login-password').value = 'Admin@12345';
-            document.getElementById('login-pin').value = '8899';
-            showToast('Loaded Default Owner Credentials');
+        function openForgotPasswordModal() {
+            document.getElementById('forgot-modal').classList.remove('hidden');
+            document.getElementById('forgot-modal').classList.add('flex');
+            document.getElementById('forgot-alert').classList.add('hidden');
         }
 
-        function handleLogin(e) {
+        function closeForgotPasswordModal() {
+            document.getElementById('forgot-modal').classList.add('hidden');
+            document.getElementById('forgot-modal').classList.remove('flex');
+        }
+
+        async function handleSecureLogin(e) {
             if (e) e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const pass = document.getElementById('login-password').value;
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const remember = document.getElementById('remember-me').checked;
             const errBox = document.getElementById('login-error-alert');
             const errMsg = document.getElementById('login-error-msg');
+            const submitBtn = document.getElementById('login-submit-btn');
 
-            const res = store.login(email, pass);
-            if (res.success) {
-                showToast(`Welcome back! Authenticated as ${res.user.role}.`);
-                setTimeout(() => {
-                    window.location.href = 'admin-dashboard.html';
-                }, 300);
-            } else {
-                errBox.classList.remove('hidden');
-                errMsg.textContent = res.message;
+            errBox.classList.add('hidden');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> <span>Verifying Credentials...</span>';
+
+            try {
+                const res = await fetch('/admin/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, remember })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    if (window.store && store.syncUserSession) {
+                        store.syncUserSession(data.user, data.session_token);
+                    }
+                    showToast(`Welcome back, ${data.user.name}! Authenticated as ${data.user.role}.`);
+                    setTimeout(() => {
+                        window.location.href = data.redirect_url || 'admin-dashboard.html';
+                    }, 400);
+                } else {
+                    errBox.classList.remove('hidden');
+                    errMsg.textContent = data.error || 'Authentication failed. Please check your credentials.';
+                    
+                    if (data.locked && data.minutes_left) {
+                        startLockoutCountdown(data.minutes_left * 60);
+                    }
+                }
+            } catch (networkErr) {
+                if (window.store && store.login) {
+                    const localRes = store.login(email, password);
+                    if (localRes.success) {
+                        showToast(`Authenticated as ${localRes.user.role}.`);
+                        setTimeout(() => { window.location.href = 'admin-dashboard.html'; }, 300);
+                        return;
+                    } else {
+                        errBox.classList.remove('hidden');
+                        errMsg.textContent = localRes.message || 'Invalid credentials.';
+                    }
+                } else {
+                    errBox.classList.remove('hidden');
+                    errMsg.textContent = 'Unable to connect to authentication server. Please check your connection.';
+                }
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-shield-halved text-xs"></i> <span>Log In to Admin Console</span>';
             }
         }
 
-        function handlePinLogin(e) {
-            if (e) e.preventDefault();
-            const pin = document.getElementById('login-pin').value.trim();
-            const errBox = document.getElementById('pin-error-alert');
+        function startLockoutCountdown(secondsRemaining) {
+            const timerBox = document.getElementById('lockout-timer');
+            const countdownSpan = document.getElementById('lockout-countdown');
+            timerBox.classList.remove('hidden');
 
-            const res = store.login('admin@khushicollection.com', pin);
-            if (res.success) {
-                showToast(`PIN Verified! Redirecting to Dashboard...`);
-                setTimeout(() => {
-                    window.location.href = 'admin-dashboard.html';
-                }, 300);
-            } else {
+            if (lockoutInterval) clearInterval(lockoutInterval);
+
+            let remaining = secondsRemaining;
+            const updateUI = () => {
+                const mins = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                countdownSpan.textContent = `Account locked. Try again in ${mins}m ${secs < 10 ? '0' : ''}${secs}s.`;
+                if (remaining <= 0) {
+                    clearInterval(lockoutInterval);
+                    timerBox.classList.add('hidden');
+                    document.getElementById('login-error-alert').classList.add('hidden');
+                }
+                remaining--;
+            };
+
+            updateUI();
+            lockoutInterval = setInterval(updateUI, 1000);
+        }
+
+        async function handleForgotPassword(e) {
+            if (e) e.preventDefault();
+            const email = document.getElementById('forgot-email').value.trim();
+            const alertBox = document.getElementById('forgot-alert');
+            const submitBtn = document.getElementById('forgot-submit-btn');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+
+            try {
+                const res = await fetch('/admin/api/password/forgot', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const data = await res.json();
+                alertBox.className = 'p-3 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-200 text-xs';
+                alertBox.textContent = data.message || 'Password reset request dispatched.';
+                alertBox.classList.remove('hidden');
+            } catch (err) {
+                alertBox.className = 'p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-200 text-xs';
+                alertBox.textContent = 'Network error requesting password reset.';
+                alertBox.classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Reset Link';
+            }
+        }
+
+        async function handleAcceptInvitation(e) {
+            if (e) e.preventDefault();
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('invite');
+            const password = document.getElementById('invite-password').value;
+            const confirm = document.getElementById('invite-confirm-password').value;
+            const errBox = document.getElementById('invite-error-alert');
+
+            if (password !== confirm) {
+                errBox.textContent = 'Passwords do not match.';
                 errBox.classList.remove('hidden');
-                errBox.textContent = res.message || 'Incorrect PIN entered.';
+                return;
+            }
+
+            try {
+                const res = await fetch('/admin/api/invitations/accept', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token, password })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    showToast('Account activated successfully! You can now log in.');
+                    setTimeout(() => { window.location.href = 'admin-login.html'; }, 1200);
+                } else {
+                    errBox.textContent = data.error || 'Failed to accept invitation.';
+                    errBox.classList.remove('hidden');
+                }
+            } catch (err) {
+                errBox.textContent = 'Network error processing invitation.';
+                errBox.classList.remove('hidden');
+            }
+        }
+
+        async function handleResetPassword(e) {
+            if (e) e.preventDefault();
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('reset');
+            const new_password = document.getElementById('reset-new-password').value;
+            const confirm = document.getElementById('reset-confirm-password').value;
+            const errBox = document.getElementById('reset-error-alert');
+
+            if (new_password !== confirm) {
+                errBox.textContent = 'Passwords do not match.';
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const res = await fetch('/admin/api/password/reset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token, new_password })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    showToast('Password reset successfully! Please log in with your new password.');
+                    setTimeout(() => { window.location.href = 'admin-login.html'; }, 1200);
+                } else {
+                    errBox.textContent = data.error || 'Failed to reset password.';
+                    errBox.classList.remove('hidden');
+                }
+            } catch (err) {
+                errBox.textContent = 'Network error resetting password.';
+                errBox.classList.remove('hidden');
             }
         }
 
@@ -206,11 +418,51 @@
             }, 3000);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            store.init();
-            const currentUser = store.getCurrentUser ? store.getCurrentUser() : null;
-            if (currentUser && ['OWNER', 'MANAGER', 'STAFF'].includes(currentUser.role)) {
-                window.location.href = 'admin-dashboard.html';
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (window.store && store.init) store.init();
+
+            const params = new URLSearchParams(window.location.search);
+            const inviteToken = params.get('invite');
+            const resetToken = params.get('reset');
+
+            if (inviteToken) {
+                document.getElementById('admin-login-form').classList.add('hidden');
+                document.getElementById('invite-accept-form').classList.remove('hidden');
+                document.getElementById('portal-subtitle').textContent = 'Staff Invitation Activation';
+                try {
+                    const res = await fetch(`/admin/api/invitations/verify?token=${encodeURIComponent(inviteToken)}`);
+                    const data = await res.json();
+                    if (data.success && data.invitation) {
+                        document.getElementById('invite-welcome-msg').textContent = `Welcome ${data.invitation.name} (${data.invitation.role}). Choose a secure password to activate your account.`;
+                    }
+                } catch (e) {}
+                return;
+            }
+
+            if (resetToken) {
+                document.getElementById('admin-login-form').classList.add('hidden');
+                document.getElementById('reset-password-form').classList.remove('hidden');
+                document.getElementById('portal-subtitle').textContent = 'Password Reset Portal';
+                return;
+            }
+
+            // Check if already authenticated
+            try {
+                const res = await fetch('/admin/api/me');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.authenticated && ['OWNER', 'MANAGER', 'STAFF'].includes(data.user.role)) {
+                        window.location.replace('admin-dashboard.html');
+                        return;
+                    }
+                }
+            } catch (e) {}
+
+            if (window.store && store.getCurrentUser) {
+                const u = store.getCurrentUser();
+                if (u && ['OWNER', 'MANAGER', 'STAFF'].includes(u.role)) {
+                    window.location.replace('admin-dashboard.html');
+                }
             }
         });
     </script>

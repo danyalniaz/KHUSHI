@@ -26,31 +26,108 @@ def get_db():
 
 def query_db(query, args=(), one=False):
     conn = get_db()
-    cur = conn.cursor()
-    cur.execute(query, args)
-    rv = cur.fetchall()
-    conn.close()
-    return (rv[0] if rv else None) if one else rv
+    try:
+        cur = conn.cursor()
+        cur.execute(query, args)
+        rv = cur.fetchall()
+        return (rv[0] if rv else None) if one else rv
+    finally:
+        conn.close()
 
 def execute_db(query, args=(), commit=True):
     conn = get_db()
-    cur = conn.cursor()
-    cur.execute(query, args)
-    last_id = cur.lastrowid
-    rowcount = cur.rowcount
-    if commit:
-        conn.commit()
-    conn.close()
-    return last_id if last_id else rowcount
-
-def log_audit_action(action, details="", user_id=None, user_email=None, ip_address=""):
     try:
-        execute_db(
-            "INSERT INTO audit_logs (user_id, user_email, action, details, ip_address) VALUES (?, ?, ?, ?, ?)",
-            (user_id, user_email, action, details, ip_address)
-        )
+        cur = conn.cursor()
+        cur.execute(query, args)
+        last_id = cur.lastrowid
+        rowcount = cur.rowcount
+        if commit:
+            conn.commit()
+        return last_id if last_id else rowcount
+    finally:
+        conn.close()
+
+DEFAULT_PERMISSIONS = [
+    # Products
+    ('products.view', 'View Products', 'Products', 'View product catalog, pricing, and stock levels'),
+    ('products.create', 'Create Products', 'Products', 'Add new products to the catalog'),
+    ('products.edit', 'Edit Products', 'Products', 'Modify product details, prices, and media'),
+    ('products.delete', 'Delete Products', 'Products', 'Remove products from the catalog'),
+    ('products.inventory', 'Manage Inventory', 'Products', 'Update inventory stock quantities and SKU alerts'),
+    # Orders
+    ('orders.view', 'View Orders', 'Orders', 'View customer orders and order timelines'),
+    ('orders.edit', 'Edit Orders', 'Orders', 'Update order statuses, couriers, and tracking info'),
+    ('orders.cancel', 'Cancel Orders', 'Orders', 'Cancel pending or processing orders'),
+    ('orders.refund', 'Refund Orders', 'Orders', 'Process payment refunds for orders'),
+    # Customers
+    ('customers.view', 'View Customers', 'Customers', 'View customer list and contact information'),
+    ('customers.edit', 'Edit Customers', 'Customers', 'Update customer accounts and notes'),
+    # Content
+    ('content.view', 'View Content', 'Content', 'View website banners, announcements, and pages'),
+    ('content.edit', 'Edit Content', 'Content', 'Update hero banners, announcements, and policy content'),
+    # Marketing
+    ('marketing.view', 'View Marketing', 'Marketing', 'View promotional campaigns and coupon codes'),
+    ('marketing.edit', 'Edit Marketing', 'Marketing', 'Create and manage discount codes and flash sales'),
+    # Reports
+    ('reports.view', 'View Financial Reports', 'Reports', 'Access business revenue, sales analytics, and profit margins'),
+    # Settings
+    ('settings.view', 'View Settings', 'Settings', 'View store configurations, shipping, and delivery fees'),
+    ('settings.edit', 'Edit Settings', 'Settings', 'Modify store profile, delivery rates, and business hours'),
+    # Users
+    ('users.view', 'View Staff', 'Users', 'View administrative staff member accounts'),
+    ('users.create', 'Invite Staff', 'Users', 'Invite new staff members to the administration system'),
+    ('users.edit', 'Edit Staff Permissions', 'Users', 'Modify assigned permissions for staff accounts'),
+    ('users.disable', 'Disable Staff', 'Users', 'Activate or deactivate staff accounts'),
+    # Security
+    ('security.view', 'View Security', 'Security', 'Inspect immutable audit logs and active user sessions'),
+    ('security.manage', 'Manage Security', 'Security', 'Revoke active sessions and enforce security policies')
+]
+
+def log_audit_action(action, details="", user_id=None, user_email=None, role=None, ip_address="", user_agent=""):
+    try:
+        execute_db('''
+            INSERT INTO audit_logs (user_id, user_email, role, action, details, ip_address, user_agent)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (user_id, user_email, role, action, details, ip_address, user_agent))
     except Exception:
-        pass
+        try:
+            execute_db(
+                "INSERT INTO audit_logs (user_id, user_email, action, details, ip_address) VALUES (?, ?, ?, ?, ?)",
+                (user_id, user_email, action, details, ip_address)
+            )
+        except Exception:
+            pass
+
+def get_user_permissions(user_id):
+    user = query_db("SELECT role FROM users WHERE id = ?", (user_id,), one=True)
+    if not user:
+        return set()
+    role = str(user['role']).upper()
+    if role in ('OWNER', 'SUPER_ADMIN'):
+        rows = query_db("SELECT code FROM permissions")
+        if not rows:
+            return set(p[0] for p in DEFAULT_PERMISSIONS)
+        return set(r['code'] for r in rows)
+    rows = query_db("SELECT permission_code FROM user_permissions WHERE user_id = ?", (user_id,))
+    return set(r['permission_code'] for r in rows)
+
+def has_permission(user_id, permission_code):
+    user = query_db("SELECT role, status FROM users WHERE id = ?", (user_id,), one=True)
+    if not user or user['status'] != 'active':
+        return False
+    role = str(user['role']).upper()
+    if role in ('OWNER', 'SUPER_ADMIN'):
+        return True
+    row = query_db("SELECT 1 FROM user_permissions WHERE user_id = ? AND permission_code = ?", (user_id, permission_code), one=True)
+    return row is not None
+
+def set_user_permissions(user_id, permission_codes, granted_by=None):
+    execute_db("DELETE FROM user_permissions WHERE user_id = ?", (user_id,))
+    for code in permission_codes:
+        execute_db(
+            "INSERT INTO user_permissions (user_id, permission_code, granted_by) VALUES (?, ?, ?)",
+            (user_id, code, granted_by)
+        )
 
 def init_db():
     conn = get_db()
@@ -74,18 +151,116 @@ def init_db():
     )
     ''')
 
+    # Roles
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS roles (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT UNIQUE NOT NULL,
+        description TEXT
+    )
+    ''')
+    for role_name, desc in [('OWNER', 'Store Owner with absolute administrative control'),
+                            ('MANAGER', 'Operations Manager with elevated store permissions'),
+                            ('STAFF', 'Staff Associate with restricted operational permissions'),
+                            ('CUSTOMER', 'Storefront retail customer')]:
+        cursor.execute("INSERT OR IGNORE INTO roles (name, description) VALUES (?, ?)", (role_name, desc))
+
+    # Permissions
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS permissions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        code TEXT UNIQUE NOT NULL,
+        name TEXT NOT NULL,
+        category TEXT NOT NULL,
+        description TEXT
+    )
+    ''')
+    for code, name, category, desc in DEFAULT_PERMISSIONS:
+        cursor.execute("INSERT OR IGNORE INTO permissions (code, name, category, description) VALUES (?, ?, ?, ?)",
+                       (code, name, category, desc))
+
+    # User Permissions (Granular Staff Permissions)
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS user_permissions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        permission_code TEXT NOT NULL,
+        granted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        granted_by INTEGER,
+        UNIQUE(user_id, permission_code),
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+    ''')
+
+    # User Active Sessions (Multi-device tracking)
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS user_sessions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        session_token TEXT UNIQUE NOT NULL,
+        ip_address TEXT,
+        user_agent TEXT,
+        device_name TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        last_activity_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        is_active BOOLEAN DEFAULT 1,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+    ''')
+
+    # Staff Invitations
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS staff_invitations (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT UNIQUE NOT NULL,
+        name TEXT NOT NULL,
+        role TEXT DEFAULT 'STAFF',
+        permissions_json TEXT NOT NULL,
+        token_hash TEXT UNIQUE NOT NULL,
+        expires_at TIMESTAMP NOT NULL,
+        accepted_at TIMESTAMP,
+        created_by INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    ''')
+
+    # Password Resets
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS password_resets (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        token_hash TEXT UNIQUE NOT NULL,
+        expires_at TIMESTAMP NOT NULL,
+        used_at TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+    ''')
+
     # Audit Logs
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS audit_logs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         user_email TEXT,
+        role TEXT,
         action TEXT NOT NULL,
         details TEXT,
         ip_address TEXT,
+        user_agent TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     ''')
+
+    # Migrate existing audit_logs columns safely if needed
+    try:
+        cursor.execute("ALTER TABLE audit_logs ADD COLUMN role TEXT")
+    except Exception:
+        pass
+    try:
+        cursor.execute("ALTER TABLE audit_logs ADD COLUMN user_agent TEXT")
+    except Exception:
+        pass
 
     # Categories
     cursor.execute('''

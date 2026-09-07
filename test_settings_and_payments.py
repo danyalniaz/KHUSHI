@@ -53,14 +53,16 @@ def test_unauthorized_settings_update(client):
     assert res.status_code in (401, 403)
 
 def test_authorized_owner_settings_update(client):
-    """Verify PUT /api/settings allows authorized owner with PIN to update settings"""
+    """Verify PUT /api/settings allows authenticated owner session to update settings"""
+    with client.session_transaction() as sess:
+        sess['user_id'] = 1
+        sess['user_role'] = 'OWNER'
     res = client.put(
         '/api/settings',
         json={
             "store_profile": {"store_name": "Khushi Collection", "owner_name": "Khushi Luxury Owner"},
             "delivery": {"free_delivery_threshold": 6000, "default_delivery_fee": 250}
-        },
-        headers={'X-Admin-Pin': '8899', 'X-Admin-Role': 'OWNER'}
+        }
     )
     assert res.status_code == 200
     data = res.get_json()

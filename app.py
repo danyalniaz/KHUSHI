@@ -39,6 +39,17 @@ def create_app():
     app.register_blueprint(admin_bp)
     app.register_blueprint(payments_bp)
 
+    # Global Context Processor
+    @app.context_processor
+    def inject_global_settings():
+        from database import query_db
+        try:
+            rows = query_db('SELECT setting_key, setting_value FROM settings')
+            settings = {r['setting_key']: r['setting_value'] for r in rows}
+        except Exception:
+            settings = {}
+        return {'store_settings': settings}
+
     # Error Handlers
     @app.errorhandler(404)
     def not_found(e):
@@ -47,6 +58,16 @@ def create_app():
     @app.errorhandler(500)
     def internal_error(e):
         return render_template('500.html'), 500
+
+    # Serve Root Static and Admin HTML Files in Development
+    @app.route('/<path:filename>')
+    def serve_root_file(filename):
+        from flask import send_from_directory
+        root_dir = os.path.dirname(os.path.abspath(__file__))
+        target_path = os.path.join(root_dir, filename)
+        if os.path.isfile(target_path) and filename.endswith(('.html', '.js', '.css', '.svg', '.png', '.jpg', '.ico', '.json')):
+            return send_from_directory(root_dir, filename)
+        return render_template('404.html'), 404
 
     return app
 

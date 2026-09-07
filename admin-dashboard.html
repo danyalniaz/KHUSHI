@@ -56,9 +56,13 @@
                     <i class="fa-solid fa-chart-pie w-4"></i>
                     <span>Financial Reports</span>
                 </a>
+                <a href="admin-staff.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
+                    <i class="fa-solid fa-users-gear w-4"></i>
+                    <span>Staff & Roles</span>
+                </a>
                 <a href="admin-security.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
                     <i class="fa-solid fa-shield-halved w-4"></i>
-                    <span>Owner Security & Staff</span>
+                    <span>Owner Security</span>
                 </a>
                 <a href="shop.html" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition">
                     <i class="fa-solid fa-tag w-4"></i>
@@ -135,7 +139,7 @@
 
             <!-- 10 Metric Executive KPI Cards -->
             <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                <div class="luxury-card p-5 rounded-2xl space-y-2">
+                <div class="luxury-card p-5 rounded-2xl space-y-2" id="kpi-revenue-card">
                     <div class="flex items-center justify-between text-zinc-400 text-xs">
                         <span class="uppercase tracking-wider font-semibold">Today's Revenue</span>
                         <i class="fa-solid fa-money-bill-wave text-amber-400 text-base"></i>
@@ -175,7 +179,7 @@
             <!-- Charts Section -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <!-- Sales Curve -->
-                <div class="lg:col-span-8 luxury-card p-6 rounded-3xl space-y-4">
+                <div class="lg:col-span-8 luxury-card p-6 rounded-3xl space-y-4" id="sales-chart-card">
                     <div class="flex items-center justify-between">
                         <h3 class="text-sm font-serif font-bold text-white">7-Day Nationwide Sales Curve (PKR)</h3>
                         <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider">Live Feed</span>
@@ -319,32 +323,63 @@
                 })
                 .catch(() => {});
 
-            // Render Chart.js Sales Graph
-            const ctx = document.getElementById('salesChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                    datasets: [{
-                        label: 'Gross Sales (PKR)',
-                        data: [28000, 34500, 29000, 48000, 52000, 61000, 42500],
-                        borderColor: '#D4AF37',
-                        backgroundColor: 'rgba(212, 175, 55, 0.1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#71717a' } },
-                        y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#71717a' } }
-                    }
+            // Dynamic RBAC Protection: Hide revenue and financial trends for users without reports.view
+            const canViewFinancials = window.adminGuard && (adminGuard.isOwner() || adminGuard.hasPermission('reports.view'));
+            if (!canViewFinancials) {
+                const revCard = document.getElementById('kpi-revenue-card');
+                if (revCard) {
+                    revCard.innerHTML = `
+                        <div class="flex items-center justify-between text-zinc-400 text-xs">
+                            <span class="uppercase tracking-wider font-semibold">Fulfillment Pipeline</span>
+                            <i class="fa-solid fa-boxes-packing text-amber-400 text-base"></i>
+                        </div>
+                        <div class="text-2xl font-serif font-bold text-amber-400">Operational</div>
+                        <span class="text-[10px] text-zinc-400">Orders in active dispatch</span>
+                    `;
                 }
-            });
+                const chartCard = document.getElementById('sales-chart-card');
+                if (chartCard) {
+                    chartCard.innerHTML = `
+                        <div class="p-8 text-center space-y-3">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/20 text-amber-400 flex items-center justify-center mx-auto text-xl">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <h4 class="font-bold text-white text-sm">Financial Analytics Restricted</h4>
+                            <p class="text-xs text-zinc-400 max-w-sm mx-auto">Gross sales curves and nationwide PKR trends are protected and accessible only to Store Owner or staff with Financial Reports permission.</p>
+                        </div>
+                    `;
+                }
+            } else {
+                // Render Chart.js Sales Graph
+                const chartEl = document.getElementById('salesChart');
+                if (chartEl) {
+                    const ctx = chartEl.getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                            datasets: [{
+                                label: 'Gross Sales (PKR)',
+                                data: [28000, 34500, 29000, 48000, 52000, 61000, 42500],
+                                borderColor: '#D4AF37',
+                                backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#71717a' } },
+                                y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#71717a' } }
+                            }
+                        }
+                    });
+                }
+            }
         });
     </script>
 </body>

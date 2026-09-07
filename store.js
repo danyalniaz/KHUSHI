@@ -5187,19 +5187,6 @@ class KhushiStore {
         if (!localStorage.getItem(this.STORAGE_KEYS.SETTINGS)) {
             this.saveSettings(DEFAULT_SETTINGS);
         }
-        if (!localStorage.getItem('kc_owner')) {
-            const defaultOwner = {
-                id: 'owner_1',
-                name: 'Khushi Store Owner',
-                email: 'admin@khushicollection.com',
-                password_hash: btoa('Admin@12345'),
-                pin: '8899',
-                role: 'OWNER',
-                status: 'active',
-                created_at: new Date().toISOString()
-            };
-            localStorage.setItem('kc_owner', JSON.stringify(defaultOwner));
-        }
         this.applyStorefrontSettings();
         this.syncSettingsFromBackend();
     }
@@ -5316,9 +5303,7 @@ class KhushiStore {
             fetch('/api/settings', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-Admin-Pin': '8899',
-                    'X-Admin-Role': 'OWNER'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(merged)
             }).catch(() => {});
@@ -5993,11 +5978,11 @@ class KhushiStore {
             try {
                 fetch(`/api/orders/${clean}`, {
                     method: 'DELETE',
-                    headers: { 'X-Admin-Pin': '8899', 'X-Admin-Role': 'OWNER' }
+                    headers: { 'Content-Type': 'application/json' }
                 }).catch(() => {});
                 fetch(`/admin/api/orders/${clean}`, {
                     method: 'DELETE',
-                    headers: { 'X-Admin-Pin': '8899', 'X-Admin-Role': 'OWNER' }
+                    headers: { 'Content-Type': 'application/json' }
                 }).catch(() => {});
             } catch (e) {}
 
@@ -6306,6 +6291,22 @@ Please process this order.`.trim();
             return null;
         }
         return sessionData;
+    }
+
+    syncUserSession(user, sessionToken = null) {
+        if (!user) return;
+        const current = JSON.parse(localStorage.getItem('kc_auth_session')) || {};
+        const sessionData = {
+            ...current,
+            token: sessionToken || current.token || ('sess_' + Date.now() + '_' + Math.random().toString(36).substring(2)),
+            user_id: user.id || user.user_id,
+            name: user.name,
+            email: user.email,
+            role: (user.role || 'STAFF').toUpperCase(),
+            permissions: user.permissions || [],
+            expires_at: Date.now() + (12 * 3600 * 1000)
+        };
+        localStorage.setItem('kc_auth_session', JSON.stringify(sessionData));
     }
 
     isOwner() {
