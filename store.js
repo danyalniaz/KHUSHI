@@ -5742,6 +5742,9 @@ class KhushiStore {
     saveCart(cart) {
         localStorage.setItem(this.STORAGE_KEYS.CART, JSON.stringify(cart));
         this.updateBadgeCounts();
+        if (typeof window !== 'undefined' && typeof window.renderCartDrawer === 'function') {
+            window.renderCartDrawer();
+        }
     }
 
     getCart() {
@@ -5765,6 +5768,14 @@ class KhushiStore {
                         item.size = 'Standard';
                         modified = true;
                     }
+                    if (typeof item.price !== 'number' || isNaN(item.price)) {
+                        item.price = Number(item.price) || 0;
+                        modified = true;
+                    }
+                    if (typeof item.quantity !== 'number' || isNaN(item.quantity) || item.quantity < 1) {
+                        item.quantity = 1;
+                        modified = true;
+                    }
                 }
             }
             if (modified) {
@@ -5777,14 +5788,22 @@ class KhushiStore {
     }
 
     addToCart(productId, quantity = 1, size = '', color = '') {
-        const product = this.getProduct(productId);
-        if (!product) return { success: false, message: 'Product not found' };
+        const pId = Number(productId) || productId;
+        let product = this.getProduct(pId);
+        if (!product && typeof DEFAULT_PRODUCTS !== 'undefined') {
+            product = DEFAULT_PRODUCTS.find(p => p.id === Number(pId) || p.slug === String(pId));
+        }
+        if (!product) {
+            return { success: false, message: 'Product not found in catalog.' };
+        }
 
-        // Determine variant stock if matrix exists
+        const qtyToAdd = Math.max(1, parseInt(quantity, 10) || 1);
+
+        // Determine size
         let chosenSize = size;
         if (typeof chosenSize === 'object' && chosenSize !== null) {
             chosenSize = chosenSize.name || 'Standard';
-        } else if (!chosenSize || chosenSize === '[object Object]') {
+        } else if (!chosenSize || chosenSize === '[object Object]' || String(chosenSize).trim() === '') {
             if (product.sizes && product.sizes.length > 0) {
                 const first = product.sizes[0];
                 chosenSize = typeof first === 'object' && first !== null ? (first.name || 'Standard') : String(first);
@@ -5792,11 +5811,13 @@ class KhushiStore {
                 chosenSize = 'Standard';
             }
         }
+        chosenSize = String(chosenSize).trim();
 
+        // Determine color
         let chosenColor = color;
         if (typeof chosenColor === 'object' && chosenColor !== null) {
             chosenColor = chosenColor.name || 'Default';
-        } else if (!chosenColor || chosenColor === '[object Object]') {
+        } else if (!chosenColor || chosenColor === '[object Object]' || String(chosenColor).trim() === '') {
             if (product.colors && product.colors.length > 0) {
                 const first = product.colors[0];
                 chosenColor = typeof first === 'object' && first !== null ? (first.name || 'Default') : String(first);
@@ -5804,20 +5825,22 @@ class KhushiStore {
                 chosenColor = 'Default';
             }
         }
+        chosenColor = String(chosenColor).trim();
 
-        let availableStock = product.stock;
-        let variantSku = product.sku;
-        let unitPrice = product.sale_price || product.price;
+        let availableStock = (typeof product.stock === 'number' && !isNaN(product.stock)) ? product.stock : 25;
+        let variantSku = product.sku || `KC-${product.id}`;
+        let unitPrice = Number(product.sale_price || product.price) || 0;
 
-        if (product.variant_matrix && product.variant_matrix.length > 0) {
+        if (product.variant_matrix && Array.isArray(product.variant_matrix) && product.variant_matrix.length > 0) {
             const match = product.variant_matrix.find(v => 
-                (v.size.toLowerCase() === chosenSize.toLowerCase()) && 
-                (v.color.toLowerCase() === chosenColor.toLowerCase())
+                v && v.size && v.color &&
+                (String(v.size).toLowerCase() === chosenSize.toLowerCase()) && 
+                (String(v.color).toLowerCase() === chosenColor.toLowerCase())
             );
             if (match) {
-                availableStock = match.stock;
+                if (typeof match.stock === 'number') availableStock = match.stock;
                 if (match.sku) variantSku = match.sku;
-                if (match.price) unitPrice = match.price;
+                if (match.price) unitPrice = Number(match.price) || unitPrice;
             }
         }
 
@@ -5829,10 +5852,10 @@ class KhushiStore {
         }
 
         const cart = this.getCart();
-        const key = `${productId}_${chosenSize}_${chosenColor}`;
+        const key = `${product.id}_${chosenSize}_${chosenColor}`;
 
-        const currentQtyInCart = cart[key] ? cart[key].quantity : 0;
-        if (currentQtyInCart + quantity > availableStock) {
+        const currentQtyInCart = cart[key] ? Number(cart[key].quantity) || 0 : 0;
+        if (currentQtyInCart + qtyToAdd > availableStock && availableStock > 0) {
             return {
                 success: false,
                 message: `Only ${availableStock} units available for ${chosenSize} / ${chosenColor}.`
@@ -5840,17 +5863,17 @@ class KhushiStore {
         }
 
         if (cart[key]) {
-            cart[key].quantity += quantity;
+            cart[key].quantity += qtyToAdd;
         } else {
             cart[key] = {
                 key: key,
                 product_id: product.id,
                 name: product.name,
                 slug: product.slug,
-                thumbnail: product.thumbnail,
+                thumbnail: product.thumbnail || 'static/images/logo.svg',
                 price: unitPrice,
-                regular_price: product.price,
-                quantity: quantity,
+                regular_price: Number(product.price) || unitPrice,
+                quantity: qtyToAdd,
                 size: chosenSize,
                 color: chosenColor,
                 sku: variantSku
@@ -5859,42 +5882,79 @@ class KhushiStore {
 
         localStorage.setItem('kc_cart', JSON.stringify(cart));
         this.updateBadgeCounts();
-        return { success: true, message: `Added "${product.name}" (${chosenSize} / ${chosenColor}) to your bag!` };
+
+        // Optional non-blocking background server sync if online
+        try {
+            if (typeof fetch === 'function') {
+                fetch('/api/cart/add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        product_id: product.id,
+                        quantity: qtyToAdd,
+                        size: chosenSize,
+                        color: chosenColor
+                    })
+                }).catch(() => {});
+            }
+        } catch (e) {}
+
+        if (typeof window !== 'undefined' && typeof window.renderCartDrawer === 'function') {
+            window.renderCartDrawer();
+        }
+
+        return { 
+            success: true, 
+            message: `Added "${product.name}" (${chosenSize} / ${chosenColor}) to your bag!`,
+            cart: cart
+        };
     }
 
     updateCartQty(key, quantity) {
         const cart = this.getCart();
         if (cart[key]) {
-            if (quantity <= 0) {
+            const newQty = parseInt(quantity, 10) || 0;
+            if (newQty <= 0) {
                 delete cart[key];
             } else {
-                cart[key].quantity = quantity;
+                cart[key].quantity = newQty;
             }
             localStorage.setItem('kc_cart', JSON.stringify(cart));
             this.updateBadgeCounts();
+            if (typeof window !== 'undefined' && typeof window.renderCartDrawer === 'function') {
+                window.renderCartDrawer();
+            }
         }
     }
 
     removeFromCart(key) {
         const cart = this.getCart();
-        delete cart[key];
-        localStorage.setItem('kc_cart', JSON.stringify(cart));
-        this.updateBadgeCounts();
+        if (cart[key]) {
+            delete cart[key];
+            localStorage.setItem('kc_cart', JSON.stringify(cart));
+            this.updateBadgeCounts();
+            if (typeof window !== 'undefined' && typeof window.renderCartDrawer === 'function') {
+                window.renderCartDrawer();
+            }
+        }
     }
 
     clearCart() {
         localStorage.setItem('kc_cart', JSON.stringify({}));
         this.updateBadgeCounts();
+        if (typeof window !== 'undefined' && typeof window.renderCartDrawer === 'function') {
+            window.renderCartDrawer();
+        }
     }
 
     getCartSubtotal() {
         const cart = this.getCart();
-        return Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        return Object.values(cart).reduce((sum, item) => sum + (Number(item.price || 0) * Number(item.quantity || 1)), 0);
     }
 
     getCartCount() {
         const cart = this.getCart();
-        return Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+        return Object.values(cart).reduce((sum, item) => sum + Number(item.quantity || 0), 0);
     }
 
     // Wishlist Operations
@@ -6584,15 +6644,173 @@ function initLuxury3DSystem() {
     });
 }
 
-// Global Image Fallback Handler (Never show broken icons)
-function handleImageError(img) {
-    img.onerror = null;
-    img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500"><rect width="100%" height="100%" fill="%230F1420"/><text x="50%" y="48%" font-family="serif" font-size="20" fill="%23D4AF37" text-anchor="middle" font-weight="bold">KHUSHI COLLECTION</text><text x="50%" y="54%" font-family="sans-serif" font-size="12" fill="%2371717a" text-anchor="middle">Luxury Fashion Atelier</text></svg>';
+// Universal Global Cart Drawer & Action Handlers
+function ensureCartDrawerDOM() {
+    if (typeof document === 'undefined') return;
+    if (document.getElementById('cart-drawer')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'cart-drawer-overlay';
+    overlay.onclick = () => closeCartDrawer();
+    overlay.className = 'hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm transition-opacity';
+    document.body.appendChild(overlay);
+
+    const drawer = document.createElement('div');
+    drawer.id = 'cart-drawer';
+    drawer.className = 'fixed top-0 right-0 bottom-0 w-full max-w-md z-50 bg-[#0C101A] border-l border-amber-500/20 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between';
+    drawer.innerHTML = `
+        <div class="p-5 border-b border-zinc-800 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
+                    <i class="fa-solid fa-bag-shopping text-xs"></i>
+                </div>
+                <div>
+                    <h3 class="font-serif font-bold text-white text-sm">Shopping Bag</h3>
+                    <span class="text-[10px] text-zinc-400">Khushi Haute Couture</span>
+                </div>
+            </div>
+            <button onclick="closeCartDrawer()" class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white flex items-center justify-center transition" title="Close Bag">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+        </div>
+
+        <!-- Free Delivery Indicator -->
+        <div class="px-5 py-3 bg-[#080C14] border-b border-zinc-800/80 space-y-1.5">
+            <div class="flex items-center justify-between text-[11px]" id="drawer-free-delivery-msg">
+                <span>Add <strong class="text-amber-400">Rs. 5,000</strong> for <strong class="text-white">FREE Delivery</strong></span>
+            </div>
+            <div class="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                <div id="drawer-free-delivery-bar" class="h-full bg-gradient-to-r from-amber-500 to-amber-300 rounded-full transition-all duration-500" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div class="p-5 flex-1 overflow-y-auto divide-y divide-zinc-800/80 space-y-3" id="drawer-items-list"></div>
+
+        <div class="p-5 border-t border-zinc-800 bg-[#0A0D14] space-y-3">
+            <div class="flex items-center justify-between text-xs text-zinc-400">
+                <span>Bag Subtotal:</span>
+                <span class="text-base font-bold text-amber-400 font-mono" id="drawer-subtotal-val">Rs. 0</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <a href="cart.html" onclick="closeCartDrawer()" class="py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-center text-xs font-bold uppercase text-zinc-300 transition">View Bag</a>
+                <a href="checkout.html" class="py-3 rounded-xl btn-gold text-center text-xs font-extrabold uppercase tracking-wider shadow">Checkout &rarr;</a>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(drawer);
 }
+
+function openCartDrawer() {
+    ensureCartDrawerDOM();
+    renderCartDrawer();
+    const drawer = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('cart-drawer-overlay');
+    if (drawer) drawer.classList.remove('translate-x-full');
+    if (overlay) overlay.classList.remove('hidden');
+}
+
+function closeCartDrawer() {
+    const drawer = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('cart-drawer-overlay');
+    if (drawer) drawer.classList.add('translate-x-full');
+    if (overlay) overlay.classList.add('hidden');
+}
+
+function renderCartDrawer() {
+    ensureCartDrawerDOM();
+    const cart = store.getCart();
+    const items = Object.values(cart);
+    const container = document.getElementById('drawer-items-list');
+    const subtotalVal = store.getCartSubtotal();
+
+    const headerBag = document.getElementById('header-bag-subtotal');
+    if (headerBag) headerBag.textContent = `Rs. ${subtotalVal.toLocaleString()}`;
+
+    const drawerSubtotal = document.getElementById('drawer-subtotal-val');
+    if (drawerSubtotal) drawerSubtotal.textContent = `Rs. ${subtotalVal.toLocaleString()}`;
+
+    // Free delivery progress bar
+    const freeDeliveryThreshold = 5000;
+    const remaining = Math.max(0, freeDeliveryThreshold - subtotalVal);
+    const progressPct = Math.min(100, Math.round((subtotalVal / freeDeliveryThreshold) * 100));
+    const freeDeliveryMsg = document.getElementById('drawer-free-delivery-msg');
+    const freeDeliveryBar = document.getElementById('drawer-free-delivery-bar');
+    if (freeDeliveryMsg) {
+        if (remaining === 0) {
+            freeDeliveryMsg.innerHTML = '<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check"></i> You unlocked FREE Express Delivery!</span>';
+        } else {
+            freeDeliveryMsg.innerHTML = `Add <strong class="text-amber-400">Rs. ${remaining.toLocaleString()}</strong> for <strong class="text-white">FREE Delivery</strong>`;
+        }
+    }
+    if (freeDeliveryBar) {
+        freeDeliveryBar.style.width = `${progressPct}%`;
+    }
+
+    if (!container) return;
+
+    if (items.length === 0) {
+        container.innerHTML = `
+            <div class="py-16 text-center space-y-3">
+                <div class="w-14 h-14 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-500 flex items-center justify-center mx-auto text-xl">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <p class="text-xs text-zinc-400 font-medium">Your shopping bag is empty</p>
+                <a href="shop.html" onclick="closeCartDrawer()" class="inline-block px-5 py-2 rounded-full btn-gold text-[11px] font-bold uppercase tracking-wider">Explore Collections</a>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = items.map(item => {
+        const sVal = typeof item.size === 'object' && item.size !== null ? (item.size.name || 'Standard') : (item.size && item.size !== '[object Object]' ? item.size : 'Standard');
+        const cVal = typeof item.color === 'object' && item.color !== null ? (item.color.name || 'Default') : (item.color && item.color !== '[object Object]' ? item.color : 'Default');
+        const safeKey = item.key.replace(/'/g, "\\'");
+        return `
+            <div class="flex gap-4 py-3.5 first:pt-0 border-b border-zinc-800/80 last:border-b-0">
+                <img src="${item.thumbnail}" alt="${item.name}" onerror="handleImageError(this)" class="w-14 h-18 object-cover rounded-xl border border-zinc-800 flex-shrink-0">
+                <div class="flex-1 min-w-0 flex flex-col justify-between">
+                    <div>
+                        <h5 class="text-xs font-semibold text-white truncate">${item.name}</h5>
+                        <p class="text-[11px] text-zinc-400 mt-0.5">${sVal} &bull; ${cVal}</p>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <div class="flex items-center border border-zinc-700 rounded-lg bg-zinc-900 px-1">
+                            <button type="button" onclick="store.updateCartQty('${safeKey}', ${item.quantity - 1}); renderCartDrawer();" class="w-6 h-6 text-zinc-400 hover:text-white text-xs font-bold flex items-center justify-center">-</button>
+                            <span class="w-6 text-center text-xs font-bold text-white font-mono">${item.quantity}</span>
+                            <button type="button" onclick="store.updateCartQty('${safeKey}', ${item.quantity + 1}); renderCartDrawer();" class="w-6 h-6 text-zinc-400 hover:text-white text-xs font-bold flex items-center justify-center">+</button>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold text-amber-400 font-mono">Rs. ${(item.price * item.quantity).toLocaleString()}</span>
+                            <button type="button" onclick="store.removeFromCart('${safeKey}'); renderCartDrawer();" class="text-zinc-500 hover:text-rose-400 text-xs p-1" title="Remove item">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Global Standalone Bridge Functions (Zero-fail fallback)
+window.addToCart = function(productId, quantity = 1, size = '', color = '') {
+    const res = store.addToCart(productId, quantity, size, color);
+    if (res && res.success) {
+        showToast(res.message || 'Added to your bag!', 'success');
+        openCartDrawer();
+    } else {
+        showToast((res && res.message) || 'Could not add item to bag', 'error');
+    }
+    return res;
+};
+window.openCartDrawer = openCartDrawer;
+window.closeCartDrawer = closeCartDrawer;
+window.renderCartDrawer = renderCartDrawer;
 
 document.addEventListener('DOMContentLoaded', () => {
     store.updateBadgeCounts();
     store.applyStorefrontSettings();
+    ensureCartDrawerDOM();
     initLuxury3DSystem();
     document.querySelectorAll('img').forEach(img => {
         img.addEventListener('error', () => handleImageError(img));

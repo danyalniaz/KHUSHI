@@ -467,8 +467,8 @@
 
         function handleDetailAddToCart() {
             if (!currentProduct) return;
-            store.addToCart(currentProduct.id, qty, selectedSize, selectedColor);
-            showToast(`Added ${qty}x ${currentProduct.name} (${selectedSize} / ${selectedColor}) to your bag!`);
+            addToCart(currentProduct.id, qty, selectedSize, selectedColor);
+            openCartDrawer();
         }
 
         function handleDetailBuyNow() {
@@ -497,8 +497,6 @@
             const p2 = complementary[0];
             const p3 = complementary[1];
             const price1 = p1.sale_price || p1.price;
-            const price2 = p2.sale_price || p2.price;
-            const price3 = p3.sale_price || p3.price;
             const totalOriginal = price1 + price2 + price3;
             const bundleTotal = Math.round(totalOriginal * 0.9);
 
