@@ -311,5 +311,48 @@ def api_order_status_update(identifier):
     return update_order_status(identifier=identifier)
 
 
+# 11. Customer Inquiries & WhatsApp Activity Logger
+@api_bp.route('/inquiries', methods=['POST'])
+def api_record_inquiry():
+    data = request.get_json() or {}
+    inquiry_type = data.get('type', 'general')
+    p_name = data.get('product_name', 'General Catalog Inquiry')
+    sku = data.get('sku', 'N/A')
+    qty = data.get('quantity', 1)
+    price = data.get('price', 0)
+    size = data.get('size', 'Standard')
+    color = data.get('color', 'Default')
+
+    title = f"WhatsApp Inquiry: {p_name} ({size}/{color})"
+    msg = f"Customer initiated WhatsApp order inquiry for {p_name} (SKU: {sku}, Qty: {qty}, Total: Rs. {price:,})"
+
+    try:
+        execute_db('''
+            INSERT INTO notifications (recipient_type, recipient, title, message, channel, status)
+            VALUES ('admin', 'Store Concierge', ?, ?, 'whatsapp', 'received')
+        ''', (title, msg))
+    except Exception:
+        pass
+
+    return jsonify({'success': True, 'message': 'Inquiry logged for concierge.'})
 
 
+# 12. Contact Form API
+@api_bp.route('/contact', methods=['POST'])
+def api_submit_contact():
+    data = request.get_json() or request.form.to_dict() or {}
+    name = data.get('name', 'Valued Client')
+    phone = data.get('phone', '')
+    email = data.get('email', '')
+    subject = data.get('subject', 'Customer Inquiry')
+    message = data.get('message', '')
+
+    try:
+        execute_db('''
+            INSERT INTO notifications (recipient_type, recipient, title, message, channel, status)
+            VALUES ('admin', ?, ?, ?, 'web', 'received')
+        ''', (phone or email or 'Customer', f"Inquiry from {name}: {subject}", f"Message: {message}\nPhone: {phone}\nEmail: {email}"))
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+    return jsonify({'success': True, 'message': 'Thank you! Your message has been received by our concierge team.'})

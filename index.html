@@ -1576,49 +1576,9 @@
             `;
             modal.classList.remove('hidden');
         }
-        function closeQuickView() { document.getElementById('quick-view-modal').classList.add('hidden'); }
+        // Quick View Modal
+        function closeQuickView() { document.getElementById('quick-view-modal')?.classList.add('hidden'); }
 
-        // Cart Drawer
-        function openCartDrawer() {
-            renderCartDrawer();
-            document.getElementById('cart-drawer').classList.remove('translate-x-full');
-            document.getElementById('cart-drawer-overlay').classList.remove('hidden');
-        }
-        function closeCartDrawer() {
-            document.getElementById('cart-drawer').classList.add('translate-x-full');
-            document.getElementById('cart-drawer-overlay').classList.add('hidden');
-        }
-        function renderCartDrawer() {
-            const cart = store.getCart();
-            const items = Object.values(cart);
-            const container = document.getElementById('drawer-items-list');
-            const subtotalVal = store.getCartSubtotal();
-            const headerBag = document.getElementById('header-bag-subtotal');
-            if (headerBag) headerBag.textContent = `Rs. ${subtotalVal.toLocaleString()}`;
-            document.getElementById('drawer-subtotal-val').textContent = `Rs. ${subtotalVal.toLocaleString()}`;
-
-            if (items.length === 0) {
-                container.innerHTML = `<div class="py-16 text-center text-zinc-400">Your bag is empty</div>`;
-                return;
-            }
-
-            container.innerHTML = items.map(item => {
-                const sVal = typeof item.size === 'object' && item.size !== null ? (item.size.name || 'Standard') : (item.size && item.size !== '[object Object]' ? item.size : 'Standard');
-                const cVal = typeof item.color === 'object' && item.color !== null ? (item.color.name || 'Default') : (item.color && item.color !== '[object Object]' ? item.color : 'Default');
-                return `
-                    <div class="flex gap-4 py-3.5 first:pt-0">
-                        <img src="${item.thumbnail}" class="w-14 h-18 object-cover rounded-lg border border-zinc-800 flex-shrink-0">
-                        <div class="flex-1 min-w-0">
-                            <h5 class="text-xs font-semibold text-white truncate">${item.name}</h5>
-                            <p class="text-[11px] text-zinc-400 mt-0.5">${sVal} / ${cVal}</p>
-                            <div class="flex items-center justify-between mt-2">
-                                <span class="text-xs font-bold text-amber-400">Rs. ${(item.price * item.quantity).toLocaleString()}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
 
         // Live Search Setup
         function setupLiveSearch(inputId, dropdownId) {

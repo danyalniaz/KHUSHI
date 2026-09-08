@@ -10,11 +10,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Toast Notification Helper
 function showToast(message, type = 'success') {
-    const container = document.getElementById('toast-container');
-    if (!container) return;
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'fixed bottom-20 right-4 md:bottom-6 md:right-6 z-50 flex flex-col gap-2 pointer-events-none';
+        document.body.appendChild(container);
+    }
 
     const toast = document.createElement('div');
-    toast.className = `flex items-center gap-3 px-5 py-3.5 rounded-xl text-sm font-medium shadow-2xl transition-all duration-300 transform translate-y-4 opacity-0 border ${
+    toast.className = `flex items-center gap-3 px-5 py-3.5 rounded-xl text-xs font-semibold shadow-2xl transition-all duration-300 transform translate-y-4 opacity-0 border pointer-events-auto ${
         type === 'success' 
             ? 'bg-emerald-950/90 text-emerald-200 border-emerald-500/40 shadow-emerald-900/40' 
             : type === 'error'
@@ -23,7 +28,7 @@ function showToast(message, type = 'success') {
     }`;
 
     const icon = type === 'success' ? 'fa-circle-check' : (type === 'error' ? 'fa-circle-xmark' : 'fa-bell');
-    toast.innerHTML = `<i class="fa-solid ${icon} text-lg"></i> <span>${message}</span>`;
+    toast.innerHTML = `<i class="fa-solid ${icon} text-base"></i> <span>${message}</span>`;
     
     container.appendChild(toast);
     
@@ -34,8 +39,10 @@ function showToast(message, type = 'success') {
     setTimeout(() => {
         toast.classList.add('translate-y-4', 'opacity-0');
         setTimeout(() => toast.remove(), 300);
-    }, 3500);
+    }, 3200);
 }
+window.showToast = showToast;
+window.addToCart = addToCart;
 
 // 1. Live Instant Search with Dropdown
 function initLiveSearch() {

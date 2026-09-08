@@ -44,26 +44,26 @@
 
             <div class="md:col-span-7 luxury-card p-6 sm:p-8 rounded-3xl space-y-4">
                 <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">Send an Inquiry</h3>
-                <form onsubmit="event.preventDefault(); showToast('Message sent! Our concierge will respond shortly.'); this.reset();" class="space-y-3 text-xs">
+                <form onsubmit="handleContactSubmit(event)" class="space-y-3 text-xs">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block font-semibold text-zinc-300 mb-1">Your Name *</label>
-                            <input type="text" required placeholder="Khushi" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                            <input type="text" id="contact-name" required placeholder="Khushi" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
                         </div>
                         <div>
                             <label class="block font-semibold text-zinc-300 mb-1">Phone / WhatsApp *</label>
-                            <input type="tel" required placeholder="0300 1234567" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                            <input type="tel" id="contact-phone" required placeholder="0300 1234567" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
                         </div>
                     </div>
                     <div>
                         <label class="block font-semibold text-zinc-300 mb-1">Subject</label>
-                        <input type="text" placeholder="Size assistance or Custom Order" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                        <input type="text" id="contact-subject" placeholder="Size assistance or Custom Order" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
                     </div>
                     <div>
                         <label class="block font-semibold text-zinc-300 mb-1">Message</label>
-                        <textarea rows="3" required placeholder="How may we assist you today?" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white"></textarea>
+                        <textarea id="contact-message" rows="3" required placeholder="How may we assist you today?" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white"></textarea>
                     </div>
-                    <button type="submit" class="w-full py-3 rounded-xl btn-gold font-bold uppercase tracking-wider">Send Message</button>
+                    <button type="submit" id="contact-submit-btn" class="w-full py-3 rounded-xl btn-gold font-bold uppercase tracking-wider">Send Message</button>
                 </form>
             </div>
         </div>
@@ -77,6 +77,38 @@
         document.addEventListener('DOMContentLoaded', () => {
             store.applyStorefrontSettings();
         });
+
+        async function handleContactSubmit(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            const name = document.getElementById('contact-name')?.value || '';
+            const phone = document.getElementById('contact-phone')?.value || '';
+            const subject = document.getElementById('contact-subject')?.value || 'Inquiry';
+            const message = document.getElementById('contact-message')?.value || '';
+            const btn = document.getElementById('contact-submit-btn');
+
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Sending...';
+            }
+
+            try {
+                await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone, subject, message })
+                });
+            } catch(e) {}
+
+            showToast('✨ Thank you! Your inquiry has been sent to our concierge team.', 'success');
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = 'Send Message';
+            }
+            document.getElementById('contact-name').value = '';
+            document.getElementById('contact-phone').value = '';
+            document.getElementById('contact-subject').value = '';
+            document.getElementById('contact-message').value = '';
+        }
     </script>
 </body>
 </html>

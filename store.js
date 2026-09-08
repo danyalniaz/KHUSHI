@@ -6542,9 +6542,54 @@ Please process this order.`.trim();
         const clean = String(phone || '').replace(/[^0-9]/g, '');
         return `https://api.whatsapp.com/send?phone=${clean}&text=${encodeURIComponent(message)}`;
     }
+
+    // Orders Engine
+    getOrders() {
+        try {
+            return JSON.parse(localStorage.getItem(this.STORAGE_KEYS.ORDERS)) || DEFAULT_ORDERS;
+        } catch (e) {
+            return DEFAULT_ORDERS;
+        }
+    }
+
+    getOrder(orderNumber) {
+        const clean = String(orderNumber).toUpperCase().replace('#', '').trim();
+        return this.getOrders().find(o => o.order_number === clean || o.order_number === `KC-${clean}` || String(o.id) === clean);
+    }
+
+    saveOrders(orders) {
+        localStorage.setItem(this.STORAGE_KEYS.ORDERS, JSON.stringify(orders));
+    }
+
+    createOrder(orderData) {
+        const orders = this.getOrders();
+        const randId = Math.floor(10000 + Math.random() * 90000);
+        const newOrder = {
+            id: randId,
+            order_number: orderData.order_number || `KC-${randId}`,
+            tracking_number: orderData.tracking_number || `TRX-${Math.floor(10000000 + Math.random() * 90000000)}`,
+            customer_name: orderData.customer_name || 'Valued Customer',
+            customer_phone: orderData.customer_phone || '',
+            customer_email: orderData.customer_email || '',
+            address: orderData.address || '',
+            city: orderData.city || 'Lahore',
+            area: orderData.area || '',
+            delivery_instructions: orderData.delivery_instructions || '',
+            total_amount: Number(orderData.total_amount || 0),
+            payment_method: orderData.payment_method || 'cod',
+            payment_status: orderData.payment_status || (orderData.payment_method === 'cod' ? 'PENDING' : 'UNVERIFIED'),
+            order_status: orderData.order_status || 'pending',
+            items: orderData.items || [],
+            created_at: new Date().toISOString()
+        };
+        orders.unshift(newOrder);
+        this.saveOrders(orders);
+        return newOrder;
+    }
 }
 
 const store = new KhushiStore();
+window.store = store;
 
 // Universal Toast Helper
 function showToast(message, type = 'success') {
@@ -6557,7 +6602,7 @@ function showToast(message, type = 'success') {
     }
 
     const toast = document.createElement('div');
-    toast.className = `flex items-center gap-3 px-5 py-3.5 rounded-xl text-xs font-semibold shadow-2xl transition-all duration-300 transform translate-y-4 opacity-0 border ${
+    toast.className = `flex items-center gap-3 px-5 py-3.5 rounded-xl text-xs font-semibold shadow-2xl transition-all duration-300 transform translate-y-4 opacity-0 border pointer-events-auto ${
         type === 'success' 
             ? 'bg-emerald-950/90 text-emerald-200 border-emerald-500/40 shadow-emerald-900/40' 
             : type === 'error'
@@ -6576,11 +6621,12 @@ function showToast(message, type = 'success') {
         setTimeout(() => toast.remove(), 300);
     }, 3200);
 }
+window.showToast = showToast;
 
 // Global Reusable Luxury Micro-3D Card Engine
 function initLuxury3DSystem() {
-    if (window.matchMedia('(hover: none)').matches) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia && window.matchMedia('(hover: none)').matches) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const cards = document.querySelectorAll('.card-3d-wrap, .luxury-3d-card');
     cards.forEach(card => {
@@ -6618,7 +6664,6 @@ function initLuxury3DSystem() {
             mousePercentX = px;
             mousePercentY = py;
 
-            // Controlled 1.5°–2.8° maximum tilt
             targetRotY = ((x / rect.width) - 0.5) * 5.2;
             targetRotX = -(((y / rect.height) - 0.5) * 5.2);
 
@@ -6644,7 +6689,14 @@ function initLuxury3DSystem() {
     });
 }
 
-// Universal Global Cart Drawer & Action Handlers
+function handleImageError(img) {
+    if (!img.dataset.hasFallback) {
+        img.dataset.hasFallback = "true";
+        img.src = 'static/images/hero-luxury.jpg';
+    }
+}
+
+// Universal Cart Drawer Management
 function ensureCartDrawerDOM() {
     if (typeof document === 'undefined') return;
     if (document.getElementById('cart-drawer')) return;
@@ -6652,14 +6704,14 @@ function ensureCartDrawerDOM() {
     const overlay = document.createElement('div');
     overlay.id = 'cart-drawer-overlay';
     overlay.onclick = () => closeCartDrawer();
-    overlay.className = 'hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm transition-opacity';
+    overlay.className = 'hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm transition-opacity';
     document.body.appendChild(overlay);
 
     const drawer = document.createElement('div');
     drawer.id = 'cart-drawer';
     drawer.className = 'fixed top-0 right-0 bottom-0 w-full max-w-md z-50 bg-[#0C101A] border-l border-amber-500/20 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between';
     drawer.innerHTML = `
-        <div class="p-5 border-b border-zinc-800 flex items-center justify-between">
+        <div class="p-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-950/60">
             <div class="flex items-center gap-2.5">
                 <div class="w-8 h-8 rounded-full bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
                     <i class="fa-solid fa-bag-shopping text-xs"></i>
@@ -6707,6 +6759,7 @@ function openCartDrawer() {
     const overlay = document.getElementById('cart-drawer-overlay');
     if (drawer) drawer.classList.remove('translate-x-full');
     if (overlay) overlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
 }
 
 function closeCartDrawer() {
@@ -6714,32 +6767,34 @@ function closeCartDrawer() {
     const overlay = document.getElementById('cart-drawer-overlay');
     if (drawer) drawer.classList.add('translate-x-full');
     if (overlay) overlay.classList.add('hidden');
+    document.body.style.overflow = '';
 }
 
 function renderCartDrawer() {
     ensureCartDrawerDOM();
     const cart = store.getCart();
     const items = Object.values(cart);
-    const container = document.getElementById('drawer-items-list');
+    const container = document.getElementById('drawer-items-list') || document.getElementById('cart-drawer-items');
     const subtotalVal = store.getCartSubtotal();
 
     const headerBag = document.getElementById('header-bag-subtotal');
     if (headerBag) headerBag.textContent = `Rs. ${subtotalVal.toLocaleString()}`;
 
-    const drawerSubtotal = document.getElementById('drawer-subtotal-val');
+    const drawerSubtotal = document.getElementById('drawer-subtotal-val') || document.getElementById('cart-drawer-subtotal');
     if (drawerSubtotal) drawerSubtotal.textContent = `Rs. ${subtotalVal.toLocaleString()}`;
 
     // Free delivery progress bar
     const freeDeliveryThreshold = 5000;
     const remaining = Math.max(0, freeDeliveryThreshold - subtotalVal);
     const progressPct = Math.min(100, Math.round((subtotalVal / freeDeliveryThreshold) * 100));
-    const freeDeliveryMsg = document.getElementById('drawer-free-delivery-msg');
-    const freeDeliveryBar = document.getElementById('drawer-free-delivery-bar');
+    const freeDeliveryMsg = document.getElementById('drawer-free-delivery-msg') || document.getElementById('free-delivery-msg');
+    const freeDeliveryBar = document.getElementById('drawer-free-delivery-bar') || document.getElementById('free-delivery-bar');
+    
     if (freeDeliveryMsg) {
-        if (remaining === 0) {
+        if (remaining === 0 && subtotalVal > 0) {
             freeDeliveryMsg.innerHTML = '<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check"></i> You unlocked FREE Express Delivery!</span>';
         } else {
-            freeDeliveryMsg.innerHTML = `Add <strong class="text-amber-400">Rs. ${remaining.toLocaleString()}</strong> for <strong class="text-white">FREE Delivery</strong>`;
+            freeDeliveryMsg.innerHTML = `<span>Add <strong class="text-amber-400 font-mono">Rs. ${remaining.toLocaleString()}</strong> for <strong class="text-white">FREE Delivery</strong></span>`;
         }
     }
     if (freeDeliveryBar) {
@@ -6806,6 +6861,7 @@ window.addToCart = function(productId, quantity = 1, size = '', color = '') {
 window.openCartDrawer = openCartDrawer;
 window.closeCartDrawer = closeCartDrawer;
 window.renderCartDrawer = renderCartDrawer;
+window.ensureCartDrawerDOM = ensureCartDrawerDOM;
 
 document.addEventListener('DOMContentLoaded', () => {
     store.updateBadgeCounts();

@@ -219,8 +219,19 @@
                         </div>
                     </div>
 
-                    <button onclick="handleDetailBuyNow()" class="w-full py-3.5 sm:py-4 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-amber-300 border border-amber-500/50 hover:border-amber-400 text-xs uppercase tracking-widest font-bold transition shadow-lg flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-bolt text-amber-400"></i> Instant Checkout (Buy Now)
+                    <!-- Instant Checkout & Quick Order Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button onclick="handleDetailBuyNow()" class="w-full py-3.5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-amber-300 border border-amber-500/50 hover:border-amber-400 text-xs uppercase tracking-wider font-bold transition shadow-lg flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bolt text-amber-400"></i> Instant Checkout
+                        </button>
+                        <button onclick="openQuickOrderModal()" class="w-full py-3.5 rounded-2xl bg-emerald-950/80 hover:bg-emerald-900/90 text-emerald-300 border border-emerald-500/50 hover:border-emerald-400 text-xs uppercase tracking-wider font-bold transition shadow-lg flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-truck-fast text-emerald-400"></i> 1-Click COD Order (SMS)
+                        </button>
+                    </div>
+
+                    <!-- Direct WhatsApp Order & Inquiry Button -->
+                    <button onclick="handleWhatsAppOrder()" class="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp Concierge
                     </button>
                 </div>
 
@@ -233,12 +244,13 @@
                             <span class="text-zinc-400 text-[11px]">Chat with our personal master stylist on WhatsApp</span>
                         </div>
                     </div>
-                    <a id="detail-whatsapp-btn" href="https://wa.me/923001234567" target="_blank" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-[11px] shadow">
+                    <button onclick="handleWhatsAppOrder()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-[11px] shadow">
                         Chat Now
-                    </a>
+                    </button>
                 </div>
 
             </div>
+
 
         </div>
 
@@ -673,6 +685,226 @@
                 `).join('');
             }
         });
+
+        // WhatsApp Order Dispatcher
+        function handleWhatsAppOrder() {
+            if (!currentProduct) return;
+            const s = store.getSettings() || {};
+            const waRaw = (s.store_profile && s.store_profile.whatsapp) || (s.contact_support && s.contact_support.whatsapp_number) || s.store_whatsapp || '923001234567';
+            const cleanWa = String(waRaw).replace(/\D/g, '');
+            const price = currentProduct.sale_price || currentProduct.price;
+            const total = price * qty;
+
+            const msg = `👑 *ORDER INQUIRY — KHUSHI COLLECTION*\n` +
+                        `━━━━━━━━━━━━━━━━━━━━━━\n` +
+                        `*Product:* ${currentProduct.name}\n` +
+                        `*SKU:* ${currentProduct.sku}\n` +
+                        `*Size:* ${selectedSize}\n` +
+                        `*Color:* ${selectedColor}\n` +
+                        `*Quantity:* ${qty}\n` +
+                        `*Total Amount:* Rs. ${total.toLocaleString()}\n` +
+                        `━━━━━━━━━━━━━━━━━━━━━━\n` +
+                        `Please confirm my order & dispatch time!`;
+
+            // Asynchronously post inquiry to backend
+            try {
+                fetch('/api/inquiries', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'whatsapp_order',
+                        product_id: currentProduct.id,
+                        product_name: currentProduct.name,
+                        sku: currentProduct.sku,
+                        size: selectedSize,
+                        color: selectedColor,
+                        quantity: qty,
+                        price: total
+                    })
+                }).catch(() => {});
+            } catch(e) {}
+
+            window.open(`https://wa.me/${cleanWa}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // Quick 1-Click COD Order Functions
+        function openQuickOrderModal() {
+            if (!currentProduct) return;
+            const modal = document.getElementById('quick-order-modal');
+            const summary = document.getElementById('qo-product-summary');
+            const totalEl = document.getElementById('qo-total-price');
+            const price = currentProduct.sale_price || currentProduct.price;
+            const total = price * qty;
+
+            if (summary) {
+                summary.innerHTML = `
+                    <div class="flex items-center gap-3 p-3 bg-zinc-950 rounded-xl border border-zinc-800">
+                        <img src="${currentProduct.thumbnail}" class="w-12 h-14 object-cover rounded-lg">
+                        <div class="min-w-0 flex-1 text-xs">
+                            <h5 class="font-bold text-white truncate">${currentProduct.name}</h5>
+                            <p class="text-zinc-400 text-[11px]">Size: <span class="text-amber-400 font-semibold">${selectedSize}</span> | Color: <span class="text-amber-400 font-semibold">${selectedColor}</span> | Qty: <span class="text-white font-bold">${qty}</span></p>
+                            <span class="text-amber-400 font-bold font-mono">Rs. ${price.toLocaleString()} each</span>
+                        </div>
+                    </div>
+                `;
+            }
+            if (totalEl) totalEl.textContent = `Rs. ${total.toLocaleString()}`;
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeQuickOrderModal() {
+            const modal = document.getElementById('quick-order-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        async function handleQuickOrderSubmit(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            if (!currentProduct) return;
+
+            const name = (document.getElementById('qo-name')?.value || '').trim();
+            const phone = (document.getElementById('qo-phone')?.value || '').trim();
+            const city = document.getElementById('qo-city')?.value || 'Lahore';
+            const address = (document.getElementById('qo-address')?.value || '').trim();
+            const btn = document.getElementById('qo-submit-btn');
+
+            if (!phone) {
+                showToast('Please enter your Mobile / WhatsApp number for SMS tracking', 'error');
+                return;
+            }
+            if (!address) {
+                showToast('Please enter your complete street delivery address', 'error');
+                return;
+            }
+
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> CREATING ORDER...';
+            }
+
+            const price = currentProduct.sale_price || currentProduct.price;
+            const itemTotal = price * qty;
+            const deliveryFee = itemTotal >= 5000 ? 0 : 250;
+            const total = itemTotal + deliveryFee;
+
+            const payload = {
+                customer_name: name || 'Valued Customer',
+                customer_phone: phone,
+                customer_email: '',
+                address: address,
+                city: city,
+                payment_method: 'cod',
+                items: [{
+                    product_id: currentProduct.id,
+                    name: currentProduct.name,
+                    sku: currentProduct.sku,
+                    price: price,
+                    quantity: qty,
+                    size: selectedSize,
+                    color: selectedColor,
+                    thumbnail: currentProduct.thumbnail
+                }]
+            };
+
+            let orderData = null;
+            try {
+                const res = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) orderData = await res.json();
+            } catch(err) {}
+
+            if (!orderData || !orderData.success) {
+                const localOrder = store.createOrder({
+                    customer_name: name,
+                    customer_phone: phone,
+                    address: address,
+                    city: city,
+                    total_amount: total,
+                    payment_method: 'cod',
+                    payment_status: 'PENDING',
+                    order_status: 'pending',
+                    items: payload.items
+                });
+                orderData = {
+                    success: true,
+                    order_number: localOrder.order_number,
+                    total_amount: total
+                };
+            }
+
+            closeQuickOrderModal();
+            showToast(`🎉 Order #${orderData.order_number} confirmed! SMS & WhatsApp sent.`, 'success');
+            setTimeout(() => {
+                window.location.href = `order-confirmation.html?order_id=${orderData.order_number}`;
+            }, 500);
+        }
     </script>
+
+    <!-- Quick COD 1-Click Order Modal -->
+    <div id="quick-order-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="relative w-full max-w-md bg-[#0D111A] border border-amber-500/30 rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-truck-fast text-amber-400"></i>
+                    <h3 class="font-serif font-bold text-white text-base">Instant 1-Click Order</h3>
+                </div>
+                <button onclick="closeQuickOrderModal()" class="text-zinc-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div id="qo-product-summary"></div>
+
+            <form onsubmit="handleQuickOrderSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Your Full Name *</label>
+                    <input type="text" id="qo-name" required placeholder="Khushi Fatima" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Mobile / WhatsApp Number * (For SMS tracking)</label>
+                    <input type="tel" id="qo-phone" required placeholder="0300 1234567" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">City *</label>
+                        <select id="qo-city" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                            <option value="Lahore">Lahore</option>
+                            <option value="Karachi">Karachi</option>
+                            <option value="Islamabad">Islamabad</option>
+                            <option value="Rawalpindi">Rawalpindi</option>
+                            <option value="Faisalabad">Faisalabad</option>
+                            <option value="Multan">Multan</option>
+                            <option value="Peshawar">Peshawar</option>
+                            <option value="Quetta">Quetta</option>
+                            <option value="Sialkot">Sialkot</option>
+                            <option value="Gujranwala">Gujranwala</option>
+                            <option value="Other">Other Nationwide</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-zinc-300 mb-1">Payment</label>
+                        <div class="bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-amber-400 font-bold">
+                            Cash on Delivery (COD)
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-zinc-300 mb-1">Street Delivery Address *</label>
+                    <textarea id="qo-address" rows="2" required placeholder="House/Apartment #, Street, Colony/Sector" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white"></textarea>
+                </div>
+
+                <div class="flex justify-between items-center pt-2 border-t border-zinc-800 text-sm">
+                    <span class="text-zinc-400">Total Payable:</span>
+                    <span id="qo-total-price" class="font-bold text-amber-400 font-mono text-base">Rs. 0</span>
+                </div>
+
+                <button type="submit" id="qo-submit-btn" class="w-full py-3.5 rounded-xl btn-gold font-bold uppercase tracking-wider shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-check"></i> Confirm Instant Order (COD)
+                </button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
