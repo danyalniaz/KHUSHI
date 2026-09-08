@@ -80,37 +80,62 @@
                     <div class="space-y-3">
                         <!-- COD -->
                         <label class="flex items-start gap-3 p-4 rounded-2xl border border-zinc-800 hover:border-amber-500/40 bg-zinc-900/60 cursor-pointer transition">
-                            <input type="radio" name="payment_method" value="cod" checked class="mt-1 accent-amber-400">
+                            <input type="radio" name="payment_method" value="cod" checked onchange="toggleTemplatePayBoxes('cod')" class="mt-1 accent-amber-400">
                             <div class="flex-1">
                                 <span class="text-xs font-bold text-white block">Cash on Delivery (COD)</span>
                                 <span class="text-[11px] text-zinc-400">Pay conveniently in cash when the courier rider delivers your package at your doorstep.</span>
                             </div>
                         </label>
 
+                        <!-- Online Card -->
+                        <label class="flex items-start gap-3 p-4 rounded-2xl border border-zinc-800 hover:border-amber-500/40 bg-zinc-900/60 cursor-pointer transition">
+                            <input type="radio" name="payment_method" value="online_card" onchange="toggleTemplatePayBoxes('online_card')" class="mt-1 accent-amber-400">
+                            <div class="flex-1">
+                                <span class="text-xs font-bold text-sky-400 block">Debit / Credit Card (Visa / Mastercard)</span>
+                                <span class="text-[11px] text-zinc-400">Secure end-to-end encrypted card processing with instant digital verification.</span>
+                                <div id="template-card-box" class="hidden mt-3 p-3 rounded-xl bg-sky-950/30 border border-sky-500/30 text-xs text-sky-200 space-y-2">
+                                    <label class="block text-[11px] text-zinc-300">Card Number (Simulation Mode)</label>
+                                    <input type="text" name="card_number" placeholder="4000 1234 5678 9010" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono">
+                                </div>
+                            </div>
+                        </label>
+
                         <!-- EasyPaisa -->
                         <label class="flex items-start gap-3 p-4 rounded-2xl border border-zinc-800 hover:border-amber-500/40 bg-zinc-900/60 cursor-pointer transition">
-                            <input type="radio" name="payment_method" value="easypaisa" class="mt-1 accent-amber-400">
+                            <input type="radio" name="payment_method" value="easypaisa" onchange="toggleTemplatePayBoxes('easypaisa')" class="mt-1 accent-amber-400">
                             <div class="flex-1">
                                 <span class="text-xs font-bold text-emerald-400 block">EasyPaisa Mobile Payment</span>
                                 <span class="text-[11px] text-zinc-400">Send payment to official EasyPaisa Account: <strong>{{ store_settings.get('easypaisa_number', '03001234567') }}</strong> ({{ store_settings.get('easypaisa_title', 'Khushi Collection') }}).</span>
+                                <div id="template-easypaisa-box" class="hidden mt-3 p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30 text-xs text-emerald-200 space-y-2">
+                                    <label class="block text-[11px] text-zinc-300">EasyPaisa Transaction ID (TID) *</label>
+                                    <input type="text" name="easypaisa_tid" placeholder="e.g. 983201844" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono">
+                                </div>
                             </div>
                         </label>
 
                         <!-- JazzCash -->
                         <label class="flex items-start gap-3 p-4 rounded-2xl border border-zinc-800 hover:border-amber-500/40 bg-zinc-900/60 cursor-pointer transition">
-                            <input type="radio" name="payment_method" value="jazzcash" class="mt-1 accent-amber-400">
+                            <input type="radio" name="payment_method" value="jazzcash" onchange="toggleTemplatePayBoxes('jazzcash')" class="mt-1 accent-amber-400">
                             <div class="flex-1">
                                 <span class="text-xs font-bold text-rose-400 block">JazzCash Mobile Payment</span>
                                 <span class="text-[11px] text-zinc-400">Send payment to official JazzCash Account: <strong>{{ store_settings.get('jazzcash_number', '03001234567') }}</strong> ({{ store_settings.get('jazzcash_title', 'Khushi Collection') }}).</span>
+                                <div id="template-jazzcash-box" class="hidden mt-3 p-3 rounded-xl bg-rose-950/30 border border-rose-500/30 text-xs text-rose-200 space-y-2">
+                                    <label class="block text-[11px] text-zinc-300">JazzCash Transaction ID (TID) *</label>
+                                    <input type="text" name="jazzcash_tid" placeholder="e.g. 983201844" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono">
+                                </div>
                             </div>
                         </label>
 
                         <!-- Bank Transfer -->
                         <label class="flex items-start gap-3 p-4 rounded-2xl border border-zinc-800 hover:border-amber-500/40 bg-zinc-900/60 cursor-pointer transition">
-                            <input type="radio" name="payment_method" value="bank" class="mt-1 accent-amber-400">
+                            <input type="radio" name="payment_method" value="bank" onchange="toggleTemplatePayBoxes('bank')" class="mt-1 accent-amber-400">
                             <div class="flex-1">
                                 <span class="text-xs font-bold text-amber-400 block">Direct Bank Transfer</span>
                                 <span class="text-[11px] text-zinc-400">Bank: <strong>{{ store_settings.get('bank_name', 'Meezan Bank') }}</strong> | A/C: <strong>{{ store_settings.get('bank_account_number', '0201010887654321') }}</strong> ({{ store_settings.get('bank_account_title', 'Khushi Collection Luxury') }}).</span>
+                                <div id="template-bank-box" class="hidden mt-3 p-3 rounded-xl bg-amber-950/30 border border-amber-500/30 text-xs text-amber-200 space-y-2">
+                                    <label class="block text-[11px] text-zinc-300">Deposit Slip / Transaction Reference *</label>
+                                    <input type="text" name="bank_reference" placeholder="e.g. FT-938201 or ATM Ref" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono">
+                                </div>
                             </div>
                         </label>
                     </div>
@@ -242,6 +267,16 @@
     function recalcGrandTotal() {
         const grand = Math.max(0, rawSubtotal + currentShipping - couponDiscount);
         document.getElementById('checkout-grand-total').textContent = `Rs. ${grand.toLocaleString()}`;
+    }
+
+    function toggleTemplatePayBoxes(method) {
+        ['card', 'easypaisa', 'jazzcash', 'bank'].forEach(m => {
+            const box = document.getElementById(`template-${m}-box`);
+            if (box) {
+                const targetMatch = (m === 'card' && method === 'online_card') || (m === method);
+                box.classList.toggle('hidden', !targetMatch);
+            }
+        });
     }
 </script>
 {% endblock %}

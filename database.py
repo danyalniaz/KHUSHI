@@ -428,8 +428,64 @@ def init_db():
         proof_image TEXT,
         admin_notes TEXT,
         verified_at TIMESTAMP,
+        verified_by INTEGER,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS payments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        payment_id TEXT UNIQUE NOT NULL,
+        order_id INTEGER,
+        order_number TEXT NOT NULL,
+        customer_name TEXT NOT NULL,
+        customer_email TEXT,
+        gateway TEXT NOT NULL,
+        amount REAL NOT NULL,
+        currency TEXT DEFAULT 'PKR',
+        transaction_reference TEXT,
+        payment_status TEXT DEFAULT 'PENDING_VERIFICATION',
+        gateway_mode TEXT DEFAULT 'TEST',
+        proof_image TEXT,
+        admin_notes TEXT,
+        verified_at TIMESTAMP,
+        verified_by INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    ''')
+
+    # Notification Logs & Audit Table
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS notification_logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        order_id INTEGER,
+        order_number TEXT,
+        recipient_type TEXT DEFAULT 'customer',
+        recipient TEXT NOT NULL,
+        channel TEXT DEFAULT 'sms',
+        title TEXT,
+        message TEXT NOT NULL,
+        status TEXT DEFAULT 'sent',
+        idempotency_key TEXT UNIQUE,
+        error_message TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS notifications (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        recipient_type TEXT DEFAULT 'customer',
+        recipient TEXT NOT NULL,
+        title TEXT,
+        message TEXT NOT NULL,
+        channel TEXT DEFAULT 'sms',
+        status TEXT DEFAULT 'sent',
+        metadata TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     ''')
 
@@ -455,6 +511,42 @@ def init_db():
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     ''')
+
+    # Safe column migrations for orders table
+    for col, col_type in [
+        ('user_id', 'INTEGER'),
+        ('customer_id', 'INTEGER'),
+        ('coupon_code', 'TEXT'),
+        ('postal_code', 'TEXT'),
+        ('admin_notes', 'TEXT'),
+        ('tracking_number', 'TEXT'),
+        ('courier_name', 'TEXT')
+    ]:
+        try:
+            cursor.execute(f"ALTER TABLE orders ADD COLUMN {col} {col_type}")
+        except Exception:
+            pass
+
+    try:
+        cursor.execute("ALTER TABLE order_items ADD COLUMN product_sku TEXT")
+    except Exception:
+        pass
+
+    for pr_col in [('verified_by', 'INTEGER'), ('admin_notes', 'TEXT'), ('verified_at', 'TIMESTAMP'), ('proof_image', 'TEXT')]:
+        try:
+            cursor.execute(f"ALTER TABLE payment_records ADD COLUMN {pr_col[0]} {pr_col[1]}")
+        except Exception:
+            pass
+        try:
+            cursor.execute(f"ALTER TABLE payments ADD COLUMN {pr_col[0]} {pr_col[1]}")
+        except Exception:
+            pass
+
+    for ot_col in [('created_by', 'TEXT'), ('by_user', 'TEXT'), ('time', 'TEXT'), ('created_at', 'TIMESTAMP')]:
+        try:
+            cursor.execute(f"ALTER TABLE order_timeline ADD COLUMN {ot_col[0]} {ot_col[1]}")
+        except Exception:
+            pass
 
     conn.commit()
     conn.close()

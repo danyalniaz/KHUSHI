@@ -175,7 +175,7 @@
         }
     </style>
 </head>
-<body class="bg-[#06090E] text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-black">
+<body class="bg-luxury-canvas text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-black overflow-x-hidden">
 
     <!-- ==================================================================== -->
     <!-- 1. RESTORED ORIGINAL TOP ANNOUNCEMENT BAR                           -->
@@ -184,19 +184,18 @@
         <div class="flex-1 text-center font-semibold">
             <span class="dyn-announcement-txt">✨ FREE NATIONWIDE EXPRESS DELIVERY ON ORDERS OVER RS. 5,000 &bull; WHATSAPP CONCIERGE: +92 3434158605 ✨</span>
         </div>
-        <button onclick="document.getElementById('announcement-banner').style.display='none';" class="text-black/80 hover:text-black ml-3 text-sm p-1" title="Dismiss">
+        <button onclick="document.getElementById('announcement-banner').style.display='none';" class="text-black/80 hover:text-black ml-3 text-sm p-1" title="Close announcement">
             <i class="fa-solid fa-xmark"></i>
         </button>
     </div>
 
     <!-- ==================================================================== -->
-    <!-- 2 & 3. RESTORED ORIGINAL PREMIUM HEADER & CENTERED NAVIGATION       -->
+    <!-- 2 & 3. MASTER HEADER WITH PROMINENT SEARCH & MEGA MENUS              -->
     <!-- ==================================================================== -->
     <header class="sticky top-0 z-40 glass-nav transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <!-- Main Header Row -->
-            <div class="flex items-center justify-between h-20 gap-6">
+            <!-- Upper Navigation Row -->
+            <div class="flex items-center justify-between h-20 gap-4">
                 
                 <!-- Brand Logo (Left) -->
                 <a href="index.html" class="flex items-center gap-3 flex-shrink-0 group">
@@ -298,11 +297,11 @@
                             </ul>
                         </div>
                         <div class="rounded-xl overflow-hidden relative group/banner aspect-[4/3]">
-                            <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&auto=format&fit=crop&q=80" alt="Women Festive" class="w-full h-full object-cover group-hover/banner:scale-105 transition duration-500 brightness-75">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent p-4 flex flex-col justify-end">
-                                <span class="text-[10px] text-amber-400 font-bold uppercase">Festive Royal</span>
-                                <h5 class="text-xs font-serif font-bold text-white">Velvet Shawl Suits</h5>
-                                <a href="shop.html?category=women" class="text-[10px] text-amber-300 hover:underline mt-1">Explore &rarr;</a>
+                            <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600" class="w-full h-full object-cover group-hover/banner:scale-105 transition duration-500 brightness-75">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-4">
+                                <span class="text-[9px] uppercase tracking-widest text-amber-400 font-bold">Featured Atelier</span>
+                                <h5 class="text-xs font-serif font-bold text-white">Velvet Royal Couture</h5>
+                                <a href="shop.html?category=women" class="text-[10px] text-amber-300 font-bold hover:underline mt-1">Explore Range &rarr;</a>
                             </div>
                         </div>
                     </div>
@@ -315,47 +314,46 @@
                     </a>
                     <div class="mega-menu absolute top-full left-0 right-0 bg-[#080C14]/95 backdrop-blur-2xl border border-amber-500/20 shadow-2xl p-6 rounded-2xl grid grid-cols-4 gap-6 text-left z-50">
                         <div>
-                            <h4 class="text-amber-400 font-serif font-bold uppercase tracking-wider text-xs pb-2 border-b border-zinc-800 mb-3">Traditional Wear</h4>
+                            <h4 class="text-amber-400 font-serif font-bold uppercase tracking-wider text-xs pb-2 border-b border-zinc-800 mb-3">Traditional Menswear</h4>
                             <ul class="space-y-2 text-xs text-zinc-300">
-                                <li><a href="shop.html?category=men&sub=Shalwar%20Kameez" class="hover:text-amber-400">Shalwar Kameez</a></li>
-                                <li><a href="shop.html?category=men&sub=Raw%20Silk%20Kurta" class="hover:text-amber-400">Raw Silk Kurtas</a></li>
-                                <li><a href="shop.html?category=men&sub=Giza%20Cotton" class="hover:text-amber-400">Giza Cotton Cuts</a></li>
-                                <li><a href="shop.html?category=men&sub=Linen" class="hover:text-amber-400">Italian Linen Sets</a></li>
+                                <li><a href="shop.html?category=men&sub=Boski" class="hover:text-amber-400">Peshawari Boski Suits</a></li>
+                                <li><a href="shop.html?category=men&sub=Raw%20Silk" class="hover:text-amber-400">Korean Raw Silk Kurtas</a></li>
+                                <li><a href="shop.html?category=men&sub=Cotton" class="hover:text-amber-400">Egyptian Cotton Stitched</a></li>
+                                <li><a href="shop.html?category=men&sub=Embroidery" class="hover:text-amber-400">Hand-Embroidered Collars</a></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 class="text-amber-400 font-serif font-bold uppercase tracking-wider text-xs pb-2 border-b border-zinc-800 mb-3">Formal & Groom</h4>
+                            <h4 class="text-amber-400 font-serif font-bold uppercase tracking-wider text-xs pb-2 border-b border-zinc-800 mb-3">Sartorial Formals</h4>
                             <ul class="space-y-2 text-xs text-zinc-300">
-                                <li><a href="shop.html?category=men&sub=Waistcoats" class="hover:text-amber-400">Jamawar Waistcoats</a></li>
                                 <li><a href="shop.html?category=men&sub=Prince%20Suit" class="hover:text-amber-400">Bespoke Prince Suits</a></li>
-                                <li><a href="shop.html?category=men&sub=Sherwani" class="hover:text-amber-400">Tailored Sherwanis</a></li>
-                                <li><a href="shop.html?category=men&sub=Tuxedo" class="hover:text-amber-400">Velvet Evening Tuxedos</a></li>
+                                <li><a href="shop.html?category=men&sub=Waistcoat" class="hover:text-amber-400">Matka Silk Waistcoats</a></li>
+                                <li><a href="shop.html?category=men&sub=Sherwani" class="hover:text-amber-400">Groom Sherwanis</a></li>
+                                <li><a href="shop.html?category=men&sub=Nehru" class="hover:text-amber-400">Tailored Nehru Jackets</a></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 class="text-amber-400 font-serif font-bold uppercase tracking-wider text-xs pb-2 border-b border-zinc-800 mb-3">Bespoke Men Edit</h4>
+                            <h4 class="text-amber-400 font-serif font-bold uppercase tracking-wider text-xs pb-2 border-b border-zinc-800 mb-3">Heritage Edits</h4>
                             <ul class="space-y-2 text-xs text-zinc-300">
-                                <li><a href="shop.html?collection=heritage-men" class="hover:text-amber-400 text-amber-300 font-semibold">Heritage Men Drop</a></li>
-                                <li><a href="shop.html?category=shoes" class="hover:text-amber-400">Peshawari Chappals</a></li>
-                                <li><a href="shop.html?category=watches" class="hover:text-amber-400">Luxury Watches</a></li>
-                                <li><a href="shop.html?category=perfumes" class="hover:text-amber-400">Pure Arabic Ouds</a></li>
+                                <li><a href="shop.html?category=men&sort=newest" class="hover:text-amber-400 text-amber-300 font-semibold">New Arrivals</a></li>
+                                <li><a href="shop.html?category=men&sort=popular" class="hover:text-amber-400">Best Sellers</a></li>
+                                <li><a href="shop.html?collection=groom-exclusive" class="hover:text-amber-400">Groom's Lounge 2026</a></li>
                             </ul>
                         </div>
                         <div class="rounded-xl overflow-hidden relative group/banner aspect-[4/3]">
-                            <img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=600&auto=format&fit=crop&q=80" alt="Men Heritage" class="w-full h-full object-cover group-hover/banner:scale-105 transition duration-500 brightness-75">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent p-4 flex flex-col justify-end">
-                                <span class="text-[10px] text-amber-400 font-bold uppercase">Heritage Menswear</span>
-                                <h5 class="text-xs font-serif font-bold text-white">Bespoke Raw Silk</h5>
-                                <a href="shop.html?category=men" class="text-[10px] text-amber-300 hover:underline mt-1">Shop Men &rarr;</a>
+                            <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600" class="w-full h-full object-cover group-hover/banner:scale-105 transition duration-500 brightness-75">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-4">
+                                <span class="text-[9px] uppercase tracking-widest text-amber-400 font-bold">Groom Exclusive</span>
+                                <h5 class="text-xs font-serif font-bold text-white">Sartorial Prince Suits</h5>
+                                <a href="shop.html?category=men" class="text-[10px] text-amber-300 font-bold hover:underline mt-1">Discover Now &rarr;</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <a href="shop.html?category=kids" class="nav-link-hover hover:text-amber-400 transition">KIDS</a>
-                <a href="shop.html?category=shoes" class="nav-link-hover hover:text-amber-400 transition">SHOES</a>
-                <a href="shop.html?category=watches" class="nav-link-hover hover:text-amber-400 transition">WATCHES</a>
                 <a href="shop.html?category=perfumes" class="nav-link-hover hover:text-amber-400 transition">PERFUMES</a>
+                <a href="shop.html?category=watches" class="nav-link-hover hover:text-amber-400 transition">WATCHES</a>
+                <a href="shop.html?category=shoes" class="nav-link-hover hover:text-amber-400 transition">KHUSSAS</a>
                 <a href="shop.html?category=bags" class="nav-link-hover hover:text-amber-400 transition">BAGS</a>
                 <a href="shop.html?filter=sale" class="nav-link-hover text-rose-400 hover:text-rose-300 transition font-bold flex items-center gap-1">
                     <i class="fa-solid fa-fire text-xs"></i> SALE
@@ -381,10 +379,10 @@
     <!-- MAIN HOMEPAGE CONTENT -->
     <main class="flex-grow pb-20 md:pb-12 space-y-20">
         
-                                <!-- ==================================================================== -->
+        <!-- ==================================================================== -->
         <!-- 4. CINEMATIC LUXURY HERO SECTION (MOBILE & DESKTOP OPTIMIZED)       -->
         <!-- ==================================================================== -->
-        <section class="relative overflow-hidden bg-[#06090E] w-full select-none" id="hero-carousel-section" aria-label="Khushi Collection Showcase">
+        <section class="relative overflow-hidden bg-hero-atmosphere w-full select-none" id="hero-carousel-section" aria-label="Khushi Collection Showcase">
             <div class="relative h-[78vh] sm:h-[84vh] lg:h-[90vh] min-h-[540px] sm:min-h-[640px] max-h-[960px] flex items-center w-full">
                 
                 <!-- ==================== SLIDE 01: FESTIVE ROYAL DROP ==================== -->
@@ -1490,50 +1488,53 @@
             setInterval(tick, 1000);
         }
 
-        // Product Card Generator
+        // Luxury Micro-3D Product Card Generator
         function renderProductCard(p, badgeHtml = '') {
             const secondary = p.secondary_image || p.thumbnail;
             const inWish = store.getWishlist().includes(p.id);
 
             return `
-                <div class="product-card luxury-card rounded-2xl overflow-hidden flex flex-col group relative">
-                    <div class="absolute top-3 left-3 z-10 flex flex-col gap-1">
-                        ${badgeHtml}
-                    </div>
-
-                    <button onclick="const res = store.toggleWishlist(${p.id}); showToast(res.message); const icon = this.querySelector('i'); icon.classList.toggle('fa-solid', res.inWishlist); icon.classList.toggle('text-rose-500', res.inWishlist); icon.classList.toggle('fa-regular', !res.inWishlist);" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/80 flex items-center justify-center text-zinc-300 hover:text-rose-500 transition shadow">
-                        <i class="${inWish ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-xs"></i>
-                    </button>
-
-                    <a href="product-detail.html?id=${p.id}" class="product-image-container block aspect-[4/5] bg-zinc-950 relative overflow-hidden">
-                        <img src="${p.thumbnail}" alt="${p.name}" class="w-full h-full object-cover transition-opacity duration-500">
-                        <img src="${secondary}" alt="${p.name}" class="w-full h-full object-cover absolute inset-0 opacity-0 transition-opacity duration-500">
-                    </a>
-
-                    <div class="p-4 flex-1 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between text-[10px] text-zinc-400">
-                                <span class="uppercase font-bold tracking-wider">${p.brand || 'Khushi Collection'}</span>
-                                <span class="flex items-center text-amber-400"><i class="fa-solid fa-star text-[9px] mr-1"></i> ${p.rating || 4.9}</span>
-                            </div>
-
-                            <h4 class="text-xs sm:text-sm font-semibold text-zinc-100 group-hover:text-amber-400 transition truncate mt-1">
-                                <a href="product-detail.html?id=${p.id}">${p.name}</a>
-                            </h4>
-
-                            <div class="flex items-center gap-2 mt-2">
-                                <span class="text-sm sm:text-base font-bold text-amber-400">Rs. ${(p.sale_price || p.price).toLocaleString()}</span>
-                                ${p.sale_price ? `<span class="text-xs line-through text-zinc-500">Rs. ${p.price.toLocaleString()}</span>` : ''}
-                            </div>
+                <div class="card-3d-wrap group">
+                    <div class="card-3d-inner luxury-card rounded-2xl overflow-hidden flex flex-col relative h-full">
+                        <div class="card-3d-glare"></div>
+                        <div class="absolute top-3 left-3 z-20 flex flex-col gap-1 card-depth-3 pointer-events-none">
+                            ${badgeHtml}
                         </div>
 
-                        <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2">
-                            <button onclick="openQuickView(${p.id})" class="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition" title="Quick View">
-                                <i class="fa-regular fa-eye"></i>
-                            </button>
-                            <button onclick="store.addToCart(${p.id}); showToast('Added to your bag!'); openCartDrawer();" class="flex-1 py-2 px-3 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow">
-                                <i class="fa-solid fa-bag-shopping text-[11px]"></i> ADD TO CART
-                            </button>
+                        <button onclick="const res = store.toggleWishlist(${p.id}); showToast(res.message); const icon = this.querySelector('i'); if (icon) { icon.classList.toggle('fa-solid', res.inWishlist); icon.classList.toggle('text-rose-500', res.inWishlist); icon.classList.toggle('fa-regular', !res.inWishlist); }" class="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-zinc-700/80 flex items-center justify-center text-zinc-300 hover:text-rose-500 transition shadow card-depth-3" title="Add to Wishlist">
+                            <i class="${inWish ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-xs"></i>
+                        </button>
+
+                        <a href="product-detail.html?id=${p.id}" class="product-image-container block aspect-[4/5] bg-zinc-950 relative overflow-hidden card-depth-2">
+                            <img src="${p.thumbnail}" alt="${p.name}" class="w-full h-full object-cover transition-opacity duration-500">
+                            <img src="${secondary}" alt="${p.name}" class="w-full h-full object-cover absolute inset-0 opacity-0 transition-opacity duration-500">
+                        </a>
+
+                        <div class="p-4 flex-1 flex flex-col justify-between card-depth-4">
+                            <div>
+                                <div class="flex items-center justify-between text-[10px] text-zinc-400">
+                                    <span class="uppercase font-bold tracking-wider">${p.brand || 'Khushi Collection'}</span>
+                                    <span class="flex items-center text-amber-400 font-bold"><i class="fa-solid fa-star text-[9px] mr-1"></i> ${p.rating || 4.9}</span>
+                                </div>
+
+                                <h4 class="text-xs sm:text-sm font-semibold text-zinc-100 group-hover:text-amber-400 transition truncate mt-1">
+                                    <a href="product-detail.html?id=${p.id}">${p.name}</a>
+                                </h4>
+
+                                <div class="flex items-center gap-2 mt-2">
+                                    <span class="text-sm sm:text-base font-bold text-amber-400 font-mono">Rs. ${(p.sale_price || p.price).toLocaleString()}</span>
+                                    ${p.sale_price ? `<span class="text-xs line-through text-zinc-500 font-mono">Rs. ${p.price.toLocaleString()}</span>` : ''}
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2">
+                                <button onclick="openQuickView(${p.id})" class="p-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition" title="Quick View">
+                                    <i class="fa-regular fa-eye"></i>
+                                </button>
+                                <button onclick="store.addToCart(${p.id}); showToast('Added to your bag!'); openCartDrawer();" class="flex-1 py-2.5 px-3 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow">
+                                    <i class="fa-solid fa-bag-shopping text-[11px]"></i> ADD TO CART
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1708,12 +1709,16 @@
 
             const products = store.getProducts();
             let list = products.filter(p => p.is_bestseller);
-            if (category !== 'all') list = list.filter(p => p.category === category);
-            if (list.length === 0) list = products.filter(p => p.category === category);
+            if (category !== 'all') list = list.filter(p => (p.category || '').toLowerCase() === category.toLowerCase());
+            if (list.length === 0) list = products.filter(p => (p.category || '').toLowerCase() === category.toLowerCase());
 
-            document.getElementById('bestsellers-grid').innerHTML = list.slice(0, 4).map(p => 
-                renderProductCard(p, `<span class="badge-hot px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase shadow">Hot</span>`)
-            ).join('');
+            const container = document.getElementById('bestsellers-grid');
+            if (container) {
+                container.innerHTML = list.slice(0, 4).map(p => 
+                    renderProductCard(p, `<span class="badge-hot px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase shadow">Hot</span>`)
+                ).join('');
+                if (typeof initLuxury3DSystem === 'function') initLuxury3DSystem();
+            }
         }
 
         // Fragrance Quiz
@@ -1906,6 +1911,7 @@
             setupLiveSearch('desktop-search-input', 'desktop-search-dropdown');
             setupLiveSearch('mobile-search-input', 'mobile-search-dropdown');
             store.applyStorefrontSettings();
+            if (typeof initLuxury3DSystem === 'function') initLuxury3DSystem();
         });
     </script>
     <!-- MOBILE SLIDE-IN NAVIGATION DRAWER -->

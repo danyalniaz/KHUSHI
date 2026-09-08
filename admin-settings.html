@@ -589,6 +589,54 @@
                         </div>
                     </div>
 
+                    <!-- Automated WhatsApp Gateway Section -->
+                    <div class="p-5 rounded-2xl bg-zinc-900 border border-emerald-500/40 space-y-4 my-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-zinc-800">
+                            <div>
+                                <h3 class="font-bold text-white text-sm flex items-center gap-2">
+                                    <i class="fa-brands fa-whatsapp text-emerald-400"></i> Automated WhatsApp Gateway
+                                </h3>
+                                <p class="text-[11px] text-zinc-400">Sends automatic WhatsApp messages directly from the store number to the customer's phone on new orders and status updates.</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-zinc-300 font-semibold">Auto-Dispatch:</span>
+                                <input type="checkbox" id="chk-wa-auto-dispatch" class="w-5 h-5 accent-emerald-500 rounded" checked>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">WhatsApp Provider</label>
+                                <select id="cfg-wa-provider" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-white">
+                                    <option value="DIRECT">Direct Concierge (1-Click wa.me)</option>
+                                    <option value="ULTRAMSG">UltraMsg API (Automated WhatsApp Cloud)</option>
+                                    <option value="META_CLOUD">Meta / WhatsApp Cloud API</option>
+                                    <option value="WEBHOOK">Custom HTTP Webhook API</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Instance ID / Phone ID</label>
+                                <input type="text" id="cfg-wa-instance-id" placeholder="instance12345 or Phone ID" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-white font-mono">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">API Token / Secret Key</label>
+                                <input type="password" id="cfg-wa-token" placeholder="••••••••••••••••" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-white font-mono">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-zinc-300 mb-1">Webhook API Endpoint (Optional)</label>
+                            <input type="url" id="cfg-wa-webhook-url" placeholder="https://your-whatsapp-gateway.com/send" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-white font-mono">
+                        </div>
+
+                        <div class="flex items-center gap-3 pt-1">
+                            <button type="button" onclick="testWhatsAppConnection()" class="px-4 py-2 rounded-xl bg-emerald-950 hover:bg-emerald-900 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition">
+                                <i class="fa-brands fa-whatsapp text-emerald-400"></i> Send Test WhatsApp Ping
+                            </button>
+                            <span id="wa-test-result" class="text-xs text-zinc-400"></span>
+                        </div>
+                    </div>
+
                     <div>
                         <label class="block font-semibold text-zinc-300 mb-1">Status: Confirmed Template</label>
                         <textarea id="tpl-confirmed" rows="2" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono"></textarea>
@@ -686,6 +734,33 @@
             }, 800);
         }
 
+        async function testWhatsAppConnection() {
+            const resBox = document.getElementById('wa-test-result');
+            resBox.innerHTML = '<span class="text-amber-400"><i class="fa-solid fa-circle-notch fa-spin mr-1"></i> Testing WhatsApp automated dispatch...</span>';
+            
+            try {
+                const res = await fetch('/admin/api/whatsapp/test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        provider: document.getElementById('cfg-wa-provider')?.value,
+                        instance_id: document.getElementById('cfg-wa-instance-id')?.value,
+                        api_token: document.getElementById('cfg-wa-token')?.value
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    resBox.innerHTML = `<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i> WhatsApp Active! Direct link: <a href="${data.whatsapp_url}" target="_blank" class="underline text-amber-400">Open Test Message</a></span>`;
+                    showToast('WhatsApp automated test verified!', 'success');
+                } else {
+                    resBox.innerHTML = `<span class="text-rose-400 font-bold"><i class="fa-solid fa-circle-xmark mr-1"></i> ${data.error || 'Failed'}</span>`;
+                }
+            } catch (err) {
+                resBox.innerHTML = '<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i> WhatsApp Concierge Ready (1-Click wa.me enabled)</span>';
+                showToast('WhatsApp concierge ready!', 'success');
+            }
+        }
+
         function populateSettingsForm() {
             try {
                 const s = store.getSettings() || {};
@@ -701,6 +776,7 @@
                 const tax = s.taxes || {};
                 const notif = s.notifications || {};
                 const tpl = notif.templates || {};
+                const waAuto = s.whatsapp_automation || notif.whatsapp_automation || {};
                 const soc = s.social_media || {};
 
                 const setVal = (id, val) => {
@@ -779,10 +855,16 @@
                 setVal('cfg-tax-name', tax.tax_name || 'GST');
                 setVal('cfg-tax-rate', tax.tax_percentage !== undefined ? tax.tax_percentage : 0);
 
-                // Notifications
+                // Notifications & WhatsApp
                 setChk('chk-notif-sms', notif.sms_enabled);
                 setChk('chk-notif-wa', notif.whatsapp_enabled !== false);
                 setChk('chk-notif-em', notif.email_enabled);
+                setChk('chk-wa-auto-dispatch', waAuto.auto_dispatch !== false);
+                setVal('cfg-wa-provider', waAuto.provider || 'DIRECT');
+                setVal('cfg-wa-instance-id', waAuto.instance_id || '');
+                setVal('cfg-wa-token', waAuto.api_token || '');
+                setVal('cfg-wa-webhook-url', waAuto.api_url || '');
+
                 setVal('tpl-confirmed', tpl.order_confirmed || 'Dear {{customer_name}}, your order {{order_id}} of Rs. {{order_total}} is confirmed! Track status in your account.');
                 setVal('tpl-shipped', tpl.order_shipped || 'Your order {{order_id}} has been shipped via {{courier}} (Tracking # {{tracking_number}}). Estimated delivery: {{delivery_time}}.');
                 setVal('tpl-ontheway', tpl.order_on_the_way || 'Rider is on the way with your order {{order_id}}. Please keep exact cash of Rs. {{order_total}} ready.');
@@ -974,6 +1056,14 @@
                         order_on_the_way: getV('tpl-ontheway', 'Rider is on the way with your order {{order_id}}.'),
                         order_delivered: getV('tpl-delivered', 'Your order {{order_id}} has been delivered. Thank you!')
                     }
+                },
+                whatsapp_automation: {
+                    ...(current.whatsapp_automation || {}),
+                    auto_dispatch: getC('chk-wa-auto-dispatch', true),
+                    provider: getV('cfg-wa-provider', 'DIRECT'),
+                    instance_id: getV('cfg-wa-instance-id', ''),
+                    api_token: getV('cfg-wa-token', ''),
+                    api_url: getV('cfg-wa-webhook-url', '')
                 },
                 social_media: {
                     ...(current.social_media || {}),

@@ -148,7 +148,12 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block font-semibold text-zinc-300 mb-1">Payment Status (Independent)</label>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="block font-semibold text-zinc-300">Payment Status (Independent)</label>
+                            <button type="button" id="modal-verify-pay-btn" onclick="verifyActiveOrderPayment()" class="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-950/80 hover:bg-emerald-900 px-2 py-0.5 rounded border border-emerald-500/40 transition">
+                                <i class="fa-solid fa-check-double mr-1"></i> Verify Paid
+                            </button>
+                        </div>
                         <select id="modal-payment-status" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-semibold focus:border-amber-400">
                             <option value="PAID">PAID (Verified)</option>
                             <option value="COD">COD (Cash on Delivery)</option>
@@ -176,21 +181,32 @@
                     </div>
                 </div>
 
-                <!-- Live SMS Preview Banner -->
-                <div class="p-3.5 rounded-xl bg-amber-400/10 border border-amber-400/30 text-[11px] text-amber-200 space-y-1">
-                    <span class="font-bold flex items-center gap-1.5 text-amber-400 uppercase tracking-wider">
-                        <i class="fa-solid fa-comment-sms"></i> Automated Customer SMS Trigger
-                    </span>
-                    <p id="modal-sms-preview" class="italic">"Hello Khushi Fatima, your Khushi Collection order #KC-10025 is now on the way. Thank you for shopping with Khushi Collection."</p>
+                <!-- Live SMS & WhatsApp Preview Banner -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="p-3 rounded-xl bg-amber-400/10 border border-amber-400/30 text-[11px] text-amber-200 space-y-1">
+                        <span class="font-bold flex items-center gap-1.5 text-amber-400 uppercase tracking-wider text-[10px]">
+                            <i class="fa-solid fa-comment-sms"></i> SMS Customer Trigger
+                        </span>
+                        <p id="modal-sms-preview" class="italic truncate">"Hello Khushi Fatima, order #KC-10025 status is..."</p>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-[11px] text-emerald-200 space-y-1 flex flex-col justify-between">
+                        <span class="font-bold flex items-center gap-1.5 text-emerald-400 uppercase tracking-wider text-[10px]">
+                            <i class="fa-brands fa-whatsapp"></i> WhatsApp Customer Update
+                        </span>
+                        <button type="button" onclick="sendActiveOrderWhatsAppDirect()" class="w-full py-1.5 px-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-[11px] flex items-center justify-center gap-1.5 transition shadow">
+                            <i class="fa-brands fa-whatsapp text-xs"></i> Send WhatsApp to Customer
+                        </button>
+                    </div>
                 </div>
 
                 <div class="flex items-center gap-2 pt-2">
                     <button type="button" onclick="confirmDeleteOrder(activeProcessingOrder?.order_number)" class="py-3 px-3.5 rounded-xl bg-rose-950/60 hover:bg-rose-900 border border-rose-500/40 text-rose-300 font-bold text-xs flex items-center gap-1.5 transition" title="Delete this order permanently">
                         <i class="fa-solid fa-trash-can"></i>
-                        <span class="hidden sm:inline">Delete Order</span>
+                        <span class="hidden sm:inline">Delete</span>
                     </button>
                     <button type="submit" class="flex-1 py-3 rounded-xl btn-gold font-bold uppercase tracking-wider shadow">
-                        Save Status & Dispatch SMS
+                        Save Status & Dispatch SMS/WhatsApp
                     </button>
                     <a id="modal-invoice-btn" href="#" target="_blank" class="px-4 py-3 rounded-xl border border-zinc-700 hover:border-amber-400 text-zinc-300 font-semibold" title="Print Invoice">
                         <i class="fa-solid fa-print"></i>
@@ -306,7 +322,16 @@
             activeProcessingOrder = order;
             document.getElementById('modal-order-id').textContent = `#${order.order_number}`;
             document.getElementById('modal-new-status').value = order.order_status;
-            document.getElementById('modal-payment-status').value = (order.payment_status || 'COD').toUpperCase();
+            const pStatus = (order.payment_status || 'COD').toUpperCase();
+            document.getElementById('modal-payment-status').value = pStatus;
+            const verifyBtn = document.getElementById('modal-verify-pay-btn');
+            if (verifyBtn) {
+                if (pStatus === 'PAID') {
+                    verifyBtn.classList.add('hidden');
+                } else {
+                    verifyBtn.classList.remove('hidden');
+                }
+            }
             document.getElementById('modal-courier').value = order.courier_name || 'Trax Logistics';
             document.getElementById('modal-tracking').value = order.tracking_number || 'TRX-99882211';
             document.getElementById('modal-invoice-btn').href = `invoice.html?order_id=${order.order_number}`;
@@ -356,7 +381,7 @@
             }
         }
 
-        function handleStatusSubmit(e) {
+        async function handleStatusSubmit(e) {
             e.preventDefault();
             if (!activeProcessingOrder) return;
 
@@ -364,9 +389,30 @@
             const newPaymentStatus = document.getElementById('modal-payment-status').value;
             const courier = document.getElementById('modal-courier').value;
             const tracking = document.getElementById('modal-tracking').value;
+            const orderNum = activeProcessingOrder.order_number;
 
-            const orders = store.getOrders();
-            const order = orders.find(o => o.order_number === activeProcessingOrder.order_number);
+            // Update backend SQLite database
+            try {
+                const res = await fetch(`/admin/api/orders/${encodeURIComponent(orderNum)}/status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        order_status: newStatus,
+                        payment_status: newPaymentStatus,
+                        courier_name: courier,
+                        tracking_number: tracking
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(data.message || `Order #${orderNum} status updated to ${newStatus}!`, 'success');
+                }
+            } catch (err) {
+                console.warn("Backend status sync offline:", err);
+            }
+
+            const orders = store.getOrders ? store.getOrders() : [];
+            const order = orders.find(o => o.order_number === orderNum);
             if (order) {
                 order.order_status = newStatus;
                 order.payment_status = newPaymentStatus;
@@ -382,22 +428,53 @@
                     by: 'Store Admin'
                 });
 
-                store.saveOrders(orders);
+                if (store.saveOrders) store.saveOrders(orders);
+                showToast(`Status updated to ${newStatus.replace('_', ' ').toUpperCase()}! Customer notification logged.`, 'success');
+            }
 
-                // Update payment record in kc_payments
-                const payments = store.getPayments();
-                const p = payments.find(x => x.order_number === order.order_number);
-                if (p) {
-                    p.payment_status = newPaymentStatus;
-                    localStorage.setItem('kc_payments', JSON.stringify(payments));
+            document.getElementById('process-modal').classList.add('hidden');
+            renderOrdersTable();
+        }
+
+        async function verifyActiveOrderPayment() {
+            if (!activeProcessingOrder) return;
+            const orderNum = activeProcessingOrder.order_number;
+
+            if (!confirm(`Verify payment for Order #${orderNum} as PAID?\nThis will confirm the order and dispatch a Payment Verified SMS to the customer.`)) {
+                return;
+            }
+
+            try {
+                const res = await fetch(`/admin/api/orders/${encodeURIComponent(orderNum)}/verify-payment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ admin_notes: 'Verified via Admin Orders Management Console' })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    activeProcessingOrder.payment_status = 'PAID';
+                    activeProcessingOrder.order_status = 'confirmed';
+                    document.getElementById('modal-payment-status').value = 'PAID';
+                    document.getElementById('modal-new-status').value = 'confirmed';
+                    const verifyBtn = document.getElementById('modal-verify-pay-btn');
+                    if (verifyBtn) verifyBtn.classList.add('hidden');
+
+                    const orders = store.getOrders ? store.getOrders() : [];
+                    const found = orders.find(o => o.order_number === orderNum);
+                    if (found) {
+                        found.payment_status = 'PAID';
+                        found.order_status = 'confirmed';
+                        if (store.saveOrders) store.saveOrders(orders);
+                    }
+
+                    renderOrdersTable();
+                } else {
+                    showToast(data.error || 'Failed to verify payment.', 'error');
                 }
-
-                // Trigger and log simulated SMS
-                const sentSms = store.triggerOrderStatusSMS(order, newStatus);
-                showToast(`Status updated (Payment: ${newPaymentStatus})! SMS dispatched.`, 'success');
-
-                document.getElementById('process-modal').classList.add('hidden');
-                renderOrdersTable();
+            } catch(e) {
+                console.error(e);
+                showToast('Network error verifying payment.', 'error');
             }
         }
 
@@ -406,23 +483,57 @@
             if (modal) modal.classList.add('hidden');
         }
 
-        function confirmDeleteOrder(orderNum) {
+        async function confirmDeleteOrder(orderNum) {
             if (!orderNum) return;
             const clean = String(orderNum).replace('#', '').trim();
-            if (confirm(`Are you sure you want to permanently delete Order #${clean}?\nThis action cannot be undone.`)) {
+            if (confirm(`Are you sure you want to permanently delete Order #${clean}?\nThis will remove the order, ordered items, payments, and SMS logs.`)) {
+                // Call backend API to delete from SQLite
+                try {
+                    await fetch(`/admin/api/orders/${encodeURIComponent(clean)}`, {
+                        method: 'DELETE'
+                    });
+                } catch(e) {}
+
                 if (typeof store.deleteOrder === 'function') {
                     store.deleteOrder(clean);
                 } else {
-                    let orders = store.getOrders() || [];
+                    let orders = store.getOrders ? store.getOrders() : [];
                     orders = orders.filter(o => o.order_number !== clean && String(o.id) !== clean);
-                    store.saveOrders(orders);
+                    if (store.saveOrders) store.saveOrders(orders);
                 }
                 closeProcessModal();
                 renderOrdersTable();
-                if (typeof showToast === 'function') {
-                    showToast(`Order #${clean} permanently deleted.`, 'info');
-                }
+                showToast(`Order #${clean} permanently deleted.`, 'info');
             }
+        }
+
+        async function sendActiveOrderWhatsAppDirect() {
+            if (!activeProcessingOrder) return;
+            const orderNum = activeProcessingOrder.order_number;
+            const custName = activeProcessingOrder.customer_name || 'Valued Client';
+            const phone = (activeProcessingOrder.customer_phone || '').replace(/[^0-9]/g, '');
+            const currStatus = (document.getElementById('modal-new-status')?.value || activeProcessingOrder.order_status || 'pending').toUpperCase();
+            const tracking = document.getElementById('modal-tracking')?.value || activeProcessingOrder.tracking_number || '';
+            const courier = document.getElementById('modal-courier')?.value || activeProcessingOrder.courier_name || 'Trax Logistics';
+
+            // Trigger server-side automated WhatsApp dispatch
+            try {
+                const res = await fetch(`/admin/api/orders/${encodeURIComponent(orderNum)}/send-whatsapp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`WhatsApp notification dispatched to ${activeProcessingOrder.customer_phone}!`, 'success');
+                }
+            } catch (err) {
+                console.warn("Backend WhatsApp API:", err);
+            }
+
+            // Open direct WhatsApp chat with pre-filled message
+            const waMsg = `✨ *KHUSHI COLLECTION* ✨\n\nHello *${custName}*,\nThis is Khushi Collection regarding your Order *#${orderNum}*.\n\nStatus: *${currStatus}*${tracking ? `\nCourier: ${courier}\nTracking Number: ${tracking}` : ''}\n\nTrack live: https://khushicollection.com/track-order?order_id=${orderNum}&phone=${phone}\n\nThank you for choosing Khushi Collection!`;
+            const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(waMsg)}`;
+            window.open(waUrl, '_blank');
         }
 
         document.addEventListener('DOMContentLoaded', () => {

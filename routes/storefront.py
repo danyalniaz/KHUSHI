@@ -292,113 +292,16 @@ def checkout():
 @storefront_bp.route('/place-order', methods=['POST'])
 def place_order():
     cart = session.get('cart', {})
-    if not cart:
-        flash('Your bag is empty.', 'error')
-        return redirect(url_for('storefront.shop'))
+    from routes.payments import execute_checkout_process
+    form_data = request.form.to_dict()
+    user_id = session.get('user_id')
+    result, status_code = execute_checkout_process(form_data, user_id=user_id)
 
-    customer_name = request.form.get('customer_name', '').strip()
-    customer_phone = request.form.get('customer_phone', '').strip()
-    customer_email = request.form.get('customer_email', '').strip()
-    address = request.form.get('address', '').strip()
-    city = request.form.get('city', '').strip()
-    area = request.form.get('area', '').strip()
-    postal_code = request.form.get('postal_code', '').strip()
-    delivery_instructions = request.form.get('delivery_instructions', '').strip()
-    payment_method = request.form.get('payment_method', 'cod').strip()
-    coupon_code = request.form.get('coupon_code', '').strip().upper()
-
-    if not customer_name or not customer_phone or not address or not city:
-        flash('Please fill in all required delivery details.', 'error')
+    if not result.get('success'):
+        flash(result.get('error', 'Could not process order. Please try again.'), 'error')
         return redirect(url_for('storefront.checkout'))
 
-    # Calculate subtotal & prepare items
-    items_to_save = []
-    subtotal = 0.0
-    for key, item in cart.items():
-        p = query_db('SELECT id, name, price, sale_price, thumbnail, stock FROM products WHERE id = ?', (item['product_id'],), one=True)
-        if p:
-            unit_price = float(p['sale_price'] if p['sale_price'] else p['price'])
-            item_total = unit_price * int(item['quantity'])
-            subtotal += item_total
-            items_to_save.append({
-                'product_id': p['id'],
-                'product_name': p['name'],
-                'price': unit_price,
-                'quantity': item['quantity'],
-                'size': item.get('size'),
-                'color': item.get('color'),
-                'thumbnail': p['thumbnail'],
-                'total': item_total
-            })
-
-    # Calculate delivery fee
-    settings = get_store_settings()
-    threshold = float(settings.get('free_delivery_threshold', 5000))
-    rates = json.loads(settings.get('city_rates', '{}'))
-    if subtotal >= threshold:
-        delivery_fee = 0.0
-    else:
-        delivery_fee = float(rates.get(city, rates.get('Other Cities', 250)))
-
-    # Calculate coupon discount
-    discount_amount = 0.0
-    if coupon_code:
-        coupon = query_db('SELECT * FROM coupons WHERE code = ? AND is_active = 1', (coupon_code,), one=True)
-        if coupon and subtotal >= coupon['min_order_amount']:
-            if coupon['discount_type'] == 'percentage':
-                discount_amount = (subtotal * coupon['discount_value']) / 100.0
-                if coupon['max_discount']:
-                    discount_amount = min(discount_amount, coupon['max_discount'])
-            else:
-                discount_amount = coupon['discount_value']
-            discount_amount = min(discount_amount, subtotal)
-            execute_db('UPDATE coupons SET times_used = times_used + 1 WHERE id = ?', (coupon['id'],))
-
-    total_amount = subtotal + delivery_fee - discount_amount
-
-    # Generate Order Number
-    random_suffix = random.randint(10000, 99999)
-    order_number = f"KC-{random_suffix}"
-
-    user_id = session.get('user_id')
-
-    # Insert Order
-    order_id = execute_db('''
-        INSERT INTO orders (
-            order_number, user_id, customer_name, customer_phone, customer_email,
-            address, city, area, postal_code, delivery_instructions,
-            subtotal, delivery_fee, discount_amount, coupon_code, total_amount,
-            payment_method, payment_status, order_status, courier_name
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ''', (
-        order_number, user_id, customer_name, customer_phone, customer_email,
-        address, city, area, postal_code, delivery_instructions,
-        subtotal, delivery_fee, discount_amount, coupon_code, total_amount,
-        payment_method, 'unpaid', 'pending', 'Trax Logistics'
-    ))
-
-    # Insert Order Items & Deduct Stock
-    for item in items_to_save:
-        execute_db('''
-            INSERT INTO order_items (order_id, product_id, product_name, price, quantity, size, color, thumbnail, total)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (
-            order_id, item['product_id'], item['product_name'], item['price'],
-            item['quantity'], item['size'], item['color'], item['thumbnail'], item['total']
-        ))
-        execute_db('UPDATE products SET stock = MAX(0, stock - ?) WHERE id = ?', (item['quantity'], item['product_id']))
-
-    # Insert Timeline Step
-    execute_db('''
-        INSERT INTO order_timeline (order_id, status, title, description, created_by)
-        VALUES (?, 'pending', 'Order Placed', 'Your order was successfully received by Khushi Collection', 'Customer')
-    ''', (order_id,))
-
-    # Clear Cart
-    session['cart'] = {}
-    session.modified = True
-
-    return redirect(url_for('storefront.order_confirmation', order_number=order_number))
+    return redirect(url_for('storefront.order_confirmation', order_number=result['order_number']))
 
 # 7. Order Confirmation Page
 @storefront_bp.route('/order-confirmation/<order_number>')

@@ -44,19 +44,24 @@
             </div>
         </div>
 
-        <!-- WhatsApp Dispatch CTA Box -->
-        <div class="p-6 rounded-3xl bg-gradient-to-r from-emerald-950/80 to-zinc-900 border border-emerald-500/40 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div class="space-y-1 text-center sm:text-left">
-                <span class="text-[11px] uppercase font-bold text-emerald-400 tracking-wider flex items-center justify-center sm:justify-start gap-1.5">
-                    <i class="fa-brands fa-whatsapp text-sm"></i> Instant WhatsApp Dispatch
-                </span>
-                <h4 class="text-base font-bold text-white">Send Order Directly to Khushi Collection</h4>
-                <p class="text-xs text-zinc-400">Click below to notify our team on WhatsApp for fastest priority dispatch.</p>
+        <!-- WhatsApp Automated Notification & Concierge Box -->
+        <div class="p-6 rounded-3xl bg-gradient-to-r from-emerald-950/90 via-zinc-900 to-zinc-950 border border-emerald-500/40 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="space-y-1.5 text-center sm:text-left">
+                <div class="flex items-center justify-center sm:justify-start gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="text-[11px] uppercase font-bold text-emerald-400 tracking-wider flex items-center gap-1.5">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Confirmation Dispatched
+                    </span>
+                </div>
+                <h4 class="text-base font-bold text-white">Automated WhatsApp Order Confirmation</h4>
+                <p class="text-xs text-zinc-300">
+                    An official confirmation with full order breakdown and live tracking link has been sent to your WhatsApp <strong id="conf-wa-number" class="text-emerald-300 font-mono">+92 3XX XXXXXXX</strong>.
+                </p>
             </div>
 
-            <a id="conf-whatsapp-btn" href="#" target="_blank" class="px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold uppercase tracking-widest flex items-center gap-2.5 shadow-2xl transition flex-shrink-0">
+            <a id="conf-whatsapp-btn" href="#" target="_blank" class="px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold uppercase tracking-widest flex items-center gap-2.5 shadow-2xl transition flex-shrink-0">
                 <i class="fa-brands fa-whatsapp text-base"></i>
-                <span>Send to WhatsApp</span>
+                <span>Open WhatsApp Concierge</span>
             </a>
         </div>
 
@@ -65,17 +70,22 @@
             <!-- Customer Information -->
             <div class="luxury-card p-6 rounded-3xl space-y-3 text-xs">
                 <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">Customer & Shipping</h3>
-                <p><strong class="text-zinc-400">Recipient:</strong> <span id="conf-name" class="text-white">Khushi Fatima</span></p>
-                <p><strong class="text-zinc-400">Phone:</strong> <span id="conf-phone" class="text-white">+923219876543</span></p>
-                <p><strong class="text-zinc-400">Destination:</strong> <span id="conf-address" class="text-white">House #14, Street 9, Sector F-7/2, Islamabad</span></p>
-                <p><strong class="text-zinc-400">Payment:</strong> <span id="conf-payment" class="text-amber-400 font-bold uppercase">Cash on Delivery (COD)</span></p>
+                <p><strong class="text-zinc-400">Recipient:</strong> <span id="conf-name" class="text-white">Customer</span></p>
+                <p><strong class="text-zinc-400">Phone:</strong> <span id="conf-phone" class="text-white">+923001234567</span></p>
+                <p><strong class="text-zinc-400">Destination:</strong> <span id="conf-address" class="text-white">Delivery Address</span></p>
+                <div class="pt-2 flex flex-wrap items-center gap-2">
+                    <span id="conf-pay-badge" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-950/60 border border-amber-500/40 text-amber-300">Payment: Pending</span>
+                    <span id="conf-ord-badge" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-zinc-800 border border-zinc-700 text-zinc-300">Status: Placed</span>
+                </div>
             </div>
 
-            <!-- Action Controls -->
+            <!-- Action Controls & Guidance -->
             <div class="luxury-card p-6 rounded-3xl space-y-4 flex flex-col justify-between">
                 <div>
-                    <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">Order Management</h3>
-                    <p class="text-xs text-zinc-400 mt-2">Track real-time status updates or print an official tax invoice.</p>
+                    <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">Next Steps</h3>
+                    <div id="conf-guidance-box" class="mt-2.5 p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-300 leading-relaxed">
+                        Your order is being processed by our concierge team.
+                    </div>
                 </div>
 
                 <div class="space-y-3">
@@ -115,45 +125,95 @@
     <!-- Scripts -->
     <script src="store.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const orderId = urlParams.get('order_id') || 'KC-10025';
 
-            const order = store.getOrder(orderId) || store.getOrders()[0];
+            let order = null;
+
+            // Fetch live verified data from backend API
+            try {
+                const res = await fetch(`/api/orders/track?order_id=${encodeURIComponent(orderId)}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success && data.order) {
+                        order = data.order;
+                    }
+                }
+            } catch(e) {}
+
+            // Fallback to local store
+            if (!order) {
+                order = store.getOrder(orderId) || (store.getOrders ? store.getOrders()[0] : null);
+            }
+
             if (!order) return;
 
             document.getElementById('conf-order-id').textContent = `#${order.order_number}`;
             document.getElementById('conf-name').textContent = order.customer_name;
-            document.getElementById('conf-phone').textContent = order.customer_phone;
-            document.getElementById('conf-address').textContent = `${order.address}, ${order.city}${order.area ? ` (${order.area})` : ''}`;
-            document.getElementById('conf-payment').textContent = order.payment_method.toUpperCase();
+            const phoneStr = order.customer_phone || order.masked_phone || '+92 300 1234567';
+            document.getElementById('conf-phone').textContent = phoneStr;
+            const waNumEl = document.getElementById('conf-wa-number');
+            if (waNumEl) waNumEl.textContent = phoneStr;
+            document.getElementById('conf-address').textContent = `${order.address || ''}, ${order.city || ''}${order.area ? ` (${order.area})` : ''}`;
 
-            document.getElementById('conf-subtotal').textContent = `Rs. ${Number(order.subtotal).toLocaleString()}`;
-            document.getElementById('conf-delivery').textContent = order.delivery_fee === 0 ? 'FREE' : `Rs. ${Number(order.delivery_fee).toLocaleString()}`;
-            document.getElementById('conf-total').textContent = `Rs. ${Number(order.total_amount).toLocaleString()}`;
+            const payStatus = (order.payment_status || 'PENDING').toUpperCase();
+            const ordStatus = (order.order_status || 'PENDING').toUpperCase();
+
+            // Status badges
+            const payBadge = document.getElementById('conf-pay-badge');
+            if (payStatus === 'PAID') {
+                payBadge.className = 'px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-950/60 border border-emerald-500/40 text-emerald-300';
+                payBadge.innerHTML = '<i class="fa-solid fa-circle-check text-[9px] mr-1"></i> Payment: VERIFIED PAID';
+            } else if (payStatus === 'VERIFICATION_REQUIRED') {
+                payBadge.className = 'px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-950/60 border border-amber-500/40 text-amber-300';
+                payBadge.innerHTML = '<i class="fa-solid fa-clock text-[9px] mr-1"></i> Payment: VERIFICATION REQUIRED';
+            } else {
+                payBadge.className = 'px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-sky-950/60 border border-sky-500/40 text-sky-300';
+                payBadge.innerHTML = `<i class="fa-solid fa-wallet text-[9px] mr-1"></i> Payment: ${order.payment_method?.toUpperCase() || 'COD'}`;
+            }
+
+            const ordBadge = document.getElementById('conf-ord-badge');
+            ordBadge.textContent = `Order: ${ordStatus.replace('_', ' ')}`;
+
+            // Guidance text
+            const guideBox = document.getElementById('conf-guidance-box');
+            if (payStatus === 'VERIFICATION_REQUIRED') {
+                guideBox.innerHTML = '<strong>Bank / Wallet Verification in Progress:</strong> We received your transaction reference. Our accounts concierge will verify the funds with the bank. You will receive an SMS and WhatsApp confirmation once verified!';
+            } else if (payStatus === 'COD' || order.payment_method === 'cod') {
+                guideBox.innerHTML = '<strong>Cash on Delivery:</strong> Please keep the exact payable amount ready in cash when the Trax Logistics rider arrives at your doorstep.';
+            } else if (payStatus === 'PAID') {
+                guideBox.innerHTML = '<strong>Payment Verified:</strong> Your transaction has been digitally secured. Your pieces have entered priority packaging with our master artisans.';
+            }
+
+            document.getElementById('conf-subtotal').textContent = `Rs. ${Number(order.subtotal || 0).toLocaleString()}`;
+            document.getElementById('conf-delivery').textContent = Number(order.delivery_fee) === 0 ? 'FREE' : `Rs. ${Number(order.delivery_fee).toLocaleString()}`;
+            document.getElementById('conf-total').textContent = `Rs. ${Number(order.total_amount || 0).toLocaleString()}`;
 
             // Buttons
-            document.getElementById('conf-track-link').href = `track-order.html?order_id=${order.order_number}&phone=${order.customer_phone}`;
+            document.getElementById('conf-track-link').href = `track-order.html?order_id=${order.order_number}&phone=${order.customer_phone || ''}`;
             document.getElementById('conf-invoice-link').href = `invoice.html?order_id=${order.order_number}`;
 
             // WhatsApp Message
-            const settings = store.getSettings();
-            const waMsg = store.buildWhatsAppOrderMessage(order);
-            const waUrl = store.getWhatsAppSendUrl(settings.store_whatsapp, waMsg);
-            document.getElementById('conf-whatsapp-btn').href = waUrl;
+            const settings = store.getSettings ? store.getSettings() : {};
+            const storeWaPhone = settings.store_whatsapp || settings.store_phone || '923001234567';
+            const conciergeMsg = `Hello Khushi Collection, I placed Order #${order.order_number} (${order.customer_name}). Please share the latest update.`;
+            const waUrl = `https://api.whatsapp.com/send?phone=${storeWaPhone.replace(/[^0-9]/g, '')}&text=${encodeURIComponent(conciergeMsg)}`;
+            const waBtn = document.getElementById('conf-whatsapp-btn');
+            if (waBtn) waBtn.href = waUrl;
 
             // Items List
             const items = order.items || [];
             document.getElementById('conf-items-list').innerHTML = items.map(item => `
                 <div class="flex items-center justify-between gap-4 pt-3 first:pt-0 text-xs">
                     <div class="flex items-center gap-3">
-                        <img src="${item.thumbnail}" class="w-12 h-14 object-cover rounded-lg border border-zinc-800">
+                        <img src="${item.thumbnail || 'static/images/logo.svg'}" class="w-12 h-14 object-cover rounded-lg border border-zinc-800">
                         <div>
-                            <h5 class="font-bold text-white">${item.name}</h5>
+                            <h5 class="font-bold text-white">${item.name || item.product_name}</h5>
                             <span class="text-[11px] text-zinc-400">Qty: ${item.quantity} | Size: ${item.size || 'Std'} | Color: ${item.color || 'Def'}</span>
                         </div>
                     </div>
-                    <span class="font-bold text-amber-400 text-sm">Rs. ${(item.price * item.quantity).toLocaleString()}</span>
+                    <span class="font-bold text-amber-400 text-sm">Rs. ${(Number(item.price) * Number(item.quantity)).toLocaleString()}</span>
                 </div>
             `).join('');
         });

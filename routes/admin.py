@@ -9,7 +9,10 @@ from database import (
     query_db, execute_db, log_audit_action,
     has_permission, get_user_permissions, set_user_permissions, DEFAULT_PERMISSIONS
 )
-from services.notifications import trigger_order_status_sms, build_whatsapp_order_message, get_whatsapp_send_url
+from services.notifications import (
+    trigger_order_status_sms, trigger_payment_verified_sms, build_whatsapp_order_message,
+    get_whatsapp_send_url, send_whatsapp_message, build_customer_whatsapp_order_message, normalize_pk_phone
+)
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -709,16 +712,29 @@ def order_detail(id):
     )
 
 @admin_bp.route('/orders/<int:id>/status', methods=['POST'])
+@admin_bp.route('/api/orders/<identifier>/status', methods=['POST'])
 @admin_required(['super_admin', 'manager', 'staff'])
-def update_order_status(id):
-    new_status = request.form.get('order_status')
-    tracking_number = request.form.get('tracking_number', '').strip()
-    courier_name = request.form.get('courier_name', 'Trax Express').strip()
-    notes = request.form.get('admin_notes', '').strip()
+def update_order_status(id=None, identifier=None):
+    data = request.get_json() if request.is_json else {}
+    target_id = id or identifier or data.get('id') or data.get('order_id')
+    new_status = data.get('order_status') or data.get('status') or request.form.get('order_status')
+    tracking_number = (data.get('tracking_number') or request.form.get('tracking_number', '')).strip()
+    courier_name = (data.get('courier_name') or request.form.get('courier_name', 'Trax Logistics')).strip()
+    notes = (data.get('admin_notes') or request.form.get('admin_notes', '')).strip()
 
-    order = query_db('SELECT * FROM orders WHERE id = ?', (id,), one=True)
+    clean_target = str(target_id).replace('#', '').strip()
+    order = query_db(
+        'SELECT * FROM orders WHERE id = ? OR order_number = ? OR order_number = ?',
+        (clean_target, clean_target, f"KC-{clean_target}"),
+        one=True
+    )
     if not order:
+        if request.is_json or request.path.startswith('/admin/api/'):
+            return jsonify({'success': False, 'error': f'Order {target_id} not found.'}), 404
         return redirect(url_for('admin.orders'))
+
+    order_id = order['id']
+    order_number = order['order_number']
 
     execute_db('''
         UPDATE orders SET
@@ -728,7 +744,7 @@ def update_order_status(id):
             admin_notes = ?,
             updated_at = CURRENT_TIMESTAMP
         WHERE id = ?
-    ''', (new_status, tracking_number, courier_name, notes, id))
+    ''', (new_status, tracking_number, courier_name, notes, order_id))
 
     # Add to timeline
     status_titles = {
@@ -742,32 +758,241 @@ def update_order_status(id):
         'cancelled': 'Order Cancelled',
         'returned': 'Returned by Customer'
     }
-    title = status_titles.get(new_status, new_status.title())
+    title = status_titles.get(new_status, str(new_status).title())
     user_name = session.get('user_name', 'Store Team')
 
     execute_db('''
-        INSERT INTO order_timeline (order_id, status, title, description, created_by)
-        VALUES (?, ?, ?, ?, ?)
-    ''', (id, new_status, title, f"Status updated to {new_status.replace('_', ' ').title()}", user_name))
+        INSERT INTO order_timeline (order_id, status, title, description, by_user, time)
+        VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+    ''', (order_id, new_status, title, f"Status updated to {str(new_status).replace('_', ' ').title()}", user_name))
 
     # Trigger Customer SMS Notification
-    updated_order = query_db('SELECT * FROM orders WHERE id = ?', (id,), one=True)
+    updated_order = query_db('SELECT * FROM orders WHERE id = ?', (order_id,), one=True)
     sms_content = trigger_order_status_sms(updated_order, new_status)
 
-    flash(f"Order #{order['order_number']} status updated to '{new_status.replace('_', ' ').title()}'. Customer notification sent: \"{sms_content}\"", 'success')
-    return redirect(url_for('admin.order_detail', id=id))
+    log_audit_action(
+        'ORDER_STATUS_UPDATED',
+        f"Order #{order_number} status updated to {new_status} by {user_name}",
+        user_id=session.get('user_id'),
+        user_email=session.get('user_email'),
+        ip_address=request.remote_addr
+    )
+
+    if request.is_json or request.path.startswith('/admin/api/'):
+        return jsonify({
+            'success': True,
+            'message': f"Order #{order_number} updated to '{new_status.replace('_', ' ').title()}'.",
+            'order_status': new_status,
+            'sms_sent': sms_content
+        })
+
+    flash(f"Order #{order_number} status updated to '{new_status.replace('_', ' ').title()}'. Customer notification sent: \"{sms_content}\"", 'success')
+    return redirect(url_for('admin.order_detail', id=order_id))
+
+
+@admin_bp.route('/api/orders/<identifier>/verify-payment', methods=['POST'])
+@admin_required(['super_admin', 'owner', 'manager', 'staff'])
+def admin_verify_payment(identifier):
+    clean = str(identifier).replace('#', '').strip()
+    order = query_db(
+        'SELECT * FROM orders WHERE order_number = ? OR order_number = ? OR id = ?',
+        (clean, f"KC-{clean}", clean),
+        one=True
+    )
+    if not order:
+        return jsonify({'success': False, 'error': f'Order {identifier} not found.'}), 404
+
+    data = request.get_json() or {}
+    admin_notes = data.get('admin_notes', 'Verified by store administration.')
+    user_id = session.get('user_id')
+    user_name = session.get('user_name', 'Store Admin')
+
+    execute_db('''
+        UPDATE payment_records
+        SET payment_status = 'PAID', verified_at = CURRENT_TIMESTAMP, verified_by = ?,
+            admin_notes = COALESCE(admin_notes || ' | ' || ?, ?), updated_at = CURRENT_TIMESTAMP
+        WHERE order_number = ?
+    ''', (user_id, admin_notes, admin_notes, order['order_number']))
+
+    try:
+        execute_db('''
+            UPDATE payments
+            SET payment_status = 'PAID', verified_at = CURRENT_TIMESTAMP, verified_by = ?,
+                admin_notes = COALESCE(admin_notes || ' | ' || ?, ?), updated_at = CURRENT_TIMESTAMP
+            WHERE order_number = ?
+        ''', (user_id, admin_notes, admin_notes, order['order_number']))
+    except Exception:
+        pass
+
+    execute_db('''
+        UPDATE orders
+        SET payment_status = 'PAID', order_status = 'confirmed', updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+    ''', (order['id'],))
+
+    execute_db('''
+        INSERT INTO order_timeline (order_id, status, title, description, by_user, time)
+        VALUES (?, 'confirmed', 'Payment Verified', ?, ?, CURRENT_TIMESTAMP)
+    ''', (order['id'], f"Payment verified as PAID by {user_name}", user_name))
+
+    try:
+        trigger_payment_verified_sms(order)
+    except Exception:
+        pass
+
+    log_audit_action(
+        'PAYMENT_VERIFIED_MANUAL',
+        f"Payment for Order #{order['order_number']} verified as PAID by {user_name}",
+        user_id=user_id,
+        user_email=session.get('user_email'),
+        ip_address=request.remote_addr
+    )
+
+    return jsonify({
+        'success': True,
+        'message': f"Payment for Order #{order['order_number']} verified as PAID.",
+        'payment_status': 'PAID',
+        'order_status': 'confirmed'
+    })
+
+
+@admin_bp.route('/api/orders/<identifier>/send-whatsapp', methods=['POST'])
+@admin_required(['super_admin', 'owner', 'manager', 'staff'])
+def admin_send_whatsapp_order(identifier):
+    clean = str(identifier).replace('#', '').strip()
+    order = query_db(
+        'SELECT * FROM orders WHERE order_number = ? OR order_number = ? OR id = ?',
+        (clean, f"KC-{clean}", clean),
+        one=True
+    )
+    if not order:
+        return jsonify({'success': False, 'error': f'Order {identifier} not found.'}), 404
+
+    cust_phone = order['customer_phone']
+    if not cust_phone:
+        return jsonify({'success': False, 'error': 'Order has no customer phone number.'}), 400
+
+    items_rows = query_db('SELECT * FROM order_items WHERE order_id = ?', (order['id'],))
+    items = [dict(r) for r in items_rows] if items_rows else []
+
+    data = request.get_json() or {}
+    custom_msg = data.get('message')
+    if custom_msg:
+        wa_text = custom_msg
+    else:
+        wa_text = build_customer_whatsapp_order_message(dict(order), items)
+
+    sent = send_whatsapp_message(
+        phone=cust_phone,
+        message=wa_text,
+        title=f"Manual WhatsApp for Order #{order['order_number']}",
+        order_id=order['id'],
+        order_number=order['order_number'],
+        recipient_type='customer'
+    )
+
+    wa_direct_url = get_whatsapp_send_url(cust_phone, wa_text)
+
+    log_audit_action(
+        'WHATSAPP_DISPATCH_MANUAL',
+        f"WhatsApp notification triggered for Order #{order['order_number']} to {cust_phone}",
+        user_id=session.get('user_id'),
+        user_email=session.get('user_email'),
+        ip_address=request.remote_addr
+    )
+
+    return jsonify({
+        'success': True,
+        'sent': sent,
+        'message': f"WhatsApp message prepared & dispatched for Order #{order['order_number']}.",
+        'customer_phone': cust_phone,
+        'whatsapp_url': wa_direct_url
+    })
+
+
+@admin_bp.route('/api/whatsapp/test', methods=['POST'])
+@admin_required(['super_admin', 'owner', 'manager'])
+def admin_test_whatsapp_api():
+    data = request.get_json() or {}
+    target_phone = data.get('phone') or session.get('user_phone')
+    if not target_phone:
+        # Fallback to store phone from settings
+        from routes.payments import get_settings_from_db
+        s = get_settings_from_db()
+        target_phone = s.get('store_profile', {}).get('whatsapp') or s.get('store_profile', {}).get('phone') or '+923001234567'
+
+    test_msg = "🌟 *Khushi Collection — WhatsApp Gateway Test*\n\nYour automated WhatsApp notification system is active and functioning perfectly!\n\nTimestamp: " + datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')
+    
+    sent = send_whatsapp_message(
+        phone=target_phone,
+        message=test_msg,
+        title="Gateway Connection Test",
+        recipient_type='admin'
+    )
+
+    wa_url = get_whatsapp_send_url(target_phone, test_msg)
+
+    return jsonify({
+        'success': True,
+        'sent': sent,
+        'target_phone': target_phone,
+        'message': f"Test WhatsApp message generated for {target_phone}.",
+        'whatsapp_url': wa_url
+    })
+
+
+@admin_bp.route('/api/orders', methods=['GET'])
+@admin_required(['super_admin', 'owner', 'manager', 'staff'])
+def admin_api_list_orders():
+    rows = query_db('SELECT * FROM orders ORDER BY id DESC')
+    orders_list = []
+    for r in rows:
+        o = dict(r)
+        items = query_db('SELECT * FROM order_items WHERE order_id = ?', (r['id'],))
+        o['items'] = [dict(it) for it in items]
+        timeline = query_db('SELECT * FROM order_timeline WHERE order_id = ? ORDER BY id ASC', (r['id'],))
+        o['timeline'] = [dict(tl) for tl in timeline]
+        pay_rec = query_db('SELECT * FROM payment_records WHERE order_number = ?', (r['order_number'],), one=True)
+        o['payment_record'] = dict(pay_rec) if pay_rec else None
+        notifs = query_db('SELECT * FROM notification_logs WHERE order_number = ? OR order_id = ? ORDER BY id DESC', (r['order_number'], r['id']))
+        o['notifications'] = [dict(nl) for nl in notifs]
+        orders_list.append(o)
+    return jsonify({'success': True, 'orders': orders_list, 'count': len(orders_list)})
+
 
 @admin_bp.route('/api/orders/<identifier>', methods=['DELETE', 'POST'])
 @admin_bp.route('/orders/delete/<identifier>', methods=['POST', 'DELETE'])
-@owner_required
+@admin_required(['super_admin', 'owner', 'manager'])
 def delete_order_endpoint(identifier):
     try:
         clean = str(identifier).replace('#', '').strip()
-        execute_db('DELETE FROM order_items WHERE order_id IN (SELECT id FROM orders WHERE order_number = ? OR order_number = ? OR id = ?)', (clean, f"KC-{clean}", clean))
-        execute_db('DELETE FROM order_timeline WHERE order_id IN (SELECT id FROM orders WHERE order_number = ? OR order_number = ? OR id = ?)', (clean, f"KC-{clean}", clean))
-        execute_db('DELETE FROM payments WHERE order_number = ? OR order_number = ? OR order_id = ?', (clean, f"KC-{clean}", clean))
-        execute_db('DELETE FROM orders WHERE order_number = ? OR order_number = ? OR id = ?', (clean, f"KC-{clean}", clean))
-        return jsonify({'success': True, 'message': f'Order {identifier} deleted successfully.'})
+        order = query_db(
+            'SELECT id, order_number FROM orders WHERE order_number = ? OR order_number = ? OR id = ?',
+            (clean, f"KC-{clean}", clean),
+            one=True
+        )
+        if not order:
+            return jsonify({'success': False, 'error': f'Order {identifier} not found.'}), 404
+
+        ord_id = order['id']
+        ord_num = order['order_number']
+
+        execute_db('DELETE FROM order_items WHERE order_id = ?', (ord_id,))
+        execute_db('DELETE FROM order_timeline WHERE order_id = ?', (ord_id,))
+        execute_db('DELETE FROM payment_records WHERE order_number = ? OR order_id = ?', (ord_num, ord_id))
+        execute_db('DELETE FROM payments WHERE order_number = ? OR order_id = ?', (ord_num, ord_id))
+        execute_db('DELETE FROM notification_logs WHERE order_number = ? OR order_id = ?', (ord_num, ord_id))
+        execute_db('DELETE FROM orders WHERE id = ?', (ord_id,))
+
+        log_audit_action(
+            'ORDER_DELETED',
+            f"Order #{ord_num} permanently deleted by admin",
+            user_id=session.get('user_id'),
+            user_email=session.get('user_email'),
+            ip_address=request.remote_addr
+        )
+
+        return jsonify({'success': True, 'message': f'Order #{ord_num} deleted successfully.'})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 

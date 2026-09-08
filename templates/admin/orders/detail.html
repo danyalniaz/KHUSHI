@@ -154,6 +154,19 @@
                         <span>Payment Method:</span>
                         <span class="uppercase font-bold text-white">{{ order.payment_method }}</span>
                     </div>
+                    <div class="flex justify-between items-center text-[11px] text-zinc-400 pt-1">
+                        <span>Payment Status:</span>
+                        <span class="uppercase font-bold px-2 py-0.5 rounded text-[10px] {% if order.payment_status == 'PAID' %}bg-emerald-950 text-emerald-400 border border-emerald-500/30{% elif order.payment_status in ('VERIFICATION_REQUIRED', 'PENDING_VERIFICATION') %}bg-amber-950 text-amber-400 border border-amber-500/30{% else %}bg-zinc-800 text-zinc-300{% endif %}">
+                            {{ order.payment_status or 'COD' }}
+                        </span>
+                    </div>
+                    {% if order.payment_status != 'PAID' %}
+                    <div class="pt-3">
+                        <button type="button" onclick="verifyOrderDetailPayment('{{ order.order_number }}')" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow transition">
+                            <i class="fa-solid fa-check-double"></i> Verify Bank Payment (Mark as Paid)
+                        </button>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 
@@ -179,6 +192,30 @@
 
         </div>
 
-    </div>
 </div>
+
+<script>
+async function verifyOrderDetailPayment(orderNum) {
+    if (!confirm(`Verify payment for Order #${orderNum} as PAID?\nThis will update payment status to PAID, confirm the order, and send SMS confirmation.`)) {
+        return;
+    }
+    try {
+        const res = await fetch(`/admin/api/orders/${encodeURIComponent(orderNum)}/verify-payment`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ admin_notes: 'Manual Bank Verification via Admin Order Detail' })
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert(data.message || 'Payment successfully verified!');
+            window.location.reload();
+        } else {
+            alert(data.error || 'Failed to verify payment.');
+        }
+    } catch(e) {
+        console.error(e);
+        alert('Network error verifying payment.');
+    }
+}
+</script>
 {% endblock %}

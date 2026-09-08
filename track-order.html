@@ -58,7 +58,10 @@
                         <div class="flex items-center gap-3">
                             <h3 class="text-xl sm:text-2xl font-mono font-bold text-amber-400" id="res-order-id">#KC-10025</h3>
                             <span id="res-status-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-amber-950 text-amber-400 border border-amber-500/30">
-                                On The Way
+                                Order Placed
+                            </span>
+                            <span id="res-payment-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-sky-950 text-sky-400 border border-sky-500/30">
+                                Payment: COD
                             </span>
                         </div>
                         <p class="text-xs text-zinc-400 mt-1">Courier: <strong class="text-white" id="res-courier">Trax Logistics</strong> | Tracking #: <strong class="text-amber-400 font-mono" id="res-tracking-num">TRX-99882211</strong></p>
@@ -103,9 +106,9 @@
         </div>
 
         <div id="not-found-box" class="hidden luxury-card p-12 rounded-3xl text-center space-y-3">
-            <i class="fa-solid fa-circle-exclamation text-3xl text-rose-500 mb-2"></i>
-            <h4 class="text-base font-serif font-bold text-white">No Order Found</h4>
-            <p class="text-xs text-zinc-400">Please check your Order Reference number (e.g. KC-10025) and try again.</p>
+            <i id="not-found-icon" class="fa-solid fa-circle-exclamation text-3xl text-rose-500 mb-2"></i>
+            <h4 id="not-found-title" class="text-base font-serif font-bold text-white">No Order Found</h4>
+            <p id="not-found-msg" class="text-xs text-zinc-400">Please check your Order Reference number (e.g. KC-10025) and verify your phone number.</p>
         </div>
 
     </main>
@@ -123,42 +126,98 @@
             { key: 'delivered', label: 'Delivered', icon: 'fa-house-circle-check' }
         ];
 
-        function searchOrder(e) {
+        async function searchOrder(e) {
             if (e) e.preventDefault();
             const orderNum = document.getElementById('track-order-num').value.trim();
             const phone = document.getElementById('track-phone').value.trim();
 
-            const order = store.getOrder(orderNum) || store.getOrders().find(o => {
-                if (phone && o.customer_phone.includes(phone.replace(/\D/g, '').slice(-7))) return true;
-                return false;
-            });
-
             const resultBox = document.getElementById('tracking-result-box');
             const notFoundBox = document.getElementById('not-found-box');
+            const notFoundTitle = document.getElementById('not-found-title');
+            const notFoundMsg = document.getElementById('not-found-msg');
+            const notFoundIcon = document.getElementById('not-found-icon');
 
-            if (!order) {
-                resultBox.classList.add('hidden');
-                notFoundBox.classList.remove('hidden');
+            if (!orderNum) {
+                alert('Please enter your Order Reference ID (e.g. KC-10025)');
                 return;
             }
 
-            notFoundBox.classList.add('hidden');
-            resultBox.classList.remove('hidden');
-            renderTrackingDetails(order);
+            try {
+                const res = await fetch(`/api/orders/track?order_id=${encodeURIComponent(orderNum)}&phone=${encodeURIComponent(phone)}`);
+                const data = await res.json();
+
+                if (res.status === 403) {
+                    resultBox.classList.add('hidden');
+                    notFoundBox.classList.remove('hidden');
+                    notFoundIcon.className = 'fa-solid fa-shield-halved text-3xl text-amber-400 mb-2';
+                    notFoundTitle.textContent = 'Phone Verification Required';
+                    notFoundMsg.textContent = data.error || 'For customer privacy, the phone number entered must match the recipient on record for this order.';
+                    return;
+                }
+
+                if (!res.ok || !data.success || !data.order) {
+                    // Try fallback to local store
+                    const localOrder = store.getOrder ? store.getOrder(orderNum) : null;
+                    if (localOrder) {
+                        notFoundBox.classList.add('hidden');
+                        resultBox.classList.remove('hidden');
+                        renderTrackingDetails(localOrder);
+                        return;
+                    }
+                    resultBox.classList.add('hidden');
+                    notFoundBox.classList.remove('hidden');
+                    notFoundIcon.className = 'fa-solid fa-circle-exclamation text-3xl text-rose-500 mb-2';
+                    notFoundTitle.textContent = 'No Order Found';
+                    notFoundMsg.textContent = data.error || `No order found with reference #${orderNum}. Please verify your details.`;
+                    return;
+                }
+
+                notFoundBox.classList.add('hidden');
+                resultBox.classList.remove('hidden');
+                renderTrackingDetails(data.order);
+
+            } catch (err) {
+                console.error("Tracking API error:", err);
+                // Fallback to localStorage
+                const localOrder = store.getOrder ? store.getOrder(orderNum) : null;
+                if (localOrder) {
+                    notFoundBox.classList.add('hidden');
+                    resultBox.classList.remove('hidden');
+                    renderTrackingDetails(localOrder);
+                } else {
+                    resultBox.classList.add('hidden');
+                    notFoundBox.classList.remove('hidden');
+                }
+            }
         }
 
         function renderTrackingDetails(order) {
             document.getElementById('res-order-id').textContent = `#${order.order_number}`;
             document.getElementById('res-courier').textContent = order.courier_name || 'Trax Logistics';
-            document.getElementById('res-tracking-num').textContent = order.tracking_number || 'TRX-99882211';
+            document.getElementById('res-tracking-num').textContent = order.tracking_number || 'TRX-101';
             document.getElementById('res-customer').textContent = order.customer_name;
-            document.getElementById('res-destination').textContent = `${order.city}`;
+            document.getElementById('res-destination').textContent = `${order.city}${order.area ? ` (${order.area})` : ''}`;
 
             const badge = document.getElementById('res-status-badge');
-            badge.textContent = order.order_status.replace('_', ' ').toUpperCase();
+            const ordStatus = (order.order_status || 'PENDING').toLowerCase();
+            badge.textContent = ordStatus.replace('_', ' ').toUpperCase();
+
+            // Payment badge
+            const payBadge = document.getElementById('res-payment-badge');
+            const payStatus = (order.payment_status || 'PENDING').toUpperCase();
+            if (payStatus === 'PAID') {
+                payBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-emerald-950 text-emerald-400 border border-emerald-500/30';
+                payBadge.textContent = 'Payment: PAID';
+            } else if (payStatus === 'VERIFICATION_REQUIRED') {
+                payBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-amber-950 text-amber-400 border border-amber-500/30';
+                payBadge.textContent = 'Payment: VERIFICATION IN PROGRESS';
+            } else {
+                payBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-sky-950 text-sky-400 border border-sky-500/30';
+                payBadge.textContent = `Payment: ${order.payment_method?.toUpperCase() || 'COD'}`;
+            }
 
             // Progress Steps
-            const currentIdx = ORDER_STEPS.findIndex(s => s.key === order.order_status);
+            const currentIdx = ORDER_STEPS.findIndex(s => s.key === ordStatus);
             const activeStepIndex = currentIdx >= 0 ? currentIdx : 0;
 
             const stepsBox = document.getElementById('steps-container');
@@ -182,30 +241,35 @@
 
             // Activity Log
             const timeline = order.timeline || [];
-            document.getElementById('timeline-activity-list').innerHTML = timeline.map(t => `
-                <div class="flex items-start gap-4 text-xs">
-                    <span class="w-3 h-3 rounded-full bg-amber-400 mt-1 flex-shrink-0 shadow"></span>
-                    <div class="flex-1">
-                        <div class="flex items-center justify-between">
-                            <span class="font-bold text-white">${t.title}</span>
-                            <span class="text-[10px] text-zinc-500 font-mono">${t.time}</span>
+            const actList = document.getElementById('timeline-activity-list');
+            if (timeline.length === 0) {
+                actList.innerHTML = `<p class="text-xs text-zinc-500 italic">Order recorded in system. Delivery dispatch update will appear shortly.</p>`;
+            } else {
+                actList.innerHTML = timeline.map(t => `
+                    <div class="flex items-start gap-4 text-xs">
+                        <span class="w-3 h-3 rounded-full bg-amber-400 mt-1 flex-shrink-0 shadow"></span>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-white">${t.title}</span>
+                                <span class="text-[10px] text-zinc-500 font-mono">${t.time || t.created_at || ''}</span>
+                            </div>
+                            <p class="text-zinc-400 text-[11px] mt-0.5">${t.description || ''}</p>
+                            <span class="text-[10px] text-zinc-500 font-semibold">Logged by: ${t.by_user || t.created_by || 'System'}</span>
                         </div>
-                        <p class="text-zinc-400 text-[11px] mt-0.5">${t.description}</p>
-                        <span class="text-[10px] text-zinc-500 font-semibold">Updated by: ${t.by}</span>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const orderId = urlParams.get('order_id') || 'KC-10025';
-            const phone = urlParams.get('phone') || '';
-
-            document.getElementById('track-order-num').value = orderId;
-            if (phone) document.getElementById('track-phone').value = phone;
-
-            searchOrder();
+            const qOrder = urlParams.get('order_id');
+            const qPhone = urlParams.get('phone');
+            if (qOrder) {
+                document.getElementById('track-order-num').value = qOrder;
+                if (qPhone) document.getElementById('track-phone').value = qPhone;
+                searchOrder();
+            }
         });
     </script>
 </body>

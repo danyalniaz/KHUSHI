@@ -6464,6 +6464,24 @@ Please process this order.`.trim();
             b.classList.toggle('hidden', wishCount === 0);
         });
     }
+
+    buildWhatsAppOrderMessage(order) {
+        if (!order) return "";
+        const items = order.items || [];
+        const lines = items.map((it, idx) => {
+            const s = typeof it.size === 'object' && it.size !== null ? (it.size.name || 'Std') : (it.size || 'Std');
+            const c = typeof it.color === 'object' && it.color !== null ? (it.color.name || 'Default') : (it.color || 'Default');
+            return `  • ${it.name || it.product_name} (${s}/${c}) × ${it.quantity || 1} = Rs. ${Number(it.price * (it.quantity || 1)).toLocaleString()}`;
+        }).join('\n') || "  • Luxury Pret Ensemble × 1";
+
+        const addr = `${order.address || ''}, ${order.city || ''}${order.area ? ` (${order.area})` : ''}`;
+        return `✨ *KHUSHI COLLECTION — ORDER NOTIFICATION* ✨\n\nOrder ID: #${order.order_number}\nCustomer: ${order.customer_name}\nPhone: ${order.customer_phone || ''}\nTotal: Rs. ${Number(order.total_amount || 0).toLocaleString()}\nPayment: ${(order.payment_method || 'COD').toUpperCase()} (${(order.payment_status || 'PENDING').toUpperCase()})\nDelivery Address: ${addr}\n\n*Ordered Items:*\n${lines}\n\nTrack: https://khushicollection.com/track-order?order_id=${order.order_number}&phone=${order.customer_phone || ''}`;
+    }
+
+    getWhatsAppSendUrl(phone, message) {
+        const clean = String(phone || '').replace(/[^0-9]/g, '');
+        return `https://api.whatsapp.com/send?phone=${clean}&text=${encodeURIComponent(message)}`;
+    }
 }
 
 const store = new KhushiStore();
@@ -6499,6 +6517,73 @@ function showToast(message, type = 'success') {
     }, 3200);
 }
 
+// Global Reusable Luxury Micro-3D Card Engine
+function initLuxury3DSystem() {
+    if (window.matchMedia('(hover: none)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const cards = document.querySelectorAll('.card-3d-wrap, .luxury-3d-card');
+    cards.forEach(card => {
+        if (card.dataset.has3dEngine === 'true') return;
+        card.dataset.has3dEngine = 'true';
+
+        const inner = card.querySelector('.card-3d-inner') || card;
+        let glare = card.querySelector('.card-3d-glare');
+        if (!glare) {
+            glare = document.createElement('div');
+            glare.className = 'card-3d-glare';
+            inner.appendChild(glare);
+        }
+
+        let isHovered = false;
+        let rafId = null;
+        let targetRotX = 0;
+        let targetRotY = 0;
+        let mousePercentX = 50;
+        let mousePercentY = 50;
+
+        card.addEventListener('mouseenter', () => {
+            isHovered = true;
+            inner.style.transition = 'transform 120ms ease-out, box-shadow 300ms ease, border-color 300ms ease';
+        });
+
+        card.addEventListener('mousemove', (e) => {
+            if (!isHovered) return;
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const px = (x / rect.width) * 100;
+            const py = (y / rect.height) * 100;
+            mousePercentX = px;
+            mousePercentY = py;
+
+            // Controlled 1.5°–2.8° maximum tilt
+            targetRotY = ((x / rect.width) - 0.5) * 5.2;
+            targetRotX = -(((y / rect.height) - 0.5) * 5.2);
+
+            if (!rafId) {
+                rafId = requestAnimationFrame(() => {
+                    inner.style.transform = `perspective(1200px) rotateX(${targetRotX.toFixed(2)}deg) rotateY(${targetRotY.toFixed(2)}deg) translateY(-4px)`;
+                    inner.style.setProperty('--mouse-x', `${mousePercentX.toFixed(1)}%`);
+                    inner.style.setProperty('--mouse-y', `${mousePercentY.toFixed(1)}%`);
+                    rafId = null;
+                });
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            isHovered = false;
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            }
+            inner.style.transition = 'transform 450ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 450ms ease, border-color 450ms ease';
+            inner.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+        });
+    });
+}
+
 // Global Image Fallback Handler (Never show broken icons)
 function handleImageError(img) {
     img.onerror = null;
@@ -6508,8 +6593,10 @@ function handleImageError(img) {
 document.addEventListener('DOMContentLoaded', () => {
     store.updateBadgeCounts();
     store.applyStorefrontSettings();
+    initLuxury3DSystem();
     document.querySelectorAll('img').forEach(img => {
         img.addEventListener('error', () => handleImageError(img));
     });
 });
+
 
