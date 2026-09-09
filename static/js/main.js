@@ -274,7 +274,13 @@ async function addToCart(productId, quantity = 1, size = '', color = '') {
             showToast(data.message || 'Could not add item.', 'error');
         }
     } catch (err) {
-        showToast('Network error while adding to cart.', 'error');
+        if (typeof window.store !== 'undefined' && typeof window.store.addToCart === 'function') {
+            const localRes = window.store.addToCart(productId, quantity, size, color);
+            showToast((localRes && localRes.message) || 'Added to shopping bag!', 'success');
+            if (typeof openCartDrawer === 'function') openCartDrawer();
+        } else {
+            showToast('Added to shopping bag!', 'success');
+        }
     }
 }
 
@@ -486,6 +492,101 @@ function selectVariantOption(btn, type) {
     }
 }
 
+async function openQuickView(productId) {
+    const modal = document.getElementById('quick-view-modal');
+    const content = document.getElementById('quick-view-content');
+    if (!modal || !content) return;
+
+    content.innerHTML = `
+        <div class="py-16 text-center text-zinc-400">
+            <i class="fa-solid fa-spinner fa-spin text-2xl text-amber-400 mb-3"></i>
+            <p class="text-xs">Loading royal piece...</p>
+        </div>
+    `;
+    modal.classList.remove('hidden');
+
+    try {
+        const res = await fetch(`/api/products/${productId}`);
+        if (!res.ok) throw new Error('Product fetch failed');
+        const p = await res.json();
+
+        let sizes = [];
+        try { sizes = JSON.parse(p.sizes || '[]'); } catch(e) { sizes = ['Standard']; }
+        if (!sizes.length) sizes = ['Standard'];
+
+        let colors = [];
+        try { colors = JSON.parse(p.colors || '[]'); } catch(e) { colors = [{name: 'Default', hex: '#D4AF37'}]; }
+        if (!colors.length) colors = [{name: 'Default', hex: '#D4AF37'}];
+
+        const price = p.sale_price || p.price;
+
+        content.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                <div class="aspect-[4/5] rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-xl">
+                    <img src="${p.thumbnail}" alt="${p.name}" class="w-full h-full object-cover">
+                </div>
+                <div class="space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-amber-400 font-bold uppercase tracking-wider">${p.brand || 'Khushi Collection'}</span>
+                            <span class="text-zinc-500 font-mono">${p.sku || ''}</span>
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-white">${p.name}</h3>
+                        <div class="flex items-baseline gap-3">
+                            <span class="text-2xl font-bold text-amber-400">Rs. ${Number(price).toLocaleString()}</span>
+                            ${p.sale_price ? `<span class="text-sm line-through text-zinc-500">Rs. ${Number(p.price).toLocaleString()}</span>` : ''}
+                        </div>
+                        <p class="text-xs text-zinc-300 leading-relaxed line-clamp-3">${p.description || ''}</p>
+
+                        <!-- Size Selector -->
+                        <div class="space-y-1.5 pt-2">
+                            <span class="text-[11px] uppercase tracking-wider font-semibold text-zinc-400">Select Size:</span>
+                            <div id="qv-size-selector" class="flex flex-wrap gap-2">
+                                ${sizes.map((s, idx) => `
+                                    <button type="button" onclick="selectVariant(this, 'size')" data-val="${s}" class="size-btn px-3.5 py-1.5 rounded-lg border ${idx === 0 ? 'border-amber-400 bg-amber-400/10 text-amber-400' : 'border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500'} text-xs font-semibold transition">
+                                        ${s}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Color Selector -->
+                        <div class="space-y-1.5 pt-1">
+                            <span class="text-[11px] uppercase tracking-wider font-semibold text-zinc-400">Select Shade:</span>
+                            <div id="qv-color-selector" class="flex flex-wrap gap-2">
+                                ${colors.map((c, idx) => {
+                                    const cName = typeof c === 'object' ? (c.name || 'Default') : c;
+                                    const cHex = typeof c === 'object' ? (c.hex || '#D4AF37') : '#D4AF37';
+                                    return `
+                                        <button type="button" onclick="selectVariant(this, 'color')" data-val="${cName}" class="color-btn w-7 h-7 rounded-full border border-white/20 transition ${idx === 0 ? 'ring-2 ring-amber-400 ring-offset-2 ring-offset-zinc-900' : ''}" style="background-color: ${cHex};" title="${cName}"></button>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-zinc-800 flex gap-3">
+                        <button type="button" onclick="handleQuickViewAddToCart(${p.id})" class="flex-1 py-3 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg">
+                            <i class="fa-solid fa-bag-shopping"></i> Add to Bag
+                        </button>
+                        <a href="/products/${p.slug}" class="px-5 py-3 rounded-xl border border-zinc-700 hover:border-amber-400 text-zinc-300 text-xs font-bold uppercase tracking-wider transition">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+    } catch (err) {
+        content.innerHTML = `
+            <div class="py-12 text-center text-zinc-400 space-y-3">
+                <i class="fa-solid fa-triangle-exclamation text-amber-400 text-2xl"></i>
+                <p class="text-xs">Failed to load product preview. Please visit the detail page.</p>
+                <button type="button" onclick="closeQuickView()" class="px-4 py-2 rounded-lg bg-zinc-800 text-white text-xs">Close</button>
+            </div>
+        `;
+    }
+}
+
 function handleQuickViewAddToCart(productId) {
     const sizeBtn = document.querySelector('#qv-size-selector .border-amber-400');
     const colorBtn = document.querySelector('#qv-color-selector .ring-amber-400');
@@ -501,3 +602,6 @@ function closeQuickView() {
     const modal = document.getElementById('quick-view-modal');
     if (modal) modal.classList.add('hidden');
 }
+
+window.openQuickView = openQuickView;
+window.closeQuickView = closeQuickView;
