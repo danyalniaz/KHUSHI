@@ -133,88 +133,63 @@ body {
    ============================================================ */
 
 /* 3D Perspective Wrapper */
+/* ============================================================
+   3D CARD SYSTEM — TRANSFORMS DISABLED
+   Keeping class names for HTML compatibility but all 3D
+   transforms removed. Buttons now 100% clickable.
+============================================================ */
 .card-3d-wrap {
-  perspective: 1200px;
-  transform-style: preserve-3d;
-  will-change: transform;
+  /* perspective and preserve-3d removed — was blocking button clicks */
 }
 
-/* 3D Card Surface Inner */
+/* Card Surface — flat, still looks great */
 .card-3d-inner {
   position: relative;
-  transform-style: preserve-3d;
-  transition: transform var(--motion-medium), box-shadow var(--motion-medium), border-color var(--motion-medium);
+  transition: box-shadow 300ms ease, border-color 300ms ease, transform 200ms ease;
   background: linear-gradient(175deg, rgba(19, 26, 40, 0.85) 0%, rgba(10, 14, 22, 0.95) 100%);
   border: 1px solid rgba(255, 255, 255, 0.07);
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
-/* Hover Dynamic State */
+/* Hover State — keeps luxury feel without 3D rotation */
 .card-3d-wrap:hover .card-3d-inner {
   border-color: rgba(212, 175, 55, 0.45);
-  box-shadow: 
+  transform: translateY(-4px);
+  box-shadow:
     0 22px 45px -12px rgba(0, 0, 0, 0.8),
     0 0 20px -2px rgba(212, 175, 55, 0.15),
     0 1px 0 rgba(255, 241, 184, 0.2) inset;
 }
 
-/* Dynamic Specular Light Glare (Follows Cursor) */
+/* Glare effect — hidden, no longer needed */
 .card-3d-glare {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.08) 0%, rgba(212, 175, 55, 0.04) 40%, transparent 75%);
+  display: none !important;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity var(--motion-fast);
-  z-index: 20;
 }
 
-.card-3d-wrap:hover .card-3d-glare {
-  opacity: 1;
-}
-
-/* Z-Depth Hierarchy Layers */
-.card-depth-1 { transform: translateZ(0px); }
-.card-depth-2 { transform: translateZ(12px); }
-.card-depth-3 { transform: translateZ(24px); }
-.card-depth-4 { transform: translateZ(32px); }
+/* Z-Depth layers — all flat, no translateZ */
+.card-depth-1,
+.card-depth-2,
+.card-depth-3,
+.card-depth-4 { transform: none; }
 
 /* ============================================================
-   CART ACTION BAR — guaranteed clickable inside 3D cards
-   Removes 3D transform so buttons are ALWAYS in flat stacking
-   context. pointer-events: auto ensures they receive clicks.
+   CART ACTION BAR — guaranteed clickable
 ============================================================ */
 .card-action-bar {
   position: relative;
-  z-index: 50;
-  transform: none !important;
+  z-index: 10;
   pointer-events: auto !important;
 }
 .card-action-bar button,
 .card-action-bar a {
   position: relative;
-  z-index: 51;
+  z-index: 11;
   pointer-events: auto !important;
   cursor: pointer;
 }
 
-/* Touch/Mobile Fallback: Disable 3D tilt on touch devices */
-@media (hover: none) {
-  .card-3d-wrap {
-    perspective: none;
-  }
-  .card-3d-inner {
-    transform: none !important;
-    transition: transform var(--motion-fast);
-  }
-  .card-3d-wrap:active .card-3d-inner {
-    transform: scale(0.985) !important;
-  }
-  .card-3d-glare {
-    display: none;
-  }
-}
+
 
 /* Accessibility: Disable motion when user requests reduced motion */
 @media (prefers-reduced-motion: reduce) {

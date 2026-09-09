@@ -6634,70 +6634,9 @@ function showToast(message, type = 'success') {
 }
 window.showToast = showToast;
 
-// Global Reusable Luxury Micro-3D Card Engine
+// 3D Card Engine — DISABLED (was blocking button clicks via preserve-3d stacking)
 function initLuxury3DSystem() {
-    if (window.matchMedia && window.matchMedia('(hover: none)').matches) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const cards = document.querySelectorAll('.card-3d-wrap, .luxury-3d-card');
-    cards.forEach(card => {
-        if (card.dataset.has3dEngine === 'true') return;
-        card.dataset.has3dEngine = 'true';
-
-        const inner = card.querySelector('.card-3d-inner') || card;
-        let glare = card.querySelector('.card-3d-glare');
-        if (!glare) {
-            glare = document.createElement('div');
-            glare.className = 'card-3d-glare';
-            inner.appendChild(glare);
-        }
-
-        let isHovered = false;
-        let rafId = null;
-        let targetRotX = 0;
-        let targetRotY = 0;
-        let mousePercentX = 50;
-        let mousePercentY = 50;
-
-        card.addEventListener('mouseenter', () => {
-            isHovered = true;
-            inner.style.transition = 'transform 120ms ease-out, box-shadow 300ms ease, border-color 300ms ease';
-        });
-
-        card.addEventListener('mousemove', (e) => {
-            if (!isHovered) return;
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const px = (x / rect.width) * 100;
-            const py = (y / rect.height) * 100;
-            mousePercentX = px;
-            mousePercentY = py;
-
-            targetRotY = ((x / rect.width) - 0.5) * 5.2;
-            targetRotX = -(((y / rect.height) - 0.5) * 5.2);
-
-            if (!rafId) {
-                rafId = requestAnimationFrame(() => {
-                    inner.style.transform = `perspective(1200px) rotateX(${targetRotX.toFixed(2)}deg) rotateY(${targetRotY.toFixed(2)}deg) translateY(-4px)`;
-                    inner.style.setProperty('--mouse-x', `${mousePercentX.toFixed(1)}%`);
-                    inner.style.setProperty('--mouse-y', `${mousePercentY.toFixed(1)}%`);
-                    rafId = null;
-                });
-            }
-        });
-
-        card.addEventListener('mouseleave', () => {
-            isHovered = false;
-            if (rafId) {
-                cancelAnimationFrame(rafId);
-                rafId = null;
-            }
-            inner.style.transition = 'transform 450ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 450ms ease, border-color 450ms ease';
-            inner.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0px)';
-        });
-    });
+    return; // Disabled — 3D transforms interfere with pointer events on buttons
 }
 
 function handleImageError(img) {
