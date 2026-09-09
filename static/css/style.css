@@ -180,6 +180,25 @@ body {
 .card-depth-3 { transform: translateZ(24px); }
 .card-depth-4 { transform: translateZ(32px); }
 
+/* ============================================================
+   CART ACTION BAR — guaranteed clickable inside 3D cards
+   Removes 3D transform so buttons are ALWAYS in flat stacking
+   context. pointer-events: auto ensures they receive clicks.
+============================================================ */
+.card-action-bar {
+  position: relative;
+  z-index: 50;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+.card-action-bar button,
+.card-action-bar a {
+  position: relative;
+  z-index: 51;
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
 /* Touch/Mobile Fallback: Disable 3D tilt on touch devices */
 @media (hover: none) {
   .card-3d-wrap {

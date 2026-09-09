@@ -177,11 +177,11 @@
                         </div>
                     </div>
 
-                    <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2 relative z-30">
-                        <button type="button" onclick="event.stopPropagation(); openQuickView({{ product.id }})" class="relative z-30 pointer-events-auto p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition" title="Quick View">
+                    <div class="card-action-bar mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2">
+                        <button type="button" onclick="event.stopPropagation(); openQuickView({{ product.id }})" class="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition" title="Quick View">
                             <i class="fa-regular fa-eye"></i>
                         </button>
-                        <button type="button" onclick="event.stopPropagation(); addToCart({{ product.id }})" class="relative z-30 pointer-events-auto flex-1 py-2 px-3 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow active:scale-95 transition">
+                        <button type="button" onclick="event.stopPropagation(); event.preventDefault(); addToCart({{ product.id }})" class="flex-1 py-2 px-3 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow active:scale-95 transition">
                             <i class="fa-solid fa-bag-shopping text-[11px]"></i> ADD TO CART
                         </button>
                     </div>
@@ -236,11 +236,11 @@
                     </div>
                 </div>
 
-                <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2 relative z-30">
-                    <button type="button" onclick="event.stopPropagation(); openQuickView({{ product.id }})" class="relative z-30 pointer-events-auto p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition">
+                <div class="card-action-bar mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2">
+                    <button type="button" onclick="event.stopPropagation(); openQuickView({{ product.id }})" class="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition">
                         <i class="fa-regular fa-eye"></i>
                     </button>
-                    <button type="button" onclick="event.stopPropagation(); addToCart({{ product.id }})" class="relative z-30 pointer-events-auto flex-1 py-2 px-3 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow active:scale-95 transition">
+                    <button type="button" onclick="event.stopPropagation(); event.preventDefault(); addToCart({{ product.id }})" class="flex-1 py-2 px-3 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow active:scale-95 transition">
                         <i class="fa-solid fa-bag-shopping text-[11px]"></i> ADD TO CART
                     </button>
                 </div>
@@ -320,11 +320,11 @@
                     </div>
                 </div>
 
-                <div class="mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2 relative z-30">
-                    <button type="button" onclick="event.stopPropagation(); openQuickView({{ product.id }})" class="relative z-30 pointer-events-auto p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition">
+                <div class="card-action-bar mt-4 pt-3 border-t border-zinc-800/80 flex items-center gap-2">
+                    <button type="button" onclick="event.stopPropagation(); openQuickView({{ product.id }})" class="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition">
                         <i class="fa-regular fa-eye"></i>
                     </button>
-                    <button type="button" onclick="event.stopPropagation(); addToCart({{ product.id }})" class="relative z-30 pointer-events-auto flex-1 py-2 px-3 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow active:scale-95 transition">
+                    <button type="button" onclick="event.stopPropagation(); event.preventDefault(); addToCart({{ product.id }})" class="flex-1 py-2 px-3 rounded-lg btn-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow active:scale-95 transition">
                         <i class="fa-solid fa-bag-shopping text-[11px]"></i> ADD TO CART
                     </button>
                 </div>
