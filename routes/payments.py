@@ -381,12 +381,16 @@ def execute_checkout_process(data, user_id=None):
     Core atomic checkout logic used by both API and storefront form submissions.
     """
     cust_obj = data.get('customer') if isinstance(data.get('customer'), dict) else (data.get('customer_data') or {})
-    deliv_obj = data.get('delivery') if isinstance(data.get('delivery'), dict) else (data.get('shipping_address') or {})
+    # shipping_address can be a plain string (from checkout.html) or a dict (from API clients)
+    _raw_deliv = data.get('delivery') or data.get('shipping_address') or {}
+    deliv_obj = _raw_deliv if isinstance(_raw_deliv, dict) else {}
+    # If shipping_address was a plain string, use it directly as the address
+    _shipping_str = _raw_deliv if isinstance(_raw_deliv, str) else ''
 
     cust_name = (data.get('customer_name') or cust_obj.get('name') or cust_obj.get('customer_name') or '').strip()
     cust_phone = (data.get('customer_phone') or cust_obj.get('phone') or cust_obj.get('mobile') or '').strip()
     cust_email = (data.get('customer_email') or cust_obj.get('email') or '').strip()
-    address = (data.get('address') or deliv_obj.get('address') or deliv_obj.get('street') or '').strip()
+    address = (data.get('address') or _shipping_str or deliv_obj.get('address') or deliv_obj.get('street') or '').strip()
     city = (data.get('city') or deliv_obj.get('city') or 'Lahore').strip() or 'Lahore'
     area = (data.get('area') or deliv_obj.get('area') or '').strip()
     postal_code = (data.get('postal_code') or deliv_obj.get('postal_code') or deliv_obj.get('zip') or '').strip()
