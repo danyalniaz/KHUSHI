@@ -971,7 +971,12 @@ def delete_order_endpoint(identifier):
             (clean, f"KC-{clean}", clean),
             one=True
         )
+        wants_json = request.headers.get('Accept', '').find('application/json') > -1 or request.headers.get('Content-Type') == 'application/json' or request.is_json
+        
         if not order:
+            if not wants_json:
+                flash(f'Order {identifier} not found.', 'error')
+                return redirect(request.referrer or url_for('admin.orders'))
             return jsonify({'success': False, 'error': f'Order {identifier} not found.'}), 404
 
         ord_id = order['id']
@@ -988,12 +993,19 @@ def delete_order_endpoint(identifier):
             'ORDER_DELETED',
             f"Order #{ord_num} permanently deleted by admin",
             user_id=session.get('user_id'),
-            user_email=session.get('user_email'),
-            ip_address=request.remote_addr
+            user_email=session.get('user_email')
         )
 
+        if not wants_json:
+            flash(f'Order #{ord_num} permanently deleted.', 'success')
+            return redirect(request.referrer or url_for('admin.orders'))
+            
         return jsonify({'success': True, 'message': f'Order #{ord_num} deleted successfully.'})
     except Exception as e:
+        wants_json = request.headers.get('Accept', '').find('application/json') > -1 or request.headers.get('Content-Type') == 'application/json' or request.is_json
+        if not wants_json:
+            flash(f'Error deleting order: {str(e)}', 'error')
+            return redirect(request.referrer or url_for('admin.orders'))
         return jsonify({'success': False, 'error': str(e)}), 500
 
 # 6. Customer Management
