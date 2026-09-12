@@ -39,6 +39,24 @@ def live_search():
     return jsonify({'products': products})
 
 # 2. Product Detail API (for Quick View)
+@api_bp.route('/products')
+def all_products():
+    products = query_db('''
+        SELECT p.*, c.name as category_name
+        FROM products p
+        LEFT JOIN categories c ON p.category_id = c.id
+        WHERE p.status != 'deleted'
+    ''')
+    for p in products:
+        if p.get('colors'): p['colors'] = json.loads(p['colors'])
+        if p.get('sizes'): p['sizes'] = json.loads(p['sizes'])
+        if p.get('images'): p['images'] = json.loads(p['images'])
+        if p.get('variant_matrix'): p['variant_matrix'] = json.loads(p['variant_matrix'])
+        if p.get('size_guide'): p['size_guide'] = json.loads(p['size_guide'])
+        if p.get('custom_attributes'): p['custom_attributes'] = json.loads(p['custom_attributes'])
+        if p.get('category_attributes'): p['category_attributes'] = json.loads(p['category_attributes'])
+    return jsonify({'success': True, 'products': [dict(p) for p in products]})
+
 @api_bp.route('/products/<int:product_id>')
 def get_product(product_id):
     product = query_db('SELECT * FROM products WHERE id = ?', (product_id,), one=True)

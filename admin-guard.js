@@ -3,6 +3,16 @@
 // ====================================================================
 
 (function() {
+if (window.location.protocol === 'file:') {
+    const filename = window.location.pathname.split('/').pop();
+    let target = '/admin';
+    if (filename === 'admin-products.html') target = '/admin/products';
+    else if (filename === 'admin-orders.html') target = '/admin/orders';
+    else if (filename === 'admin-settings.html') target = '/admin/settings';
+    else if (filename === 'admin-security.html') target = '/admin/security';
+    else if (filename === 'admin-categories.html') target = '/admin/categories';
+    window.location.replace('http://127.0.0.1:5000' + target);
+}
     // Map each administrative page to its required granular permission
     const PAGE_PERMISSIONS = {
         'admin-dashboard.html': null, // Open to all authenticated admins
@@ -202,3 +212,4 @@
 
     window.adminGuard.init();
 })();
+

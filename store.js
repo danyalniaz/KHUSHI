@@ -6876,6 +6876,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('img').forEach(img => {
         img.addEventListener('error', () => handleImageError(img));
     });
+
+    // --- KHUSHI MAGIC SYNC ---
+    // Fetch products from Flask Backend to persist them seamlessly
+    fetch('/api/products')
+        .then(r => r.json())
+        .then(data => {
+            if (data && data.success && data.products) {
+                store.saveProducts(data.products);
+                if (typeof renderProductsGrid === 'function') renderProductsGrid();
+                if (typeof renderAdminProductsTable === 'function') renderAdminProductsTable();
+                if (typeof renderProductsTable === 'function') renderProductsTable();
+            }
+        }).catch(err => console.log('Sync backend err', err));
 });
-
-
