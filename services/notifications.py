@@ -286,13 +286,20 @@ def trigger_order_placed_notifications(order, items=None, store_settings=None):
     pay_method = order.get('payment_method', 'cod').upper()
     pay_status = order.get('payment_status', 'PENDING')
 
-    # 1. Customer Confirmation SMS
+        # 1. Customer Confirmation SMS
     if cust_phone:
-        cust_sms = (
-            f"Dear {cust_name}, thank you for choosing Khushi Collection! "
-            f"Your order #{order_number} for Rs. {total:,} ({pay_method} - {pay_status}) has been received. "
-            f"Track anytime at https://khushicollection.com/track-order?order_id={order_number}&phone={cust_phone}"
-        )
+        if pay_method != 'COD':
+            cust_sms = (
+                f"Dear {cust_name}, thank you so much for trusting Khushi Collection with your online payment! "
+                f"Your order #{order_number} for Rs. {total:,} ({pay_method} - {pay_status}) has been successfully received. "
+                f"We are arranging your luxury order immediately. Track anytime at https://khushicollection.com/track-order?order_id={order_number}&phone={cust_phone}"
+            )
+        else:
+            cust_sms = (
+                f"Dear {cust_name}, thank you for choosing Khushi Collection! "
+                f"Your order #{order_number} for Rs. {total:,} ({pay_method} - {pay_status}) has been received. "
+                f"Track anytime at https://khushicollection.com/track-order?order_id={order_number}&phone={cust_phone}"
+            )
         send_sms(
             phone=cust_phone,
             message=cust_sms,
@@ -552,4 +559,5 @@ def get_whatsapp_send_url(phone, message):
     clean_phone = "".join(filter(str.isdigit, str(phone)))
     encoded_text = urllib.parse.quote(message)
     return f"https://api.whatsapp.com/send?phone={clean_phone}&text={encoded_text}"
+
 

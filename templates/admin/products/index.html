@@ -95,6 +95,11 @@
                             <a href="{{ url_for('storefront.product_detail', slug=p.slug) }}" target="_blank" class="p-1.5 rounded-lg border border-zinc-700 hover:border-amber-400 text-zinc-400 hover:text-white text-xs transition" title="View in Store">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             </a>
+                            <form method="POST" action="{{ url_for('admin.delete_product', id=p.id) }}" class="inline" onsubmit="return confirm('Permanently delete {{ p.name }}?');">
+                                <button type="submit" class="p-1.5 rounded-lg bg-rose-950/40 hover:bg-rose-900 border border-rose-500/20 text-rose-400 text-xs transition" title="Delete">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </form>
                             {% if session.get('user_role') == 'super_admin' %}
                             <form method="POST" action="{{ url_for('admin.delete_product', id=p.id) }}" onsubmit="return confirm('Permanently delete this product?');" class="inline">
                                 <button type="submit" class="p-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 text-rose-400 text-xs transition" title="Delete">
@@ -111,3 +116,4 @@
     </div>
 </div>
 {% endblock %}
+

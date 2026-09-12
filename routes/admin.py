@@ -1841,3 +1841,4 @@ def api_accept_invitation():
                      user_id=user_id, user_email=inv['email'], role=inv['role'], ip_address=request.remote_addr)
 
     return jsonify({'success': True, 'message': 'Account activated successfully! You may now log in.'})
+
