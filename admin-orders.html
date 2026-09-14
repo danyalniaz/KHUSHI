@@ -87,8 +87,22 @@
                     <button onclick="setStatusFilter('cancelled')" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold tab-btn bg-zinc-900 text-zinc-300" data-st="cancelled">Cancelled</button>
                 </div>
 
-                <div class="flex items-center gap-3">
-                    <input type="text" id="order-search-inp" oninput="renderOrdersTable()" placeholder="Search Order #, customer name, phone..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                    <input type="text" id="order-search-inp" oninput="renderOrdersTable()" placeholder="Search Order #, customer name, phone..." class="w-full sm:flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+                    
+                    <div class="flex items-center gap-2">
+                        <!-- Bulk Delete Button -->
+                        <button id="bulk-delete-btn" onclick="handleBulkDeleteSelected()" class="hidden px-3.5 py-2 rounded-xl bg-rose-950/80 hover:bg-rose-900 border border-rose-500/40 text-rose-300 font-bold text-xs flex items-center gap-2 transition shadow">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Delete Selected (<span id="selected-count">0</span>)</span>
+                        </button>
+
+                        <!-- Clear All Orders Button -->
+                        <button onclick="handleClearAllOrders()" class="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-rose-950/40 border border-zinc-700 hover:border-rose-500/40 text-zinc-300 hover:text-rose-300 font-bold text-xs flex items-center gap-2 transition whitespace-nowrap" title="Purge all demo and test orders at once">
+                            <i class="fa-solid fa-broom"></i>
+                            <span>Clear All Demo Orders</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -98,6 +112,9 @@
                     <table class="w-full text-left text-xs text-zinc-300">
                         <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 bg-zinc-900/60 text-[11px]">
                             <tr>
+                                <th class="py-3.5 px-4 w-10 text-center">
+                                    <input type="checkbox" id="select-all-cb" onchange="toggleSelectAll(this.checked)" class="rounded border-zinc-700 bg-zinc-900 text-amber-500 focus:ring-0 cursor-pointer" title="Select All">
+                                </th>
                                 <th class="py-3.5 px-4">Order Reference</th>
                                 <th class="py-3.5 px-4">Customer Details</th>
                                 <th class="py-3.5 px-4">Destination</th>
@@ -277,6 +294,9 @@
 
                 return `
                     <tr class="hover:bg-zinc-800/30 transition">
+                        <td class="py-3.5 px-4 text-center">
+                            <input type="checkbox" value="${o.order_number}" class="order-cb rounded border-zinc-700 bg-zinc-900 text-amber-500 focus:ring-0 cursor-pointer" onchange="updateBulkBar()">
+                        </td>
                         <td class="py-3.5 px-4 font-mono font-bold text-amber-400">#${o.order_number || ''}</td>
                         <td class="py-3.5 px-4">
                             <span class="font-bold text-white block">${o.customer_name || 'Guest Client'}</span>
@@ -313,6 +333,73 @@
                     </tr>
                 `;
             }).join('');
+            updateBulkBar();
+        }
+
+        function toggleSelectAll(checked) {
+            document.querySelectorAll('.order-cb').forEach(cb => {
+                cb.checked = checked;
+            });
+            updateBulkBar();
+        }
+
+        function updateBulkBar() {
+            const selected = Array.from(document.querySelectorAll('.order-cb:checked')).map(cb => cb.value);
+            const bulkBtn = document.getElementById('bulk-delete-btn');
+            const countSpan = document.getElementById('selected-count');
+            const selectAllCb = document.getElementById('select-all-cb');
+
+            if (countSpan) countSpan.textContent = selected.length;
+            if (bulkBtn) {
+                if (selected.length > 0) bulkBtn.classList.remove('hidden');
+                else bulkBtn.classList.add('hidden');
+            }
+            if (selectAllCb) {
+                const total = document.querySelectorAll('.order-cb').length;
+                selectAllCb.checked = total > 0 && selected.length === total;
+            }
+        }
+
+        async function handleBulkDeleteSelected() {
+            const selected = Array.from(document.querySelectorAll('.order-cb:checked')).map(cb => cb.value);
+            if (selected.length === 0) return;
+
+            if (!confirm(`Are you sure you want to permanently delete ${selected.length} selected orders?\nThis will remove orders, ordered items, and payment logs.`)) {
+                return;
+            }
+
+            if (typeof store.deleteOrders === 'function') {
+                store.deleteOrders(selected);
+            } else {
+                let orders = store.getOrders ? store.getOrders() : [];
+                orders = orders.filter(o => !selected.includes(o.order_number));
+                if (store.saveOrders) store.saveOrders(orders);
+            }
+
+            renderOrdersTable();
+            showToast(`${selected.length} orders permanently deleted.`, 'info');
+        }
+
+        async function handleClearAllOrders() {
+            const orders = (typeof store.getOrders === 'function' ? store.getOrders() : []) || [];
+            if (orders.length === 0) {
+                showToast('There are no orders to clear.', 'info');
+                return;
+            }
+
+            if (!confirm(`⚠️ CLEAR ALL ORDERS\n\nAre you sure you want to permanently delete all ${orders.length} orders?\nThis will purge all demo and test orders from your store database.`)) {
+                return;
+            }
+
+            if (typeof store.clearAllOrders === 'function') {
+                store.clearAllOrders();
+            } else {
+                if (store.saveOrders) store.saveOrders([]);
+                else localStorage.setItem('kc_orders', '[]');
+            }
+
+            renderOrdersTable();
+            showToast('All demo and test orders cleared permanently.', 'success');
         }
 
         function openProcessModal(orderNum) {

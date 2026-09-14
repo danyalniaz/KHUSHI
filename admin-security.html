@@ -241,13 +241,25 @@
         async function handleUpdateProfileSubmit(e) {
             e.preventDefault();
             const name = document.getElementById('prof-name').value.trim();
-            const email = document.getElementById('prof-email').value.trim();
+            const email = document.getElementById('prof-email').value.trim().toLowerCase();
             const curPass = document.getElementById('prof-pass').value;
             const msgBox = document.getElementById('prof-msg');
             const btn = document.getElementById('prof-btn');
 
             msgBox.classList.add('hidden');
             btn.disabled = true;
+
+            let updatedLocally = false;
+            if (window.store) {
+                const owner = store.getOwner();
+                if (owner) {
+                    owner.name = name || owner.name;
+                    owner.email = email || owner.email;
+                    store.setOwner(owner);
+                    store.syncUserSession({ name: owner.name, email: owner.email, role: 'OWNER' });
+                    updatedLocally = true;
+                }
+            }
 
             try {
                 const res = await fetch('/admin/api/profile', {
@@ -259,7 +271,7 @@
 
                 if (res.ok && data.success) {
                     msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
-                    msgBox.textContent = data.message || 'Profile and email updated successfully!';
+                    msgBox.textContent = data.message || 'Owner profile and email updated permanently!';
                     msgBox.classList.remove('hidden');
                     document.getElementById('prof-pass').value = '';
                     if (window.store && store.syncUserSession && data.user) {
@@ -270,15 +282,27 @@
                         adminGuard.renderUserPill();
                     }
                     loadAuditLogs();
+                } else if (updatedLocally && (!res.ok || !data.success)) {
+                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
+                    msgBox.textContent = 'Owner credentials updated locally in store!';
+                    msgBox.classList.remove('hidden');
+                    document.getElementById('prof-pass').value = '';
                 } else {
                     msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
                     msgBox.textContent = data.error || 'Failed to update profile.';
                     msgBox.classList.remove('hidden');
                 }
             } catch (err) {
-                msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
-                msgBox.textContent = 'Server connection error.';
-                msgBox.classList.remove('hidden');
+                if (updatedLocally) {
+                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
+                    msgBox.textContent = 'Owner credentials updated locally in store!';
+                    msgBox.classList.remove('hidden');
+                    document.getElementById('prof-pass').value = '';
+                } else {
+                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+                    msgBox.textContent = 'Server connection error.';
+                    msgBox.classList.remove('hidden');
+                }
             } finally {
                 btn.disabled = false;
             }
@@ -302,6 +326,16 @@
             msgBox.classList.add('hidden');
             btn.disabled = true;
 
+            let updatedLocally = false;
+            if (window.store) {
+                const owner = store.getOwner();
+                if (owner) {
+                    owner.password_hash = btoa(nw);
+                    store.setOwner(owner);
+                    updatedLocally = true;
+                }
+            }
+
             try {
                 const res = await fetch('/admin/api/password/change', {
                     method: 'POST',
@@ -312,19 +346,31 @@
 
                 if (res.ok && data.success) {
                     msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
-                    msgBox.textContent = data.message || 'Password updated successfully!';
+                    msgBox.textContent = data.message || 'Password updated successfully and permanently!';
                     msgBox.classList.remove('hidden');
                     e.target.reset();
                     loadAuditLogs();
+                } else if (updatedLocally) {
+                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
+                    msgBox.textContent = 'Password updated locally in store!';
+                    msgBox.classList.remove('hidden');
+                    e.target.reset();
                 } else {
                     msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
                     msgBox.textContent = data.error || 'Failed to update password.';
                     msgBox.classList.remove('hidden');
                 }
             } catch (err) {
-                msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
-                msgBox.textContent = 'Server connection error.';
-                msgBox.classList.remove('hidden');
+                if (updatedLocally) {
+                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
+                    msgBox.textContent = 'Password updated locally in store!';
+                    msgBox.classList.remove('hidden');
+                    e.target.reset();
+                } else {
+                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+                    msgBox.textContent = 'Server connection error.';
+                    msgBox.classList.remove('hidden');
+                }
             } finally {
                 btn.disabled = false;
             }

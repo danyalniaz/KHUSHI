@@ -61,8 +61,8 @@ def seed():
             'active', p.get('rating', 4.9), p.get('reviews_count', 24)
         ))
 
-    # Owner Admin User
-    cursor.execute("SELECT id FROM users WHERE email = 'admin@khushicollection.com'")
+    # Owner Admin User - Preserve any existing customized owner account
+    cursor.execute("SELECT id FROM users WHERE role IN ('OWNER', 'SUPER_ADMIN')")
     if not cursor.fetchone():
         cursor.execute('''
             INSERT INTO users (name, email, password_hash, role, status)

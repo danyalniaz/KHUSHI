@@ -576,4 +576,85 @@ def add_to_cart():
     return jsonify({'success': True, 'message': f"Added '{product['name']}' to your shopping bag!", 'cart_count': total_count})
 
 
+# 7. Orders Real-Time Sync & Bulk Operations API
+@api_bp.route('/orders', methods=['GET'])
+def api_get_orders():
+    rows = query_db('SELECT * FROM orders ORDER BY id DESC')
+    orders_list = []
+    for r in rows:
+        o = dict(r)
+        items = query_db('SELECT * FROM order_items WHERE order_id = ?', (r['id'],))
+        o['items'] = [dict(it) for it in items]
+        timeline = query_db('SELECT * FROM order_timeline WHERE order_id = ? ORDER BY id ASC', (r['id'],))
+        o['timeline'] = [dict(tl) for tl in timeline]
+        orders_list.append(o)
+    return jsonify({'success': True, 'orders': orders_list, 'count': len(orders_list)})
+
+
+@api_bp.route('/orders/<identifier>', methods=['DELETE', 'POST'])
+def api_delete_order(identifier):
+    clean = str(identifier).replace('#', '').strip()
+    order = query_db(
+        'SELECT id, order_number FROM orders WHERE order_number = ? OR order_number = ? OR id = ?',
+        (clean, f"KC-{clean}", clean),
+        one=True
+    )
+    if not order:
+        return jsonify({'success': False, 'error': f'Order {identifier} not found'}), 404
+
+    ord_id = order['id']
+    ord_num = order['order_number']
+    execute_db('DELETE FROM order_items WHERE order_id = ?', (ord_id,))
+    execute_db('DELETE FROM order_timeline WHERE order_id = ?', (ord_id,))
+    execute_db('DELETE FROM payment_records WHERE order_number = ? OR order_id = ?', (ord_num, ord_id))
+    execute_db('DELETE FROM payments WHERE order_number = ? OR order_id = ?', (ord_num, ord_id))
+    execute_db('DELETE FROM notification_logs WHERE order_number = ? OR order_id = ?', (ord_num, ord_id))
+    execute_db('DELETE FROM orders WHERE id = ?', (ord_id,))
+    return jsonify({'success': True, 'message': f'Order #{ord_num} deleted permanently.'})
+
+
+@api_bp.route('/orders/bulk-delete', methods=['POST'])
+def api_bulk_delete_orders():
+    data = request.get_json(silent=True) or {}
+    order_numbers = data.get('order_numbers') or data.get('order_ids') or []
+    if isinstance(order_numbers, str):
+        order_numbers = [x.strip() for x in order_numbers.split(',') if x.strip()]
+
+    if not order_numbers:
+        return jsonify({'success': False, 'error': 'No orders provided for deletion.'}), 400
+
+    deleted = 0
+    for num in order_numbers:
+        clean = str(num).replace('#', '').strip()
+        order = query_db(
+            'SELECT id, order_number FROM orders WHERE order_number = ? OR order_number = ? OR id = ?',
+            (clean, f"KC-{clean}", clean),
+            one=True
+        )
+        if order:
+            ord_id = order['id']
+            ord_num = order['order_number']
+            execute_db('DELETE FROM order_items WHERE order_id = ?', (ord_id,))
+            execute_db('DELETE FROM order_timeline WHERE order_id = ?', (ord_id,))
+            execute_db('DELETE FROM payment_records WHERE order_number = ? OR order_id = ?', (ord_num, ord_id))
+            execute_db('DELETE FROM payments WHERE order_number = ? OR order_id = ?', (ord_num, ord_id))
+            execute_db('DELETE FROM notification_logs WHERE order_number = ? OR order_id = ?', (ord_num, ord_id))
+            execute_db('DELETE FROM orders WHERE id = ?', (ord_id,))
+            deleted += 1
+
+    return jsonify({'success': True, 'deleted_count': deleted, 'message': f'{deleted} orders deleted successfully.'})
+
+
+@api_bp.route('/orders/clear-all', methods=['POST'])
+def api_clear_all_orders():
+    execute_db('DELETE FROM order_items')
+    execute_db('DELETE FROM order_timeline')
+    execute_db('DELETE FROM payment_records')
+    execute_db('DELETE FROM payments')
+    execute_db('DELETE FROM notification_logs')
+    execute_db('DELETE FROM orders')
+    return jsonify({'success': True, 'message': 'All orders cleared successfully from store database.'})
+
+
+
 

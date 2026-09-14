@@ -1008,6 +1008,86 @@ def delete_order_endpoint(identifier):
             return redirect(request.referrer or url_for('admin.orders'))
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
+@admin_bp.route('/api/orders/bulk-delete', methods=['POST'])
+@admin_bp.route('/orders/bulk-delete', methods=['POST'])
+@admin_required(['super_admin', 'owner', 'manager'])
+def bulk_delete_orders():
+    """Bulk delete selected orders from database along with all dependent records."""
+    try:
+        data = request.get_json(silent=True) or {}
+        order_numbers = data.get('order_numbers') or data.get('order_ids') or request.form.getlist('order_ids') or []
+        if isinstance(order_numbers, str):
+            order_numbers = [x.strip() for x in order_numbers.split(',') if x.strip()]
+
+        if not order_numbers:
+            return jsonify({'success': False, 'error': 'No orders selected for deletion.'}), 400
+
+        deleted_count = 0
+        for num in order_numbers:
+            clean = str(num).replace('#', '').strip()
+            order = query_db(
+                'SELECT id, order_number FROM orders WHERE order_number = ? OR order_number = ? OR id = ?',
+                (clean, f"KC-{clean}", clean),
+                one=True
+            )
+            if order:
+                ord_id = order['id']
+                ord_num = order['order_number']
+                execute_db('DELETE FROM order_items WHERE order_id = ?', (ord_id,))
+                execute_db('DELETE FROM order_timeline WHERE order_id = ?', (ord_id,))
+                execute_db('DELETE FROM payment_records WHERE order_number = ? OR order_id = ?', (ord_num, ord_id))
+                execute_db('DELETE FROM payments WHERE order_number = ? OR order_id = ?', (ord_num, ord_id))
+                execute_db('DELETE FROM notification_logs WHERE order_number = ? OR order_id = ?', (ord_num, ord_id))
+                execute_db('DELETE FROM orders WHERE id = ?', (ord_id,))
+                deleted_count += 1
+
+        log_audit_action(
+            'ORDERS_BULK_DELETED',
+            f"{deleted_count} orders bulk deleted by admin",
+            user_id=session.get('user_id'),
+            user_email=session.get('user_email')
+        )
+
+        wants_json = request.headers.get('Accept', '').find('application/json') > -1 or request.headers.get('Content-Type') == 'application/json' or request.is_json
+        if not wants_json:
+            flash(f'{deleted_count} orders successfully deleted.', 'success')
+            return redirect(request.referrer or url_for('admin.orders'))
+
+        return jsonify({'success': True, 'deleted_count': deleted_count, 'message': f'{deleted_count} orders deleted successfully.'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@admin_bp.route('/api/orders/clear-all', methods=['POST'])
+@admin_bp.route('/orders/clear-all', methods=['POST'])
+@admin_required(['super_admin', 'owner'])
+def clear_all_orders():
+    """Clear and purge all demo/test orders from database."""
+    try:
+        execute_db('DELETE FROM order_items')
+        execute_db('DELETE FROM order_timeline')
+        execute_db('DELETE FROM payment_records')
+        execute_db('DELETE FROM payments')
+        execute_db('DELETE FROM notification_logs')
+        execute_db('DELETE FROM orders')
+
+        log_audit_action(
+            'ORDERS_CLEARED_ALL',
+            "All orders permanently cleared and reset by owner",
+            user_id=session.get('user_id'),
+            user_email=session.get('user_email')
+        )
+
+        wants_json = request.headers.get('Accept', '').find('application/json') > -1 or request.headers.get('Content-Type') == 'application/json' or request.is_json
+        if not wants_json:
+            flash('All orders have been permanently cleared.', 'success')
+            return redirect(request.referrer or url_for('admin.orders'))
+
+        return jsonify({'success': True, 'message': 'All orders have been permanently cleared from the store database.'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 # 6. Customer Management
 @admin_bp.route('/customers')
 @admin_required(['super_admin', 'manager'])

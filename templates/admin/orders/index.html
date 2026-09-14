@@ -44,75 +44,141 @@
             </a>
         </div>
 
-        <!-- Search Bar -->
-        <form method="GET" action="{{ url_for('admin.orders') }}" class="flex items-center gap-3">
-            {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
-            <input type="text" name="search" value="{{ search or '' }}" placeholder="Search by Order ID (e.g. KC-10025), customer name, or phone..." class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
-            <button type="submit" class="px-5 py-2 rounded-xl btn-gold text-xs font-bold uppercase">Search</button>
-            {% if search %}
-            <a href="{{ url_for('admin.orders', status=status_filter) }}" class="text-xs text-zinc-400 hover:text-white">Clear</a>
-            {% endif %}
-        </form>
-    </div>
+        <!-- Search Bar & Actions -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <form method="GET" action="{{ url_for('admin.orders') }}" class="flex-1 flex items-center gap-2">
+                {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
+                <input type="text" name="search" value="{{ search or '' }}" placeholder="Search by Order ID (e.g. KC-10025), customer name, or phone..." class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+                <button type="submit" class="px-5 py-2 rounded-xl btn-gold text-xs font-bold uppercase">Search</button>
+                {% if search %}
+                <a href="{{ url_for('admin.orders', status=status_filter) }}" class="text-xs text-zinc-400 hover:text-white">Clear</a>
+                {% endif %}
+            </form>
 
-    <!-- Orders Table -->
-    <div class="luxury-card rounded-3xl overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-zinc-300">
-                <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 bg-zinc-900/60 text-[11px]">
-                    <tr>
-                        <th class="py-3.5 px-4">Order ID</th>
-                        <th class="py-3.5 px-4">Customer Details</th>
-                        <th class="py-3.5 px-4">Destination</th>
-                        <th class="py-3.5 px-4">Amount</th>
-                        <th class="py-3.5 px-4">Payment</th>
-                        <th class="py-3.5 px-4">Status</th>
-                        <th class="py-3.5 px-4">Tracking #</th>
-                        <th class="py-3.5 px-4 text-right">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-zinc-800/80">
-                    {% for o in orders %}
-                    <tr class="hover:bg-zinc-800/30 transition">
-                        <td class="py-3.5 px-4 font-mono font-bold text-amber-400">#{{ o.order_number }}</td>
-                        <td class="py-3.5 px-4">
-                            <span class="font-bold text-white block">{{ o.customer_name }}</span>
-                            <span class="text-[10px] text-zinc-400">{{ o.customer_phone }}</span>
-                        </td>
-                        <td class="py-3.5 px-4">{{ o.city }}</td>
-                        <td class="py-3.5 px-4 font-bold text-white">Rs. {{ "{:,}".format(o.total_amount|int) }}</td>
-                        <td class="py-3.5 px-4">
-                            <span class="uppercase text-[10px] font-bold text-zinc-300 block">{{ o.payment_method }}</span>
-                            <span class="text-[9px] text-zinc-500 font-semibold">{{ o.payment_status }}</span>
-                        </td>
-                        <td class="py-3.5 px-4">
-                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {% if o.order_status == 'delivered' %}bg-emerald-950 text-emerald-400 border border-emerald-500/30{% elif o.order_status in ('shipped', 'on_the_way') %}bg-amber-950 text-amber-400 border border-amber-500/30{% elif o.order_status == 'cancelled' %}bg-rose-950 text-rose-400 border border-rose-500/30{% else %}bg-zinc-800 text-zinc-300 border border-zinc-700{% endif %}">
-                                {{ o.order_status.replace('_', ' ').title() }}
-                            </span>
-                        </td>
-                        <td class="py-3.5 px-4 font-mono text-zinc-400 text-[11px]">
-                            {{ o.tracking_number or '—' }}
-                        </td>
-                        <td class="py-3.5 px-4 text-right space-x-2">
-                            <a href="{{ url_for('admin.order_detail', id=o.id) }}" class="py-1 px-2.5 rounded-lg btn-gold text-xs font-bold uppercase">
-                                Process
-                            </a>
-                            <a href="{{ url_for('admin.admin_invoice', order_number=o.order_number) }}" target="_blank" class="py-1 px-2 rounded-lg border border-zinc-700 hover:border-amber-400 text-zinc-400 hover:text-white text-xs" title="Print Invoice">
-                                <i class="fa-solid fa-print"></i>
-                            </a>
-                            <form method="POST" action="{{ url_for('admin.delete_order_endpoint', identifier=o.order_number) }}" onsubmit="return confirm('Permanently delete this order?');" class="inline">
-                                <button type="submit" class="py-1 px-2 rounded-lg bg-rose-950/60 border border-rose-500/30 hover:border-rose-400 text-rose-400 text-xs inline-block hover:bg-rose-900 transition" title="Delete Order">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="flex items-center gap-2">
+                <button id="flask-bulk-del-btn" onclick="submitFlaskBulkDelete()" class="hidden px-3.5 py-2 rounded-xl bg-rose-950/80 hover:bg-rose-900 border border-rose-500/40 text-rose-300 font-bold text-xs flex items-center gap-2 transition shadow">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <span>Delete Selected (<span id="flask-selected-count">0</span>)</span>
+                </button>
+
+                <form method="POST" action="{{ url_for('admin.clear_all_orders') }}" onsubmit="return confirm('⚠️ CLEAR ALL ORDERS\n\nAre you sure you want to permanently delete all orders from the store database?');" class="inline">
+                    <button type="submit" class="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-rose-950/40 border border-zinc-700 hover:border-rose-500/40 text-zinc-300 hover:text-rose-300 font-bold text-xs flex items-center gap-2 transition whitespace-nowrap" title="Purge all demo and test orders at once">
+                        <i class="fa-solid fa-broom"></i>
+                        <span>Clear All Demo Orders</span>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
+
+    <!-- Orders Table Form for Bulk Delete -->
+    <form id="flask-bulk-form" method="POST" action="{{ url_for('admin.bulk_delete_orders') }}">
+        <div class="luxury-card rounded-3xl overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-zinc-300">
+                    <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 bg-zinc-900/60 text-[11px]">
+                        <tr>
+                            <th class="py-3.5 px-4 w-10 text-center">
+                                <input type="checkbox" id="flask-select-all" onchange="toggleFlaskSelectAll(this.checked)" class="rounded border-zinc-700 bg-zinc-900 text-amber-500 focus:ring-0 cursor-pointer" title="Select All">
+                            </th>
+                            <th class="py-3.5 px-4">Order ID</th>
+                            <th class="py-3.5 px-4">Customer Details</th>
+                            <th class="py-3.5 px-4">Destination</th>
+                            <th class="py-3.5 px-4">Amount</th>
+                            <th class="py-3.5 px-4">Payment</th>
+                            <th class="py-3.5 px-4">Status</th>
+                            <th class="py-3.5 px-4">Tracking #</th>
+                            <th class="py-3.5 px-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-800/80">
+                        {% for o in orders %}
+                        <tr class="hover:bg-zinc-800/30 transition">
+                            <td class="py-3.5 px-4 text-center">
+                                <input type="checkbox" name="order_ids" value="{{ o.order_number }}" class="flask-order-cb rounded border-zinc-700 bg-zinc-900 text-amber-500 focus:ring-0 cursor-pointer" onchange="updateFlaskBulkBar()">
+                            </td>
+                            <td class="py-3.5 px-4 font-mono font-bold text-amber-400">#{{ o.order_number }}</td>
+                            <td class="py-3.5 px-4">
+                                <span class="font-bold text-white block">{{ o.customer_name }}</span>
+                                <span class="text-[10px] text-zinc-400">{{ o.customer_phone }}</span>
+                            </td>
+                            <td class="py-3.5 px-4">{{ o.city }}</td>
+                            <td class="py-3.5 px-4 font-bold text-white">Rs. {{ "{:,}".format(o.total_amount|int) }}</td>
+                            <td class="py-3.5 px-4">
+                                <span class="uppercase text-[10px] font-bold text-zinc-300 block">{{ o.payment_method }}</span>
+                                <span class="text-[9px] text-zinc-500 font-semibold">{{ o.payment_status }}</span>
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {% if o.order_status == 'delivered' %}bg-emerald-950 text-emerald-400 border border-emerald-500/30{% elif o.order_status in ('shipped', 'on_the_way') %}bg-amber-950 text-amber-400 border border-amber-500/30{% elif o.order_status == 'cancelled' %}bg-rose-950 text-rose-400 border border-rose-500/30{% else %}bg-zinc-800 text-zinc-300 border border-zinc-700{% endif %}">
+                                    {{ o.order_status.replace('_', ' ').title() }}
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 font-mono text-zinc-400 text-[11px]">
+                                {{ o.tracking_number or '—' }}
+                            </td>
+                            <td class="py-3.5 px-4 text-right space-x-2">
+                                <a href="{{ url_for('admin.order_detail', id=o.id) }}" class="py-1 px-2.5 rounded-lg btn-gold text-xs font-bold uppercase">
+                                    Process
+                                </a>
+                                <a href="{{ url_for('admin.admin_invoice', order_number=o.order_number) }}" target="_blank" class="py-1 px-2 rounded-lg border border-zinc-700 hover:border-amber-400 text-zinc-400 hover:text-white text-xs" title="Print Invoice">
+                                    <i class="fa-solid fa-print"></i>
+                                </a>
+                                <form method="POST" action="{{ url_for('admin.delete_order_endpoint', identifier=o.order_number) }}" onsubmit="return confirm('Permanently delete this order?');" class="inline">
+                                    <button type="submit" class="py-1 px-2 rounded-lg bg-rose-950/60 border border-rose-500/30 hover:border-rose-400 text-rose-400 text-xs inline-block hover:bg-rose-900 transition" title="Delete Order">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="9" class="py-12 text-center text-zinc-500 text-xs">
+                                <i class="fa-solid fa-box-open text-2xl mb-2 text-zinc-600 block"></i>
+                                <span>No customer orders found.</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleFlaskSelectAll(checked) {
+    document.querySelectorAll('.flask-order-cb').forEach(cb => {
+        cb.checked = checked;
+    });
+    updateFlaskBulkBar();
+}
+
+function updateFlaskBulkBar() {
+    const checked = document.querySelectorAll('.flask-order-cb:checked');
+    const btn = document.getElementById('flask-bulk-del-btn');
+    const cnt = document.getElementById('flask-selected-count');
+    const selectAll = document.getElementById('flask-select-all');
+
+    if (cnt) cnt.textContent = checked.length;
+    if (btn) {
+        if (checked.length > 0) btn.classList.remove('hidden');
+        else btn.classList.add('hidden');
+    }
+    if (selectAll) {
+        const total = document.querySelectorAll('.flask-order-cb').length;
+        selectAll.checked = total > 0 && checked.length === total;
+    }
+}
+
+function submitFlaskBulkDelete() {
+    const checked = document.querySelectorAll('.flask-order-cb:checked');
+    if (checked.length === 0) return;
+    if (confirm(`Permanently delete ${checked.length} selected orders?`)) {
+        document.getElementById('flask-bulk-form').submit();
+    }
+}
+</script>
 
 
