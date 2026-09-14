@@ -5578,6 +5578,19 @@ class KhushiStore {
         products.unshift(duplicate);
         this.saveProducts(products);
         this.logAudit('PRODUCT_DUPLICATED', `Duplicated product ${original.sku} &rarr; ${duplicate.sku}`);
+
+        // Background server sync
+        fetch('/api/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(duplicate)
+        }).then(r => r.json()).then(res => {
+            if (res && res.success && res.product && res.product.id) {
+                duplicate.id = res.product.id;
+                this.saveProducts(this.getProducts());
+            }
+        }).catch(err => console.warn('duplicateProduct sync err:', err));
+
         return { success: true, product: duplicate, message: `Product "${duplicate.name}" created!` };
     }
 
@@ -5594,6 +5607,14 @@ class KhushiStore {
 
         this.saveProducts(products);
         this.logAudit('PRODUCT_QUICK_EDIT', `Quick updated ${p.sku}: ${JSON.stringify(updates)}`);
+
+        // Background server sync
+        fetch(`/api/products/${productId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(p)
+        }).catch(err => console.warn('quickUpdateProduct sync err:', err));
+
         return { success: true, product: p };
     }
 
@@ -5642,6 +5663,7 @@ class KhushiStore {
             averageOrderValue: filteredOrders.length > 0 ? Math.round(grossRevenue / filteredOrders.length) : 0
         };
     }
+
     getCategories() {
         const stored = JSON.parse(localStorage.getItem('kc_categories'));
         if (Array.isArray(stored) && stored.length > 0) return stored;
@@ -5658,11 +5680,24 @@ class KhushiStore {
 
     addCategory(cat) {
         const categories = this.getCategories();
-        cat.id = Date.now();
+        if (!cat.id) cat.id = Date.now();
         cat.slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-');
         cat.subcategories = cat.subcategories || [];
         categories.push(cat);
         this.saveCategories(categories);
+
+        // Background server sync
+        fetch('/api/categories', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(cat)
+        }).then(r => r.json()).then(res => {
+            if (res && res.success && res.category && res.category.id) {
+                cat.id = res.category.id;
+                this.saveCategories(this.getCategories());
+            }
+        }).catch(err => console.warn('addCategory sync err:', err));
+
         return cat;
     }
 
@@ -5672,6 +5707,14 @@ class KhushiStore {
         if (idx !== -1) {
             categories[idx] = { ...categories[idx], ...updatedFields };
             this.saveCategories(categories);
+
+            // Background server sync
+            fetch(`/api/categories/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(categories[idx])
+            }).catch(err => console.warn('updateCategory sync err:', err));
+
             return categories[idx];
         }
         return null;
@@ -5681,6 +5724,11 @@ class KhushiStore {
         let categories = this.getCategories();
         categories = categories.filter(c => c.id !== Number(id));
         this.saveCategories(categories);
+
+        // Background server sync
+        fetch(`/api/categories/${id}`, {
+            method: 'DELETE'
+        }).catch(err => console.warn('deleteCategory sync err:', err));
     }
 
     // Product Operations
@@ -5712,12 +5760,25 @@ class KhushiStore {
 
     addProduct(prod) {
         const products = this.getProducts();
-        prod.id = Date.now();
+        if (!prod.id) prod.id = Date.now();
         prod.slug = prod.slug || prod.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
         prod.rating = prod.rating || 5.0;
         prod.reviews_count = prod.reviews_count || 0;
         products.unshift(prod);
         this.saveProducts(products);
+
+        // Background server sync
+        fetch('/api/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(prod)
+        }).then(r => r.json()).then(res => {
+            if (res && res.success && res.product && res.product.id) {
+                prod.id = res.product.id;
+                this.saveProducts(this.getProducts());
+            }
+        }).catch(err => console.warn('addProduct sync err:', err));
+
         return prod;
     }
 
@@ -5727,6 +5788,14 @@ class KhushiStore {
         if (idx !== -1) {
             products[idx] = { ...products[idx], ...updatedFields };
             this.saveProducts(products);
+
+            // Background server sync
+            fetch(`/api/products/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(products[idx])
+            }).catch(err => console.warn('updateProduct sync err:', err));
+
             return products[idx];
         }
         return null;
@@ -5736,6 +5805,11 @@ class KhushiStore {
         let products = this.getProducts();
         products = products.filter(p => p.id !== Number(id));
         this.saveProducts(products);
+
+        // Background server sync
+        fetch(`/api/products/${id}`, {
+            method: 'DELETE'
+        }).catch(err => console.warn('deleteProduct sync err:', err));
     }
 
     // Cart Operations with Variant & Stock Checks
@@ -6868,6 +6942,40 @@ window.closeCartDrawer = closeCartDrawer;
 window.renderCartDrawer = renderCartDrawer;
 window.ensureCartDrawerDOM = ensureCartDrawerDOM;
 
+KhushiStore.prototype.syncWithServer = async function() {
+    try {
+        const cacheBuster = Date.now();
+        const res = await fetch(`/api/sync?_t=${cacheBuster}`, { cache: 'no-store' });
+        if (res.ok) {
+            const data = await res.json();
+            if (data && data.success) {
+                if (Array.isArray(data.products) && data.products.length > 0) {
+                    localStorage.setItem('kc_products', JSON.stringify(data.products));
+                }
+                if (Array.isArray(data.categories) && data.categories.length > 0) {
+                    localStorage.setItem('kc_categories', JSON.stringify(data.categories));
+                }
+                if (data.settings && Object.keys(data.settings).length > 0) {
+                    localStorage.setItem('kc_settings', JSON.stringify(data.settings));
+                    this.applyStorefrontSettings();
+                }
+
+                // Trigger UI updates if render functions exist on the page
+                if (typeof renderProductsGrid === 'function') renderProductsGrid();
+                if (typeof renderProductsTable === 'function') renderProductsTable();
+                if (typeof renderAdminProductsTable === 'function') renderAdminProductsTable();
+                if (typeof renderCategoriesTable === 'function') renderCategoriesTable();
+                if (typeof renderOrdersTable === 'function') renderOrdersTable();
+                if (typeof populateCategoryDropdowns === 'function') populateCategoryDropdowns();
+                if (typeof renderCategoriesGrid === 'function') renderCategoriesGrid();
+                if (typeof renderCollectionShowcase === 'function') renderCollectionShowcase();
+            }
+        }
+    } catch (err) {
+        console.warn('Sync with server skipped/offline:', err);
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     store.updateBadgeCounts();
     store.applyStorefrontSettings();
@@ -6877,16 +6985,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.addEventListener('error', () => handleImageError(img));
     });
 
-    // --- KHUSHI MAGIC SYNC ---
-    // Fetch products from Flask Backend to persist them seamlessly
-    fetch('/api/products')
-        .then(r => r.json())
-        .then(data => {
-            if (data && data.success && data.products) {
-                store.saveProducts(data.products);
-                if (typeof renderProductsGrid === 'function') renderProductsGrid();
-                if (typeof renderAdminProductsTable === 'function') renderAdminProductsTable();
-                if (typeof renderProductsTable === 'function') renderProductsTable();
-            }
-        }).catch(err => console.log('Sync backend err', err));
+    // Universal Khushi Live Sync
+    store.syncWithServer();
 });
+

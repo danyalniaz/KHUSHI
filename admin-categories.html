@@ -127,14 +127,49 @@
                     <span class="text-[10px] text-zinc-500 mt-1 block">Subcategories automatically appear in filters and product editor</span>
                 </div>
 
-                <div>
-                    <label class="block font-semibold text-zinc-300 mb-1">Thumbnail Photo URL *</label>
-                    <input type="url" id="cat-img" required placeholder="https://images.unsplash.com/..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                <!-- Category Thumbnail Image (Choose from Gallery) -->
+                <div class="space-y-1.5">
+                    <label class="block font-semibold text-zinc-300">Category Photo (Choose from Gallery) *</label>
+                    <div class="flex items-center gap-3">
+                        <div id="cat-img-preview-box" class="w-16 h-16 rounded-xl border border-zinc-700 bg-zinc-950 flex items-center justify-center overflow-hidden shrink-0 relative group">
+                            <img id="cat-img-preview" src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1 space-y-1.5">
+                            <div class="flex items-center gap-2">
+                                <input type="file" id="cat-img-file" accept="image/*" class="hidden" onchange="handleCategoryPhotoPick(event, 'cat-img', 'cat-img-preview')">
+                                <button type="button" onclick="document.getElementById('cat-img-file').click()" class="px-3.5 py-1.5 rounded-xl btn-gold text-xs font-bold flex items-center gap-1.5 shadow">
+                                    <i class="fa-solid fa-images text-black"></i> Choose from Gallery
+                                </button>
+                                <button type="button" onclick="removeCategoryPhoto('cat-img', 'cat-img-preview')" class="px-2.5 py-1.5 rounded-xl bg-zinc-800 hover:bg-rose-950/60 hover:text-rose-400 text-zinc-400 text-xs transition" title="Clear photo">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                            <input type="text" id="cat-img" placeholder="Or enter image URL..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-1.5 text-[11px] text-zinc-300" oninput="document.getElementById('cat-img-preview').src = this.value">
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <label class="block font-semibold text-zinc-300 mb-1">Hero Banner Photo URL (Optional)</label>
-                    <input type="url" id="cat-banner" placeholder="https://images.unsplash.com/..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                <!-- Category Hero Banner (Choose from Gallery) -->
+                <div class="space-y-1.5">
+                    <label class="block font-semibold text-zinc-300">Hero Banner Photo (Optional)</label>
+                    <div class="flex items-center gap-3">
+                        <div id="cat-banner-preview-box" class="w-24 h-14 rounded-xl border border-zinc-700 bg-zinc-950 flex items-center justify-center overflow-hidden shrink-0">
+                            <img id="cat-banner-preview" src="" class="w-full h-full object-cover hidden">
+                            <span id="cat-banner-placeholder" class="text-[10px] text-zinc-500 text-center px-1"><i class="fa-regular fa-image text-xs block mb-0.5"></i>No Banner</span>
+                        </div>
+                        <div class="flex-1 space-y-1.5">
+                            <div class="flex items-center gap-2">
+                                <input type="file" id="cat-banner-file" accept="image/*" class="hidden" onchange="handleCategoryPhotoPick(event, 'cat-banner', 'cat-banner-preview', 'cat-banner-placeholder')">
+                                <button type="button" onclick="document.getElementById('cat-banner-file').click()" class="px-3.5 py-1.5 rounded-xl border border-zinc-700 hover:border-amber-400 text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-cloud-arrow-up text-amber-400"></i> Choose Banner Photo
+                                </button>
+                                <button type="button" onclick="removeCategoryPhoto('cat-banner', 'cat-banner-preview', 'cat-banner-placeholder')" class="px-2.5 py-1.5 rounded-xl bg-zinc-800 hover:bg-rose-950/60 hover:text-rose-400 text-zinc-400 text-xs transition" title="Clear banner">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                            <input type="text" id="cat-banner" placeholder="Or enter banner URL..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-1.5 text-[11px] text-zinc-300" oninput="updateBannerPreviewFromUrl(this.value)">
+                        </div>
+                    </div>
                 </div>
 
                 <div>
@@ -157,7 +192,7 @@
                     </label>
                 </div>
 
-                <button type="submit" class="w-full py-3 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider shadow-xl mt-2">
+                <button type="submit" id="cat-save-btn" class="w-full py-3 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider shadow-xl mt-2">
                     Save Category
                 </button>
             </form>
@@ -168,6 +203,95 @@
     <script src="store.js"></script>
     <script src="admin-guard.js"></script>
     <script>
+        function compressAndResizeImage(file, maxDimension = 1200, quality = 0.85) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > maxDimension || height > maxDimension) {
+                            if (width > height) {
+                                height = Math.round((height * maxDimension) / width);
+                                width = maxDimension;
+                            } else {
+                                width = Math.round((width * maxDimension) / height);
+                                height = maxDimension;
+                            }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function handleCategoryPhotoPick(event, inputId, previewImgId, placeholderId = null) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            showToast('Loading chosen photo...', 'info');
+            const optimizedDataUrl = await compressAndResizeImage(file, 1200, 0.85);
+
+            document.getElementById(inputId).value = optimizedDataUrl;
+            const preview = document.getElementById(previewImgId);
+            preview.src = optimizedDataUrl;
+            preview.classList.remove('hidden');
+
+            if (placeholderId) {
+                const placeholder = document.getElementById(placeholderId);
+                if (placeholder) placeholder.classList.add('hidden');
+            }
+
+            // Also try background upload to /api/upload
+            const formData = new FormData();
+            formData.append('file', file);
+            fetch('/api/upload', { method: 'POST', body: formData })
+                .then(r => r.json())
+                .then(d => {
+                    if (d && d.success && d.url) {
+                        document.getElementById(inputId).value = d.url;
+                        preview.src = d.url;
+                    }
+                })
+                .catch(() => {});
+
+            showToast('Photo selected from gallery!', 'success');
+        }
+
+        function removeCategoryPhoto(inputId, previewImgId, placeholderId = null) {
+            document.getElementById(inputId).value = '';
+            const preview = document.getElementById(previewImgId);
+            preview.src = '';
+            if (placeholderId) {
+                preview.classList.add('hidden');
+                const placeholder = document.getElementById(placeholderId);
+                if (placeholder) placeholder.classList.remove('hidden');
+            } else {
+                preview.src = 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80';
+            }
+        }
+
+        function updateBannerPreviewFromUrl(url) {
+            const preview = document.getElementById('cat-banner-preview');
+            const placeholder = document.getElementById('cat-banner-placeholder');
+            if (url && url.trim()) {
+                preview.src = url.trim();
+                preview.classList.remove('hidden');
+                if (placeholder) placeholder.classList.add('hidden');
+            } else {
+                preview.classList.add('hidden');
+                if (placeholder) placeholder.classList.remove('hidden');
+            }
+        }
+
         function openCategoryModal(editId = null) {
             document.getElementById('cat-edit-id').value = editId || '';
             if (editId) {
@@ -178,7 +302,9 @@
                     document.getElementById('cat-slug').value = cat.slug;
                     document.getElementById('cat-subcategories').value = (cat.subcategories || []).join(', ');
                     document.getElementById('cat-img').value = cat.image_url;
+                    document.getElementById('cat-img-preview').src = cat.image_url || 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80';
                     document.getElementById('cat-banner').value = cat.banner_url || '';
+                    updateBannerPreviewFromUrl(cat.banner_url || '');
                     document.getElementById('cat-desc').value = cat.description || '';
                     document.getElementById('cat-cod-allowed').checked = cat.cod_allowed !== false;
                     document.getElementById('cat-is-featured').checked = !!cat.is_featured;
@@ -189,7 +315,9 @@
                 document.getElementById('cat-slug').value = '';
                 document.getElementById('cat-subcategories').value = '';
                 document.getElementById('cat-img').value = 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80';
+                document.getElementById('cat-img-preview').src = 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80';
                 document.getElementById('cat-banner').value = '';
+                updateBannerPreviewFromUrl('');
                 document.getElementById('cat-desc').value = '';
                 document.getElementById('cat-cod-allowed').checked = true;
                 document.getElementById('cat-is-featured').checked = true;
@@ -201,8 +329,12 @@
             document.getElementById('category-modal').classList.add('hidden');
         }
 
-        function handleCategorySubmit(e) {
+        async function handleCategorySubmit(e) {
             e.preventDefault();
+            const saveBtn = document.getElementById('cat-save-btn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
             const editId = document.getElementById('cat-edit-id').value;
             const name = document.getElementById('cat-name').value.trim();
             const slug = document.getElementById('cat-slug').value.trim();
@@ -212,31 +344,39 @@
                 name: name,
                 slug: slug,
                 subcategories: subs,
-                image_url: document.getElementById('cat-img').value.trim(),
+                image_url: document.getElementById('cat-img').value.trim() || 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80',
                 banner_url: document.getElementById('cat-banner').value.trim(),
                 description: document.getElementById('cat-desc').value.trim(),
                 cod_allowed: document.getElementById('cat-cod-allowed').checked,
                 is_featured: document.getElementById('cat-is-featured').checked
             };
 
-            if (editId) {
-                store.updateCategory(editId, catData);
-                showToast(`Category "${name}" updated successfully!`);
-            } else {
-                store.addCategory(catData);
-                showToast(`New category "${name}" added to store!`);
+            try {
+                if (editId) {
+                    await store.updateCategory(editId, catData);
+                    showToast(`Category "${name}" updated successfully!`, 'success');
+                } else {
+                    await store.addCategory(catData);
+                    showToast(`New category "${name}" added to store!`, 'success');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast(`Saved locally. Syncing with backend...`, 'info');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = 'Save Category';
             }
 
             closeCategoryModal();
             renderCategoriesTable();
         }
 
-        function deleteCategoryWithConfirm(id) {
+        async function deleteCategoryWithConfirm(id) {
             const cat = store.getCategory(id);
             if (!cat) return;
-            if (confirm(`Delete category "${cat.name}"?`)) {
-                store.deleteCategory(id);
-                showToast(`Category "${cat.name}" removed.`);
+            if (confirm(`Permanently delete category "${cat.name}"?`)) {
+                await store.deleteCategory(id);
+                showToast(`Category "${cat.name}" removed from database.`, 'success');
                 renderCategoriesTable();
             }
         }
@@ -246,14 +386,19 @@
             const products = store.getProducts();
 
             const tbody = document.getElementById('categories-tbody');
+            if (!categories || categories.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-zinc-500">No categories found. Click "+ Create Category" to add.</td></tr>';
+                return;
+            }
+
             tbody.innerHTML = categories.map(c => {
-                const count = products.filter(p => p.category === c.slug).length;
-                const subs = c.subcategories || [];
+                const count = products.filter(p => p.category === c.slug || (p.category_id && String(p.category_id) === String(c.id))).length;
+                const subs = Array.isArray(c.subcategories) ? c.subcategories : (c.subcategories ? String(c.subcategories).split(',') : []);
 
                 return `
                     <tr class="hover:bg-zinc-800/30 transition">
                         <td class="py-3 px-4">
-                            <img src="${c.image_url}" class="w-10 h-10 object-cover rounded-full border border-amber-500/30">
+                            <img src="${c.image_url || 'static/images/logo.svg'}" class="w-10 h-10 object-cover rounded-full border border-amber-500/30 bg-zinc-900" onerror="this.src='static/images/logo.svg'">
                         </td>
                         <td class="py-3 px-4">
                             <span class="font-bold text-white block">${c.name}</span>
@@ -287,7 +432,12 @@
             }).join('');
         }
 
-        document.addEventListener('DOMContentLoaded', renderCategoriesTable);
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategoriesTable();
+            if (window.store && typeof store.syncWithServer === 'function') {
+                store.syncWithServer().then(() => renderCategoriesTable());
+            }
+        });
     </script>
 </body>
 </html>

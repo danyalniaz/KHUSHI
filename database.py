@@ -542,9 +542,62 @@ def init_db():
         except Exception:
             pass
 
-    for ot_col in [('created_by', 'TEXT'), ('by_user', 'TEXT'), ('time', 'TEXT'), ('created_at', 'TIMESTAMP')]:
+    # Safe migrations for products
+    for col, col_type in [
+        ('category_id', 'INTEGER'),
+        ('category_slug', 'TEXT'),
+        ('category_name', 'TEXT'),
+        ('short_description', 'TEXT'),
+        ('brand', 'TEXT'),
+        ('subcategory', 'TEXT'),
+        ('cost_price', 'REAL'),
+        ('low_stock_threshold', 'INTEGER DEFAULT 3'),
+        ('video_url', 'TEXT'),
+        ('care_instructions', 'TEXT'),
+        ('shipping_info', 'TEXT'),
+        ('variant_matrix', 'TEXT'),
+        ('size_guide', 'TEXT'),
+        ('custom_attributes', 'TEXT'),
+        ('category_attributes', 'TEXT'),
+        ('cod_allowed', 'BOOLEAN DEFAULT 1'),
+        ('payment_methods', 'TEXT'),
+        ('seo_title', 'TEXT'),
+        ('meta_description', 'TEXT'),
+        ('tags', 'TEXT'),
+        ('status', "TEXT DEFAULT 'active'"),
+        ('secondary_image', 'TEXT'),
+        ('images', 'TEXT'),
+        ('sizes', 'TEXT'),
+        ('colors', 'TEXT'),
+        ('fabric', 'TEXT'),
+        ('occasion', 'TEXT'),
+        ('is_active', 'BOOLEAN DEFAULT 1'),
+        ('is_featured', 'BOOLEAN DEFAULT 0'),
+        ('is_flash_sale', 'BOOLEAN DEFAULT 0'),
+        ('is_new', 'BOOLEAN DEFAULT 0'),
+        ('is_bestseller', 'BOOLEAN DEFAULT 0'),
+        ('rating', 'REAL DEFAULT 5.0'),
+        ('review_count', 'INTEGER DEFAULT 1')
+    ]:
         try:
-            cursor.execute(f"ALTER TABLE order_timeline ADD COLUMN {ot_col[0]} {ot_col[1]}")
+            cursor.execute(f"ALTER TABLE products ADD COLUMN {col} {col_type}")
+        except Exception:
+            pass
+
+    # Safe migrations for categories
+    for col, col_type in [
+        ('description', 'TEXT'),
+        ('image_url', 'TEXT'),
+        ('banner_url', 'TEXT'),
+        ('icon', 'TEXT'),
+        ('display_order', 'INTEGER DEFAULT 0'),
+        ('is_active', 'BOOLEAN DEFAULT 1'),
+        ('is_featured', 'BOOLEAN DEFAULT 0'),
+        ('subcategories', 'TEXT'),
+        ('cod_allowed', 'BOOLEAN DEFAULT 1')
+    ]:
+        try:
+            cursor.execute(f"ALTER TABLE categories ADD COLUMN {col} {col_type}")
         except Exception:
             pass
 

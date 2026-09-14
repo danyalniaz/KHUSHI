@@ -1,7 +1,10 @@
+import os
 import json
 import random
+import uuid
+import base64
 from datetime import datetime
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, current_app
 from database import query_db, execute_db
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
@@ -38,33 +41,476 @@ def live_search():
     products = [dict(r) for r in rows]
     return jsonify({'products': products})
 
-# 2. Product Detail API (for Quick View)
-@api_bp.route('/products')
+def format_product_dict(p):
+    if not p:
+        return {}
+    p = dict(p)
+    for field in ['colors', 'sizes', 'images', 'variant_matrix', 'size_guide', 'custom_attributes', 'category_attributes', 'payment_methods', 'tags']:
+        val = p.get(field)
+        if isinstance(val, str):
+            try:
+                p[field] = json.loads(val)
+            except Exception:
+                if field in ['sizes', 'tags']:
+                    p[field] = [x.strip() for x in val.split(',') if x.strip()]
+                else:
+                    p[field] = []
+        elif val is None:
+            p[field] = [] if field in ['colors', 'sizes', 'images', 'variant_matrix', 'size_guide', 'custom_attributes', 'payment_methods', 'tags'] else {}
+    for bool_field in ['is_featured', 'is_new', 'is_bestseller', 'is_flash_sale', 'is_active', 'cod_allowed']:
+        if bool_field in p:
+            p[bool_field] = bool(p[bool_field])
+    return p
+
+def format_category_dict(c):
+    if not c:
+        return {}
+    c = dict(c)
+    if 'subcategories' in c:
+        val = c['subcategories']
+        if isinstance(val, str):
+            try:
+                c['subcategories'] = json.loads(val)
+            except Exception:
+                c['subcategories'] = [x.strip() for x in val.split(',') if x.strip()]
+        elif val is None:
+            c['subcategories'] = []
+    if 'is_featured' in c:
+        c['is_featured'] = bool(c['is_featured'])
+    if 'cod_allowed' in c:
+        c['cod_allowed'] = bool(c['cod_allowed'])
+    return c
+
+# 2. Categories API
+@api_bp.route('/categories', methods=['GET'])
+def get_all_categories():
+    rows = query_db('SELECT * FROM categories WHERE is_active = 1 ORDER BY display_order ASC, id ASC')
+    categories = [format_category_dict(r) for r in rows]
+    return jsonify({'success': True, 'categories': categories})
+
+@api_bp.route('/categories', methods=['POST'])
+def create_category():
+    data = request.get_json() or request.form.to_dict() or {}
+    name = data.get('name', '').strip()
+    if not name:
+        return jsonify({'success': False, 'error': 'Category name is required'}), 400
+    
+    slug = data.get('slug', '').strip().lower().replace(' ', '-')
+    if not slug:
+        slug = name.lower().replace(' ', '-')
+        
+    description = data.get('description', '').strip()
+    image_url = data.get('image_url', '').strip()
+    banner_url = data.get('banner_url', '').strip()
+    icon = data.get('icon', '').strip()
+    display_order = int(data.get('display_order', 0))
+    is_featured = 1 if data.get('is_featured') in [True, 1, '1', 'true', 'on'] else 0
+    cod_allowed = 1 if data.get('cod_allowed', True) in [True, 1, '1', 'true', 'on'] else 0
+    
+    subs = data.get('subcategories', [])
+    if isinstance(subs, list):
+        subcategories_json = json.dumps(subs)
+    elif isinstance(subs, str):
+        subcategories_json = json.dumps([x.strip() for x in subs.split(',') if x.strip()])
+    else:
+        subcategories_json = json.dumps([])
+
+    existing = query_db('SELECT id FROM categories WHERE slug = ?', (slug,), one=True)
+    if existing:
+        cat_id = existing['id']
+        execute_db('''
+            UPDATE categories SET
+                name = ?, description = ?, image_url = ?, banner_url = ?,
+                icon = ?, display_order = ?, is_featured = ?, cod_allowed = ?, subcategories = ?
+            WHERE id = ?
+        ''', (name, description, image_url, banner_url, icon, display_order, is_featured, cod_allowed, subcategories_json, cat_id))
+    else:
+        cat_id = execute_db('''
+            INSERT INTO categories (name, slug, description, image_url, banner_url, icon, display_order, is_featured, cod_allowed, subcategories)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (name, slug, description, image_url, banner_url, icon, display_order, is_featured, cod_allowed, subcategories_json))
+        
+    cat = query_db('SELECT * FROM categories WHERE id = ?', (cat_id,), one=True)
+    return jsonify({'success': True, 'category': format_category_dict(cat), 'message': f"Category '{name}' saved successfully!"})
+
+@api_bp.route('/categories/<identifier>', methods=['PUT', 'POST'])
+def update_category_api(identifier):
+    data = request.get_json() or request.form.to_dict() or {}
+    cat = query_db('SELECT * FROM categories WHERE id = ? OR slug = ?', (identifier, identifier), one=True)
+    if not cat:
+        return jsonify({'success': False, 'error': f'Category {identifier} not found'}), 404
+        
+    cat_id = cat['id']
+    name = data.get('name', cat['name']).strip()
+    slug = data.get('slug', cat['slug']).strip()
+    description = data.get('description', cat['description'] or '')
+    image_url = data.get('image_url', cat['image_url'] or '')
+    banner_url = data.get('banner_url', cat['banner_url'] or '')
+    icon = data.get('icon', cat['icon'] or '')
+    display_order = int(data.get('display_order', cat['display_order'] or 0))
+    is_featured = 1 if data.get('is_featured', cat['is_featured']) in [True, 1, '1', 'true', 'on'] else 0
+    cod_allowed = 1 if data.get('cod_allowed', True) in [True, 1, '1', 'true', 'on'] else 0
+    
+    if 'subcategories' in data:
+        subs = data.get('subcategories')
+        if isinstance(subs, list):
+            subcategories_json = json.dumps(subs)
+        elif isinstance(subs, str):
+            subcategories_json = json.dumps([x.strip() for x in subs.split(',') if x.strip()])
+        else:
+            subcategories_json = json.dumps([])
+    else:
+        subcategories_json = cat['subcategories'] or '[]'
+        
+    execute_db('''
+        UPDATE categories SET
+            name = ?, slug = ?, description = ?, image_url = ?, banner_url = ?,
+            icon = ?, display_order = ?, is_featured = ?, cod_allowed = ?, subcategories = ?
+        WHERE id = ?
+    ''', (name, slug, description, image_url, banner_url, icon, display_order, is_featured, cod_allowed, subcategories_json, cat_id))
+    
+    updated = query_db('SELECT * FROM categories WHERE id = ?', (cat_id,), one=True)
+    return jsonify({'success': True, 'category': format_category_dict(updated), 'message': f"Category '{name}' updated successfully!"})
+
+@api_bp.route('/categories/<identifier>', methods=['DELETE'])
+@api_bp.route('/categories/delete/<identifier>', methods=['POST', 'DELETE'])
+def delete_category_api(identifier):
+    cat = query_db('SELECT id, name FROM categories WHERE id = ? OR slug = ?', (identifier, identifier), one=True)
+    if not cat:
+        return jsonify({'success': False, 'error': 'Category not found'}), 404
+    cat_id = cat['id']
+    execute_db('DELETE FROM categories WHERE id = ?', (cat_id,))
+    return jsonify({'success': True, 'message': f"Category '{cat['name']}' deleted successfully!"})
+
+# 3. Products API
+@api_bp.route('/products', methods=['GET'])
 def all_products():
     products = query_db('''
         SELECT p.*, c.name as category_name
         FROM products p
         LEFT JOIN categories c ON p.category_id = c.id
         WHERE p.status != 'deleted'
+        ORDER BY p.id DESC
     ''')
-    for p in products:
-        if p.get('colors'): p['colors'] = json.loads(p['colors'])
-        if p.get('sizes'): p['sizes'] = json.loads(p['sizes'])
-        if p.get('images'): p['images'] = json.loads(p['images'])
-        if p.get('variant_matrix'): p['variant_matrix'] = json.loads(p['variant_matrix'])
-        if p.get('size_guide'): p['size_guide'] = json.loads(p['size_guide'])
-        if p.get('custom_attributes'): p['custom_attributes'] = json.loads(p['custom_attributes'])
-        if p.get('category_attributes'): p['category_attributes'] = json.loads(p['category_attributes'])
-    return jsonify({'success': True, 'products': [dict(p) for p in products]})
+    formatted = [format_product_dict(p) for p in products]
+    return jsonify({'success': True, 'products': formatted, 'count': len(formatted)})
 
-@api_bp.route('/products/<int:product_id>')
-def get_product(product_id):
-    product = query_db('SELECT * FROM products WHERE id = ?', (product_id,), one=True)
+@api_bp.route('/products/<identifier>', methods=['GET'])
+def get_product(identifier):
+    product = query_db('SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.id = ? OR p.slug = ? OR p.sku = ?', (identifier, identifier, identifier), one=True)
     if not product:
         return jsonify({'error': 'Product not found'}), 404
-    return jsonify(dict(product))
+    return jsonify(format_product_dict(product))
 
-# 3. Cart API
+@api_bp.route('/products', methods=['POST'])
+def create_product():
+    data = request.get_json() or request.form.to_dict() or {}
+    name = data.get('name', '').strip()
+    if not name:
+        return jsonify({'success': False, 'error': 'Product title is required'}), 400
+        
+    slug = data.get('slug', '').strip().lower().replace(' ', '-')
+    if not slug:
+        slug = name.lower().replace(' ', '-') + '-' + str(random.randint(100, 999))
+        
+    sku = data.get('sku', '').strip().upper()
+    if not sku:
+        sku = 'KC-' + str(random.randint(10000, 99999))
+        
+    brand = data.get('brand', 'Khushi Collection').strip()
+    category_slug = data.get('category', '').strip()
+    category_id = data.get('category_id')
+    category_name = data.get('category_name', '')
+    
+    if not category_id and category_slug:
+        cat = query_db('SELECT id, name FROM categories WHERE slug = ?', (category_slug,), one=True)
+        if cat:
+            category_id = cat['id']
+            category_name = cat['name']
+        else:
+            category_name = category_slug.title()
+    elif category_id and not category_name:
+        cat = query_db('SELECT name, slug FROM categories WHERE id = ?', (category_id,), one=True)
+        if cat:
+            category_name = cat['name']
+            if not category_slug:
+                category_slug = cat['slug']
+    
+    if not category_name:
+        category_name = 'Couture'
+        
+    subcategory = data.get('subcategory', '').strip()
+    price = float(data.get('price', 0))
+    sale_price = float(data['sale_price']) if data.get('sale_price') is not None and str(data.get('sale_price')).strip() != '' else None
+    cost_price = float(data['cost_price']) if data.get('cost_price') is not None and str(data.get('cost_price')).strip() != '' else None
+    stock = int(data.get('stock', 10))
+    low_stock_threshold = int(data.get('low_stock_threshold', 3))
+    
+    thumbnail = data.get('thumbnail', '')
+    secondary_image = data.get('secondary_image', thumbnail)
+    images = data.get('images', [])
+    if isinstance(images, list):
+        images_json = json.dumps(images)
+    elif isinstance(images, str):
+        images_json = json.dumps([x.strip() for x in images.split('\n') if x.strip()])
+    else:
+        images_json = json.dumps([thumbnail] if thumbnail else [])
+        
+    sizes = data.get('sizes', [])
+    sizes_json = json.dumps(sizes) if isinstance(sizes, list) else json.dumps([s.strip() for s in str(sizes).split(',') if s.strip()])
+    
+    colors = data.get('colors', [])
+    colors_json = json.dumps(colors) if isinstance(colors, (list, dict)) else '[]'
+    
+    variant_matrix = data.get('variant_matrix', [])
+    variant_matrix_json = json.dumps(variant_matrix) if isinstance(variant_matrix, list) else '[]'
+    
+    size_guide = data.get('size_guide', [])
+    size_guide_json = json.dumps(size_guide) if isinstance(size_guide, list) else '[]'
+    
+    custom_attributes = data.get('custom_attributes', [])
+    custom_attributes_json = json.dumps(custom_attributes) if isinstance(custom_attributes, list) else '[]'
+    
+    category_attributes = data.get('category_attributes', {})
+    category_attributes_json = json.dumps(category_attributes) if isinstance(category_attributes, dict) else '{}'
+    
+    payment_methods = data.get('payment_methods', ['cod', 'card', 'bank', 'easypaisa', 'jazzcash'])
+    payment_methods_json = json.dumps(payment_methods) if isinstance(payment_methods, list) else '[]'
+    
+    cod_allowed = 1 if data.get('cod_allowed', True) in [True, 1, '1', 'true', 'on'] else 0
+    is_featured = 1 if data.get('is_featured') in [True, 1, '1', 'true', 'on'] else 0
+    is_new = 1 if data.get('is_new') in [True, 1, '1', 'true', 'on'] else 0
+    is_bestseller = 1 if data.get('is_bestseller') in [True, 1, '1', 'true', 'on'] else 0
+    is_flash_sale = 1 if data.get('is_flash_sale') in [True, 1, '1', 'true', 'on'] else 0
+    status = data.get('status', 'active')
+    
+    short_description = data.get('short_description', '').strip()
+    description = data.get('description', '').strip()
+    care_instructions = data.get('care_instructions', '').strip()
+    shipping_info = data.get('shipping_info', '').strip()
+    video_url = data.get('video_url', '').strip()
+    seo_title = data.get('seo_title', '').strip()
+    meta_description = data.get('meta_description', '').strip()
+    tags = data.get('tags', [])
+    tags_str = json.dumps(tags) if isinstance(tags, list) else str(tags)
+    
+    existing = query_db('SELECT id FROM products WHERE sku = ? OR slug = ?', (sku, slug), one=True)
+    if existing:
+        prod_id = existing['id']
+        execute_db('''
+            UPDATE products SET
+                name = ?, slug = ?, sku = ?, brand = ?, category_id = ?, category_slug = ?, category_name = ?,
+                subcategory = ?, price = ?, sale_price = ?, cost_price = ?, stock = ?, low_stock_threshold = ?,
+                thumbnail = ?, secondary_image = ?, images = ?, sizes = ?, colors = ?,
+                variant_matrix = ?, size_guide = ?, custom_attributes = ?, category_attributes = ?,
+                cod_allowed = ?, payment_methods = ?, is_featured = ?, is_new = ?, is_bestseller = ?,
+                is_flash_sale = ?, status = ?, short_description = ?, description = ?,
+                care_instructions = ?, shipping_info = ?, video_url = ?, seo_title = ?, meta_description = ?, tags = ?
+            WHERE id = ?
+        ''', (
+            name, slug, sku, brand, category_id, category_slug, category_name,
+            subcategory, price, sale_price, cost_price, stock, low_stock_threshold,
+            thumbnail, secondary_image, images_json, sizes_json, colors_json,
+            variant_matrix_json, size_guide_json, custom_attributes_json, category_attributes_json,
+            cod_allowed, payment_methods_json, is_featured, is_new, is_bestseller,
+            is_flash_sale, status, short_description, description,
+            care_instructions, shipping_info, video_url, seo_title, meta_description, tags_str,
+            prod_id
+        ))
+    else:
+        prod_id = execute_db('''
+            INSERT INTO products (
+                name, slug, sku, brand, category_id, category_slug, category_name,
+                subcategory, price, sale_price, cost_price, stock, low_stock_threshold,
+                thumbnail, secondary_image, images, sizes, colors,
+                variant_matrix, size_guide, custom_attributes, category_attributes,
+                cod_allowed, payment_methods, is_featured, is_new, is_bestseller,
+                is_flash_sale, status, short_description, description,
+                care_instructions, shipping_info, video_url, seo_title, meta_description, tags
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            name, slug, sku, brand, category_id, category_slug, category_name,
+            subcategory, price, sale_price, cost_price, stock, low_stock_threshold,
+            thumbnail, secondary_image, images_json, sizes_json, colors_json,
+            variant_matrix_json, size_guide_json, custom_attributes_json, category_attributes_json,
+            cod_allowed, payment_methods_json, is_featured, is_new, is_bestseller,
+            is_flash_sale, status, short_description, description,
+            care_instructions, shipping_info, video_url, seo_title, meta_description, tags_str
+        ))
+        
+    created = query_db('SELECT * FROM products WHERE id = ?', (prod_id,), one=True)
+    return jsonify({'success': True, 'product': format_product_dict(created), 'message': f"Product '{name}' saved successfully!"})
+
+@api_bp.route('/products/<identifier>', methods=['PUT', 'POST'])
+def update_product_api(identifier):
+    data = request.get_json() or request.form.to_dict() or {}
+    product = query_db('SELECT * FROM products WHERE id = ? OR slug = ? OR sku = ?', (identifier, identifier, identifier), one=True)
+    if not product:
+        return jsonify({'success': False, 'error': f'Product {identifier} not found'}), 404
+        
+    prod_id = product['id']
+    name = data.get('name', product['name']).strip()
+    slug = data.get('slug', product['slug']).strip()
+    sku = data.get('sku', product['sku']).strip()
+    brand = data.get('brand', product['brand'] or 'Khushi Collection').strip()
+    category_slug = data.get('category', product['category_slug'] or '')
+    category_id = data.get('category_id', product['category_id'])
+    category_name = data.get('category_name', product['category_name'] or 'Couture')
+    subcategory = data.get('subcategory', product['subcategory'] or '')
+    
+    price = float(data.get('price', product['price']))
+    sale_price = float(data['sale_price']) if data.get('sale_price') is not None and str(data.get('sale_price')).strip() != '' else (product['sale_price'] if 'sale_price' not in data else None)
+    cost_price = float(data['cost_price']) if data.get('cost_price') is not None and str(data.get('cost_price')).strip() != '' else product['cost_price']
+    stock = int(data.get('stock', product['stock']))
+    low_stock_threshold = int(data.get('low_stock_threshold', product['low_stock_threshold'] or 3))
+    
+    thumbnail = data.get('thumbnail', product['thumbnail'] or '')
+    secondary_image = data.get('secondary_image', product['secondary_image'] or thumbnail)
+    
+    if 'images' in data:
+        images = data.get('images')
+        images_json = json.dumps(images) if isinstance(images, list) else json.dumps([x.strip() for x in str(images).split('\n') if x.strip()])
+    else:
+        images_json = product['images'] or '[]'
+        
+    if 'sizes' in data:
+        sizes = data.get('sizes')
+        sizes_json = json.dumps(sizes) if isinstance(sizes, list) else json.dumps([s.strip() for s in str(sizes).split(',') if s.strip()])
+    else:
+        sizes_json = product['sizes'] or '[]'
+        
+    if 'colors' in data:
+        colors = data.get('colors')
+        colors_json = json.dumps(colors) if isinstance(colors, (list, dict)) else '[]'
+    else:
+        colors_json = product['colors'] or '[]'
+        
+    if 'variant_matrix' in data:
+        variant_matrix_json = json.dumps(data['variant_matrix']) if isinstance(data['variant_matrix'], list) else '[]'
+    else:
+        variant_matrix_json = product['variant_matrix'] or '[]'
+        
+    if 'size_guide' in data:
+        size_guide_json = json.dumps(data['size_guide']) if isinstance(data['size_guide'], list) else '[]'
+    else:
+        size_guide_json = product['size_guide'] or '[]'
+        
+    if 'custom_attributes' in data:
+        custom_attributes_json = json.dumps(data['custom_attributes']) if isinstance(data['custom_attributes'], list) else '[]'
+    else:
+        custom_attributes_json = product['custom_attributes'] or '[]'
+        
+    if 'category_attributes' in data:
+        category_attributes_json = json.dumps(data['category_attributes']) if isinstance(data['category_attributes'], dict) else '{}'
+    else:
+        category_attributes_json = product['category_attributes'] or '{}'
+        
+    if 'payment_methods' in data:
+        payment_methods_json = json.dumps(data['payment_methods']) if isinstance(data['payment_methods'], list) else '[]'
+    else:
+        payment_methods_json = product['payment_methods'] or '["cod","card","bank","easypaisa","jazzcash"]'
+        
+    cod_allowed = 1 if data.get('cod_allowed', product['cod_allowed'] if product['cod_allowed'] is not None else 1) in [True, 1, '1', 'true', 'on'] else 0
+    is_featured = 1 if data.get('is_featured', product['is_featured']) in [True, 1, '1', 'true', 'on'] else 0
+    is_new = 1 if data.get('is_new', product['is_new']) in [True, 1, '1', 'true', 'on'] else 0
+    is_bestseller = 1 if data.get('is_bestseller', product['is_bestseller']) in [True, 1, '1', 'true', 'on'] else 0
+    is_flash_sale = 1 if data.get('is_flash_sale', product['is_flash_sale']) in [True, 1, '1', 'true', 'on'] else 0
+    status = data.get('status', product['status'] or 'active')
+    
+    short_description = data.get('short_description', product['short_description'] or '')
+    description = data.get('description', product['description'] or '')
+    care_instructions = data.get('care_instructions', product['care_instructions'] or '')
+    shipping_info = data.get('shipping_info', product['shipping_info'] or '')
+    video_url = data.get('video_url', product['video_url'] or '')
+    seo_title = data.get('seo_title', product['seo_title'] or '')
+    meta_description = data.get('meta_description', product['meta_description'] or '')
+    
+    if 'tags' in data:
+        tags = data.get('tags')
+        tags_str = json.dumps(tags) if isinstance(tags, list) else str(tags)
+    else:
+        tags_str = product['tags'] or '[]'
+        
+    execute_db('''
+        UPDATE products SET
+            name = ?, slug = ?, sku = ?, brand = ?, category_id = ?, category_slug = ?, category_name = ?,
+            subcategory = ?, price = ?, sale_price = ?, cost_price = ?, stock = ?, low_stock_threshold = ?,
+            thumbnail = ?, secondary_image = ?, images = ?, sizes = ?, colors = ?,
+            variant_matrix = ?, size_guide = ?, custom_attributes = ?, category_attributes = ?,
+            cod_allowed = ?, payment_methods = ?, is_featured = ?, is_new = ?, is_bestseller = ?,
+            is_flash_sale = ?, status = ?, short_description = ?, description = ?,
+            care_instructions = ?, shipping_info = ?, video_url = ?, seo_title = ?, meta_description = ?, tags = ?
+        WHERE id = ?
+    ''', (
+        name, slug, sku, brand, category_id, category_slug, category_name,
+        subcategory, price, sale_price, cost_price, stock, low_stock_threshold,
+        thumbnail, secondary_image, images_json, sizes_json, colors_json,
+        variant_matrix_json, size_guide_json, custom_attributes_json, category_attributes_json,
+        cod_allowed, payment_methods_json, is_featured, is_new, is_bestseller,
+        is_flash_sale, status, short_description, description,
+        care_instructions, shipping_info, video_url, seo_title, meta_description, tags_str,
+        prod_id
+    ))
+    
+    updated = query_db('SELECT * FROM products WHERE id = ?', (prod_id,), one=True)
+    return jsonify({'success': True, 'product': format_product_dict(updated), 'message': f"Product '{name}' updated successfully!"})
+
+@api_bp.route('/products/<identifier>', methods=['DELETE'])
+@api_bp.route('/products/delete/<identifier>', methods=['POST', 'DELETE'])
+def delete_product_api(identifier):
+    prod = query_db('SELECT id, name FROM products WHERE id = ? OR slug = ? OR sku = ?', (identifier, identifier, identifier), one=True)
+    if not prod:
+        return jsonify({'success': False, 'error': f'Product {identifier} not found'}), 404
+    execute_db('DELETE FROM products WHERE id = ?', (prod['id'],))
+    return jsonify({'success': True, 'message': f"Product '{prod['name']}' deleted permanently!"})
+
+# 4. Universal Image Upload API
+@api_bp.route('/upload', methods=['POST'])
+def upload_file_api():
+    if 'file' in request.files or 'image' in request.files:
+        file = request.files.get('file') or request.files.get('image')
+        if file and file.filename:
+            ext = file.filename.rsplit('.', 1)[-1].lower() if '.' in file.filename else 'jpg'
+            fname = f"img_{uuid.uuid4().hex[:12]}.{ext}"
+            upload_folder = current_app.config.get('UPLOAD_FOLDER', 'static/uploads')
+            try:
+                os.makedirs(upload_folder, exist_ok=True)
+                dest = os.path.join(upload_folder, fname)
+                file.save(dest)
+                url = f"/static/uploads/{fname}"
+                return jsonify({'success': True, 'url': url})
+            except Exception:
+                file.seek(0)
+                b64 = base64.b64encode(file.read()).decode('utf-8')
+                mime = f"image/{ext}" if ext in ['png', 'jpg', 'jpeg', 'webp', 'gif'] else 'image/jpeg'
+                return jsonify({'success': True, 'url': f"data:{mime};base64,{b64}"})
+    data = request.get_json() or {}
+    b64_val = data.get('image_base64') or data.get('data_url') or data.get('data') or data.get('image')
+    if b64_val:
+        return jsonify({'success': True, 'url': b64_val})
+    return jsonify({'success': False, 'error': 'No file uploaded'}), 400
+
+# 5. Full Storefront Sync API (Single high-speed call for all devices)
+@api_bp.route('/sync', methods=['GET'])
+def get_full_store_sync():
+    prods_raw = query_db('SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.status != "deleted" ORDER BY p.id DESC')
+    products = [format_product_dict(p) for p in prods_raw]
+    
+    cats_raw = query_db('SELECT * FROM categories WHERE is_active = 1 ORDER BY display_order ASC, id ASC')
+    categories = [format_category_dict(c) for c in cats_raw]
+    
+    from routes.payments import get_settings_from_db
+    settings = get_settings_from_db()
+    
+    return jsonify({
+        'success': True,
+        'products': products,
+        'categories': categories,
+        'settings': settings,
+        'timestamp': datetime.now().isoformat()
+    })
+
+# 6. Cart API
 @api_bp.route('/cart')
 def get_cart_data():
     cart = get_cart()
@@ -129,248 +575,5 @@ def add_to_cart():
     total_count = sum(item['quantity'] for item in cart.values())
     return jsonify({'success': True, 'message': f"Added '{product['name']}' to your shopping bag!", 'cart_count': total_count})
 
-@api_bp.route('/cart/update', methods=['POST'])
-def update_cart_item():
-    data = request.get_json() or {}
-    key = data.get('key')
-    qty = int(data.get('quantity', 1))
-
-    cart = get_cart()
-    if key in cart:
-        if qty <= 0:
-            del cart[key]
-        else:
-            cart[key]['quantity'] = qty
-        session['cart'] = cart
-        session.modified = True
-
-    total_count = sum(item['quantity'] for item in cart.values())
-    return jsonify({'success': True, 'cart_count': total_count})
-
-@api_bp.route('/cart/remove', methods=['POST'])
-def remove_cart_item():
-    data = request.get_json() or {}
-    key = data.get('key')
-
-    cart = get_cart()
-    if key in cart:
-        del cart[key]
-        session['cart'] = cart
-        session.modified = True
-
-    total_count = sum(item['quantity'] for item in cart.values())
-    return jsonify({'success': True, 'cart_count': total_count})
-
-@api_bp.route('/cart/count')
-def cart_count():
-    cart = get_cart()
-    total_count = sum(item['quantity'] for item in cart.values())
-    return jsonify({'count': total_count})
-
-# 4. Wishlist API
-@api_bp.route('/wishlist/toggle', methods=['POST'])
-def toggle_wishlist():
-    data = request.get_json() or {}
-    product_id = data.get('product_id')
-    user_id = session.get('user_id')
-    session_id = session.sid if hasattr(session, 'sid') else session.get('_id', 'guest_sess')
-
-    if not product_id:
-        return jsonify({'success': False, 'message': 'Missing product ID'}), 400
-
-    existing = query_db(
-        'SELECT id FROM wishlist WHERE (user_id = ? OR session_id = ?) AND product_id = ?',
-        (user_id, session_id, product_id),
-        one=True
-    )
-
-    if existing:
-        execute_db('DELETE FROM wishlist WHERE id = ?', (existing['id'],))
-        in_wishlist = False
-        msg = 'Removed from your wishlist'
-    else:
-        execute_db(
-            'INSERT INTO wishlist (user_id, session_id, product_id) VALUES (?, ?, ?)',
-            (user_id, session_id, product_id)
-        )
-        in_wishlist = True
-        msg = 'Added to your wishlist ❤️'
-
-    count = query_db(
-        'SELECT COUNT(*) as cnt FROM wishlist WHERE user_id = ? OR session_id = ?',
-        (user_id, session_id),
-        one=True
-    )['cnt']
-
-    return jsonify({'success': True, 'in_wishlist': in_wishlist, 'message': msg, 'wishlist_count': count})
-
-@api_bp.route('/wishlist/count')
-def wishlist_count():
-    user_id = session.get('user_id')
-    session_id = session.sid if hasattr(session, 'sid') else session.get('_id', 'guest_sess')
-    count = query_db(
-        'SELECT COUNT(*) as cnt FROM wishlist WHERE user_id = ? OR session_id = ?',
-        (user_id, session_id),
-        one=True
-    )['cnt']
-    return jsonify({'count': count})
-
-# 5. Coupon Validation
-@api_bp.route('/coupon/validate', methods=['POST'])
-def validate_coupon():
-    data = request.get_json() or {}
-    code = data.get('code', '').strip().upper()
-    subtotal = float(data.get('subtotal', 0))
-
-    if not code:
-        return jsonify({'valid': False, 'message': 'Please enter a coupon code'}), 400
-
-    coupon = query_db('SELECT * FROM coupons WHERE code = ? AND is_active = 1', (code,), one=True)
-    if not coupon:
-        return jsonify({'valid': False, 'message': 'Invalid coupon code'}), 404
-
-    # Check expiry
-    if coupon['expiry_date']:
-        try:
-            exp = datetime.strptime(coupon['expiry_date'], '%Y-%m-%d')
-            if exp < datetime.now():
-                return jsonify({'valid': False, 'message': 'Coupon code has expired'}), 400
-        except ValueError:
-            pass
-
-    # Check minimum order
-    if subtotal < coupon['min_order_amount']:
-        return jsonify({
-            'valid': False,
-            'message': f"Minimum order of Rs. {int(coupon['min_order_amount']):,} required for this coupon"
-        }), 400
-
-    # Calculate discount
-    if coupon['discount_type'] == 'percentage':
-        discount = (subtotal * coupon['discount_value']) / 100.0
-        if coupon['max_discount'] and discount > coupon['max_discount']:
-            discount = coupon['max_discount']
-    else:
-        discount = coupon['discount_value']
-
-    discount = min(discount, subtotal)
-
-    return jsonify({
-        'valid': True,
-        'code': coupon['code'],
-        'discount_type': coupon['discount_type'],
-        'discount_value': coupon['discount_value'],
-        'discount_amount': discount,
-        'message': f"Coupon applied: Saved Rs. {int(discount):,}!"
-    })
-
-# 6. Delivery Fee Calculation
-@api_bp.route('/delivery-fee')
-def get_delivery_fee():
-    city = request.args.get('city', '').strip()
-    subtotal = float(request.args.get('subtotal', 0))
-
-    # Free delivery check
-    threshold_row = query_db("SELECT setting_value FROM settings WHERE setting_key = 'free_delivery_threshold'", one=True)
-    threshold = float(threshold_row['setting_value']) if threshold_row else 5000.0
-
-    if subtotal >= threshold:
-        return jsonify({'delivery_fee': 0, 'free': True, 'threshold': threshold})
-
-    rates_row = query_db("SELECT setting_value FROM settings WHERE setting_key = 'city_rates'", one=True)
-    rates = json.loads(rates_row['setting_value']) if rates_row else {}
-
-    fee = rates.get(city, rates.get('Other Cities', 250))
-    return jsonify({'delivery_fee': fee, 'free': False, 'threshold': threshold})
-
-# 7. Place Order API Endpoint (Syncs JavaScript frontend orders with SQLite DB)
-@api_bp.route('/orders/place', methods=['POST'])
-def api_place_order():
-    from routes.payments import execute_checkout_process
-    data = request.get_json() or {}
-    user_id = session.get('user_id')
-    result, status_code = execute_checkout_process(data, user_id=user_id)
-    return jsonify(result), status_code
-
-# 8. List Orders API Endpoint (Allows Admin Portal to fetch real-time orders from SQLite)
-@api_bp.route('/orders', methods=['GET'])
-def api_get_orders():
-    rows = query_db('SELECT * FROM orders ORDER BY id DESC')
-    orders = []
-    for r in rows:
-        ord_dict = dict(r)
-        items = query_db('SELECT * FROM order_items WHERE order_id = ?', (r['id'],))
-        ord_dict['items'] = [dict(it) for it in items]
-        timeline = query_db('SELECT * FROM order_timeline WHERE order_id = ? ORDER BY id ASC', (r['id'],))
-        ord_dict['timeline'] = [dict(tl) for tl in timeline]
-        orders.append(ord_dict)
-    return jsonify({'success': True, 'orders': orders, 'count': len(orders)})
 
 
-# 9. Delete Order API Endpoint (Allows Admin Portal to delete an order from SQLite)
-@api_bp.route('/orders/<identifier>', methods=['DELETE', 'POST'])
-@api_bp.route('/orders/delete/<identifier>', methods=['POST', 'DELETE'])
-def api_delete_order(identifier):
-    try:
-        clean = str(identifier).replace('#', '').strip()
-        execute_db('DELETE FROM order_items WHERE order_id IN (SELECT id FROM orders WHERE order_number = ? OR order_number = ? OR id = ?)', (clean, f"KC-{clean}", clean))
-        execute_db('DELETE FROM order_timeline WHERE order_id IN (SELECT id FROM orders WHERE order_number = ? OR order_number = ? OR id = ?)', (clean, f"KC-{clean}", clean))
-        execute_db('DELETE FROM payments WHERE order_number = ? OR order_number = ? OR order_id = ?', (clean, f"KC-{clean}", clean))
-        execute_db('DELETE FROM orders WHERE order_number = ? OR order_number = ? OR id = ?', (clean, f"KC-{clean}", clean))
-        return jsonify({'success': True, 'message': f'Order {identifier} deleted successfully.'})
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
-
-
-# 10. Update Order Status API Endpoint
-@api_bp.route('/orders/<identifier>/status', methods=['POST'])
-def api_order_status_update(identifier):
-    from routes.admin import update_order_status
-    return update_order_status(identifier=identifier)
-
-
-# 11. Customer Inquiries & WhatsApp Activity Logger
-@api_bp.route('/inquiries', methods=['POST'])
-def api_record_inquiry():
-    data = request.get_json() or {}
-    inquiry_type = data.get('type', 'general')
-    p_name = data.get('product_name', 'General Catalog Inquiry')
-    sku = data.get('sku', 'N/A')
-    qty = data.get('quantity', 1)
-    price = data.get('price', 0)
-    size = data.get('size', 'Standard')
-    color = data.get('color', 'Default')
-
-    title = f"WhatsApp Inquiry: {p_name} ({size}/{color})"
-    msg = f"Customer initiated WhatsApp order inquiry for {p_name} (SKU: {sku}, Qty: {qty}, Total: Rs. {price:,})"
-
-    try:
-        execute_db('''
-            INSERT INTO notifications (recipient_type, recipient, title, message, channel, status)
-            VALUES ('admin', 'Store Concierge', ?, ?, 'whatsapp', 'received')
-        ''', (title, msg))
-    except Exception:
-        pass
-
-    return jsonify({'success': True, 'message': 'Inquiry logged for concierge.'})
-
-
-# 12. Contact Form API
-@api_bp.route('/contact', methods=['POST'])
-def api_submit_contact():
-    data = request.get_json() or request.form.to_dict() or {}
-    name = data.get('name', 'Valued Client')
-    phone = data.get('phone', '')
-    email = data.get('email', '')
-    subject = data.get('subject', 'Customer Inquiry')
-    message = data.get('message', '')
-
-    try:
-        execute_db('''
-            INSERT INTO notifications (recipient_type, recipient, title, message, channel, status)
-            VALUES ('admin', ?, ?, ?, 'web', 'received')
-        ''', (phone or email or 'Customer', f"Inquiry from {name}: {subject}", f"Message: {message}\nPhone: {phone}\nEmail: {email}"))
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
-
-    return jsonify({'success': True, 'message': 'Thank you! Your message has been received by our concierge team.'})
