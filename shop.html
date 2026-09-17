@@ -791,6 +791,12 @@
         } else {
             initShopPage();
         }
+
+        // Auto-refresh product listing when server catalog syncs
+        window.addEventListener('khushi:catalog-synced', () => {
+            renderCategoryTabs();
+            applyFilters();
+        });
     </script>
 </body>
 </html>

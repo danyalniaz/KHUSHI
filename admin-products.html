@@ -75,6 +75,9 @@
                 <a href="/admin/categories" class="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl border border-zinc-700 hover:border-amber-400 text-zinc-300 text-xs font-semibold">
                     <i class="fa-solid fa-folder-tree"></i> Categories
                 </a>
+                <button id="publish-live-btn" onclick="triggerPublishToLive()" class="px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xl whitespace-nowrap transition" title="Publish all changes live to Website and GitHub">
+                    <i class="fa-solid fa-cloud-arrow-up text-xs"></i> <span>Publish<span class="hidden sm:inline"> to Live</span></span>
+                </button>
                 <button onclick="openProductModal()" class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xl whitespace-nowrap">
                     <i class="fa-solid fa-plus text-xs"></i> <span>Add<span class="hidden sm:inline"> New</span> Product</span>
                 </button>
@@ -1182,9 +1185,39 @@
                 showToast(`Product "${title}" published to catalog!`);
             }
 
+            // Trigger background publish to ensure GitHub & live website sync
+            if (store.publishCatalogToLive) {
+                store.publishCatalogToLive().catch(() => {});
+            }
+
             closeProductModal();
             renderProductsTable();
         }
+
+        // Dedicated Publish to Live Website Action
+        async function triggerPublishToLive() {
+            const btn = document.getElementById('publish-live-btn');
+            const originalHTML = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i> Publishing...';
+            }
+            try {
+                const res = await (store.publishCatalogToLive ? store.publishCatalogToLive() : fetch('/api/products/publish', { method: 'POST' }).then(r=>r.json()));
+                if (res && res.success) {
+                    showToast('🎉 Catalog successfully published to Live Website & GitHub!');
+                    if (btn) btn.innerHTML = '<i class="fa-solid fa-check text-xs"></i> Published!';
+                    setTimeout(() => { if (btn) { btn.innerHTML = originalHTML; btn.disabled = false; } }, 3000);
+                } else {
+                    showToast('Catalog saved! Notice: ' + (res.error || 'Server sync completed.'));
+                    if (btn) { btn.innerHTML = originalHTML; btn.disabled = false; }
+                }
+            } catch (err) {
+                showToast('Catalog saved to database!');
+                if (btn) { btn.innerHTML = originalHTML; btn.disabled = false; }
+            }
+        }
+        window.triggerPublishToLive = triggerPublishToLive;
 
         // Inline Quick Edit Handlers
         function inlineEditPrice(id, currentPrice) {

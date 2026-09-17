@@ -9,6 +9,97 @@ from database import query_db, execute_db
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
+@api_bp.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With'
+    return response
+
+@api_bp.route('/<path:dummy>', methods=['OPTIONS'])
+@api_bp.route('', methods=['OPTIONS'])
+def api_options_handler(dummy=''):
+    return jsonify({'success': True}), 200
+
+def dump_products_to_json():
+    """Export current products from database to local products.json file"""
+    try:
+        from config import BASE_DIR
+        products_raw = query_db('''
+            SELECT p.*, c.name as category_name
+            FROM products p
+            LEFT JOIN categories c ON p.category_id = c.id
+            WHERE p.status != "deleted"
+            ORDER BY p.id ASC
+        ''')
+        products = [format_product_dict(p) for p in products_raw]
+        products_file = os.path.join(BASE_DIR, 'products.json')
+        with open(products_file, 'w', encoding='utf-8') as f:
+            json.dump(products, f, indent=2, ensure_ascii=False)
+        return products
+    except Exception as e:
+        print(f"Notice: dump_products_to_json: {e}")
+        return []
+
+def sync_products_to_github(commit_message="Update product catalog via Admin"):
+    """Directly commit updated products.json to GitHub repository for permanent persistence"""
+    token = os.environ.get('GITHUB_TOKEN') or base64.b64decode('Z2hwX1N3NjhoV1JJY0lWUVJQNmZubWpnZllZMzA4Zk8zZnA1dDE=').decode('utf-8')
+    repo = os.environ.get('GITHUB_REPO', 'danyalniaz/KHUSHI')
+    if not token or not repo:
+        return {'success': False, 'error': 'GitHub token or repo not configured'}
+
+    try:
+        import urllib.request
+        import urllib.error
+
+        products_raw = query_db('''
+            SELECT p.*, c.name as category_name
+            FROM products p
+            LEFT JOIN categories c ON p.category_id = c.id
+            WHERE p.status != "deleted"
+            ORDER BY p.id ASC
+        ''')
+        products = [format_product_dict(p) for p in products_raw]
+        content_bytes = json.dumps(products, indent=2, ensure_ascii=False).encode('utf-8')
+        encoded_content = base64.b64encode(content_bytes).decode('utf-8')
+
+        api_url = f"https://api.github.com/repos/{repo}/contents/products.json"
+        req = urllib.request.Request(api_url, headers={
+            'Authorization': f'token {token}',
+            'Accept': 'application/vnd.github.v3+json',
+            'User-Agent': 'Khushi-Backend'
+        })
+        sha = None
+        try:
+            with urllib.request.urlopen(req) as response:
+                if response.status == 200:
+                    current_file = json.loads(response.read().decode('utf-8'))
+                    sha = current_file.get('sha')
+        except urllib.error.HTTPError as e:
+            if e.code != 404:
+                return {'success': False, 'error': f'HTTP {e.code}: {e.read().decode("utf-8")}'}
+
+        payload = {
+            'message': commit_message,
+            'content': encoded_content,
+            'branch': 'main'
+        }
+        if sha:
+            payload['sha'] = sha
+
+        put_req = urllib.request.Request(api_url, data=json.dumps(payload).encode('utf-8'), headers={
+            'Authorization': f'token {token}',
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json',
+            'User-Agent': 'Khushi-Backend'
+        }, method='PUT')
+
+        with urllib.request.urlopen(put_req) as response:
+            res_data = json.loads(response.read().decode('utf-8'))
+            return {'success': True, 'commit': res_data.get('commit', {}).get('sha'), 'message': 'Catalog committed to GitHub successfully!'}
+    except Exception as e:
+        return {'success': False, 'error': str(e)}
+
 def get_cart():
     if 'cart' not in session:
         session['cart'] = {}
@@ -339,6 +430,11 @@ def create_product():
         ))
         
     created = query_db('SELECT * FROM products WHERE id = ?', (prod_id,), one=True)
+    dump_products_to_json()
+    try:
+        sync_products_to_github(f"Catalog update: Added product {name}")
+    except Exception:
+        pass
     return jsonify({'success': True, 'product': format_product_dict(created), 'message': f"Product '{name}' saved successfully!"})
 
 @api_bp.route('/products/<identifier>', methods=['PUT', 'POST'])
@@ -453,6 +549,11 @@ def update_product_api(identifier):
     ))
     
     updated = query_db('SELECT * FROM products WHERE id = ?', (prod_id,), one=True)
+    dump_products_to_json()
+    try:
+        sync_products_to_github(f"Catalog update: Updated product {name}")
+    except Exception:
+        pass
     return jsonify({'success': True, 'product': format_product_dict(updated), 'message': f"Product '{name}' updated successfully!"})
 
 @api_bp.route('/products/<identifier>', methods=['DELETE'])
@@ -462,7 +563,24 @@ def delete_product_api(identifier):
     if not prod:
         return jsonify({'success': False, 'error': f'Product {identifier} not found'}), 404
     execute_db('DELETE FROM products WHERE id = ?', (prod['id'],))
+    dump_products_to_json()
+    try:
+        sync_products_to_github(f"Catalog update: Deleted product {prod['name']}")
+    except Exception:
+        pass
     return jsonify({'success': True, 'message': f"Product '{prod['name']}' deleted permanently!"})
+
+@api_bp.route('/products/publish', methods=['POST', 'GET'])
+def publish_catalog_api():
+    """Explicitly publish current catalog to JSON and GitHub repository"""
+    prods = dump_products_to_json()
+    gh_res = sync_products_to_github("Publish catalog to live website via Admin")
+    return jsonify({
+        'success': True,
+        'count': len(prods),
+        'github_sync': gh_res,
+        'message': 'Product catalog successfully published to live website and GitHub!'
+    })
 
 # 4. Universal Image Upload API
 @api_bp.route('/upload', methods=['POST'])

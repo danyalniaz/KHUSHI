@@ -7028,11 +7028,49 @@ window.closeCartDrawer = closeCartDrawer;
 window.renderCartDrawer = renderCartDrawer;
 window.ensureCartDrawerDOM = ensureCartDrawerDOM;
 
+// Enforce Canonical Production Domain for old preview URLs
+(function enforceCanonicalDomain() {
+    try {
+        if (typeof window === 'undefined' || !window.location) return;
+        const host = window.location.hostname.toLowerCase();
+        // If visiting an older or preview vercel domain, redirect to official production domain
+        if (host.endsWith('.vercel.app') && host !== 'khushi-swart.vercel.app') {
+            const dest = 'https://khushi-swart.vercel.app' + window.location.pathname + window.location.search + window.location.hash;
+            window.location.replace(dest);
+        }
+    } catch(e) {}
+})();
+
+KhushiStore.prototype.publishCatalogToLive = async function() {
+    try {
+        const res = await fetch('/api/products/publish', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        return await res.json();
+    } catch (e) {
+        return { success: false, error: e.message };
+    }
+};
+
 KhushiStore.prototype.syncWithServer = async function() {
     try {
         const cacheBuster = Date.now();
-        const res = await fetch(`/api/sync?_t=${cacheBuster}`, { cache: 'no-store' });
-        if (res.ok) {
+        let res = null;
+        try {
+            res = await fetch(`/api/sync?_t=${cacheBuster}`, { cache: 'no-store' });
+        } catch (e) {
+            res = null;
+        }
+
+        if (!res || !res.ok) {
+            // Fallback to central production host if on preview URL or external host
+            try {
+                res = await fetch(`https://khushi-swart.vercel.app/api/sync?_t=${cacheBuster}`, { cache: 'no-store' });
+            } catch (e) {}
+        }
+
+        if (res && res.ok) {
             const data = await res.json();
             if (data && data.success) {
                 if (Array.isArray(data.products) && data.products.length > 0) {
@@ -7046,7 +7084,11 @@ KhushiStore.prototype.syncWithServer = async function() {
                     this.applyStorefrontSettings();
                 }
 
+                // Dispatch universal catalog update event across all open components
+                window.dispatchEvent(new CustomEvent('khushi:catalog-synced', { detail: data }));
+
                 // Trigger UI updates if render functions exist on the page
+                if (typeof renderHomePageProducts === 'function') renderHomePageProducts();
                 if (typeof renderProductsGrid === 'function') renderProductsGrid();
                 if (typeof renderProductsTable === 'function') renderProductsTable();
                 if (typeof renderAdminProductsTable === 'function') renderAdminProductsTable();
@@ -7055,6 +7097,11 @@ KhushiStore.prototype.syncWithServer = async function() {
                 if (typeof populateCategoryDropdowns === 'function') populateCategoryDropdowns();
                 if (typeof renderCategoriesGrid === 'function') renderCategoriesGrid();
                 if (typeof renderCollectionShowcase === 'function') renderCollectionShowcase();
+                if (typeof applyFilters === 'function') {
+                    if (typeof renderCategoryTabs === 'function') renderCategoryTabs();
+                    applyFilters();
+                }
+                if (typeof renderProductDetailPage === 'function') renderProductDetailPage();
             }
         }
     } catch (err) {

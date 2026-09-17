@@ -30,10 +30,21 @@ def seed():
     with open(PRODUCTS_FILE, 'r', encoding='utf-8') as pf:
         products = json.load(pf)
 
-    print(f"Seeding {len(products)} products into database...")
+    cursor.execute("SELECT COUNT(*) FROM products")
+    existing_count = cursor.fetchone()[0]
+    if existing_count > 0:
+        # Products already exist, do not wipe them on serverless container restart
+        cursor.execute("SELECT id FROM users WHERE role IN ('OWNER', 'SUPER_ADMIN')")
+        if not cursor.fetchone():
+            cursor.execute('''
+                INSERT INTO users (name, email, password_hash, role, status)
+                VALUES (?, ?, ?, ?, ?)
+            ''', ('Khushi Store Owner', 'admin@khushicollection.com', generate_password_hash('Admin@12345'), 'OWNER', 'active'))
+            conn.commit()
+        conn.close()
+        return
 
-    cursor.execute("DELETE FROM products")
-    cursor.execute("DELETE FROM categories")
+    print(f"Seeding {len(products)} products into database...")
 
     # Categories
     for c in CATEGORIES:

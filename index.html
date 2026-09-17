@@ -1714,18 +1714,12 @@
             }
         }
 
-        // DOMContentLoaded Setup
-        document.addEventListener('DOMContentLoaded', () => {
-            store.init();
+        // Dynamic Home Products Rendering Function (Universal Reactive Sync)
+        function renderHomePageProducts() {
             let products = store.getProducts();
-            if (!products || products.length === 0) products = DEFAULT_PRODUCTS;
+            if (!products || products.length === 0) products = typeof DEFAULT_PRODUCTS !== 'undefined' ? DEFAULT_PRODUCTS : [];
             let categories = store.getCategories();
-            if (!categories || categories.length === 0) categories = DEFAULT_CATEGORIES;
-
-            const headerBag = document.getElementById('header-bag-subtotal');
-            if (headerBag) headerBag.textContent = `Rs. ${store.getCartSubtotal().toLocaleString()}`;
-
-            initRealFlashTimer();
+            if (!categories || categories.length === 0) categories = typeof DEFAULT_CATEGORIES !== 'undefined' ? DEFAULT_CATEGORIES : [];
 
             // Categories
             const catContainer = document.getElementById('home-categories-container');
@@ -1769,6 +1763,20 @@
                 }).join('');
             }
 
+            // Occasions
+            const occGrid = document.getElementById('home-occasions-grid');
+            if (occGrid) {
+                const occs = store.getOccasions ? store.getOccasions() : (typeof DEFAULT_OCCASIONS !== 'undefined' ? DEFAULT_OCCASIONS : []);
+                occGrid.innerHTML = occs.map(o => `
+                    <a href="shop.html?occasion=${o.slug}" class="luxury-card rounded-2xl p-3 flex flex-col items-center justify-center space-y-2 hover:border-amber-400 transition text-center">
+                        <div class="w-10 h-10 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center text-sm">
+                            <i class="fa-solid ${o.icon}"></i>
+                        </div>
+                        <span class="text-xs font-semibold text-zinc-200">${o.name}</span>
+                    </a>
+                `).join('');
+            }
+
             // Flash Sale
             const flashContainer = document.getElementById('flash-sale-products-grid');
             if (flashContainer) {
@@ -1796,20 +1804,6 @@
                 ).join('');
             }
 
-            // Occasions
-            const occGrid = document.getElementById('home-occasions-grid');
-            if (occGrid) {
-                const occs = store.getOccasions ? store.getOccasions() : DEFAULT_OCCASIONS;
-                occGrid.innerHTML = occs.map(o => `
-                    <a href="shop.html?occasion=${o.slug}" class="luxury-card rounded-2xl p-3 flex flex-col items-center justify-center space-y-2 hover:border-amber-400 transition text-center">
-                        <div class="w-10 h-10 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center text-sm">
-                            <i class="fa-solid ${o.icon}"></i>
-                        </div>
-                        <span class="text-xs font-semibold text-zinc-200">${o.name}</span>
-                    </a>
-                `).join('');
-            }
-
             // Recently Viewed
             const recentGrid = document.getElementById('recently-viewed-grid');
             if (recentGrid) {
@@ -1817,6 +1811,21 @@
                 const toShow = recent.length > 0 ? recent : products.slice(0, 4);
                 recentGrid.innerHTML = toShow.slice(0, 4).map(p => renderProductCard(p)).join('');
             }
+
+            if (typeof initLuxury3DSystem === 'function') initLuxury3DSystem();
+        }
+        window.renderHomePageProducts = renderHomePageProducts;
+        window.addEventListener('khushi:catalog-synced', renderHomePageProducts);
+
+        // DOMContentLoaded Setup
+        document.addEventListener('DOMContentLoaded', () => {
+            store.init();
+            renderHomePageProducts();
+
+            const headerBag = document.getElementById('header-bag-subtotal');
+            if (headerBag) headerBag.textContent = `Rs. ${store.getCartSubtotal().toLocaleString()}`;
+
+            initRealFlashTimer();
 
             // Reviews
             const revGrid = document.getElementById('home-reviews-grid');
