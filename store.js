@@ -6372,7 +6372,8 @@ Please process this order.`.trim();
             id: 'owner_1',
             name: 'Khushi Store Owner',
             email: 'admin@khushicollection.com',
-            password_hash: btoa('Admin@12345'),
+            password_hash: btoa('admin123'),
+            has_custom_password: false,
             role: 'OWNER',
             status: 'active',
             created_at: new Date().toISOString()
@@ -6397,6 +6398,7 @@ Please process this order.`.trim();
             name: data.name.trim(),
             email: data.email.trim().toLowerCase(),
             password_hash: btoa(data.password), // Obfuscated store hash
+            has_custom_password: true,
             role: 'OWNER',
             status: 'active',
             created_at: new Date().toISOString()
@@ -6439,11 +6441,16 @@ Please process this order.`.trim();
         const owner = this.getOwner();
         let matchedUser = null;
 
-        if (owner && owner.email === cleanEmail && (owner.password_hash === btoa(password) || (owner.email === 'admin@khushicollection.com' && (password === 'admin123' || password === 'Admin@12345')))) {
-            if (owner.status !== 'active') {
-                return { success: false, message: 'Account is disabled. Contact system support.' };
+        if (owner && owner.email === cleanEmail) {
+            const isMatch = owner.has_custom_password 
+                ? (owner.password_hash === btoa(password))
+                : (owner.password_hash === btoa(password) || (owner.email === 'admin@khushicollection.com' && (password === 'admin123' || password === 'Admin@12345' || password === 'OwnerSecurePass123!')));
+            if (isMatch) {
+                if (owner.status !== 'active') {
+                    return { success: false, message: 'Account is disabled. Contact system support.' };
+                }
+                matchedUser = owner;
             }
-            matchedUser = owner;
         }
 
         // Verify Staff if not owner

@@ -18,6 +18,37 @@ CATEGORIES = [
     {"id": 8, "name": "Beauty", "slug": "beauty", "description": "Organic 24K gold radiance serums, illuminating elixirs, and luxury skincare.", "image_url": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80", "display_order": 8}
 ]
 
+def sync_owner_user(cursor):
+    admin_user_file = os.path.join(BASE_DIR, 'admin_user.json')
+    owner_name = 'Khushi Store Owner'
+    owner_email = 'admin@khushicollection.com'
+    owner_hash = generate_password_hash('admin123')
+    has_custom = False
+
+    if os.path.exists(admin_user_file):
+        try:
+            with open(admin_user_file, 'r', encoding='utf-8') as f:
+                acfg = json.load(f)
+                owner_name = acfg.get('name', owner_name)
+                owner_email = acfg.get('email', owner_email)
+                has_custom = acfg.get('has_custom_password', False)
+                if has_custom and acfg.get('password_hash'):
+                    owner_hash = acfg.get('password_hash')
+        except Exception:
+            pass
+
+    cursor.execute("SELECT id FROM users WHERE role IN ('OWNER', 'SUPER_ADMIN')")
+    row = cursor.fetchone()
+    if not row:
+        cursor.execute('''
+            INSERT INTO users (name, email, password_hash, role, status, failed_login_attempts, locked_until)
+            VALUES (?, ?, ?, 'OWNER', 'active', 0, NULL)
+        ''', (owner_name, owner_email, owner_hash))
+    else:
+        cursor.execute('''
+            UPDATE users SET name = ?, email = ?, password_hash = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?
+        ''', (owner_name, owner_email, owner_hash, row[0]))
+
 def seed():
     conn = get_db()
     cursor = conn.cursor()
@@ -33,14 +64,9 @@ def seed():
     cursor.execute("SELECT COUNT(*) FROM products")
     existing_count = cursor.fetchone()[0]
     if existing_count > 0:
-        # Products already exist, do not wipe them on serverless container restart
-        cursor.execute("SELECT id FROM users WHERE role IN ('OWNER', 'SUPER_ADMIN')")
-        if not cursor.fetchone():
-            cursor.execute('''
-                INSERT INTO users (name, email, password_hash, role, status)
-                VALUES (?, ?, ?, ?, ?)
-            ''', ('Khushi Store Owner', 'admin@khushicollection.com', generate_password_hash('Admin@12345'), 'OWNER', 'active'))
-            conn.commit()
+        # Products already exist, sync owner credentials and do not wipe catalog
+        sync_owner_user(cursor)
+        conn.commit()
         conn.close()
         return
 
@@ -72,13 +98,8 @@ def seed():
             'active', p.get('rating', 4.9), p.get('reviews_count', 24)
         ))
 
-    # Owner Admin User - Preserve any existing customized owner account
-    cursor.execute("SELECT id FROM users WHERE role IN ('OWNER', 'SUPER_ADMIN')")
-    if not cursor.fetchone():
-        cursor.execute('''
-            INSERT INTO users (name, email, password_hash, role, status)
-            VALUES (?, ?, ?, ?, ?)
-        ''', ('Khushi Store Owner', 'admin@khushicollection.com', generate_password_hash('Admin@12345'), 'OWNER', 'active'))
+    # Owner Admin User - Synchronize credentials from admin_user.json
+    sync_owner_user(cursor)
 
     conn.commit()
     conn.close()

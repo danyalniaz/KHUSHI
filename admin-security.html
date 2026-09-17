@@ -111,8 +111,12 @@
                         <h3 class="text-sm font-serif font-bold text-white flex items-center gap-2">
                             <i class="fa-solid fa-key text-amber-400"></i> Change Password
                         </h3>
-                        <span class="text-[10px] text-emerald-400 font-mono"><i class="fa-solid fa-shield"></i> Encrypted PBKDF2</span>
+                        <span class="text-[10px] text-emerald-400 font-mono"><i class="fa-solid fa-shield"></i> Cloud Synced</span>
                     </div>
+
+                    <p class="text-[11px] text-zinc-400 leading-relaxed">
+                        Default initial password is <span class="text-amber-400 font-mono font-semibold select-all">admin123</span>. Once updated, your new password will be saved permanently to your live cloud store.
+                    </p>
 
                     <form onsubmit="handleChangePasswordSubmit(event)" class="space-y-3 text-xs">
                         <div>
@@ -331,6 +335,7 @@
                 const owner = store.getOwner();
                 if (owner) {
                     owner.password_hash = btoa(nw);
+                    owner.has_custom_password = true;
                     store.setOwner(owner);
                     updatedLocally = true;
                 }
