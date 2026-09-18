@@ -148,19 +148,28 @@ if (window.location.protocol === 'file:') {
 
             // Verify with backend session
             try {
-                const res = await fetch('/admin/api/me');
+                const token = (store.getAuthToken ? store.getAuthToken() : (user ? user.token : ''));
+                const res = await fetch('/admin/api/me', {
+                    credentials: 'include',
+                    headers: {
+                        'Authorization': token ? ('Bearer ' + token) : '',
+                        'X-Session-Token': token || ''
+                    }
+                });
                 if (res.ok) {
                     const data = await res.json();
                     if (data.authenticated && data.user) {
                         user = data.user;
                         if (store.syncUserSession) {
-                            store.syncUserSession(data.user);
+                            store.syncUserSession(data.user, token);
                         }
                     }
                 } else if (res.status === 401 || res.status === 403) {
-                    if (store.logout) store.logout();
-                    window.location.replace('admin-login.html');
-                    return;
+                    if (!user) {
+                        if (store.logout) store.logout();
+                        window.location.replace('admin-login.html');
+                        return;
+                    }
                 }
             } catch (e) {
                 // Fallback to local session

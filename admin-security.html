@@ -314,70 +314,82 @@
 
         async function handleChangePasswordSubmit(e) {
             e.preventDefault();
-            const cur = document.getElementById('cur-pass').value;
-            const nw = document.getElementById('new-pass').value;
-            const conf = document.getElementById('confirm-pass').value;
+            const cur = document.getElementById('cur-pass').value.trim();
+            const nw = document.getElementById('new-pass').value.trim();
+            const conf = document.getElementById('confirm-pass').value.trim();
             const msgBox = document.getElementById('pass-msg');
             const btn = document.getElementById('pass-btn');
 
             if (nw !== conf) {
-                msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
-                msgBox.textContent = 'New passwords do not match.';
+                msgBox.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+                msgBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-400"></i> New passwords do not match.';
+                msgBox.classList.remove('hidden');
+                return;
+            }
+
+            if (nw.length < 8) {
+                msgBox.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+                msgBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1.5 text-rose-400"></i> New password must be at least 8 characters long.';
                 msgBox.classList.remove('hidden');
                 return;
             }
 
             msgBox.classList.add('hidden');
             btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> <span>Saving & Committing to Cloud...</span>';
 
-            let updatedLocally = false;
-            if (window.store) {
-                const owner = store.getOwner();
-                if (owner) {
-                    owner.password_hash = btoa(nw);
-                    owner.has_custom_password = true;
-                    store.setOwner(owner);
-                    updatedLocally = true;
-                }
-            }
+            const user = (window.store && store.getCurrentUser) ? store.getCurrentUser() : null;
+            const email = (user && user.email) ? user.email : 'admin@khushicollection.com';
+            const token = (window.store && store.getAuthToken) ? store.getAuthToken() : (user ? user.token : '');
 
             try {
                 const res = await fetch('/admin/api/password/change', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ current_password: cur, new_password: nw, confirm_password: conf })
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token ? ('Bearer ' + token) : '',
+                        'X-Session-Token': token || ''
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        current_password: cur,
+                        new_password: nw,
+                        confirm_password: conf,
+                        session_token: token
+                    })
                 });
                 const data = await res.json();
 
                 if (res.ok && data.success) {
-                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
-                    msgBox.textContent = data.message || 'Password updated successfully and permanently!';
+                    if (window.store) {
+                        const owner = store.getOwner() || {};
+                        owner.password_hash = btoa(nw);
+                        owner.has_custom_password = true;
+                        store.setOwner(owner);
+                        if (data.session_token && store.syncUserSession) {
+                            store.syncUserSession(data.user || user, data.session_token);
+                        }
+                    }
+
+                    msgBox.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
+                    msgBox.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i> <span>' + (data.message || 'Password updated and saved permanently!') + '</span>';
                     msgBox.classList.remove('hidden');
                     e.target.reset();
-                    loadAuditLogs();
-                } else if (updatedLocally) {
-                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
-                    msgBox.textContent = 'Password updated locally in store!';
-                    msgBox.classList.remove('hidden');
-                    e.target.reset();
+                    showToast('Password updated permanently across all servers and devices!');
+                    if (typeof loadAuditLogs === 'function') loadAuditLogs();
                 } else {
-                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
-                    msgBox.textContent = data.error || 'Failed to update password.';
+                    msgBox.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+                    msgBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-rose-400 mr-1.5"></i> <span>' + (data.error || 'Failed to update password.') + '</span>';
                     msgBox.classList.remove('hidden');
                 }
             } catch (err) {
-                if (updatedLocally) {
-                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-emerald-950/80 border border-emerald-500/40 text-emerald-200';
-                    msgBox.textContent = 'Password updated locally in store!';
-                    msgBox.classList.remove('hidden');
-                    e.target.reset();
-                } else {
-                    msgBox.className = 'p-2 rounded-lg text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
-                    msgBox.textContent = 'Server connection error.';
-                    msgBox.classList.remove('hidden');
-                }
+                msgBox.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-950/80 border border-rose-500/40 text-rose-200';
+                msgBox.innerHTML = '<i class="fa-solid fa-wifi text-rose-400 mr-1.5"></i> <span>Network connection error. Please check your connection and retry.</span>';
+                msgBox.classList.remove('hidden');
             } finally {
                 btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-key text-xs"></i> <span>Update Administrator Password</span>';
             }
         }
 

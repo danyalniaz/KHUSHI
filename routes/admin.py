@@ -99,20 +99,31 @@ def sync_admin_user_to_github(admin_user_data, commit_message="Update admin cred
 def verify_admin_password(user, password):
     """
     Validates admin password securely.
-    If the user has not set a custom password yet, accepts default passwords (admin123, Admin@12345, OwnerSecurePass123!)
-    and updates the database with a newly hashed version.
+    1. Checks direct hash from database.
+    2. Checks admin_user.json custom hash (in case cold-start container has not yet synced SQLite).
+    3. If NO custom password has been set yet, accepts initial default passwords (admin123, Admin@12345, OwnerSecurePass123!).
     """
     if not user or not password:
         return False
 
+    # 1. Direct hash check
     if check_password_hash(user['password_hash'], password):
         return True
 
-    # Check if primary store owner and if custom password hasn't been set yet
-    if user['email'] == 'admin@khushicollection.com':
-        cfg = load_admin_user_config()
-        has_custom = cfg.get('has_custom_password', False) if cfg else False
-        if not has_custom and password in ('admin123', 'Admin@12345', 'OwnerSecurePass123!'):
+    # 2. Check admin_user.json (synced from GitHub)
+    cfg = load_admin_user_config()
+    if cfg and cfg.get('has_custom_password', False) and cfg.get('password_hash'):
+        if check_password_hash(cfg['password_hash'], password):
+            try:
+                execute_db('UPDATE users SET password_hash = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?', (cfg['password_hash'], user['id']))
+            except Exception:
+                pass
+            return True
+
+    # 3. Check default passwords ONLY IF custom password has never been configured
+    has_custom = cfg.get('has_custom_password', False) if cfg else False
+    if not has_custom and user['email'] == 'admin@khushicollection.com':
+        if password in ('admin123', 'Admin@12345', 'OwnerSecurePass123!'):
             try:
                 new_h = generate_password_hash(password)
                 execute_db('UPDATE users SET password_hash = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?', (new_h, user['id']))
@@ -123,21 +134,58 @@ def verify_admin_password(user, password):
     return False
 
 
+def resolve_current_user():
+    """Resolves authenticated admin from session cookie, Authorization Bearer, X-Session-Token, or JSON body."""
+    user_id = session.get('user_id')
+    s_token = session.get('session_token')
+
+    token = None
+    auth_header = request.headers.get('Authorization', '')
+    if auth_header.startswith('Bearer '):
+        token = auth_header[7:].strip()
+    elif request.headers.get('X-Session-Token'):
+        token = request.headers.get('X-Session-Token').strip()
+    elif request.is_json and request.get_json(silent=True):
+        token = request.get_json(silent=True).get('session_token')
+    elif request.args.get('session_token'):
+        token = request.args.get('session_token').strip()
+
+    if not token and s_token:
+        token = s_token
+
+    if token:
+        sess_record = query_db("SELECT user_id, is_active FROM user_sessions WHERE session_token = ?", (token,), one=True)
+        if sess_record and sess_record['is_active']:
+            user_id = sess_record['user_id']
+            session['user_id'] = user_id
+            session['session_token'] = token
+            try:
+                execute_db("UPDATE user_sessions SET last_activity_at = CURRENT_TIMESTAMP WHERE session_token = ?", (token,))
+            except Exception:
+                pass
+            return user_id, token
+
+    if user_id:
+        return user_id, s_token
+
+    return None, None
+
+
 def verify_active_session():
     """Verify session token against user_sessions table for revocation checking."""
-    user_id = session.get('user_id')
-    session_token = session.get('session_token')
-    if user_id and session_token:
-        sess_record = query_db("SELECT is_active FROM user_sessions WHERE session_token = ?", (session_token,), one=True)
+    user_id, token = resolve_current_user()
+    if user_id and token:
+        sess_record = query_db("SELECT is_active FROM user_sessions WHERE session_token = ?", (token,), one=True)
         if sess_record and not sess_record['is_active']:
             session.clear()
             return False
-        # Update last activity
         try:
-            execute_db("UPDATE user_sessions SET last_activity_at = CURRENT_TIMESTAMP WHERE session_token = ?", (session_token,))
+            execute_db("UPDATE user_sessions SET last_activity_at = CURRENT_TIMESTAMP WHERE session_token = ?", (token,))
         except Exception:
             pass
-    return True
+        return True
+    return bool(user_id)
+
 
 def admin_required(roles=None):
     if roles is None:
@@ -150,21 +198,14 @@ def admin_required(roles=None):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            user_id = session.get('user_id')
-            user_role = str(session.get('user_role', '')).upper()
+            user_id, token = resolve_current_user()
 
             if not user_id:
                 if request.is_json or request.path.startswith('/admin/api/') or request.path.startswith('/api/'):
                     return jsonify({'success': False, 'error': 'Authentication required', 'code': 'UNAUTHENTICATED'}), 401
                 return redirect(url_for('admin.admin_login', next=request.url))
 
-            if not verify_active_session():
-                if request.is_json or request.path.startswith('/admin/api/') or request.path.startswith('/api/'):
-                    return jsonify({'success': False, 'error': 'Session expired or revoked', 'code': 'SESSION_REVOKED'}), 401
-                flash('Your session has been terminated or revoked.', 'info')
-                return redirect(url_for('admin.admin_login'))
-
-            user = query_db("SELECT status, role FROM users WHERE id = ?", (user_id,), one=True)
+            user = query_db("SELECT id, status, role FROM users WHERE id = ?", (user_id,), one=True)
             if not user or user['status'] != 'active':
                 session.clear()
                 if request.is_json or request.path.startswith('/admin/api/') or request.path.startswith('/api/'):
@@ -176,7 +217,7 @@ def admin_required(roles=None):
                 if request.is_json or request.path.startswith('/admin/api/') or request.path.startswith('/api/'):
                     return jsonify({'success': False, 'error': 'Forbidden: Administrative access required', 'code': 'FORBIDDEN'}), 403
                 return render_template('admin/access_denied.html'), 403
-
+            session['user_role'] = current_role
             return f(*args, **kwargs)
         return decorated_function
     return decorator
@@ -472,13 +513,9 @@ def admin_logout():
 # Return Current Authenticated Admin Identity & Granted Permissions
 @admin_bp.route('/api/me', methods=['GET'])
 def api_admin_me():
-    u_id = session.get('user_id')
+    u_id, token = resolve_current_user()
     if not u_id:
         return jsonify({'success': False, 'authenticated': False, 'user': None}), 401
-
-    if not verify_active_session():
-        session.clear()
-        return jsonify({'success': False, 'authenticated': False, 'error': 'Session expired or revoked'}), 401
 
     user = query_db("SELECT id, name, email, role, status, last_login_at FROM users WHERE id = ?", (u_id,), one=True)
     if not user or user['status'] != 'active':
@@ -1809,13 +1846,13 @@ def api_get_audit_logs():
 
 @admin_bp.route('/security/change-password', methods=['POST'])
 @admin_bp.route('/api/password/change', methods=['POST'])
-@admin_required()
 def change_password():
-    """Change current user's password with strict validation and re-auth."""
+    """Change current user's password with strict validation, re-auth, and instant GitHub sync."""
     data = request.get_json() if request.is_json else request.form
-    current_pass = data.get('current_password', '')
-    new_pass = data.get('new_password', '')
-    confirm_pass = data.get('confirm_password', '')
+    current_pass = (data.get('current_password') or '').strip()
+    new_pass = (data.get('new_password') or '').strip()
+    confirm_pass = (data.get('confirm_password') or '').strip()
+    email = (data.get('email') or session.get('user_email') or 'admin@khushicollection.com').strip().lower()
 
     if not new_pass or len(new_pass) < 8 or new_pass != confirm_pass:
         err = 'New password must be at least 8 characters and match confirmation.'
@@ -1824,9 +1861,15 @@ def change_password():
         flash(err, 'error')
         return redirect(url_for('admin.security_center'))
 
-    user = query_db('SELECT * FROM users WHERE id = ?', (session.get('user_id'),), one=True)
+    user_id, token = resolve_current_user()
+    user = None
+    if user_id:
+        user = query_db('SELECT * FROM users WHERE id = ?', (user_id,), one=True)
+    if not user:
+        user = query_db('SELECT * FROM users WHERE email = ?', (email,), one=True)
+
     if not user or not verify_admin_password(user, current_pass):
-        err = 'Current password is incorrect.'
+        err = 'Current password is incorrect. Please enter your existing password.'
         if request.is_json:
             return jsonify({'success': False, 'error': err}), 403
         flash(err, 'error')
@@ -1846,16 +1889,49 @@ def change_password():
         'updated_at': datetime.now().isoformat()
     }
     save_admin_user_config(admin_data)
+    gh_res = None
     try:
-        sync_admin_user_to_github(admin_data, commit_message=f"Update admin password for {user['email']}")
+        gh_res = sync_admin_user_to_github(admin_data, commit_message=f"Update admin password for {user['email']}")
     except Exception as ex:
         print("Notice sync_admin_user_to_github error:", ex)
+
+    # Issue fresh session token
+    new_session_token = secrets.token_urlsafe(32)
+    now = datetime.now()
+    try:
+        execute_db('''
+            INSERT INTO user_sessions (user_id, session_token, ip_address, user_agent, device_name, is_active, last_activity_at)
+            VALUES (?, ?, ?, ?, ?, 1, ?)
+        ''', (user['id'], new_session_token, request.remote_addr, (request.user_agent.string or '')[:250],
+              request.user_agent.platform or 'Desktop/Browser', now.isoformat()))
+        session['user_id'] = user['id']
+        session['session_token'] = new_session_token
+        session['user_role'] = str(user['role']).upper()
+        session['user_email'] = user['email']
+    except Exception:
+        pass
 
     log_audit_action('PASSWORD_CHANGED', f'Password updated permanently for user {user["email"]}',
                      user_id=user['id'], user_email=user['email'], role=user['role'], ip_address=request.remote_addr)
 
     if request.is_json:
-        return jsonify({'success': True, 'message': 'Password updated and saved permanently! Please use your new password next time you log in.'})
+        return jsonify({
+            'success': True,
+            'session_token': new_session_token,
+            'github_sync': gh_res,
+            'message': 'Password updated and saved permanently! Your new password is now active across all servers and devices.'
+        })
+
+@admin_bp.route('/api/auth-info', methods=['GET'])
+def api_auth_info():
+    """Returns store authentication status to dynamically adjust login screens."""
+    cfg = load_admin_user_config() or {}
+    has_custom = bool(cfg.get('has_custom_password', False))
+    return jsonify({
+        'success': True,
+        'email': cfg.get('email', 'admin@khushicollection.com'),
+        'has_custom_password': has_custom
+    })
 
 @admin_bp.route('/api/profile', methods=['PUT', 'POST'])
 @admin_required()

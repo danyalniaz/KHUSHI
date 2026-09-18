@@ -6512,6 +6512,11 @@ Please process this order.`.trim();
         return sessionData;
     }
 
+    getAuthToken() {
+        const sessionData = this.getCurrentUser();
+        return sessionData ? (sessionData.token || null) : null;
+    }
+
     syncUserSession(user, sessionToken = null) {
         if (!user) return;
         const current = JSON.parse(localStorage.getItem('kc_auth_session')) || {};
