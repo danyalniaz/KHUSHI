@@ -1,9 +1,9 @@
 {
   "name": "Khushi Store Owner",
   "email": "admin@khushicollection.com",
-  "password_hash": "scrypt:32768:8:1$a8yyi9Ieh3ZkWG8p$50fbf98ea410e27de65c208ab34b424b78ce6270ceec1b249dc88575edb9f56fc427f3b0afb42dbe1aec25b0b06d98de5fcb19337ce6efcf13ac53f6417bdf17",
+  "password_hash": "scrypt:32768:8:1$KV5PrRvIVxeENIRk$4895ea3f07c58f9f1b2f7dc44509185df1773ee2580d0cb76cf54da8b6206262732aac464ac281681d3689acd2141c571f2594586dd59437f922f81f3cadd5bf",
   "role": "OWNER",
   "status": "active",
   "has_custom_password": true,
-  "updated_at": "2026-09-18T10:02:06.561062"
+  "updated_at": "2026-09-18T10:11:28.444203"
 }
