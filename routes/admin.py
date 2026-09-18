@@ -1913,13 +1913,9 @@ def change_password():
 
 @admin_bp.route('/api/auth-info', methods=['GET'])
 def api_auth_info():
-    """Returns store authentication status to dynamically adjust login screens."""
-    cfg = load_admin_user_config() or {}
-    has_custom = bool(cfg.get('has_custom_password', False))
+    """Returns store authentication status without exposing any credentials."""
     return jsonify({
-        'success': True,
-        'email': cfg.get('email', 'admin@khushicollection.com'),
-        'has_custom_password': has_custom
+        'success': True
     })
 
 @admin_bp.route('/api/profile', methods=['PUT', 'POST'])

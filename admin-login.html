@@ -437,26 +437,6 @@
                 return;
             }
 
-            // Load dynamic credentials badge from cloud
-            try {
-                const infoRes = await fetch('/admin/api/auth-info');
-                if (infoRes.ok) {
-                    const info = await infoRes.json();
-                    const hintBox = document.getElementById('admin-cred-hint');
-                    if (hintBox && info.has_custom_password) {
-                        hintBox.innerHTML = `
-                            <i class="fa-solid fa-shield-check text-emerald-400 mt-0.5"></i>
-                            <div class="space-y-0.5">
-                                <p class="text-emerald-300 font-semibold text-[11px]">Personalized Password Active:</p>
-                                <p class="font-mono text-[11px] text-zinc-300">Email: <span class="text-amber-400 select-all font-semibold">${info.email || 'admin@khushicollection.com'}</span></p>
-                                <p class="text-[10px] text-zinc-400 pt-0.5">Enter your updated permanent password to access the console.</p>
-                            </div>
-                        `;
-                        hintBox.className = 'p-3 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 text-zinc-300 text-xs flex items-start gap-2.5';
-                    }
-                }
-            } catch (e) {}
-
             // Check if already authenticated
             try {
                 const res = await fetch('/admin/api/me', { credentials: 'include' });
