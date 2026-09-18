@@ -49,6 +49,24 @@ def sync_owner_user(cursor):
             UPDATE users SET name = ?, email = ?, password_hash = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?
         ''', (owner_name, owner_email, owner_hash, row[0]))
 
+def sync_settings_data(cursor):
+    settings_file = os.path.join(BASE_DIR, 'settings.json')
+    if os.path.exists(settings_file):
+        try:
+            with open(settings_file, 'r', encoding='utf-8') as sf:
+                cfg = json.load(sf)
+                for k, v in cfg.items():
+                    val_str = json.dumps(v) if isinstance(v, (dict, list)) else str(v)
+                    cursor.execute('''
+                        INSERT INTO settings (setting_key, setting_value, updated_at)
+                        VALUES (?, ?, CURRENT_TIMESTAMP)
+                        ON CONFLICT(setting_key) DO UPDATE SET
+                            setting_value = excluded.setting_value,
+                            updated_at = CURRENT_TIMESTAMP
+                    ''', (k, val_str))
+        except Exception as e:
+            print(f"Notice: sync_settings_data {e}")
+
 def seed():
     conn = get_db()
     cursor = conn.cursor()
@@ -64,8 +82,9 @@ def seed():
     cursor.execute("SELECT COUNT(*) FROM products")
     existing_count = cursor.fetchone()[0]
     if existing_count > 0:
-        # Products already exist, sync owner credentials and do not wipe catalog
+        # Products already exist, sync owner credentials & settings and do not wipe catalog
         sync_owner_user(cursor)
+        sync_settings_data(cursor)
         conn.commit()
         conn.close()
         return
@@ -100,6 +119,7 @@ def seed():
 
     # Owner Admin User - Synchronize credentials from admin_user.json
     sync_owner_user(cursor)
+    sync_settings_data(cursor)
 
     conn.commit()
     conn.close()

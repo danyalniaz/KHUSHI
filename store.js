@@ -115,6 +115,143 @@ const DEFAULT_SETTINGS = {
     flash_sale: {
         title: "🔥 KHUSHI GRAND FLASH SALE",
         end_time: new Date(Date.now() + 24 * 3600 * 1000).toISOString()
+    },
+    homepage: {
+        announcement: {
+            enabled: true,
+            left_text: "Free Shipping All Over Pakistan",
+            center_text: "Free Shipping All Over Pakistan | Cash on Delivery Available",
+            right_link_text: "Track Order",
+            right_link_url: "track-order.html"
+        },
+        hero: {
+            season_badge: "NEW SEASON 2026",
+            headline: "Premium Men's & Women's Collection",
+            subtitle: "Elevate your style with timeless elegance. Discover our exclusive range of premium outfits designed for the modern you.",
+            cta1_text: "Shop Now",
+            cta1_link: "shop.html",
+            cta2_text: "Watch Video",
+            cta2_video_url: "https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-photo-session-39879-large.mp4",
+            hero_image_url: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=1600&auto=format&fit=crop&q=85",
+            pills: [
+                { title: "Premium Quality", subtitle: "100% Authentic", icon: "fa-solid fa-crown" },
+                { title: "Free Shipping", subtitle: "All Over Pakistan", icon: "fa-solid fa-truck-fast" },
+                { title: "Easy Returns", subtitle: "7 Days Return Policy", icon: "fa-solid fa-rotate-left" }
+            ]
+        },
+        categories_section: {
+            enabled: true,
+            title: "Shop by Category",
+            subtitle: "Explore our wide range of fashion categories"
+        },
+        live_video_section: {
+            enabled: true,
+            badge: "LIVE | 2.4K Watching",
+            title: "Live Fashion Show",
+            subtitle: "Watch our latest collection in real-time",
+            button_text: "Watch Live",
+            video_url: "https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-photo-session-39879-large.mp4",
+            poster_image: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1200&auto=format&fit=crop&q=80",
+            comment_pill: "Beautiful collection ❤️ Where can I buy this?"
+        },
+        try_on_card: {
+            enabled: true,
+            title: "Virtual Try-On",
+            subtitle: "See how it looks on you",
+            button_text: "Try Now",
+            image_url: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&auto=format&fit=crop&q=80"
+        },
+        view_360_card: {
+            enabled: true,
+            title: "360° View",
+            subtitle: "Explore every detail",
+            button_text: "View 360°",
+            image_url: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80"
+        },
+        featured_collections: [
+            {
+                id: 1,
+                name: "Winter Collection",
+                tagline: "Exclusive Drop",
+                description: "Stay Warm. Stay Stylish.",
+                image_url: "https://images.unsplash.com/photo-1516826957135-700dedea698c?w=800&auto=format&fit=crop&q=80",
+                link: "shop.html?category=men"
+            },
+            {
+                id: 2,
+                name: "Summer Vibes",
+                tagline: "Hot Pick",
+                description: "Light. Breezy. Perfect.",
+                image_url: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+                link: "shop.html?category=women"
+            },
+            {
+                id: 3,
+                name: "Formal Collection",
+                tagline: "Signature",
+                description: "For Special Moments.",
+                image_url: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80",
+                link: "shop.html?category=women"
+            },
+            {
+                id: 4,
+                name: "Casual Collection",
+                tagline: "Essential",
+                description: "Everyday Comfort.",
+                image_url: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80",
+                link: "shop.html?category=men"
+            }
+        ],
+        why_choose_us: [
+            { title: "Premium Quality", subtitle: "100% Authentic", icon: "fa-solid fa-crown" },
+            { title: "Fast Delivery", subtitle: "All Over Pakistan", icon: "fa-solid fa-truck-fast" },
+            { title: "Secure Payments", subtitle: "Multiple Options (COD, Cards, Wallets)", icon: "fa-solid fa-shield-check" },
+            { title: "24/7 Support", subtitle: "We're Here to Help Anytime", icon: "fa-solid fa-headset" }
+        ],
+        reviews: [
+            {
+                name: "Ayesha Khan",
+                city: "Karachi",
+                rating: 5,
+                comment: "Absolutely love the quality and fast delivery. The outfits are even better in real life!",
+                avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80"
+            },
+            {
+                name: "Usman Ali",
+                city: "Lahore",
+                rating: 5,
+                comment: "Premium fabric and excellent customer service. Highly recommended for formal occasions!",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80"
+            },
+            {
+                name: "Sara Malik",
+                city: "Islamabad",
+                rating: 5,
+                comment: "The best online shopping experience! Will definitely shop again for the next wedding season.",
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80"
+            }
+        ],
+        newsletter: {
+            enabled: true,
+            title: "Join Our Newsletter",
+            subtitle: "Get exclusive offers, invitations and style tips straight to your inbox.",
+            discount_badge: "Get 10% OFF Your First Order"
+        },
+        section_visibility: {
+            announcement: true,
+            hero: true,
+            categories: true,
+            live_video: true,
+            new_arrivals: true,
+            best_sellers: true,
+            collections: true,
+            why_choose_us: true,
+            recently_viewed: true,
+            wishlist: true,
+            reviews: true,
+            newsletter: true,
+            footer: true
+        }
     }
 };
 
@@ -5226,10 +5363,17 @@ class KhushiStore {
                             ...(DEFAULT_SETTINGS.social_media || {}),
                             ...(local.social_media || {}),
                             ...(data.settings.social_media || {})
+                        },
+                        homepage: {
+                            ...(DEFAULT_SETTINGS.homepage || {}),
+                            ...(local.homepage || {}),
+                            ...(data.settings.homepage || {})
                         }
                     };
                     localStorage.setItem(this.STORAGE_KEYS.SETTINGS, JSON.stringify(merged));
                     this.applyStorefrontSettings();
+                    window.dispatchEvent(new CustomEvent('khushi:settings-synced', { detail: merged }));
+                    if (typeof renderHomePageFromSettings === 'function') renderHomePageFromSettings();
                 }
             }
         } catch (e) {}
@@ -5263,8 +5407,34 @@ class KhushiStore {
                 ...(stored.notifications || {}),
                 templates: { ...DEFAULT_SETTINGS.notifications.templates, ...(stored.notifications?.templates || {}) }
             },
-            onboarding: { ...DEFAULT_SETTINGS.onboarding, ...(stored.onboarding || {}) }
+            onboarding: { ...DEFAULT_SETTINGS.onboarding, ...(stored.onboarding || {}) },
+            homepage: {
+                ...DEFAULT_SETTINGS.homepage,
+                ...(stored.homepage || {}),
+                announcement: { ...(DEFAULT_SETTINGS.homepage?.announcement || {}), ...(stored.homepage?.announcement || {}) },
+                hero: { ...(DEFAULT_SETTINGS.homepage?.hero || {}), ...(stored.homepage?.hero || {}) },
+                categories_section: { ...(DEFAULT_SETTINGS.homepage?.categories_section || {}), ...(stored.homepage?.categories_section || {}) },
+                live_video_section: { ...(DEFAULT_SETTINGS.homepage?.live_video_section || {}), ...(stored.homepage?.live_video_section || {}) },
+                try_on_card: { ...(DEFAULT_SETTINGS.homepage?.try_on_card || {}), ...(stored.homepage?.try_on_card || {}) },
+                view_360_card: { ...(DEFAULT_SETTINGS.homepage?.view_360_card || {}), ...(stored.homepage?.view_360_card || {}) },
+                featured_collections: (stored.homepage?.featured_collections && stored.homepage.featured_collections.length > 0) ? stored.homepage.featured_collections : DEFAULT_SETTINGS.homepage.featured_collections,
+                why_choose_us: (stored.homepage?.why_choose_us && stored.homepage.why_choose_us.length > 0) ? stored.homepage.why_choose_us : DEFAULT_SETTINGS.homepage.why_choose_us,
+                reviews: (stored.homepage?.reviews && stored.homepage.reviews.length > 0) ? stored.homepage.reviews : DEFAULT_SETTINGS.homepage.reviews,
+                newsletter: { ...(DEFAULT_SETTINGS.homepage?.newsletter || {}), ...(stored.homepage?.newsletter || {}) },
+                section_visibility: { ...(DEFAULT_SETTINGS.homepage?.section_visibility || {}), ...(stored.homepage?.section_visibility || {}) }
+            }
         };
+    }
+
+    getHomepageSettings() {
+        const s = this.getSettings();
+        return (s && s.homepage) ? s.homepage : DEFAULT_SETTINGS.homepage;
+    }
+
+    isSectionEnabled(sectionName) {
+        const hp = this.getHomepageSettings();
+        const vis = hp.section_visibility || {};
+        return vis[sectionName] !== false;
     }
 
     saveSettings(newSettings) {
@@ -5291,12 +5461,18 @@ class KhushiStore {
                 ...(newSettings.notifications || {}),
                 templates: { ...(current.notifications?.templates || {}), ...(newSettings.notifications?.templates || {}) }
             },
-            onboarding: { ...current.onboarding, ...(newSettings.onboarding || {}) }
+            onboarding: { ...current.onboarding, ...(newSettings.onboarding || {}) },
+            homepage: {
+                ...(current.homepage || {}),
+                ...(newSettings.homepage || {})
+            }
         };
 
         localStorage.setItem('kc_settings', JSON.stringify(merged));
-        this.logAudit('SETTINGS_UPDATED', 'Store settings and payment gateways updated by Store Owner');
+        this.logAudit('SETTINGS_UPDATED', 'Store settings and homepage CMS updated by Store Owner');
         this.applyStorefrontSettings();
+        window.dispatchEvent(new CustomEvent('khushi:settings-synced', { detail: merged }));
+        if (typeof renderHomePageFromSettings === 'function') renderHomePageFromSettings();
 
         // Asynchronously sync to backend /api/settings
         try {
@@ -5306,6 +5482,10 @@ class KhushiStore {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(merged)
+            }).then(r => r.json()).then(res => {
+                if (res && res.github_sync && res.github_sync.success) {
+                    console.log('Settings synced to GitHub cloud permanently:', res.github_sync.commit);
+                }
             }).catch(() => {});
         } catch (e) {}
 
@@ -7094,6 +7274,8 @@ KhushiStore.prototype.syncWithServer = async function() {
                 if (data.settings && Object.keys(data.settings).length > 0) {
                     localStorage.setItem('kc_settings', JSON.stringify(data.settings));
                     this.applyStorefrontSettings();
+                    window.dispatchEvent(new CustomEvent('khushi:settings-synced', { detail: data.settings }));
+                    if (typeof renderHomePageFromSettings === 'function') renderHomePageFromSettings();
                 }
 
                 // Dispatch universal catalog update event across all open components

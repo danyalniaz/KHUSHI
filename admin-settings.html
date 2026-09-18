@@ -137,6 +137,9 @@
                 <button onclick="switchSettingsTab(9)" class="settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white">
                     <i class="fa-solid fa-globe mr-1.5"></i> SEO & Social
                 </button>
+                <button onclick="switchSettingsTab(10)" class="settings-tab-btn px-4 py-2 rounded-xl whitespace-nowrap text-zinc-400 hover:text-white flex items-center gap-1.5">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Homepage & CMS Builder
+                </button>
             </div>
 
             <!-- Tab 1: Store Profile -->
@@ -699,6 +702,352 @@
                 </form>
             </div>
 
+            <!-- Tab 10: Homepage CMS Builder -->
+            <div id="tab-pane-10" class="settings-pane hidden luxury-card p-6 sm:p-8 rounded-3xl space-y-8">
+                <div class="pb-3 border-b border-zinc-800 flex items-center justify-between flex-wrap gap-3">
+                    <div>
+                        <h2 class="text-base font-serif font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Homepage CMS Builder & Live Synchronizer
+                        </h2>
+                        <p class="text-xs text-zinc-400">Control hero banners, collection videos, live show showcase, announcements, and visibility</p>
+                    </div>
+                    <span class="text-[10px] uppercase font-bold tracking-widest text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded-full border border-emerald-800/60 flex items-center gap-1">
+                        <i class="fa-solid fa-bolt"></i> Real-Time Cloud Sync
+                    </span>
+                </div>
+
+                <form onsubmit="handleSaveSettings(event, 'homepage')" class="space-y-8 text-xs">
+
+                    <!-- 1. Top Announcement Bar (Royal Blue) -->
+                    <div class="p-5 rounded-2xl bg-[#0F1420] border border-blue-500/30 space-y-4">
+                        <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-zinc-800">
+                            <div class="flex items-center gap-2">
+                                <div class="w-7 h-7 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold text-xs">
+                                    <i class="fa-solid fa-bullhorn"></i>
+                                </div>
+                                <h3 class="font-bold text-sm text-white">Top Announcement Bar (Royal Blue Banner)</h3>
+                            </div>
+                            <label class="flex items-center gap-2 text-zinc-300 font-semibold cursor-pointer">
+                                <input type="checkbox" id="chk-hp-ann-enabled" class="rounded accent-amber-400 w-4 h-4">
+                                <span>Enable Announcement Bar</span>
+                            </label>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Left Text / Delivery Note</label>
+                                <input type="text" id="cfg-hp-ann-left" placeholder="e.g. Free Shipping All Over Pakistan" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Center Headline Banner</label>
+                                <input type="text" id="cfg-hp-ann-center" placeholder="e.g. Free Shipping All Over Pakistan | Cash on Delivery Available" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Right Link Label</label>
+                                <input type="text" id="cfg-hp-ann-right-txt" placeholder="e.g. Track Order" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Right Link Destination URL</label>
+                                <input type="text" id="cfg-hp-ann-right-url" placeholder="track-order.html" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Cinematic Hero Section -->
+                    <div class="p-5 rounded-2xl bg-[#0F1420] border border-amber-500/30 space-y-4">
+                        <div class="flex items-center gap-2 pb-2 border-b border-zinc-800">
+                            <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-film"></i>
+                            </div>
+                            <h3 class="font-bold text-sm text-white">Cinematic Hero Showcase</h3>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Season Badge Pill</label>
+                                <input type="text" id="cfg-hp-hero-badge" placeholder="NEW SEASON 2026" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Main Headline</label>
+                                <input type="text" id="cfg-hp-hero-headline" placeholder="Premium Men's & Women's Collection" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white font-serif">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block font-semibold text-zinc-300 mb-1">Hero Subtitle / Description</label>
+                                <textarea id="cfg-hp-hero-sub" rows="2" placeholder="Elevate your style with timeless elegance..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white"></textarea>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">CTA 1 Button Text & Link</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="text" id="cfg-hp-hero-cta1-txt" placeholder="Shop Now" class="bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                                    <input type="text" id="cfg-hp-hero-cta1-url" placeholder="shop.html" class="bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">CTA 2 Button Text & Video URL</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="text" id="cfg-hp-hero-cta2-txt" placeholder="Watch Video" class="bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                                    <input type="text" id="cfg-hp-hero-video-url" placeholder="https://..." class="bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block font-semibold text-zinc-300 mb-1">Hero Background Image URL</label>
+                                <input type="url" id="cfg-hp-hero-img" placeholder="https://images.unsplash.com/..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                        </div>
+
+                        <!-- Floating Feature Pills -->
+                        <div class="pt-2 border-t border-zinc-800 space-y-2">
+                            <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider">Floating Hero Feature Badges</span>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-1.5">
+                                    <span class="text-[10px] text-zinc-400 font-bold">Pill 1</span>
+                                    <input type="text" id="cfg-hp-pill1-t" placeholder="Premium Quality" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                    <input type="text" id="cfg-hp-pill1-s" placeholder="100% Authentic" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                </div>
+                                <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-1.5">
+                                    <span class="text-[10px] text-zinc-400 font-bold">Pill 2</span>
+                                    <input type="text" id="cfg-hp-pill2-t" placeholder="Free Shipping" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                    <input type="text" id="cfg-hp-pill2-s" placeholder="All Over Pakistan" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                </div>
+                                <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-1.5">
+                                    <span class="text-[10px] text-zinc-400 font-bold">Pill 3</span>
+                                    <input type="text" id="cfg-hp-pill3-t" placeholder="Easy Returns" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                    <input type="text" id="cfg-hp-pill3-s" placeholder="7 Days Return Policy" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Live Collection Video Section & Bento Grid -->
+                    <div class="p-5 rounded-2xl bg-[#0F1420] border border-rose-500/30 space-y-4">
+                        <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-zinc-800">
+                            <div class="flex items-center gap-2">
+                                <div class="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-xs">
+                                    <i class="fa-solid fa-video"></i>
+                                </div>
+                                <h3 class="font-bold text-sm text-white">Live Fashion Show & Collection Video Showcase</h3>
+                            </div>
+                            <label class="flex items-center gap-2 text-zinc-300 font-semibold cursor-pointer">
+                                <input type="checkbox" id="chk-hp-video-enabled" class="rounded accent-rose-500 w-4 h-4">
+                                <span>Enable Video Section</span>
+                            </label>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Live Badge Pill</label>
+                                <input type="text" id="cfg-hp-video-badge" placeholder="LIVE | 2.4K Watching" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Video Card Title</label>
+                                <input type="text" id="cfg-hp-video-title" placeholder="Live Fashion Show" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white font-serif">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Video Subtitle</label>
+                                <input type="text" id="cfg-hp-video-sub" placeholder="Watch our latest collection in real-time" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Live Comment Overlay Bubble</label>
+                                <input type="text" id="cfg-hp-video-comment" placeholder="Beautiful collection ❤️ Where can I buy this?" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block font-semibold text-zinc-300 mb-1">Video Stream / MP4 URL (Manageable Live Video)</label>
+                                <input type="url" id="cfg-hp-video-url" placeholder="https://assets.mixkit.co/...mp4 or YouTube video link" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white font-mono">
+                                <p class="text-[10px] text-zinc-400 mt-1">Supports direct MP4/WebM video files or YouTube video URLs.</p>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block font-semibold text-zinc-300 mb-1">Video Poster Image Fallback URL</label>
+                                <input type="url" id="cfg-hp-video-poster" placeholder="https://images.unsplash.com/..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                        </div>
+
+                        <!-- Bento Interactive Cards: Virtual Try-On & 360 View -->
+                        <div class="pt-3 border-t border-zinc-800 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-2">
+                                <span class="text-xs font-bold text-blue-400 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-mobile-screen"></i> Virtual Try-On Card
+                                </span>
+                                <input type="text" id="cfg-hp-try-title" placeholder="Virtual Try-On" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                <input type="text" id="cfg-hp-try-sub" placeholder="See how it looks on you" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-300 text-xs">
+                                <input type="text" id="cfg-hp-try-btn" placeholder="Try Now" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-amber-400 text-xs">
+                                <input type="url" id="cfg-hp-try-img" placeholder="Image URL..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                            </div>
+                            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-2">
+                                <span class="text-xs font-bold text-indigo-400 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-arrows-spin"></i> 360° View Card
+                                </span>
+                                <input type="text" id="cfg-hp-360-title" placeholder="360° View" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                <input type="text" id="cfg-hp-360-sub" placeholder="Explore every detail" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-300 text-xs">
+                                <input type="text" id="cfg-hp-360-btn" placeholder="View 360°" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-amber-400 text-xs">
+                                <input type="url" id="cfg-hp-360-img" placeholder="Image URL..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Curated Collections Bento (Dark Luxury Section) -->
+                    <div class="p-5 rounded-2xl bg-[#0F1420] border border-amber-500/30 space-y-4">
+                        <div class="flex items-center gap-2 pb-2 border-b border-zinc-800">
+                            <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-layer-group"></i>
+                            </div>
+                            <h3 class="font-bold text-sm text-white">Our Collections (Curated Luxury Grid)</h3>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Col 1 -->
+                            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-2">
+                                <span class="text-[11px] font-bold text-amber-400">Collection 1: Winter</span>
+                                <input type="text" id="cfg-hp-col1-name" placeholder="Winter Collection" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                <input type="text" id="cfg-hp-col1-tag" placeholder="Exclusive Drop" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                <input type="text" id="cfg-hp-col1-desc" placeholder="Stay Warm. Stay Stylish." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-300 text-xs">
+                                <input type="url" id="cfg-hp-col1-img" placeholder="Image URL..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                <input type="text" id="cfg-hp-col1-link" placeholder="shop.html?category=men" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-amber-300 text-xs">
+                            </div>
+                            <!-- Col 2 -->
+                            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-2">
+                                <span class="text-[11px] font-bold text-amber-400">Collection 2: Summer</span>
+                                <input type="text" id="cfg-hp-col2-name" placeholder="Summer Vibes" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                <input type="text" id="cfg-hp-col2-tag" placeholder="Hot Pick" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                <input type="text" id="cfg-hp-col2-desc" placeholder="Light. Breezy. Perfect." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-300 text-xs">
+                                <input type="url" id="cfg-hp-col2-img" placeholder="Image URL..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                <input type="text" id="cfg-hp-col2-link" placeholder="shop.html?category=women" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-amber-300 text-xs">
+                            </div>
+                            <!-- Col 3 -->
+                            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-2">
+                                <span class="text-[11px] font-bold text-amber-400">Collection 3: Formal</span>
+                                <input type="text" id="cfg-hp-col3-name" placeholder="Formal Collection" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                <input type="text" id="cfg-hp-col3-tag" placeholder="Signature" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                <input type="text" id="cfg-hp-col3-desc" placeholder="For Special Moments." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-300 text-xs">
+                                <input type="url" id="cfg-hp-col3-img" placeholder="Image URL..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                <input type="text" id="cfg-hp-col3-link" placeholder="shop.html?category=women" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-amber-300 text-xs">
+                            </div>
+                            <!-- Col 4 -->
+                            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-2">
+                                <span class="text-[11px] font-bold text-amber-400">Collection 4: Casual</span>
+                                <input type="text" id="cfg-hp-col4-name" placeholder="Casual Collection" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                <input type="text" id="cfg-hp-col4-tag" placeholder="Essential" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                <input type="text" id="cfg-hp-col4-desc" placeholder="Everyday Comfort." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-300 text-xs">
+                                <input type="url" id="cfg-hp-col4-img" placeholder="Image URL..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                <input type="text" id="cfg-hp-col4-link" placeholder="shop.html?category=men" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-amber-300 text-xs">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. Customer Reviews (Testimonials) -->
+                    <div class="p-5 rounded-2xl bg-[#0F1420] border border-purple-500/30 space-y-4">
+                        <div class="flex items-center gap-2 pb-2 border-b border-zinc-800">
+                            <div class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+                            <h3 class="font-bold text-sm text-white">What Our Customers Say (Verified Testimonials)</h3>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <!-- Rev 1 -->
+                            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-2">
+                                <span class="text-[11px] font-bold text-purple-400">Review 1</span>
+                                <input type="text" id="cfg-hp-rev1-name" placeholder="Ayesha Khan" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                <input type="text" id="cfg-hp-rev1-city" placeholder="Karachi" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                <textarea id="cfg-hp-rev1-txt" rows="2" placeholder="Absolutely love the quality..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-300 text-xs"></textarea>
+                                <input type="url" id="cfg-hp-rev1-avatar" placeholder="Avatar photo URL..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                            </div>
+                            <!-- Rev 2 -->
+                            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-2">
+                                <span class="text-[11px] font-bold text-purple-400">Review 2</span>
+                                <input type="text" id="cfg-hp-rev2-name" placeholder="Usman Ali" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                <input type="text" id="cfg-hp-rev2-city" placeholder="Lahore" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                <textarea id="cfg-hp-rev2-txt" rows="2" placeholder="Premium fabric..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-300 text-xs"></textarea>
+                                <input type="url" id="cfg-hp-rev2-avatar" placeholder="Avatar photo URL..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                            </div>
+                            <!-- Rev 3 -->
+                            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-2">
+                                <span class="text-[11px] font-bold text-purple-400">Review 3</span>
+                                <input type="text" id="cfg-hp-rev3-name" placeholder="Sara Malik" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                <input type="text" id="cfg-hp-rev3-city" placeholder="Islamabad" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                                <textarea id="cfg-hp-rev3-txt" rows="2" placeholder="The best online shopping..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-300 text-xs"></textarea>
+                                <input type="url" id="cfg-hp-rev3-avatar" placeholder="Avatar photo URL..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. Newsletter & Promotional Offer -->
+                    <div class="p-5 rounded-2xl bg-[#0F1420] border border-blue-500/30 space-y-4">
+                        <div class="flex items-center gap-2 pb-2 border-b border-zinc-800">
+                            <div class="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-gift"></i>
+                            </div>
+                            <h3 class="font-bold text-sm text-white">Newsletter & Promotional Offer Banner</h3>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Gift Card Discount Badge</label>
+                                <input type="text" id="cfg-hp-news-badge" placeholder="Get 10% OFF Your First Order" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Headline</label>
+                                <input type="text" id="cfg-hp-news-title" placeholder="Join Our Newsletter" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-zinc-300 mb-1">Subtitle</label>
+                                <input type="text" id="cfg-hp-news-sub" placeholder="Get exclusive offers..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7. Section Visibility Matrix -->
+                    <div class="p-5 rounded-2xl bg-[#0F1420] border border-zinc-700 space-y-4">
+                        <div class="flex items-center gap-2 pb-2 border-b border-zinc-800">
+                            <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-eye"></i>
+                            </div>
+                            <h3 class="font-bold text-sm text-white">Homepage Section Visibility Controller</h3>
+                        </div>
+                        <p class="text-zinc-400 text-[11px]">Show or hide any individual section on the public storefront instantaneously.</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-ann" class="rounded accent-amber-400"> <span>Top Announcement</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-hero" class="rounded accent-amber-400"> <span>Cinematic Hero</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-cats" class="rounded accent-amber-400"> <span>Shop by Category</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-video" class="rounded accent-amber-400"> <span>Live Fashion Video</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-new" class="rounded accent-amber-400"> <span>New Arrivals</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-best" class="rounded accent-amber-400"> <span>Best Sellers</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-cols" class="rounded accent-amber-400"> <span>Our Collections</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-why" class="rounded accent-amber-400"> <span>Why Choose Us</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-recent" class="rounded accent-amber-400"> <span>Recently Viewed</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-wish" class="rounded accent-amber-400"> <span>Wishlist Preview</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-revs" class="rounded accent-amber-400"> <span>Customer Reviews</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-news" class="rounded accent-amber-400"> <span>Newsletter Banner</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-3">
+                        <button type="submit" class="px-8 py-3 rounded-xl btn-gold font-bold uppercase tracking-wider text-xs shadow-xl shadow-amber-500/20 flex items-center gap-2">
+                            <i class="fa-solid fa-cloud-arrow-up text-sm"></i>
+                            <span>Save & Publish Homepage CMS</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
         </main>
     </div>
 
@@ -875,6 +1224,90 @@
                 setVal('cfg-soc-fb', soc.facebook);
                 setVal('cfg-soc-tt', soc.tiktok);
                 setVal('cfg-soc-yt', soc.youtube);
+
+                // Homepage CMS Builder
+                const hp = s.homepage || {};
+                const ann = hp.announcement || {};
+                const hero = hp.hero || {};
+                const vid = hp.live_video_section || {};
+                const tryOn = hp.try_on_card || {};
+                const v360 = hp.view_360_card || {};
+                const cols = hp.featured_collections || [];
+                const revs = hp.reviews || [];
+                const pills = hero.pills || [];
+                const news = hp.newsletter || {};
+                const vis = hp.section_visibility || {};
+
+                // Announcement
+                setChk('chk-hp-ann-enabled', ann.enabled !== false);
+                setVal('cfg-hp-ann-left', ann.left_text || '');
+                setVal('cfg-hp-ann-center', ann.center_text || '');
+                setVal('cfg-hp-ann-right-txt', ann.right_link_text || '');
+                setVal('cfg-hp-ann-right-url', ann.right_link_url || '');
+
+                // Hero
+                setVal('cfg-hp-hero-badge', hero.season_badge || '');
+                setVal('cfg-hp-hero-headline', hero.headline || '');
+                setVal('cfg-hp-hero-sub', hero.subtitle || '');
+                setVal('cfg-hp-hero-cta1-txt', hero.cta1_text || 'Shop Now');
+                setVal('cfg-hp-hero-cta1-url', hero.cta1_link || 'shop.html');
+                setVal('cfg-hp-hero-cta2-txt', hero.cta2_text || 'Watch Video');
+                setVal('cfg-hp-hero-video-url', hero.cta2_video_url || '');
+                setVal('cfg-hp-hero-img', hero.hero_image_url || '');
+
+                if (pills[0]) { setVal('cfg-hp-pill1-t', pills[0].title); setVal('cfg-hp-pill1-s', pills[0].subtitle); }
+                if (pills[1]) { setVal('cfg-hp-pill2-t', pills[1].title); setVal('cfg-hp-pill2-s', pills[1].subtitle); }
+                if (pills[2]) { setVal('cfg-hp-pill3-t', pills[2].title); setVal('cfg-hp-pill3-s', pills[2].subtitle); }
+
+                // Live Video
+                setChk('chk-hp-video-enabled', vid.enabled !== false);
+                setVal('cfg-hp-video-badge', vid.badge || '');
+                setVal('cfg-hp-video-title', vid.title || '');
+                setVal('cfg-hp-video-sub', vid.subtitle || '');
+                setVal('cfg-hp-video-url', vid.video_url || '');
+                setVal('cfg-hp-video-poster', vid.poster_image || '');
+                setVal('cfg-hp-video-comment', vid.comment_pill || '');
+
+                // Try On & 360
+                setVal('cfg-hp-try-title', tryOn.title || '');
+                setVal('cfg-hp-try-sub', tryOn.subtitle || '');
+                setVal('cfg-hp-try-btn', tryOn.button_text || '');
+                setVal('cfg-hp-try-img', tryOn.image_url || '');
+
+                setVal('cfg-hp-360-title', v360.title || '');
+                setVal('cfg-hp-360-sub', v360.subtitle || '');
+                setVal('cfg-hp-360-btn', v360.button_text || '');
+                setVal('cfg-hp-360-img', v360.image_url || '');
+
+                // Collections
+                if (cols[0]) { setVal('cfg-hp-col1-name', cols[0].name); setVal('cfg-hp-col1-tag', cols[0].tagline); setVal('cfg-hp-col1-desc', cols[0].description); setVal('cfg-hp-col1-img', cols[0].image_url); setVal('cfg-hp-col1-link', cols[0].link); }
+                if (cols[1]) { setVal('cfg-hp-col2-name', cols[1].name); setVal('cfg-hp-col2-tag', cols[1].tagline); setVal('cfg-hp-col2-desc', cols[1].description); setVal('cfg-hp-col2-img', cols[1].image_url); setVal('cfg-hp-col2-link', cols[1].link); }
+                if (cols[2]) { setVal('cfg-hp-col3-name', cols[2].name); setVal('cfg-hp-col3-tag', cols[2].tagline); setVal('cfg-hp-col3-desc', cols[2].description); setVal('cfg-hp-col3-img', cols[2].image_url); setVal('cfg-hp-col3-link', cols[2].link); }
+                if (cols[3]) { setVal('cfg-hp-col4-name', cols[3].name); setVal('cfg-hp-col4-tag', cols[3].tagline); setVal('cfg-hp-col4-desc', cols[3].description); setVal('cfg-hp-col4-img', cols[3].image_url); setVal('cfg-hp-col4-link', cols[3].link); }
+
+                // Reviews
+                if (revs[0]) { setVal('cfg-hp-rev1-name', revs[0].name); setVal('cfg-hp-rev1-city', revs[0].city); setVal('cfg-hp-rev1-txt', revs[0].comment); setVal('cfg-hp-rev1-avatar', revs[0].avatar); }
+                if (revs[1]) { setVal('cfg-hp-rev2-name', revs[1].name); setVal('cfg-hp-rev2-city', revs[1].city); setVal('cfg-hp-rev2-txt', revs[1].comment); setVal('cfg-hp-rev2-avatar', revs[1].avatar); }
+                if (revs[2]) { setVal('cfg-hp-rev3-name', revs[2].name); setVal('cfg-hp-rev3-city', revs[2].city); setVal('cfg-hp-rev3-txt', revs[2].comment); setVal('cfg-hp-rev3-avatar', revs[2].avatar); }
+
+                // Newsletter
+                setVal('cfg-hp-news-badge', news.discount_badge || '');
+                setVal('cfg-hp-news-title', news.title || '');
+                setVal('cfg-hp-news-sub', news.subtitle || '');
+
+                // Visibility
+                setChk('chk-sec-ann', vis.announcement !== false);
+                setChk('chk-sec-hero', vis.hero !== false);
+                setChk('chk-sec-cats', vis.categories !== false);
+                setChk('chk-sec-video', vis.live_video !== false);
+                setChk('chk-sec-new', vis.new_arrivals !== false);
+                setChk('chk-sec-best', vis.best_sellers !== false);
+                setChk('chk-sec-cols', vis.collections !== false);
+                setChk('chk-sec-why', vis.why_choose_us !== false);
+                setChk('chk-sec-recent', vis.recently_viewed !== false);
+                setChk('chk-sec-wish', vis.wishlist !== false);
+                setChk('chk-sec-revs', vis.reviews !== false);
+                setChk('chk-sec-news', vis.newsletter !== false);
 
                 // Two-way synchronization between Store Profile (Tab 1) and Contact (Tab 2)
                 const bindSync = (id1, id2) => {
@@ -1071,6 +1504,140 @@
                     facebook: getV('cfg-soc-fb', ''),
                     tiktok: getV('cfg-soc-tt', ''),
                     youtube: getV('cfg-soc-yt', '')
+                },
+                homepage: {
+                    ...(current.homepage || {}),
+                    announcement: {
+                        ...(current.homepage?.announcement || {}),
+                        enabled: getC('chk-hp-ann-enabled', true),
+                        left_text: getV('cfg-hp-ann-left', 'Free Shipping All Over Pakistan'),
+                        center_text: getV('cfg-hp-ann-center', 'Free Shipping All Over Pakistan | Cash on Delivery Available'),
+                        right_link_text: getV('cfg-hp-ann-right-txt', 'Track Order'),
+                        right_link_url: getV('cfg-hp-ann-right-url', 'track-order.html')
+                    },
+                    hero: {
+                        ...(current.homepage?.hero || {}),
+                        season_badge: getV('cfg-hp-hero-badge', 'NEW SEASON 2026'),
+                        headline: getV('cfg-hp-hero-headline', "Premium Men's & Women's Collection"),
+                        subtitle: getV('cfg-hp-hero-sub', 'Elevate your style with timeless elegance. Discover our exclusive range of premium outfits designed for the modern you.'),
+                        cta1_text: getV('cfg-hp-hero-cta1-txt', 'Shop Now'),
+                        cta1_link: getV('cfg-hp-hero-cta1-url', 'shop.html'),
+                        cta2_text: getV('cfg-hp-hero-cta2-txt', 'Watch Video'),
+                        cta2_video_url: getV('cfg-hp-hero-video-url', 'https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-photo-session-39879-large.mp4'),
+                        hero_image_url: getV('cfg-hp-hero-img', 'https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=1600&auto=format&fit=crop&q=85'),
+                        pills: [
+                            { title: getV('cfg-hp-pill1-t', 'Premium Quality'), subtitle: getV('cfg-hp-pill1-s', '100% Authentic'), icon: 'fa-solid fa-crown' },
+                            { title: getV('cfg-hp-pill2-t', 'Free Shipping'), subtitle: getV('cfg-hp-pill2-s', 'All Over Pakistan'), icon: 'fa-solid fa-truck-fast' },
+                            { title: getV('cfg-hp-pill3-t', 'Easy Returns'), subtitle: getV('cfg-hp-pill3-s', '7 Days Return Policy'), icon: 'fa-solid fa-rotate-left' }
+                        ]
+                    },
+                    live_video_section: {
+                        ...(current.homepage?.live_video_section || {}),
+                        enabled: getC('chk-hp-video-enabled', true),
+                        badge: getV('cfg-hp-video-badge', 'LIVE | 2.4K Watching'),
+                        title: getV('cfg-hp-video-title', 'Live Fashion Show'),
+                        subtitle: getV('cfg-hp-video-sub', 'Watch our latest collection in real-time'),
+                        button_text: 'Watch Live',
+                        video_url: getV('cfg-hp-video-url', 'https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-photo-session-39879-large.mp4'),
+                        poster_image: getV('cfg-hp-video-poster', 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1200&auto=format&fit=crop&q=80'),
+                        comment_pill: getV('cfg-hp-video-comment', 'Beautiful collection ❤️ Where can I buy this?')
+                    },
+                    try_on_card: {
+                        ...(current.homepage?.try_on_card || {}),
+                        enabled: true,
+                        title: getV('cfg-hp-try-title', 'Virtual Try-On'),
+                        subtitle: getV('cfg-hp-try-sub', 'See how it looks on you'),
+                        button_text: getV('cfg-hp-try-btn', 'Try Now'),
+                        image_url: getV('cfg-hp-try-img', 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&auto=format&fit=crop&q=80')
+                    },
+                    view_360_card: {
+                        ...(current.homepage?.view_360_card || {}),
+                        enabled: true,
+                        title: getV('cfg-hp-360-title', '360° View'),
+                        subtitle: getV('cfg-hp-360-sub', 'Explore every detail'),
+                        button_text: getV('cfg-hp-360-btn', 'View 360°'),
+                        image_url: getV('cfg-hp-360-img', 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80')
+                    },
+                    featured_collections: [
+                        {
+                            id: 1,
+                            name: getV('cfg-hp-col1-name', 'Winter Collection'),
+                            tagline: getV('cfg-hp-col1-tag', 'Exclusive Drop'),
+                            description: getV('cfg-hp-col1-desc', 'Stay Warm. Stay Stylish.'),
+                            image_url: getV('cfg-hp-col1-img', 'https://images.unsplash.com/photo-1516826957135-700dedea698c?w=800&auto=format&fit=crop&q=80'),
+                            link: getV('cfg-hp-col1-link', 'shop.html?category=men')
+                        },
+                        {
+                            id: 2,
+                            name: getV('cfg-hp-col2-name', 'Summer Vibes'),
+                            tagline: getV('cfg-hp-col2-tag', 'Hot Pick'),
+                            description: getV('cfg-hp-col2-desc', 'Light. Breezy. Perfect.'),
+                            image_url: getV('cfg-hp-col2-img', 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80'),
+                            link: getV('cfg-hp-col2-link', 'shop.html?category=women')
+                        },
+                        {
+                            id: 3,
+                            name: getV('cfg-hp-col3-name', 'Formal Collection'),
+                            tagline: getV('cfg-hp-col3-tag', 'Signature'),
+                            description: getV('cfg-hp-col3-desc', 'For Special Moments.'),
+                            image_url: getV('cfg-hp-col3-img', 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=800&auto=format&fit=crop&q=80'),
+                            link: getV('cfg-hp-col3-link', 'shop.html?category=women')
+                        },
+                        {
+                            id: 4,
+                            name: getV('cfg-hp-col4-name', 'Casual Collection'),
+                            tagline: getV('cfg-hp-col4-tag', 'Essential'),
+                            description: getV('cfg-hp-col4-desc', 'Everyday Comfort.'),
+                            image_url: getV('cfg-hp-col4-img', 'https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=800&auto=format&fit=crop&q=80'),
+                            link: getV('cfg-hp-col4-link', 'shop.html?category=men')
+                        }
+                    ],
+                    reviews: [
+                        {
+                            name: getV('cfg-hp-rev1-name', 'Ayesha Khan'),
+                            city: getV('cfg-hp-rev1-city', 'Karachi'),
+                            rating: 5,
+                            comment: getV('cfg-hp-rev1-txt', 'Absolutely love the quality and fast delivery. The outfits are even better in real life!'),
+                            avatar: getV('cfg-hp-rev1-avatar', 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop&q=80')
+                        },
+                        {
+                            name: getV('cfg-hp-rev2-name', 'Usman Ali'),
+                            city: getV('cfg-hp-rev2-city', 'Lahore'),
+                            rating: 5,
+                            comment: getV('cfg-hp-rev2-txt', 'Premium fabric and excellent customer service. Highly recommended for formal occasions!'),
+                            avatar: getV('cfg-hp-rev2-avatar', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80')
+                        },
+                        {
+                            name: getV('cfg-hp-rev3-name', 'Sara Malik'),
+                            city: getV('cfg-hp-rev3-city', 'Islamabad'),
+                            rating: 5,
+                            comment: getV('cfg-hp-rev3-txt', 'The best online shopping experience! Will definitely shop again for the next wedding season.'),
+                            avatar: getV('cfg-hp-rev3-avatar', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80')
+                        }
+                    ],
+                    newsletter: {
+                        ...(current.homepage?.newsletter || {}),
+                        enabled: true,
+                        discount_badge: getV('cfg-hp-news-badge', 'Get 10% OFF Your First Order'),
+                        title: getV('cfg-hp-news-title', 'Join Our Newsletter'),
+                        subtitle: getV('cfg-hp-news-sub', 'Get exclusive offers, invitations and style tips straight to your inbox.')
+                    },
+                    section_visibility: {
+                        ...(current.homepage?.section_visibility || {}),
+                        announcement: getC('chk-sec-ann', true),
+                        hero: getC('chk-sec-hero', true),
+                        categories: getC('chk-sec-cats', true),
+                        live_video: getC('chk-sec-video', true),
+                        new_arrivals: getC('chk-sec-new', true),
+                        best_sellers: getC('chk-sec-best', true),
+                        collections: getC('chk-sec-cols', true),
+                        why_choose_us: getC('chk-sec-why', true),
+                        recently_viewed: getC('chk-sec-recent', true),
+                        wishlist: getC('chk-sec-wish', true),
+                        reviews: getC('chk-sec-revs', true),
+                        newsletter: getC('chk-sec-news', true),
+                        footer: true
+                    }
                 }
             };
 
