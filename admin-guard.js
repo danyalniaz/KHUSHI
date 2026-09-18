@@ -144,11 +144,18 @@ if (window.location.protocol === 'file:') {
         async init() {
             if (typeof store === 'undefined') return;
 
-            let user = store.getCurrentUser ? store.getCurrentUser() : null;
+            let token = (store.getAuthToken ? store.getAuthToken() : '');
+            if (!token) {
+                const sessionRaw = localStorage.getItem('kc_auth_session');
+                if (sessionRaw) {
+                    try { token = JSON.parse(sessionRaw).token || ''; } catch(e) {}
+                }
+            }
 
-            // Verify with backend session
+            let authenticatedAdmin = null;
+
+            // Enforce Strict Server-Side Authentication
             try {
-                const token = (store.getAuthToken ? store.getAuthToken() : (user ? user.token : ''));
                 const res = await fetch('/admin/api/me', {
                     credentials: 'include',
                     headers: {
@@ -156,35 +163,37 @@ if (window.location.protocol === 'file:') {
                         'X-Session-Token': token || ''
                     }
                 });
+
                 if (res.ok) {
                     const data = await res.json();
                     if (data.authenticated && data.user) {
-                        user = data.user;
-                        if (store.syncUserSession) {
-                            store.syncUserSession(data.user, token);
+                        const role = String(data.user.role || '').toUpperCase();
+                        const allowedRoles = ['OWNER', 'MANAGER', 'STAFF', 'SUPER_ADMIN'];
+                        if (allowedRoles.includes(role)) {
+                            authenticatedAdmin = data.user;
+                            if (store.syncUserSession) {
+                                store.syncUserSession(data.user, token);
+                            }
+                        } else {
+                            this.showAccessDenied('Customer accounts cannot access administrative portals.');
+                            return;
                         }
                     }
-                } else if (res.status === 401 || res.status === 403) {
-                    if (!user) {
-                        if (store.logout) store.logout();
-                        window.location.replace('admin-login.html');
-                        return;
-                    }
                 }
-            } catch (e) {
-                // Fallback to local session
+            } catch (networkErr) {
+                console.warn('Backend session verification connection error:', networkErr);
             }
 
-            if (!user) {
+            // Reject any unverified or fake client-side session
+            if (!authenticatedAdmin) {
+                if (store.logout) store.logout();
+                localStorage.removeItem('kc_auth_session');
+                localStorage.removeItem('kc_owner');
                 window.location.replace('admin-login.html');
                 return;
             }
 
-            const allowedRoles = ['OWNER', 'MANAGER', 'STAFF', 'SUPER_ADMIN'];
-            if (!allowedRoles.includes(user.role)) {
-                this.showAccessDenied('Customer accounts cannot access administrative portals.');
-                return;
-            }
+            const user = authenticatedAdmin;
 
             this.user = user;
             this.permissions = new Set(user.permissions || []);

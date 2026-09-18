@@ -5474,13 +5474,12 @@ class KhushiStore {
         window.dispatchEvent(new CustomEvent('khushi:settings-synced', { detail: merged }));
         if (typeof renderHomePageFromSettings === 'function') renderHomePageFromSettings();
 
-        // Asynchronously sync to backend /api/settings
+        // Asynchronously sync to backend /api/settings with admin credentials
         try {
             fetch('/api/settings', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                credentials: 'include',
+                headers: this.getAuthHeaders(),
                 body: JSON.stringify(merged)
             }).then(r => r.json()).then(res => {
                 if (res && res.github_sync && res.github_sync.success) {
@@ -5866,10 +5865,11 @@ class KhushiStore {
         categories.push(cat);
         this.saveCategories(categories);
 
-        // Background server sync
+        // Background server sync with admin credentials
         fetch('/api/categories', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            headers: this.getAuthHeaders(),
             body: JSON.stringify(cat)
         }).then(r => r.json()).then(res => {
             if (res && res.success && res.category && res.category.id) {
@@ -5888,10 +5888,11 @@ class KhushiStore {
             categories[idx] = { ...categories[idx], ...updatedFields };
             this.saveCategories(categories);
 
-            // Background server sync
+            // Background server sync with admin credentials
             fetch(`/api/categories/${id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                headers: this.getAuthHeaders(),
                 body: JSON.stringify(categories[idx])
             }).catch(err => console.warn('updateCategory sync err:', err));
 
@@ -5905,9 +5906,11 @@ class KhushiStore {
         categories = categories.filter(c => c.id !== Number(id));
         this.saveCategories(categories);
 
-        // Background server sync
+        // Background server sync with admin credentials
         fetch(`/api/categories/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: 'include',
+            headers: this.getAuthHeaders()
         }).catch(err => console.warn('deleteCategory sync err:', err));
     }
 
@@ -5947,10 +5950,11 @@ class KhushiStore {
         products.unshift(prod);
         this.saveProducts(products);
 
-        // Background server sync
+        // Background server sync with admin credentials
         fetch('/api/products', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            headers: this.getAuthHeaders(),
             body: JSON.stringify(prod)
         }).then(r => r.json()).then(res => {
             if (res && res.success && res.product && res.product.id) {
@@ -5969,10 +5973,11 @@ class KhushiStore {
             products[idx] = { ...products[idx], ...updatedFields };
             this.saveProducts(products);
 
-            // Background server sync
+            // Background server sync with admin credentials
             fetch(`/api/products/${id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                headers: this.getAuthHeaders(),
                 body: JSON.stringify(products[idx])
             }).catch(err => console.warn('updateProduct sync err:', err));
 
@@ -5986,9 +5991,11 @@ class KhushiStore {
         products = products.filter(p => p.id !== Number(id));
         this.saveProducts(products);
 
-        // Background server sync
+        // Background server sync with admin credentials
         fetch(`/api/products/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: 'include',
+            headers: this.getAuthHeaders()
         }).catch(err => console.warn('deleteProduct sync err:', err));
     }
 
@@ -6548,16 +6555,7 @@ Please process this order.`.trim();
             const raw = localStorage.getItem('kc_owner');
             if (raw) return JSON.parse(raw);
         } catch(e) {}
-        return {
-            id: 'owner_1',
-            name: 'Khushi Store Owner',
-            email: 'admin@khushicollection.com',
-            password_hash: btoa('admin123'),
-            has_custom_password: false,
-            role: 'OWNER',
-            status: 'active',
-            created_at: new Date().toISOString()
-        };
+        return null;
     }
 
     setOwner(owner) {
@@ -6621,10 +6619,8 @@ Please process this order.`.trim();
         const owner = this.getOwner();
         let matchedUser = null;
 
-        if (owner && owner.email === cleanEmail) {
-            const isMatch = owner.has_custom_password 
-                ? (owner.password_hash === btoa(password))
-                : (owner.password_hash === btoa(password) || (owner.email === 'admin@khushicollection.com' && (password === 'admin123' || password === 'Admin@12345' || password === 'OwnerSecurePass123!')));
+        if (owner && owner.email === cleanEmail && owner.password_hash) {
+            const isMatch = (owner.password_hash === btoa(password));
             if (isMatch) {
                 if (owner.status !== 'active') {
                     return { success: false, message: 'Account is disabled. Contact system support.' };
@@ -6697,6 +6693,16 @@ Please process this order.`.trim();
         return sessionData ? (sessionData.token || null) : null;
     }
 
+    getAuthHeaders(customHeaders = {}) {
+        const token = this.getAuthToken();
+        const headers = { 'Content-Type': 'application/json', ...customHeaders };
+        if (token) {
+            headers['Authorization'] = 'Bearer ' + token;
+            headers['X-Session-Token'] = token;
+        }
+        return headers;
+    }
+
     syncUserSession(user, sessionToken = null) {
         if (!user) return;
         const current = JSON.parse(localStorage.getItem('kc_auth_session')) || {};
@@ -6713,12 +6719,10 @@ Please process this order.`.trim();
         localStorage.setItem('kc_auth_session', JSON.stringify(sessionData));
 
         if (sessionData.role === 'OWNER' || sessionData.role === 'SUPER_ADMIN') {
-            const owner = this.getOwner();
+            const owner = this.getOwner() || { id: 'owner_1' };
             owner.name = sessionData.name;
             owner.email = sessionData.email;
-            if (user.password) {
-                owner.password_hash = btoa(user.password);
-            }
+            owner.role = 'OWNER';
             this.setOwner(owner);
         }
     }
@@ -6747,6 +6751,84 @@ Please process this order.`.trim();
             this.logAudit('LOGOUT_ALL_DEVICES', `All active sessions revoked for ${user.email}`);
         }
         localStorage.removeItem('kc_auth_session');
+    }
+
+    // ====================================================================
+    // DEDICATED CUSTOMER ACCOUNT PORTAL (COMPLETELY SEPARATE FROM ADMIN)
+    // ====================================================================
+    getCustomerSession() {
+        try {
+            const raw = localStorage.getItem('kc_customer');
+            if (raw) return JSON.parse(raw);
+        } catch(e) {}
+        return null;
+    }
+
+    setCustomerSession(customer) {
+        if (!customer) {
+            localStorage.removeItem('kc_customer');
+        } else {
+            localStorage.setItem('kc_customer', JSON.stringify(customer));
+        }
+    }
+
+    customerLogin(email, password) {
+        const cleanEmail = String(email || '').trim().toLowerCase();
+        if (!cleanEmail) return { success: false, message: 'Please enter a valid email address.' };
+
+        const customers = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.CUSTOMERS)) || [];
+        const existing = customers.find(c => c.email && c.email.toLowerCase() === cleanEmail);
+
+        const customer = existing || {
+            id: 'cust_' + Date.now(),
+            name: cleanEmail.split('@')[0].replace('.', ' ').toUpperCase(),
+            email: cleanEmail,
+            phone: '',
+            created_at: new Date().toISOString()
+        };
+
+        this.setCustomerSession(customer);
+        return { success: true, message: `Welcome back, ${customer.name}!`, customer };
+    }
+
+    customerRegister(name, email, phone, password) {
+        const cleanEmail = String(email || '').trim().toLowerCase();
+        const cleanName = String(name || '').trim();
+        const cleanPhone = String(phone || '').trim();
+
+        if (!cleanName || !cleanEmail) {
+            return { success: false, message: 'Please provide full name and email.' };
+        }
+
+        const customers = JSON.parse(localStorage.getItem(this.STORAGE_KEYS.CUSTOMERS)) || [];
+        const newCust = {
+            id: 'cust_' + Date.now(),
+            name: cleanName,
+            email: cleanEmail,
+            phone: cleanPhone,
+            created_at: new Date().toISOString()
+        };
+
+        customers.push(newCust);
+        localStorage.setItem(this.STORAGE_KEYS.CUSTOMERS, JSON.stringify(customers));
+        this.setCustomerSession(newCust);
+        return { success: true, message: 'Customer account registered successfully!', customer: newCust };
+    }
+
+    customerLogout() {
+        this.setCustomerSession(null);
+        return { success: true, message: 'Logged out of customer account.' };
+    }
+
+    getCustomerOrders(identifier) {
+        const allOrders = this.getOrders();
+        if (!identifier) return [];
+        const clean = String(identifier).trim().toLowerCase();
+        return allOrders.filter(o => 
+            (o.customer_email && o.customer_email.toLowerCase() === clean) ||
+            (o.customer_phone && o.customer_phone.includes(clean)) ||
+            (o.order_number && o.order_number.toLowerCase() === clean)
+        );
     }
 
     changePassword(oldPassword, newPassword) {
@@ -7237,7 +7319,8 @@ KhushiStore.prototype.publishCatalogToLive = async function() {
     try {
         const res = await fetch('/api/products/publish', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
+            credentials: 'include',
+            headers: this.getAuthHeaders()
         });
         return await res.json();
     } catch (e) {

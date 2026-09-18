@@ -21,8 +21,8 @@ CATEGORIES = [
 def sync_owner_user(cursor):
     admin_user_file = os.path.join(BASE_DIR, 'admin_user.json')
     owner_name = 'Khushi Store Owner'
-    owner_email = 'admin@khushicollection.com'
-    owner_hash = generate_password_hash('admin123')
+    import secrets
+    owner_hash = generate_password_hash(secrets.token_urlsafe(16))
     has_custom = False
 
     if os.path.exists(admin_user_file):

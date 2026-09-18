@@ -120,17 +120,6 @@ def verify_admin_password(user, password):
                 pass
             return True
 
-    # 3. Check default passwords ONLY IF custom password has never been configured
-    has_custom = cfg.get('has_custom_password', False) if cfg else False
-    if not has_custom and user['email'] == 'admin@khushicollection.com':
-        if password in ('admin123', 'Admin@12345', 'OwnerSecurePass123!'):
-            try:
-                new_h = generate_password_hash(password)
-                execute_db('UPDATE users SET password_hash = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?', (new_h, user['id']))
-            except Exception:
-                pass
-            return True
-
     return False
 
 

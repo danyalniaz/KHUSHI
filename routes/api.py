@@ -7,13 +7,15 @@ from datetime import datetime
 from flask import Blueprint, request, jsonify, session, current_app
 from database import query_db, execute_db
 
+from routes.admin import admin_required
+
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
 @api_bp.after_request
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, X-Session-Token'
     return response
 
 @api_bp.route('/<path:dummy>', methods=['OPTIONS'])
@@ -180,6 +182,7 @@ def get_all_categories():
     return jsonify({'success': True, 'categories': categories})
 
 @api_bp.route('/categories', methods=['POST'])
+@admin_required(['OWNER', 'MANAGER', 'SUPER_ADMIN'])
 def create_category():
     data = request.get_json() or request.form.to_dict() or {}
     name = data.get('name', '').strip()
@@ -225,6 +228,7 @@ def create_category():
     return jsonify({'success': True, 'category': format_category_dict(cat), 'message': f"Category '{name}' saved successfully!"})
 
 @api_bp.route('/categories/<identifier>', methods=['PUT', 'POST'])
+@admin_required(['OWNER', 'MANAGER', 'SUPER_ADMIN'])
 def update_category_api(identifier):
     data = request.get_json() or request.form.to_dict() or {}
     cat = query_db('SELECT * FROM categories WHERE id = ? OR slug = ?', (identifier, identifier), one=True)
@@ -265,6 +269,7 @@ def update_category_api(identifier):
 
 @api_bp.route('/categories/<identifier>', methods=['DELETE'])
 @api_bp.route('/categories/delete/<identifier>', methods=['POST', 'DELETE'])
+@admin_required(['OWNER', 'MANAGER', 'SUPER_ADMIN'])
 def delete_category_api(identifier):
     cat = query_db('SELECT id, name FROM categories WHERE id = ? OR slug = ?', (identifier, identifier), one=True)
     if not cat:
@@ -294,6 +299,7 @@ def get_product(identifier):
     return jsonify(format_product_dict(product))
 
 @api_bp.route('/products', methods=['POST'])
+@admin_required(['OWNER', 'MANAGER', 'SUPER_ADMIN'])
 def create_product():
     data = request.get_json() or request.form.to_dict() or {}
     name = data.get('name', '').strip()
@@ -438,6 +444,7 @@ def create_product():
     return jsonify({'success': True, 'product': format_product_dict(created), 'message': f"Product '{name}' saved successfully!"})
 
 @api_bp.route('/products/<identifier>', methods=['PUT', 'POST'])
+@admin_required(['OWNER', 'MANAGER', 'SUPER_ADMIN'])
 def update_product_api(identifier):
     data = request.get_json() or request.form.to_dict() or {}
     product = query_db('SELECT * FROM products WHERE id = ? OR slug = ? OR sku = ?', (identifier, identifier, identifier), one=True)
@@ -558,6 +565,7 @@ def update_product_api(identifier):
 
 @api_bp.route('/products/<identifier>', methods=['DELETE'])
 @api_bp.route('/products/delete/<identifier>', methods=['POST', 'DELETE'])
+@admin_required(['OWNER', 'MANAGER', 'SUPER_ADMIN'])
 def delete_product_api(identifier):
     prod = query_db('SELECT id, name FROM products WHERE id = ? OR slug = ? OR sku = ?', (identifier, identifier, identifier), one=True)
     if not prod:
@@ -571,6 +579,7 @@ def delete_product_api(identifier):
     return jsonify({'success': True, 'message': f"Product '{prod['name']}' deleted permanently!"})
 
 @api_bp.route('/products/publish', methods=['POST', 'GET'])
+@admin_required(['OWNER', 'MANAGER', 'SUPER_ADMIN'])
 def publish_catalog_api():
     """Explicitly publish current catalog to JSON and GitHub repository"""
     prods = dump_products_to_json()
@@ -584,6 +593,7 @@ def publish_catalog_api():
 
 # 4. Universal Image Upload API
 @api_bp.route('/upload', methods=['POST'])
+@admin_required(['OWNER', 'MANAGER', 'STAFF', 'SUPER_ADMIN'])
 def upload_file_api():
     if 'file' in request.files or 'image' in request.files:
         file = request.files.get('file') or request.files.get('image')
@@ -689,6 +699,7 @@ def get_store_settings_api():
     return jsonify({'success': True, 'settings': merged})
 
 @api_bp.route('/settings', methods=['POST', 'PUT'])
+@admin_required(['OWNER', 'SUPER_ADMIN'])
 def update_store_settings_api():
     data = request.get_json(silent=True) or request.form.to_dict() or {}
     if not data:
@@ -829,6 +840,7 @@ def add_to_cart():
 
 # 7. Orders Real-Time Sync & Bulk Operations API
 @api_bp.route('/orders', methods=['GET'])
+@admin_required(['OWNER', 'MANAGER', 'STAFF', 'SUPER_ADMIN'])
 def api_get_orders():
     rows = query_db('SELECT * FROM orders ORDER BY id DESC')
     orders_list = []
@@ -843,6 +855,7 @@ def api_get_orders():
 
 
 @api_bp.route('/orders/<identifier>', methods=['DELETE', 'POST'])
+@admin_required(['OWNER', 'MANAGER', 'SUPER_ADMIN'])
 def api_delete_order(identifier):
     clean = str(identifier).replace('#', '').strip()
     order = query_db(
@@ -865,6 +878,7 @@ def api_delete_order(identifier):
 
 
 @api_bp.route('/orders/bulk-delete', methods=['POST'])
+@admin_required(['OWNER', 'SUPER_ADMIN'])
 def api_bulk_delete_orders():
     data = request.get_json(silent=True) or {}
     order_numbers = data.get('order_numbers') or data.get('order_ids') or []
@@ -897,6 +911,7 @@ def api_bulk_delete_orders():
 
 
 @api_bp.route('/orders/clear-all', methods=['POST'])
+@admin_required(['OWNER', 'SUPER_ADMIN'])
 def api_clear_all_orders():
     execute_db('DELETE FROM order_items')
     execute_db('DELETE FROM order_timeline')
