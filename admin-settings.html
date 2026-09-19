@@ -74,9 +74,10 @@
                 <p class="hidden sm:block text-[11px] text-zinc-400 truncate">Configure store identity, payment gateways, delivery rates, and notifications</p>
             </div>
             <div class="flex items-center gap-2 flex-shrink-0">
-                <span id="settings-save-status" class="hidden text-[11px] font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-2.5 py-1 rounded-xl items-center gap-1 transition-all duration-300 whitespace-nowrap">
-                    <i class="fa-solid fa-check"></i> <span class="hidden sm:inline">Saved</span>
-                </span>
+                <div id="settings-save-status" onclick="handleSaveStatusClick()" title="Click to retry save" class="hidden text-xs font-semibold px-3 py-1.5 rounded-xl items-center gap-1.5 transition-all duration-200 shadow whitespace-nowrap select-none cursor-pointer">
+                    <i id="save-status-icon" class="fa-solid fa-check"></i>
+                    <span id="save-status-text">Saved</span>
+                </div>
                 <button type="button" id="btn-save-all-settings" onclick="saveAllSettingsFromPage(this)" class="px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl btn-gold text-zinc-950 font-bold text-xs tracking-wider uppercase shadow-lg shadow-amber-500/20 flex items-center gap-1.5 hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer whitespace-nowrap">
                     <i class="fa-solid fa-floppy-disk text-xs sm:text-sm"></i>
                     <span>Save<span class="hidden sm:inline"> All Settings</span></span>
@@ -196,11 +197,21 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block font-semibold text-zinc-300 mb-1">Store Logo URL / Path</label>
-                            <input type="text" id="cfg-logo-url" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                            <div class="flex gap-2">
+                                <input type="text" id="cfg-logo-url" class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                                <button type="button" onclick="pickAndUploadMedia('cfg-logo-url', 'image/*')" class="px-3 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl text-amber-400 text-xs font-semibold flex items-center gap-1.5 transition" title="Upload Logo">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+                                </button>
+                            </div>
                         </div>
                         <div>
                             <label class="block font-semibold text-zinc-300 mb-1">Favicon URL / Path</label>
-                            <input type="text" id="cfg-favicon-url" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                            <div class="flex gap-2">
+                                <input type="text" id="cfg-favicon-url" class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white font-mono">
+                                <button type="button" onclick="pickAndUploadMedia('cfg-favicon-url', 'image/*')" class="px-3 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl text-amber-400 text-xs font-semibold flex items-center gap-1.5 transition" title="Upload Favicon">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -784,12 +795,22 @@
                                 <label class="block font-semibold text-zinc-300 mb-1">CTA 2 Button Text & Video URL</label>
                                 <div class="grid grid-cols-2 gap-2">
                                     <input type="text" id="cfg-hp-hero-cta2-txt" placeholder="Watch Video" class="bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
-                                    <input type="text" id="cfg-hp-hero-video-url" placeholder="https://..." class="bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                                    <div class="flex gap-1.5">
+                                        <input type="text" id="cfg-hp-hero-video-url" placeholder="https://..." class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                                        <button type="button" onclick="pickAndUploadMedia('cfg-hp-hero-video-url', 'video/*')" class="px-2.5 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl text-amber-400 text-xs font-semibold flex items-center gap-1 transition" title="Upload Video">
+                                            <i class="fa-solid fa-video"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="sm:col-span-2">
                                 <label class="block font-semibold text-zinc-300 mb-1">Hero Background Image URL</label>
-                                <input type="url" id="cfg-hp-hero-img" placeholder="https://images.unsplash.com/..." class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                                <div class="flex gap-2">
+                                    <input type="url" id="cfg-hp-hero-img" placeholder="https://images.unsplash.com/..." class="flex-1 bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-white">
+                                    <button type="button" onclick="pickAndUploadMedia('cfg-hp-hero-img', 'image/*')" class="px-3 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl text-amber-400 text-xs font-semibold flex items-center gap-1.5 transition" title="Upload Hero Image">
+                                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -1113,9 +1134,211 @@
             }
         }
 
-        function populateSettingsForm() {
+        // ====================================================================
+        // AUTOSAVE ENGINE & RACE CONDITION PROTECTION PIPELINE
+        // ====================================================================
+        const AUTOSAVE_DEBOUNCE_MS = 1200;
+        let autosaveTimer = null;
+        let isAutosaving = false;
+        let changeSequence = 0;
+        let lastSavedSequence = 0;
+        let isFormPopulating = false;
+        let hasPendingSave = false;
+        let lastFailedError = null;
+
+        function showSaveStatus(state, customText) {
+            const statusEl = document.getElementById('settings-save-status');
+            const iconEl = document.getElementById('save-status-icon');
+            const textEl = document.getElementById('save-status-text');
+            if (!statusEl || !iconEl || !textEl) return;
+
+            statusEl.classList.remove('hidden');
+            statusEl.classList.add('flex');
+
+            statusEl.className = 'flex text-xs font-semibold px-3 py-1.5 rounded-xl items-center gap-1.5 transition-all duration-200 shadow whitespace-nowrap select-none cursor-pointer ';
+
+            if (state === 'unsaved') {
+                statusEl.className += 'bg-amber-950/80 text-amber-400 border border-amber-500/50';
+                iconEl.className = 'fa-solid fa-pen-to-square animate-pulse text-xs';
+                textEl.textContent = customText || 'Unsaved changes';
+            } else if (state === 'validation_error') {
+                statusEl.className += 'bg-rose-950/80 text-rose-300 border border-rose-500/50';
+                iconEl.className = 'fa-solid fa-triangle-exclamation text-xs';
+                textEl.textContent = customText || 'Unsaved changes — fix validation errors';
+            } else if (state === 'saving') {
+                statusEl.className += 'bg-blue-950/80 text-blue-300 border border-blue-500/50';
+                iconEl.className = 'fa-solid fa-circle-notch fa-spin text-xs';
+                textEl.textContent = customText || 'Saving...';
+            } else if (state === 'saved') {
+                statusEl.className += 'bg-emerald-950/80 text-emerald-400 border border-emerald-500/50';
+                iconEl.className = 'fa-solid fa-circle-check text-xs';
+                textEl.textContent = customText || 'Saved';
+            } else if (state === 'failed') {
+                statusEl.className += 'bg-rose-950/80 text-rose-400 border border-rose-500/50';
+                iconEl.className = 'fa-solid fa-circle-exclamation text-xs';
+                textEl.textContent = customText || 'Save failed — click to retry';
+            }
+        }
+
+        function handleSaveStatusClick() {
+            const textEl = document.getElementById('save-status-text');
+            if (textEl && (textEl.textContent.includes('failed') || textEl.textContent.includes('Unsaved'))) {
+                executeAutosave({ isManual: true });
+            }
+        }
+
+        function validateSettingsForm() {
+            const emailEl = document.getElementById('cfg-email') || document.getElementById('cfg-cs-email');
+            if (emailEl && emailEl.value.trim()) {
+                const em = emailEl.value.trim();
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
+                    return { valid: false, field: emailEl, error: 'Please enter a valid email address (e.g. support@khushicollection.com)' };
+                }
+            }
+
+            const phoneEl = document.getElementById('cfg-phone') || document.getElementById('cfg-cs-phone');
+            if (phoneEl && !phoneEl.value.trim()) {
+                return { valid: false, field: phoneEl, error: 'Store phone number is required' };
+            }
+
+            const nameEl = document.getElementById('cfg-store-name');
+            if (nameEl && !nameEl.value.trim()) {
+                return { valid: false, field: nameEl, error: 'Store name cannot be empty' };
+            }
+
+            const mapsEl = document.getElementById('cfg-maps-url');
+            if (mapsEl && mapsEl.value.trim() && !/^https?:\/\//i.test(mapsEl.value.trim())) {
+                return { valid: false, field: mapsEl, error: 'Google Maps link must start with https://' };
+            }
+
+            return { valid: true };
+        }
+
+        function scheduleAutosave(sourceControl = null) {
+            if (isFormPopulating) return;
+
+            changeSequence++;
+            showSaveStatus('unsaved', 'Unsaved changes');
+
+            if (autosaveTimer) {
+                clearTimeout(autosaveTimer);
+                autosaveTimer = null;
+            }
+
+            autosaveTimer = setTimeout(() => {
+                executeAutosave();
+            }, AUTOSAVE_DEBOUNCE_MS);
+        }
+
+        async function executeAutosave(options = {}) {
+            if (autosaveTimer) {
+                clearTimeout(autosaveTimer);
+                autosaveTimer = null;
+            }
+
+            const validation = validateSettingsForm();
+            if (!validation.valid) {
+                showSaveStatus('validation_error', 'Unsaved changes — fix validation errors');
+                if (validation.field) {
+                    validation.field.classList.add('border-rose-500');
+                    if (options.isManual) validation.field.focus();
+                }
+                if (options.isManual && typeof showToast === 'function') {
+                    showToast(validation.error, 'error');
+                }
+                return false;
+            } else {
+                document.querySelectorAll('.border-rose-500').forEach(el => el.classList.remove('border-rose-500'));
+            }
+
+            if (isAutosaving) {
+                hasPendingSave = true;
+                return false;
+            }
+
+            const currentSaveSeq = changeSequence;
+            isAutosaving = true;
+            showSaveStatus('saving', 'Saving...');
+
             try {
-                const s = store.getSettings() || {};
+                const allSettings = collectAllSettingsFromPage();
+                await store.saveSettings(allSettings);
+
+                isAutosaving = false;
+                lastSavedSequence = currentSaveSeq;
+                lastFailedError = null;
+
+                // Race condition check: if user modified another field while save was inflight, save latest state!
+                if (changeSequence > currentSaveSeq || hasPendingSave) {
+                    hasPendingSave = false;
+                    executeAutosave();
+                    return true;
+                }
+
+                showSaveStatus('saved', 'Saved');
+                if (options.isManual && typeof showToast === 'function') {
+                    showToast('All owner settings saved & synced successfully to server!', 'success');
+                }
+                return true;
+
+            } catch (err) {
+                console.error('Autosave failed:', err);
+                isAutosaving = false;
+                lastFailedError = err;
+                showSaveStatus('failed', 'Save failed — click to retry');
+                if (options.isManual && typeof showToast === 'function') {
+                    showToast('Error saving settings: ' + err.message, 'error');
+                }
+                return false;
+            }
+        }
+
+        async function pickAndUploadMedia(targetInputId, acceptType = 'image/*') {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = acceptType;
+            input.onchange = async (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                showSaveStatus('saving', `Uploading ${file.name}...`);
+                try {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    const token = localStorage.getItem('kc_admin_token') || sessionStorage.getItem('kc_admin_token');
+                    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+                    const res = await fetch('/api/upload', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: headers,
+                        body: formData
+                    });
+                    const data = await res.json();
+                    if (data && data.success && data.url) {
+                        const target = document.getElementById(targetInputId);
+                        if (target) {
+                            target.value = data.url;
+                            target.dispatchEvent(new Event('input', { bubbles: true }));
+                        }
+                        if (typeof showToast === 'function') {
+                            showToast('Media uploaded! Auto-saving settings...', 'success');
+                        }
+                        scheduleAutosave();
+                    } else {
+                        throw new Error((data && data.error) || 'Upload failed');
+                    }
+                } catch (err) {
+                    console.error('Media upload error:', err);
+                    showSaveStatus('failed', 'Media upload failed — click to retry');
+                    if (typeof showToast === 'function') {
+                        showToast(`Upload failed: ${err.message}`, 'error');
+                    }
+                }
+            };
+            input.click();
+        }
+        window.pickAndUploadMedia = pickAndUploadMedia;
+
+        function renderFormValues(s = {}) {
                 const sp = s.store_profile || {};
                 const cs = s.contact_support || {};
                 const pay = s.payments || {};
@@ -1650,51 +1873,35 @@
         }
 
         async function saveAllSettingsFromPage(triggerBtn) {
-            try {
-                const headerBtn = document.getElementById('btn-save-all-settings');
-                const mobileBtn = document.getElementById('btn-save-mobile-sticky');
-                const statusEl = document.getElementById('settings-save-status');
-                
-                const buttons = [headerBtn, mobileBtn, triggerBtn].filter(Boolean);
-                buttons.forEach(b => {
-                    b.disabled = true;
-                    b.dataset.origHtml = b.innerHTML;
-                    b.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Saving...</span>';
-                });
+            const headerBtn = document.getElementById('btn-save-all-settings');
+            const mobileBtn = document.getElementById('btn-save-mobile-sticky');
+            const buttons = [headerBtn, mobileBtn, triggerBtn].filter(Boolean);
 
-                const allSettings = collectAllSettingsFromPage();
-                await store.saveSettings(allSettings);
+            buttons.forEach(b => {
+                b.disabled = true;
+                b.dataset.origHtml = b.innerHTML;
+                b.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Saving...</span>';
+            });
 
-                if (statusEl) {
-                    statusEl.classList.remove('hidden');
-                    statusEl.classList.add('flex');
-                    setTimeout(() => {
-                        statusEl.classList.add('hidden');
-                        statusEl.classList.remove('flex');
-                    }, 4000);
-                }
+            // Force immediate execution without waiting for debounce timer
+            if (autosaveTimer) {
+                clearTimeout(autosaveTimer);
+                autosaveTimer = null;
+            }
 
-                buttons.forEach(b => {
+            const success = await executeAutosave({ isManual: true });
+
+            buttons.forEach(b => {
+                if (success) {
                     b.innerHTML = '<i class="fa-solid fa-check text-emerald-950"></i><span>Saved!</span>';
-                    setTimeout(() => {
-                        b.disabled = false;
-                        if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
-                    }, 2000);
-                });
-
-                if (typeof showToast === 'function') {
-                    showToast('All owner settings saved & synced successfully to server!', 'success');
+                } else {
+                    b.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-rose-950"></i><span>Failed</span>';
                 }
-            } catch (err) {
-                console.error('Error saving all settings:', err);
-                buttons.forEach(b => {
+                setTimeout(() => {
                     b.disabled = false;
                     if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
-                });
-                if (typeof showToast === 'function') {
-                    showToast('Error saving settings: ' + err.message, 'error');
-                }
-            }
+                }, 2000);
+            });
         }
 
         function handleSaveSettings(e, section) {
@@ -1703,7 +1910,52 @@
             saveAllSettingsFromPage(submitBtn);
         }
 
-        document.addEventListener('DOMContentLoaded', populateSettingsForm);
+        function bindAutosaveListeners() {
+            const controls = document.querySelectorAll('main input, main select, main textarea');
+            controls.forEach(control => {
+                // Prevent duplicate listener attachment
+                if (control.dataset.autosaveBound) return;
+                control.dataset.autosaveBound = 'true';
+
+                control.addEventListener('input', () => scheduleAutosave(control));
+                control.addEventListener('change', () => scheduleAutosave(control));
+            });
+        }
+
+        async function populateSettingsForm() {
+            isFormPopulating = true;
+            try {
+                // 1. Initial immediate render from cache/default
+                const cached = store.getSettings() || {};
+                renderFormValues(cached);
+
+                // 2. Fetch authoritative data from server (server beats stale localStorage)
+                const serverData = await store.fetchSettingsFromServer();
+                if (serverData) {
+                    renderFormValues(serverData);
+                }
+                showSaveStatus('saved', 'Saved');
+            } catch (err) {
+                console.warn('Server settings fetch at boot notice:', err);
+                showSaveStatus('saved', 'Saved');
+            } finally {
+                setTimeout(() => {
+                    isFormPopulating = false;
+                }, 200);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await populateSettingsForm();
+            bindAutosaveListeners();
+        });
+        window.addEventListener('khushi:settings-synced', (e) => {
+            if (e.detail && !isAutosaving) {
+                isFormPopulating = true;
+                renderFormValues(e.detail);
+                setTimeout(() => { isFormPopulating = false; }, 100);
+            }
+        });
     </script>
 
     <!-- MOBILE STICKY SAVE BAR (Always accessible on mobile) -->

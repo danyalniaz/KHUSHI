@@ -118,7 +118,7 @@ def admin_required(roles=None):
 def owner_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        user_id = session.get('user_id')
+        user_id, token = resolve_current_user()
         user_role = str(session.get('user_role', '')).upper()
 
         if not user_id:

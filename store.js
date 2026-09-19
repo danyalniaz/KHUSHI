@@ -5284,6 +5284,16 @@ class KhushiStore {
                             ...(local.delivery || {}),
                             ...(data.settings.delivery || {})
                         },
+                        taxes: {
+                            ...(DEFAULT_SETTINGS.taxes || {}),
+                            ...(local.taxes || {}),
+                            ...(data.settings.taxes || {})
+                        },
+                        notifications: {
+                            ...(DEFAULT_SETTINGS.notifications || {}),
+                            ...(local.notifications || {}),
+                            ...(data.settings.notifications || {})
+                        },
                         social_media: {
                             ...(DEFAULT_SETTINGS.social_media || {}),
                             ...(local.social_media || {}),
@@ -5299,9 +5309,15 @@ class KhushiStore {
                     this.applyStorefrontSettings();
                     window.dispatchEvent(new CustomEvent('khushi:settings-synced', { detail: merged }));
                     if (typeof renderHomePageFromSettings === 'function') renderHomePageFromSettings();
+                    return merged;
                 }
             }
         } catch (e) {}
+        return this.getSettings();
+    }
+
+    async fetchSettingsFromServer() {
+        return await this.syncSettingsFromBackend();
     }
 
     // ====================================================================

@@ -70,6 +70,10 @@
                 <p class="hidden sm:block text-[11px] text-zinc-400 truncate">Create new fashion departments without modifying code</p>
             </div>
             <div class="flex items-center gap-2 flex-shrink-0">
+                <div id="category-save-status" onclick="retryCategoryAutosave()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 transition cursor-pointer select-none" title="Autosave status — click to retry">
+                    <i id="category-status-icon" class="fa-solid fa-check text-xs"></i>
+                    <span id="category-status-text">All changes saved</span>
+                </div>
                 <div id="admin-user-pill"></div>
                 <button onclick="openCategoryModal()" class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl btn-gold text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow whitespace-nowrap">
                     <i class="fa-solid fa-plus text-xs"></i> <span>Add<span class="hidden sm:inline"> Category</span></span>
@@ -253,12 +257,17 @@
             // Also try background upload to /api/upload
             const formData = new FormData();
             formData.append('file', file);
-            fetch('/api/upload', { method: 'POST', body: formData })
+            const token = localStorage.getItem('kc_admin_token') || sessionStorage.getItem('kc_admin_token');
+            const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+            fetch('/api/upload', { method: 'POST', credentials: 'include', headers: headers, body: formData })
                 .then(r => r.json())
                 .then(d => {
                     if (d && d.success && d.url) {
                         document.getElementById(inputId).value = d.url;
                         preview.src = d.url;
+                        if (document.getElementById('cat-edit-id').value) {
+                            scheduleCategoryAutosave();
+                        }
                     }
                 })
                 .catch(() => {});
@@ -329,18 +338,58 @@
             document.getElementById('category-modal').classList.add('hidden');
         }
 
-        async function handleCategorySubmit(e) {
-            e.preventDefault();
-            const saveBtn = document.getElementById('cat-save-btn');
-            saveBtn.disabled = true;
-            saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+        // ====================================================================
+        // KHUSHI COLLECTION — CATEGORY AUTOSAVE ENGINE
+        // ====================================================================
+        const CATEGORY_AUTOSAVE_DEBOUNCE_MS = 1200;
+        let categoryAutosaveTimer = null;
+        let categoryChangeSequence = 0;
+        let categoryLastSavedSequence = 0;
+        let isCategorySaving = false;
 
-            const editId = document.getElementById('cat-edit-id').value;
+        function showCategorySaveStatus(state, customText) {
+            const badge = document.getElementById('category-save-status');
+            const icon = document.getElementById('category-status-icon');
+            const text = document.getElementById('category-status-text');
+            if (!badge || !icon || !text) return;
+
+            badge.className = "hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer select-none border";
+
+            switch (state) {
+                case 'unsaved':
+                    badge.classList.add('bg-amber-950/60', 'text-amber-400', 'border-amber-500/40');
+                    icon.className = 'fa-solid fa-circle-notch fa-spin text-amber-400 text-xs';
+                    text.textContent = customText || 'Unsaved changes...';
+                    break;
+                case 'validation_error':
+                    badge.classList.add('bg-rose-950/80', 'text-rose-300', 'border-rose-500/50');
+                    icon.className = 'fa-solid fa-triangle-exclamation text-rose-400 text-xs';
+                    text.textContent = customText || 'Unsaved changes — fix validation errors';
+                    break;
+                case 'saving':
+                    badge.classList.add('bg-sky-950/70', 'text-sky-300', 'border-sky-500/40');
+                    icon.className = 'fa-solid fa-spinner fa-spin text-sky-400 text-xs';
+                    text.textContent = customText || 'Saving...';
+                    break;
+                case 'saved':
+                    badge.classList.add('bg-emerald-950/60', 'text-emerald-400', 'border-emerald-500/30');
+                    icon.className = 'fa-solid fa-check text-emerald-400 text-xs';
+                    text.textContent = customText || 'Saved';
+                    break;
+                case 'failed':
+                    badge.classList.add('bg-rose-950/80', 'text-rose-300', 'border-rose-500/60');
+                    icon.className = 'fa-solid fa-circle-exclamation text-rose-400 text-xs';
+                    text.textContent = customText || 'Save failed — click to retry';
+                    break;
+            }
+        }
+
+        function collectCategoryDataFromModal() {
             const name = document.getElementById('cat-name').value.trim();
             const slug = document.getElementById('cat-slug').value.trim();
             const subs = document.getElementById('cat-subcategories').value.split(',').map(s => s.trim()).filter(Boolean);
 
-            const catData = {
+            return {
                 name: name,
                 slug: slug,
                 subcategories: subs,
@@ -350,8 +399,115 @@
                 cod_allowed: document.getElementById('cat-cod-allowed').checked,
                 is_featured: document.getElementById('cat-is-featured').checked
             };
+        }
+
+        function scheduleCategoryAutosave() {
+            const editId = document.getElementById('cat-edit-id').value;
+            if (!editId) return; // Only autosave when editing an existing category
+
+            const name = document.getElementById('cat-name').value.trim();
+            const slug = document.getElementById('cat-slug').value.trim();
+            if (!name || !slug) {
+                showCategorySaveStatus('validation_error', 'Category Name and Slug required');
+                return;
+            }
+
+            categoryChangeSequence++;
+            showCategorySaveStatus('unsaved');
+
+            if (categoryAutosaveTimer) clearTimeout(categoryAutosaveTimer);
+            categoryAutosaveTimer = setTimeout(() => {
+                executeCategoryAutosave();
+            }, CATEGORY_AUTOSAVE_DEBOUNCE_MS);
+        }
+
+        async function executeCategoryAutosave() {
+            const editId = document.getElementById('cat-edit-id').value;
+            if (!editId) return;
+
+            const name = document.getElementById('cat-name').value.trim();
+            const slug = document.getElementById('cat-slug').value.trim();
+            if (!name || !slug) {
+                showCategorySaveStatus('validation_error', 'Category Name and Slug required');
+                return;
+            }
+
+            if (isCategorySaving) return;
+            isCategorySaving = true;
+            showCategorySaveStatus('saving');
+            const currentSaveSeq = categoryChangeSequence;
 
             try {
+                const catData = collectCategoryDataFromModal();
+                await store.updateCategory(editId, catData);
+
+                isCategorySaving = false;
+                categoryLastSavedSequence = currentSaveSeq;
+
+                if (categoryChangeSequence > currentSaveSeq) {
+                    categoryAutosaveTimer = setTimeout(executeCategoryAutosave, CATEGORY_AUTOSAVE_DEBOUNCE_MS);
+                    return;
+                }
+
+                showCategorySaveStatus('saved');
+                renderCategoriesTable();
+            } catch (err) {
+                console.error('Category autosave error:', err);
+                isCategorySaving = false;
+                showCategorySaveStatus('failed', 'Save failed — click to retry');
+            }
+        }
+
+        function retryCategoryAutosave() {
+            executeCategoryAutosave();
+        }
+        window.retryCategoryAutosave = retryCategoryAutosave;
+        window.scheduleCategoryAutosave = scheduleCategoryAutosave;
+
+        async function quickToggleCategoryField(catId, field, currentVal) {
+            const newVal = !currentVal;
+            showCategorySaveStatus('saving');
+            try {
+                await store.updateCategory(catId, { [field]: newVal });
+                showCategorySaveStatus('saved');
+                renderCategoriesTable();
+            } catch (err) {
+                console.error('Quick toggle category error:', err);
+                showCategorySaveStatus('failed', 'Save failed — click to retry');
+            }
+        }
+        window.quickToggleCategoryField = quickToggleCategoryField;
+
+        function bindCategoryModalAutosave() {
+            const form = document.querySelector('#category-modal form');
+            if (!form) return;
+            form.addEventListener('input', scheduleCategoryAutosave);
+            form.addEventListener('change', scheduleCategoryAutosave);
+        }
+
+        async function handleCategorySubmit(e) {
+            e.preventDefault();
+            if (categoryAutosaveTimer) clearTimeout(categoryAutosaveTimer);
+
+            const saveBtn = document.getElementById('cat-save-btn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+            const editId = document.getElementById('cat-edit-id').value;
+            const name = document.getElementById('cat-name').value.trim();
+            const slug = document.getElementById('cat-slug').value.trim();
+
+            if (!name || !slug) {
+                showToast('Please enter both Category Name and URL Slug.', 'error');
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = 'Save Category';
+                return;
+            }
+
+            const catData = collectCategoryDataFromModal();
+
+            try {
+                showCategorySaveStatus('saving');
                 if (editId) {
                     await store.updateCategory(editId, catData);
                     showToast(`Category "${name}" updated on server!`, 'success');
@@ -359,10 +515,12 @@
                     await store.addCategory(catData);
                     showToast(`New category "${name}" saved to server!`, 'success');
                 }
+                showCategorySaveStatus('saved');
                 closeCategoryModal();
                 renderCategoriesTable();
             } catch (err) {
                 console.error(err);
+                showCategorySaveStatus('failed', 'Save failed — click to retry');
                 showToast(`Failed to save category: ${err.message}`, 'error');
             } finally {
                 saveBtn.disabled = false;
@@ -420,7 +578,9 @@
                             </span>
                         </td>
                         <td class="py-3 px-4">
-                            ${c.cod_allowed === false ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold text-rose-400 bg-rose-950/60 border border-rose-500/20">COD OFF</span>' : '<span class="px-2 py-0.5 rounded text-[10px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/20">COD ON</span>'}
+                            <button type="button" onclick="quickToggleCategoryField(${c.id}, 'cod_allowed', ${c.cod_allowed !== false})" class="px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer border transition ${c.cod_allowed === false ? 'text-rose-400 bg-rose-950/60 border-rose-500/20' : 'text-emerald-400 bg-emerald-950/60 border-emerald-500/20'}" title="Click to toggle Cash on Delivery">
+                                ${c.cod_allowed === false ? 'COD OFF' : 'COD ON'}
+                            </button>
                         </td>
                         <td class="py-3 px-4 text-right space-x-2">
                             <button onclick="openCategoryModal(${c.id})" class="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs" title="Edit">
@@ -435,10 +595,18 @@
             }).join('');
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             renderCategoriesTable();
+            bindCategoryModalAutosave();
+
             if (window.store && typeof store.syncWithServer === 'function') {
-                store.syncWithServer().then(() => renderCategoriesTable());
+                try {
+                    await store.syncWithServer();
+                    renderCategoriesTable();
+                    showCategorySaveStatus('saved');
+                } catch (e) {
+                    console.warn('Category initial sync notice:', e);
+                }
             }
         });
     </script>

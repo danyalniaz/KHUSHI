@@ -624,8 +624,8 @@ def upload_file_api():
     if 'file' in request.files or 'image' in request.files:
         file = request.files.get('file') or request.files.get('image')
         if file and file.filename:
-            ext = file.filename.rsplit('.', 1)[-1].lower() if '.' in file.filename else 'jpg'
-            fname = f"img_{uuid.uuid4().hex[:12]}.{ext}"
+            is_vid = ext in ['mp4', 'webm', 'mov', 'm4v', 'ogg']
+            fname = f"{'vid' if is_vid else 'img'}_{uuid.uuid4().hex[:12]}.{ext}"
             upload_folder = current_app.config.get('UPLOAD_FOLDER', 'static/uploads')
             try:
                 os.makedirs(upload_folder, exist_ok=True)
@@ -636,7 +636,14 @@ def upload_file_api():
             except Exception:
                 file.seek(0)
                 b64 = base64.b64encode(file.read()).decode('utf-8')
-                mime = f"image/{ext}" if ext in ['png', 'jpg', 'jpeg', 'webp', 'gif'] else 'image/jpeg'
+                if is_vid:
+                    mime = f"video/{ext}"
+                elif ext == 'svg':
+                    mime = 'image/svg+xml'
+                elif ext in ['png', 'jpg', 'jpeg', 'webp', 'gif']:
+                    mime = f"image/{ext}"
+                else:
+                    mime = 'image/jpeg'
                 return jsonify({'success': True, 'url': f"data:{mime};base64,{b64}"})
     data = request.get_json() or {}
     b64_val = data.get('image_base64') or data.get('data_url') or data.get('data') or data.get('image')

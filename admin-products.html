@@ -71,6 +71,10 @@
                 <p class="hidden sm:block text-[11px] text-zinc-400 truncate">Manage multi-variant collections, category attributes, and media</p>
             </div>
             <div class="flex items-center gap-2 flex-shrink-0">
+                <div id="product-save-status" onclick="retryProductAutosave()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 transition cursor-pointer select-none" title="Autosave status — click to retry">
+                    <i id="product-status-icon" class="fa-solid fa-check text-xs"></i>
+                    <span id="product-status-text">All changes saved</span>
+                </div>
                 <div id="admin-user-pill"></div>
                 <a href="/admin/categories" class="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl border border-zinc-700 hover:border-amber-400 text-zinc-300 text-xs font-semibold">
                     <i class="fa-solid fa-folder-tree"></i> Categories
@@ -1068,17 +1072,11 @@
             document.getElementById('preview-modal').classList.remove('hidden');
         }
 
-        // Save & Validate Product
-        async function saveProduct(e) {
-            e.preventDefault();
+        // Collect Product Payload from Modal Form
+        function collectProductDataFromModal() {
             const title = document.getElementById('f-title').value.trim();
             const sku = document.getElementById('f-sku').value.trim();
             const price = parseFloat(document.getElementById('f-price').value);
-
-            if (!title || !sku || isNaN(price)) {
-                showToast('Please fill out Product Title, SKU, and Price.', 'error');
-                return;
-            }
 
             // Collect Custom Attributes
             const customAttrs = [];
@@ -1131,7 +1129,6 @@
             if (document.getElementById('f-pay-easypaisa').checked) selectedMethods.push('easypaisa');
             if (document.getElementById('f-pay-jazzcash').checked) selectedMethods.push('jazzcash');
 
-            const editId = document.getElementById('edit-prod-id').value;
             const categorySlug = document.getElementById('f-category').value;
             const catObj = store.getCategory(categorySlug);
 
@@ -1139,7 +1136,7 @@
                 ? galleryImages[0]
                 : (document.getElementById('f-main-photo-preview').src || 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80');
 
-            const productData = {
+            return {
                 name: title,
                 slug: document.getElementById('f-slug').value.trim(),
                 brand: document.getElementById('f-brand').value.trim(),
@@ -1177,6 +1174,57 @@
                 is_bestseller: document.getElementById('f-is-bestseller').checked,
                 is_flash_sale: document.getElementById('f-is-flash').checked
             };
+        }
+
+        let modalAutosaveTimer = null;
+        function bindProductModalAutosave() {
+            const form = document.getElementById('product-editor-form');
+            if (!form) return;
+            const handleModalInput = () => {
+                const editId = document.getElementById('edit-prod-id').value;
+                if (!editId) return; // Only autosave when editing an existing product
+                const title = document.getElementById('f-title').value.trim();
+                const sku = document.getElementById('f-sku').value.trim();
+                const price = parseFloat(document.getElementById('f-price').value);
+                if (!title || !sku || isNaN(price) || price < 0) {
+                    showProductSaveStatus('validation_error', 'Unsaved changes — fix validation errors');
+                    return;
+                }
+                showProductSaveStatus('unsaved');
+                if (modalAutosaveTimer) clearTimeout(modalAutosaveTimer);
+                modalAutosaveTimer = setTimeout(async () => {
+                    try {
+                        showProductSaveStatus('saving');
+                        const productData = collectProductDataFromModal();
+                        await store.updateProduct(editId, productData);
+                        showProductSaveStatus('saved');
+                    } catch (err) {
+                        console.error('Modal product autosave error:', err);
+                        showProductSaveStatus('failed', 'Save failed — click to retry');
+                    }
+                }, PRODUCT_AUTOSAVE_DEBOUNCE_MS);
+            };
+
+            form.addEventListener('input', handleModalInput);
+            form.addEventListener('change', handleModalInput);
+        }
+
+        // Save & Validate Product
+        async function saveProduct(e) {
+            e.preventDefault();
+            if (modalAutosaveTimer) clearTimeout(modalAutosaveTimer);
+
+            const title = document.getElementById('f-title').value.trim();
+            const sku = document.getElementById('f-sku').value.trim();
+            const price = parseFloat(document.getElementById('f-price').value);
+
+            if (!title || !sku || isNaN(price) || price < 0) {
+                showToast('Please fill out Product Title, SKU, and a valid positive Price.', 'error');
+                return;
+            }
+
+            const editId = document.getElementById('edit-prod-id').value;
+            const productData = collectProductDataFromModal();
 
             const submitBtn = e.target.querySelector('button[type=submit]');
             const origHtml = submitBtn ? submitBtn.innerHTML : '';
@@ -1186,6 +1234,7 @@
             }
 
             try {
+                showProductSaveStatus('saving');
                 if (editId) {
                     await store.updateProduct(editId, productData);
                     showToast(`Product "${title}" updated on server!`, 'success');
@@ -1194,10 +1243,12 @@
                     showToast(`Product "${title}" saved to server catalog!`, 'success');
                 }
 
+                showProductSaveStatus('saved');
                 closeProductModal();
                 renderProductsTable();
             } catch (err) {
                 console.error('Product save error:', err);
+                showProductSaveStatus('failed', 'Save failed — click to retry');
                 showToast(`Failed to save product: ${err.message}`, 'error');
             } finally {
                 if (submitBtn) {
@@ -1232,32 +1283,171 @@
         }
         window.triggerPublishToLive = triggerPublishToLive;
 
-        // Inline Quick Edit Handlers
-        async function inlineEditPrice(id, currentPrice) {
-            const val = prompt('Enter new retail price (PKR):', currentPrice);
-            if (val !== null && !isNaN(val) && Number(val) > 0) {
-                try {
-                    await store.quickUpdateProduct(id, { price: Number(val) });
-                    showToast('Price updated successfully on server.');
-                    renderProductsTable();
-                } catch (err) {
-                    showToast('Failed to update price: ' + err.message, 'error');
-                }
+        // ====================================================================
+        // KHUSHI COLLECTION — ADVANCED PRODUCT AUTOSAVE ENGINE
+        // ====================================================================
+        const PRODUCT_AUTOSAVE_DEBOUNCE_MS = 1200;
+        let productAutosaveTimer = null;
+        let productChangeSequence = 0;
+        let productLastSavedSequence = 0;
+        let isProductSaving = false;
+        const pendingProductUpdates = new Map(); // id -> { updates: {}, seq: number }
+
+        function showProductSaveStatus(state, customText) {
+            const badge = document.getElementById('product-save-status');
+            const icon = document.getElementById('product-status-icon');
+            const text = document.getElementById('product-status-text');
+            if (!badge || !icon || !text) return;
+
+            badge.className = "hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition cursor-pointer select-none border";
+
+            switch (state) {
+                case 'unsaved':
+                    badge.classList.add('bg-amber-950/60', 'text-amber-400', 'border-amber-500/40');
+                    icon.className = 'fa-solid fa-circle-notch fa-spin text-amber-400 text-xs';
+                    text.textContent = customText || 'Unsaved changes...';
+                    break;
+                case 'validation_error':
+                    badge.classList.add('bg-rose-950/80', 'text-rose-300', 'border-rose-500/50');
+                    icon.className = 'fa-solid fa-triangle-exclamation text-rose-400 text-xs';
+                    text.textContent = customText || 'Unsaved changes — fix validation errors';
+                    break;
+                case 'saving':
+                    badge.classList.add('bg-sky-950/70', 'text-sky-300', 'border-sky-500/40');
+                    icon.className = 'fa-solid fa-spinner fa-spin text-sky-400 text-xs';
+                    text.textContent = customText || 'Saving...';
+                    break;
+                case 'saved':
+                    badge.classList.add('bg-emerald-950/60', 'text-emerald-400', 'border-emerald-500/30');
+                    icon.className = 'fa-solid fa-check text-emerald-400 text-xs';
+                    text.textContent = customText || 'Saved';
+                    break;
+                case 'failed':
+                    badge.classList.add('bg-rose-950/80', 'text-rose-300', 'border-rose-500/60');
+                    icon.className = 'fa-solid fa-circle-exclamation text-rose-400 text-xs';
+                    text.textContent = customText || 'Save failed — click to retry';
+                    break;
             }
         }
 
-        async function inlineEditStock(id, currentStock) {
-            const val = prompt('Enter new stock quantity:', currentStock);
-            if (val !== null && !isNaN(val) && Number(val) >= 0) {
-                try {
-                    await store.quickUpdateProduct(id, { stock: Number(val) });
-                    showToast('Stock quantity updated on server.');
-                    renderProductsTable();
-                } catch (err) {
-                    showToast('Failed to update stock: ' + err.message, 'error');
+        function onProductFieldInput(productId, field, rawValue) {
+            productId = Number(productId);
+            let parsedVal = rawValue;
+
+            // Field-level validations
+            if (field === 'price') {
+                const num = parseFloat(rawValue);
+                if (isNaN(num) || num < 0) {
+                    showProductSaveStatus('validation_error', 'Invalid price: must be >= 0');
+                    return;
                 }
+                parsedVal = num;
+            } else if (field === 'sale_price') {
+                if (rawValue === '' || rawValue === null || rawValue === undefined) {
+                    parsedVal = null;
+                } else {
+                    const num = parseFloat(rawValue);
+                    if (isNaN(num) || num < 0) {
+                        showProductSaveStatus('validation_error', 'Invalid sale price: must be >= 0');
+                        return;
+                    }
+                    parsedVal = num;
+                }
+            } else if (field === 'stock') {
+                const num = parseInt(rawValue, 10);
+                if (isNaN(num) || num < 0) {
+                    showProductSaveStatus('validation_error', 'Invalid stock: must be >= 0');
+                    return;
+                }
+                parsedVal = num;
+            }
+
+            // Update in-memory product immediately so other views remain consistent
+            const products = store.getProducts();
+            const p = products.find(x => x.id === productId);
+            if (p) {
+                p[field] = parsedVal;
+                store.saveProducts(products);
+            }
+
+            // Queue update with sequence tracking
+            productChangeSequence++;
+            const currentEntry = pendingProductUpdates.get(productId) || { updates: {}, seq: 0 };
+            currentEntry.updates[field] = parsedVal;
+            currentEntry.seq = productChangeSequence;
+            pendingProductUpdates.set(productId, currentEntry);
+
+            showProductSaveStatus('unsaved');
+
+            if (productAutosaveTimer) clearTimeout(productAutosaveTimer);
+            productAutosaveTimer = setTimeout(() => {
+                executeProductAutosave();
+            }, PRODUCT_AUTOSAVE_DEBOUNCE_MS);
+        }
+
+        function toggleProductFlag(productId, flag) {
+            productId = Number(productId);
+            const products = store.getProducts();
+            const p = products.find(x => x.id === productId);
+            if (!p) return;
+            const newVal = !p[flag];
+            onProductFieldInput(productId, flag, newVal);
+            const btn = document.querySelector(`button[data-flag-btn="${productId}-${flag}"]`);
+            if (btn) {
+                const activeColors = {
+                    'is_featured': 'bg-amber-400 text-black border-amber-400',
+                    'is_new': 'bg-emerald-500 text-black border-emerald-500',
+                    'is_bestseller': 'bg-indigo-500 text-black border-indigo-500'
+                };
+                btn.className = `px-1.5 py-0.5 rounded text-[9px] font-bold border transition ${newVal ? activeColors[flag] : 'bg-zinc-900 text-zinc-500 border-zinc-800 hover:text-zinc-300'}`;
             }
         }
+
+        async function executeProductAutosave() {
+            if (pendingProductUpdates.size === 0) return;
+            if (isProductSaving) return;
+
+            isProductSaving = true;
+            showProductSaveStatus('saving');
+
+            const entries = Array.from(pendingProductUpdates.entries());
+            const currentSaveSeq = productChangeSequence;
+
+            try {
+                for (const [prodId, data] of entries) {
+                    await store.quickUpdateProduct(prodId, data.updates);
+                    const currentPending = pendingProductUpdates.get(prodId);
+                    if (currentPending && currentPending.seq <= data.seq) {
+                        pendingProductUpdates.delete(prodId);
+                    }
+                }
+
+                productLastSavedSequence = currentSaveSeq;
+                if (pendingProductUpdates.size > 0) {
+                    isProductSaving = false;
+                    showProductSaveStatus('unsaved');
+                    productAutosaveTimer = setTimeout(executeProductAutosave, PRODUCT_AUTOSAVE_DEBOUNCE_MS);
+                } else {
+                    isProductSaving = false;
+                    showProductSaveStatus('saved');
+                }
+            } catch (err) {
+                console.error('Product autosave error:', err);
+                isProductSaving = false;
+                showProductSaveStatus('failed', 'Save failed — click to retry');
+            }
+        }
+
+        function retryProductAutosave() {
+            if (pendingProductUpdates.size > 0) {
+                executeProductAutosave();
+            } else {
+                showProductSaveStatus('saved', 'Saved');
+            }
+        }
+        window.retryProductAutosave = retryProductAutosave;
+        window.onProductFieldInput = onProductFieldInput;
+        window.toggleProductFlag = toggleProductFlag;
 
         // Duplicate Product Action
         async function duplicateProduct(id) {
@@ -1274,22 +1464,12 @@
 
         async function handleQuickStockAdd(id, sku, newStock) {
             try {
-                await store.quickUpdateProduct(id, { stock: newStock });
-                renderProductsTable();
-                showToast(`Added +5 units to ${sku}`);
+                onProductFieldInput(id, 'stock', newStock);
+                const stockInput = document.querySelector(`input[data-prod-id="${id}"][data-field="stock"]`);
+                if (stockInput) stockInput.value = newStock;
+                showToast(`Stock updated to ${newStock} for ${sku}`);
             } catch (err) {
                 showToast('Failed to update stock: ' + err.message, 'error');
-            }
-        }
-
-        async function handleProductStatusChange(id, newStatus) {
-            try {
-                await store.quickUpdateProduct(id, { status: newStatus });
-                renderProductsTable();
-                showToast('Status updated to ' + newStatus);
-            } catch (err) {
-                showToast('Failed to update status: ' + err.message, 'error');
-                renderProductsTable();
             }
         }
 
@@ -1313,9 +1493,6 @@
                     ? p.variant_matrix.reduce((acc, v) => acc + (v.stock || 0), 0)
                     : p.stock;
 
-                const isLow = totalVariantStock <= (p.low_stock_threshold || 3);
-                const isOut = totalVariantStock === 0;
-
                 return `
                     <tr class="hover:bg-zinc-800/30 transition cursor-default" draggable="true" data-id="${p.id}">
                         <td class="py-3.5 px-3 text-center cursor-grab text-zinc-500 hover:text-amber-400 select-none drag-handle" title="Drag to reorder">
@@ -1337,24 +1514,49 @@
                         <td class="py-3.5 px-4 text-zinc-300">${p.category_name}</td>
                         <td class="py-3.5 px-4 font-mono text-zinc-400 font-bold">${p.sku}</td>
                         <td class="py-3.5 px-4">
-                            <span onclick="inlineEditPrice(${p.id}, ${p.sale_price || p.price})" class="font-bold text-white hover:text-amber-400 cursor-pointer border-b border-dashed border-zinc-700 hover:border-amber-400 pb-0.5" title="Click to Quick Edit Price">
-                                Rs. ${(p.sale_price || p.price).toLocaleString()}
-                            </span>
-                            ${p.sale_price ? `<span class="block text-[10px] line-through text-zinc-500">Rs. ${p.price.toLocaleString()}</span>` : ''}
-                        </td>
-                        <td class="py-3.5 px-4">
-                            <div class="flex items-center gap-2">
-                                <span onclick="inlineEditStock(${p.id}, ${totalVariantStock})" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold cursor-pointer border ${isOut ? 'bg-rose-950 text-rose-400 border-rose-500/30' : (isLow ? 'bg-amber-950 text-amber-400 border-amber-500/30' : 'bg-emerald-950 text-emerald-400 border-emerald-500/30')}" title="Click to Quick Edit Stock">
-                                    ${isOut ? 'OUT OF STOCK' : `${totalVariantStock} units`}
-                                </span>
-                                <button onclick="handleQuickStockAdd(${p.id}, '${p.sku}', ${totalVariantStock + 5})" class="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-amber-400 text-[10px] font-bold" title="Add 5 units">+5</button>
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[10px] text-zinc-500 font-medium">PKR</span>
+                                    <input type="number" min="0" step="any" value="${p.price}"
+                                           data-prod-id="${p.id}" data-field="price"
+                                           oninput="onProductFieldInput(${p.id}, 'price', this.value)"
+                                           class="w-24 bg-zinc-900 border border-zinc-700 focus:border-amber-400 rounded px-2 py-1 text-xs text-white font-mono focus:outline-none"
+                                           title="Edit retail price">
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[9px] text-zinc-500 font-medium">Sale:</span>
+                                    <input type="number" min="0" step="any" value="${p.sale_price !== null && p.sale_price !== undefined ? p.sale_price : ''}"
+                                           placeholder="None"
+                                           data-prod-id="${p.id}" data-field="sale_price"
+                                           oninput="onProductFieldInput(${p.id}, 'sale_price', this.value)"
+                                           class="w-20 bg-zinc-900/80 border border-zinc-800 focus:border-amber-400 rounded px-1.5 py-0.5 text-[11px] text-amber-300 placeholder-zinc-600 font-mono focus:outline-none"
+                                           title="Edit sale price">
+                                </div>
                             </div>
                         </td>
                         <td class="py-3.5 px-4">
-                            <select onchange="handleProductStatusChange(${p.id}, this.value)" class="bg-zinc-900 border border-zinc-700 text-[10px] font-bold rounded-lg px-2 py-1 text-zinc-300 focus:outline-none focus:border-amber-400">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-1.5">
+                                    <input type="number" min="0" value="${p.stock}"
+                                           data-prod-id="${p.id}" data-field="stock"
+                                           oninput="onProductFieldInput(${p.id}, 'stock', this.value)"
+                                           class="w-16 bg-zinc-900 border border-zinc-700 focus:border-amber-400 rounded px-2 py-1 text-xs text-white font-mono focus:outline-none"
+                                           title="Edit stock units">
+                                    <button type="button" onclick="handleQuickStockAdd(${p.id}, '${p.sku}', ${p.stock + 5})" class="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-amber-400 text-[10px] font-bold" title="Add 5 units">+5</button>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <button type="button" data-flag-btn="${p.id}-is_featured" onclick="toggleProductFlag(${p.id}, 'is_featured')" class="px-1.5 py-0.5 rounded text-[9px] font-bold border transition ${p.is_featured ? 'bg-amber-400 text-black border-amber-400' : 'bg-zinc-900 text-zinc-500 border-zinc-800 hover:text-zinc-300'}" title="Toggle Featured">F</button>
+                                    <button type="button" data-flag-btn="${p.id}-is_new" onclick="toggleProductFlag(${p.id}, 'is_new')" class="px-1.5 py-0.5 rounded text-[9px] font-bold border transition ${p.is_new ? 'bg-emerald-500 text-black border-emerald-500' : 'bg-zinc-900 text-zinc-500 border-zinc-800 hover:text-zinc-300'}" title="Toggle New Arrival">N</button>
+                                    <button type="button" data-flag-btn="${p.id}-is_bestseller" onclick="toggleProductFlag(${p.id}, 'is_bestseller')" class="px-1.5 py-0.5 rounded text-[9px] font-bold border transition ${p.is_bestseller ? 'bg-indigo-500 text-black border-indigo-500' : 'bg-zinc-900 text-zinc-500 border-zinc-800 hover:text-zinc-300'}" title="Toggle Bestseller">B</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-3.5 px-4">
+                            <select onchange="onProductFieldInput(${p.id}, 'status', this.value)" class="bg-zinc-900 border border-zinc-700 text-[10px] font-bold rounded-lg px-2 py-1 text-zinc-300 focus:outline-none focus:border-amber-400">
                                 <option value="published" ${p.status === 'published' ? 'selected' : ''}>Active</option>
-                                <option value="hidden" ${p.status === 'hidden' ? 'selected' : ''}>Hidden</option>
                                 <option value="draft" ${p.status === 'draft' ? 'selected' : ''}>Draft</option>
+                                <option value="out_of_stock" ${p.status === 'out_of_stock' ? 'selected' : ''}>Out of Stock</option>
+                                <option value="hidden" ${p.status === 'hidden' ? 'selected' : ''}>Hidden</option>
                             </select>
                         </td>
                         <td class="py-3.5 px-4 text-right space-x-1 whitespace-nowrap">
@@ -1528,9 +1730,22 @@
             renderProductsTable();
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             populateCategoryDropdowns();
             renderProductsTable();
+            bindProductModalAutosave();
+
+            // Authoritative server fetch on startup
+            try {
+                if (window.store && typeof store.syncWithServer === 'function') {
+                    await store.syncWithServer();
+                    populateCategoryDropdowns();
+                    renderProductsTable();
+                    showProductSaveStatus('saved');
+                }
+            } catch (err) {
+                console.warn('Initial server product sync notice:', err);
+            }
         });
     </script>
 </body>
