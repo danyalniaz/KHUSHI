@@ -27,8 +27,8 @@ class Config:
     UPLOAD_FOLDER = UPLOAD_DIR
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB max upload
     STORE_NAME = "Khushi Collection"
-    STORE_PHONE = "+92 300 1234567"
-    STORE_WHATSAPP = "923001234567"
+    STORE_PHONE = "+92 343 4158605"
+    STORE_WHATSAPP = "923434158605"
     STORE_EMAIL = "support@khushicollection.com"
     CURRENCY = "Rs."
     BASE_DELIVERY_FEE = 200

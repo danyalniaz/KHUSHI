@@ -16,8 +16,8 @@ DEFAULT_SETTINGS_JSON = {
     "store_profile": {
         "store_name": "Khushi Collection",
         "owner_name": "Khushi Fatima",
-        "phone": "+92 300 1234567",
-        "whatsapp": "+92 300 1234567",
+        "phone": "+92 343 4158605",
+        "whatsapp": "+92 343 4158605",
         "email": "concierge@khushicollection.com",
         "city": "Lahore",
         "country": "Pakistan",
@@ -30,8 +30,8 @@ DEFAULT_SETTINGS_JSON = {
         "footer_description": "Khushi Collection embodies timeless Pakistani heritage through artisanal haute couture and signature luxury fragrances."
     },
     "contact_support": {
-        "support_phone": "+92 300 1234567",
-        "whatsapp_number": "+92 300 1234567",
+        "support_phone": "+92 343 4158605",
+        "whatsapp_number": "+92 343 4158605",
         "support_email": "support@khushicollection.com",
         "working_hours": "11:00 AM - 10:00 PM (PKT)",
         "business_address": "Atelier 14-B, MM Alam Road, Gulberg III, Lahore, Pakistan"
@@ -61,12 +61,12 @@ DEFAULT_SETTINGS_JSON = {
         "easypaisa": {
             "enabled": True,
             "account_name": "Khushi Fatima",
-            "account_number": "03001234567"
+            "account_number": "03434158605"
         },
         "jazzcash": {
             "enabled": True,
             "account_name": "Khushi Fatima",
-            "account_number": "03007654321"
+            "account_number": "03434158605"
         },
         "online_card": {
             "enabled": True,

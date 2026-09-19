@@ -315,7 +315,7 @@ def order_confirmation(order_number):
 
     # Build WhatsApp message and link
     whatsapp_msg = build_whatsapp_order_message(order, items, settings)
-    store_owner_phone = settings.get('store_whatsapp', '923001234567')
+    store_owner_phone = settings.get('store_whatsapp', '923434158605')
     whatsapp_url = get_whatsapp_send_url(store_owner_phone, whatsapp_msg)
 
     return render_template(

@@ -206,7 +206,7 @@
                                         <span class="text-[10px] font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/30">Instant</span>
                                     </div>
                                     <div id="easypaisa-box" class="hidden mt-3 p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-xs text-emerald-200 space-y-2">
-                                        <p>Send amount to: <strong class="font-mono text-slate-900 text-sm" id="box-ep-number">0300 1234567</strong></p>
+                                        <p>Send amount to: <strong class="font-mono text-slate-900 text-sm" id="box-ep-number">0343 4158605</strong></p>
                                         <p>Account Title: <strong id="box-ep-title" class="text-slate-900">Khushi Fatima</strong></p>
                                         <div>
                                             <label class="block font-semibold text-emerald-200 mb-1">Transaction ID (TID) *</label>
@@ -397,13 +397,13 @@
 
                 // Easypaisa
                 const epNum = document.getElementById('box-ep-number');
-                if (epNum) epNum.textContent = p.easypaisa?.account_number || '0300 1234567';
+                if (epNum) epNum.textContent = p.easypaisa?.account_number || '0343 4158605';
                 const epTitle = document.getElementById('box-ep-title');
                 if (epTitle) epTitle.textContent = p.easypaisa?.account_name || 'Khushi Fatima';
 
                 // JazzCash
                 const jcNum = document.getElementById('box-jc-number');
-                if (jcNum) jcNum.textContent = p.jazzcash?.account_number || '0300 7654321';
+                if (jcNum) jcNum.textContent = p.jazzcash?.account_number || '0343 4158605';
                 const jcTitle = document.getElementById('box-jc-title');
                 if (jcTitle) jcTitle.textContent = p.jazzcash?.account_name || 'Khushi Fatima';
 

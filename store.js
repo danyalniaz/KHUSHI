@@ -50,21 +50,21 @@ const DEFAULT_SETTINGS = {
             account_number: "02010109988776",
             iban: "PK44MEZN0002010109988776",
             branch: "Gulberg III Flagship Branch, Lahore",
-            instructions: "Kindly transfer the exact order amount and share the transaction screenshot via WhatsApp concierge at +92 300 1234567.",
-            instruction: "Kindly transfer the exact order amount and share the transaction screenshot via WhatsApp concierge at +92 300 1234567."
+            instructions: "Kindly transfer the exact order amount and share the transaction screenshot via WhatsApp concierge at +92 343 4158605.",
+            instruction: "Kindly transfer the exact order amount and share the transaction screenshot via WhatsApp concierge at +92 343 4158605."
         },
         easypaisa: {
             enabled: true,
             account_name: "Khushi Official",
             account_title: "Khushi Official",
-            account_number: "03001234567",
+            account_number: "03434158605",
             instruction: "Send payment via EasyPaisa App / Till and WhatsApp proof of transaction."
         },
         jazzcash: {
             enabled: true,
             account_name: "Khushi Official",
             account_title: "Khushi Official",
-            account_number: "03001234567",
+            account_number: "03434158605",
             instruction: "Send payment via JazzCash App / Till and WhatsApp confirmation SMS screenshot."
         },
         online_card: {
@@ -6492,7 +6492,7 @@ Please process this order.`.trim();
         let p = phone;
         if (!p || p === 'undefined' || String(p).trim() === '') {
             const s = this.getSettings();
-            p = (s.contact_support && s.contact_support.whatsapp_number) || (s.store_profile && s.store_profile.whatsapp) || '+923001234567';
+            p = (s.contact_support && s.contact_support.whatsapp_number) || (s.store_profile && s.store_profile.whatsapp) || '+923434158605';
         }
         const cleanPhone = String(p).replace(/\D/g, '');
         return `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(message || '')}`;
@@ -6502,7 +6502,7 @@ Please process this order.`.trim();
     triggerOrderStatusSMS(order, status = 'order_placed') {
         const name = order.customer_name || 'Valued Customer';
         const orderId = order.order_number;
-        const phone = order.customer_phone || '+92 300 1234567';
+        const phone = order.customer_phone || '+92 343 4158605';
 
         const statusMessages = {
             'order_placed': `Hello ${name}, your Khushi Collection order #${orderId} has been successfully received! Tracking: ${order.tracking_number || 'TRX-101'}. Thank you for shopping with Khushi Collection.`,
@@ -6513,7 +6513,7 @@ Please process this order.`.trim();
             'shipped': `Hello ${name}, your Khushi Collection order #${orderId} has been handed over to courier tracking #${order.tracking_number || 'TRX-101'}. Thank you for shopping with Khushi Collection.`,
             'on_the_way': `Hello ${name}, your Khushi Collection order #${orderId} is now on the way. Thank you for shopping with Khushi Collection.`,
             'delivered': `Hello ${name}, your Khushi Collection order #${orderId} has been delivered. We hope you love your purchase! Thank you for shopping with Khushi Collection.`,
-            'cancelled': `Hello ${name}, your Khushi Collection order #${orderId} has been cancelled. If you need assistance, call or WhatsApp +92 300 1234567.`
+            'cancelled': `Hello ${name}, your Khushi Collection order #${orderId} has been cancelled. If you need assistance, call or WhatsApp +92 343 4158605.`
         };
 
         const msg = statusMessages[status] || `Hello ${name}, your Khushi Collection order #${orderId} status is updated to ${status.toUpperCase()}.`;

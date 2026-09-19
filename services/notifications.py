@@ -222,7 +222,7 @@ def build_customer_whatsapp_order_message(order, items=None, store_settings=None
     cust_phone = order.get('customer_phone', '')
     total = int(float(order.get('total_amount', 0)))
     store_name = (store_settings or {}).get('store_name', 'Khushi Collection')
-    store_phone = (store_settings or {}).get('phone') or (store_settings or {}).get('whatsapp') or '+92 300 1234567'
+    store_phone = (store_settings or {}).get('phone') or (store_settings or {}).get('whatsapp') or '+92 343 4158605'
 
     payment_labels = {
         'cod': 'Cash on Delivery (COD)',
@@ -324,7 +324,7 @@ def trigger_order_placed_notifications(order, items=None, store_settings=None):
         )
 
     # 3. Store Owner / Admin Alert (SMS & WhatsApp)
-    admin_phone = (store_settings or {}).get('store_phone') or (store_settings or {}).get('whatsapp') or os.getenv('ADMIN_ALERT_PHONE', '+923001234567')
+    admin_phone = (store_settings or {}).get('store_phone') or (store_settings or {}).get('whatsapp') or os.getenv('ADMIN_ALERT_PHONE', '+923434158605')
     if admin_phone:
         admin_msg = (
             f"🛍️ [Khushi Collection] NEW ORDER ALERT: Order #{order_number} placed by {cust_name} ({cust_phone}). "
@@ -447,7 +447,7 @@ def trigger_order_status_sms(order, status, store_settings=None):
         ),
         'cancelled': (
             f"Hello {cust_name}, your Khushi Collection order #{order_number} has been cancelled. "
-            f"If you need assistance, contact our concierge at +92 300 1234567."
+            f"If you need assistance, contact our concierge at +92 343 4158605."
         )
     }
 

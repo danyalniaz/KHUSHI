@@ -956,7 +956,7 @@ def admin_test_whatsapp_api():
         # Fallback to store phone from settings
         from routes.payments import get_settings_from_db
         s = get_settings_from_db()
-        target_phone = s.get('store_profile', {}).get('whatsapp') or s.get('store_profile', {}).get('phone') or '+923001234567'
+        target_phone = s.get('store_profile', {}).get('whatsapp') or s.get('store_profile', {}).get('phone') or '+923434158605'
 
     test_msg = "🌟 *Khushi Collection — WhatsApp Gateway Test*\n\nYour automated WhatsApp notification system is active and functioning perfectly!\n\nTimestamp: " + datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')
     
