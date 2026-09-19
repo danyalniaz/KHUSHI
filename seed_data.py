@@ -108,7 +108,7 @@ def seed():
             'active', p.get('rating', 4.9), p.get('reviews_count', 24)
         ))
 
-    # Owner Admin User - Synchronize credentials from admin_user.json
+    # Owner Admin User - Initialize credentials from environment/database
     sync_owner_user(cursor)
     sync_settings_data(cursor)
 

@@ -134,10 +134,11 @@ def get_settings_from_db():
 @payments_bp.route('/api/settings', methods=['GET'])
 def get_public_settings():
     s = get_settings_from_db()
-    # Mask sensitive secret keys from public client
+    # Mask and strip sensitive secret keys from public client
     safe_settings = json.loads(json.dumps(s))
     if 'payments' in safe_settings and 'online_card' in safe_settings['payments']:
-        safe_settings['payments']['online_card']['secret_key'] = '••••••••••••••••'
+        safe_settings['payments']['online_card'].pop('secret_key', None)
+        safe_settings['payments']['online_card'].pop('private_key', None)
     return jsonify({"success": True, "settings": safe_settings})
 
 @payments_bp.route('/api/settings', methods=['POST', 'PUT'])
@@ -415,53 +416,41 @@ def execute_checkout_process(data, user_id=None):
         for it in raw_items:
             p_id = it.get('product_id') or it.get('id')
             qty = max(1, int(it.get('quantity', 1)))
-            prod = query_db("SELECT * FROM products WHERE id = ? AND (status = 'active' OR status IS NULL)", (p_id,), one=True)
-            if not prod:
-                # If seeded/test product not found by ID, attempt lookup by name or sku
-                prod = query_db('SELECT * FROM products WHERE name = ? OR sku = ?', (it.get('name'), it.get('sku')), one=True)
+            prod = query_db("SELECT * FROM products WHERE id = ? AND status != 'deleted'", (p_id,), one=True)
+            if not prod and (it.get('name') or it.get('sku')):
+                prod = query_db("SELECT * FROM products WHERE (name = ? OR sku = ?) AND status != 'deleted'", (it.get('name'), it.get('sku')), one=True)
             
-            if prod:
-                unit_price = float(prod['sale_price'] if prod['sale_price'] else prod['price'])
-                items_to_process.append({
-                    'product_id': prod['id'],
-                    'product_name': prod['name'],
-                    'product_sku': prod['sku'],
-                    'price': unit_price,
-                    'quantity': qty,
-                    'size': it.get('size', 'Standard'),
-                    'color': it.get('color', 'Default'),
-                    'thumbnail': prod['thumbnail'] or it.get('thumbnail', ''),
-                    'total': unit_price * qty
-                })
-            else:
-                # Fallback to submitted item if mock item
-                unit_price = float(it.get('price', 1000))
-                items_to_process.append({
-                    'product_id': p_id or 1,
-                    'product_name': it.get('name', 'Khushi Luxury Pret'),
-                    'product_sku': it.get('sku', 'KC-ITEM'),
-                    'price': unit_price,
-                    'quantity': qty,
-                    'size': it.get('size', 'Standard'),
-                    'color': it.get('color', 'Default'),
-                    'thumbnail': it.get('thumbnail', ''),
-                    'total': unit_price * qty
-                })
+            if not prod:
+                return {"success": False, "error": f"Product '{it.get('name') or p_id}' is unavailable or not found in catalog."}, 400
+
+            unit_price = float(prod['sale_price'] if prod['sale_price'] else prod['price'])
+            items_to_process.append({
+                'product_id': prod['id'],
+                'product_name': prod['name'],
+                'product_sku': prod['sku'],
+                'price': unit_price,
+                'quantity': qty,
+                'size': it.get('size', 'Standard'),
+                'color': it.get('color', 'Default'),
+                'thumbnail': prod['thumbnail'] or it.get('thumbnail', ''),
+                'total': unit_price * qty
+            })
     else:
         # Check session cart
         cart = session.get('cart', {})
         if not cart:
             return {"success": False, "error": "Your shopping bag is empty."}, 400
         for key, item in cart.items():
-            p = query_db("SELECT * FROM products WHERE id = ? AND (status = 'active' OR status IS NULL)", (item['product_id'],), one=True)
-            if p:
-                unit_price = float(p['sale_price'] if p['sale_price'] else p['price'])
-                item_total = unit_price * int(item['quantity'])
-                items_to_process.append({
-                    'product_id': p['id'],
-                    'product_name': p['name'],
-                    'product_sku': p['sku'],
-                    'price': unit_price,
+            p = query_db("SELECT * FROM products WHERE id = ? AND status != 'deleted'", (item['product_id'],), one=True)
+            if not p:
+                return {"success": False, "error": "One or more items in your shopping bag are no longer available."}, 400
+            unit_price = float(p['sale_price'] if p['sale_price'] else p['price'])
+            item_total = unit_price * int(item['quantity'])
+            items_to_process.append({
+                'product_id': p['id'],
+                'product_name': p['name'],
+                'product_sku': p['sku'],
+                'price': unit_price,
                     'quantity': int(item['quantity']),
                     'size': item.get('size', 'Standard'),
                     'color': item.get('color', 'Default'),

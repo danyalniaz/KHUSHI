@@ -1658,7 +1658,7 @@
                 });
 
                 const allSettings = collectAllSettingsFromPage();
-                store.saveSettings(allSettings);
+                await store.saveSettings(allSettings);
 
                 if (statusEl) {
                     statusEl.classList.remove('hidden');
@@ -1678,10 +1678,14 @@
                 });
 
                 if (typeof showToast === 'function') {
-                    showToast('All owner settings saved & synced successfully!', 'success');
+                    showToast('All owner settings saved & synced successfully to server!', 'success');
                 }
             } catch (err) {
                 console.error('Error saving all settings:', err);
+                buttons.forEach(b => {
+                    b.disabled = false;
+                    if (b.dataset.origHtml) b.innerHTML = b.dataset.origHtml;
+                });
                 if (typeof showToast === 'function') {
                     showToast('Error saving settings: ' + err.message, 'error');
                 }

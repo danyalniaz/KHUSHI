@@ -73,7 +73,6 @@ const DEFAULT_SETTINGS = {
             gateway_name: "PayFast / Stripe",
             merchant_id: "MERCH-KHUSHI-8821",
             public_key: "pk_test_khushi_998822",
-            secret_key: "sk_test_khushi_secret_88",
             provider: "Visa / Mastercard 3D Secure",
             instruction: "Accepting all Pakistani and international Visa, Mastercard, and UnionPay cards."
         }
@@ -5247,7 +5246,7 @@ class KhushiStore {
             this.saveCart({});
         }
         if (!localStorage.getItem(this.STORAGE_KEYS.SETTINGS)) {
-            this.saveSettings(DEFAULT_SETTINGS);
+            localStorage.setItem(this.STORAGE_KEYS.SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
         }
         this.applyStorefrontSettings();
         this.syncSettingsFromBackend();
@@ -5362,7 +5361,7 @@ class KhushiStore {
         return vis[sectionName] !== false;
     }
 
-    saveSettings(newSettings) {
+    async saveSettings(newSettings) {
         const current = this.getSettings();
         const merged = {
             ...current,
@@ -5393,27 +5392,37 @@ class KhushiStore {
             }
         };
 
+        // Strip any secret keys from client payload
+        if (merged.payments?.online_card) {
+            delete merged.payments.online_card.secret_key;
+            delete merged.payments.online_card.private_key;
+        }
+
+        // Wait for server success first
+        const res = await fetch('/api/settings', {
+            method: 'POST',
+            credentials: 'include',
+            headers: this.getAuthHeaders(),
+            body: JSON.stringify(merged)
+        });
+
+        if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(errData.error || `Server returned error ${res.status}`);
+        }
+
+        const data = await res.json();
+        if (!data.success) {
+            throw new Error(data.error || 'Server failed to save settings');
+        }
+
         localStorage.setItem('kc_settings', JSON.stringify(merged));
         this.logAudit('SETTINGS_UPDATED', 'Store settings and homepage CMS updated by Store Owner');
         this.applyStorefrontSettings();
         window.dispatchEvent(new CustomEvent('khushi:settings-synced', { detail: merged }));
         if (typeof renderHomePageFromSettings === 'function') renderHomePageFromSettings();
 
-        // Asynchronously sync to backend /api/settings with admin credentials
-        try {
-            fetch('/api/settings', {
-                method: 'POST',
-                credentials: 'include',
-                headers: this.getAuthHeaders(),
-                body: JSON.stringify(merged)
-            }).then(r => r.json()).then(res => {
-                if (res && res.github_sync && res.github_sync.success) {
-                    console.log('Settings synced to GitHub cloud permanently:', res.github_sync.commit);
-                }
-            }).catch(() => {});
-        } catch (e) {}
-
-        return { success: true, message: 'Store settings updated successfully!' };
+        return { success: true, message: 'Store settings updated and verified on server!' };
     }
 
     // Dynamic Storefront Synchronization across All Customer Pages
@@ -5666,60 +5675,74 @@ class KhushiStore {
     // ====================================================================
     // PRODUCT DUPLICATION & INLINE QUICK-EDITING
     // ====================================================================
-    duplicateProduct(productId) {
+    async duplicateProduct(productId) {
         const products = this.getProducts();
         const original = products.find(p => p.id === Number(productId));
-        if (!original) return { success: false, message: 'Product not found.' };
+        if (!original) throw new Error('Product not found.');
 
         const duplicate = JSON.parse(JSON.stringify(original));
-        duplicate.id = Date.now();
+        delete duplicate.id;
         duplicate.name = `${original.name} (Copy)`;
         duplicate.slug = `${original.slug}-copy-${Math.floor(Math.random() * 1000)}`;
         duplicate.sku = `${original.sku}-COPY`;
         duplicate.status = 'draft';
-        duplicate.created_at = new Date().toISOString();
 
-        products.unshift(duplicate);
-        this.saveProducts(products);
-        this.logAudit('PRODUCT_DUPLICATED', `Duplicated product ${original.sku} &rarr; ${duplicate.sku}`);
-
-        // Background server sync
-        fetch('/api/products', {
+        const res = await fetch('/api/products', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            headers: this.getAuthHeaders(),
             body: JSON.stringify(duplicate)
-        }).then(r => r.json()).then(res => {
-            if (res && res.success && res.product && res.product.id) {
-                duplicate.id = res.product.id;
-                this.saveProducts(this.getProducts());
-            }
-        }).catch(err => console.warn('duplicateProduct sync err:', err));
+        });
 
-        return { success: true, product: duplicate, message: `Product "${duplicate.name}" created!` };
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || `Server error ${res.status}`);
+        }
+
+        const data = await res.json();
+        if (!data.success) {
+            throw new Error(data.error || 'Server failed to duplicate product');
+        }
+
+        const created = data.product || duplicate;
+        products.unshift(created);
+        this.saveProducts(products);
+        this.logAudit('PRODUCT_DUPLICATED', `Duplicated product ${original.sku} &rarr; ${created.sku}`);
+        return { success: true, product: created, message: `Product "${created.name}" created!` };
     }
 
-    quickUpdateProduct(productId, updates) {
+    async quickUpdateProduct(productId, updates) {
         const products = this.getProducts();
         const p = products.find(x => x.id === Number(productId));
-        if (!p) return { success: false, message: 'Product not found.' };
+        if (!p) throw new Error('Product not found.');
 
-        if (updates.price !== undefined) p.price = Number(updates.price);
-        if (updates.sale_price !== undefined) p.sale_price = updates.sale_price ? Number(updates.sale_price) : null;
-        if (updates.stock !== undefined) p.stock = Math.max(0, Number(updates.stock));
-        if (updates.status !== undefined) p.status = updates.status;
-        if (updates.category !== undefined) p.category = updates.category;
+        const mergedUpdates = { ...p, ...updates };
 
-        this.saveProducts(products);
-        this.logAudit('PRODUCT_QUICK_EDIT', `Quick updated ${p.sku}: ${JSON.stringify(updates)}`);
-
-        // Background server sync
-        fetch(`/api/products/${productId}`, {
+        const res = await fetch(`/api/products/${productId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(p)
-        }).catch(err => console.warn('quickUpdateProduct sync err:', err));
+            credentials: 'include',
+            headers: this.getAuthHeaders(),
+            body: JSON.stringify(mergedUpdates)
+        });
 
-        return { success: true, product: p };
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || `Server error ${res.status}`);
+        }
+
+        const data = await res.json();
+        if (!data.success) {
+            throw new Error(data.error || 'Server failed to update product');
+        }
+
+        const updatedProd = data.product || mergedUpdates;
+        const idx = products.findIndex(x => x.id === Number(productId));
+        if (idx !== -1) {
+            products[idx] = updatedProd;
+            this.saveProducts(products);
+        }
+        this.logAudit('PRODUCT_QUICK_EDIT', `Quick updated ${p.sku}: ${JSON.stringify(updates)}`);
+        return { success: true, product: updatedProd };
     }
 
     // ====================================================================
@@ -5782,61 +5805,71 @@ class KhushiStore {
         localStorage.setItem('kc_categories', JSON.stringify(categories));
     }
 
-    addCategory(cat) {
-        const categories = this.getCategories();
-        if (!cat.id) cat.id = Date.now();
-        cat.slug = cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-');
-        cat.subcategories = cat.subcategories || [];
-        categories.push(cat);
-        this.saveCategories(categories);
-
-        // Background server sync with admin credentials
-        fetch('/api/categories', {
+    async addCategory(cat) {
+        const res = await fetch('/api/categories', {
             method: 'POST',
             credentials: 'include',
             headers: this.getAuthHeaders(),
             body: JSON.stringify(cat)
-        }).then(r => r.json()).then(res => {
-            if (res && res.success && res.category && res.category.id) {
-                cat.id = res.category.id;
-                this.saveCategories(this.getCategories());
-            }
-        }).catch(err => console.warn('addCategory sync err:', err));
-
-        return cat;
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || `Server error ${res.status}`);
+        }
+        const data = await res.json();
+        if (!data.success) {
+            throw new Error(data.error || 'Server failed to create category');
+        }
+        const savedCat = data.category || cat;
+        const categories = this.getCategories();
+        categories.push(savedCat);
+        this.saveCategories(categories);
+        return savedCat;
     }
 
-    updateCategory(id, updatedFields) {
+    async updateCategory(id, updatedFields) {
+        const res = await fetch(`/api/categories/${id}`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: this.getAuthHeaders(),
+            body: JSON.stringify(updatedFields)
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || `Server error ${res.status}`);
+        }
+        const data = await res.json();
+        if (!data.success) {
+            throw new Error(data.error || 'Server failed to update category');
+        }
         const categories = this.getCategories();
         const idx = categories.findIndex(c => c.id === Number(id));
         if (idx !== -1) {
             categories[idx] = { ...categories[idx], ...updatedFields };
             this.saveCategories(categories);
-
-            // Background server sync with admin credentials
-            fetch(`/api/categories/${id}`, {
-                method: 'PUT',
-                credentials: 'include',
-                headers: this.getAuthHeaders(),
-                body: JSON.stringify(categories[idx])
-            }).catch(err => console.warn('updateCategory sync err:', err));
-
             return categories[idx];
         }
-        return null;
+        return updatedFields;
     }
 
-    deleteCategory(id) {
-        let categories = this.getCategories();
-        categories = categories.filter(c => c.id !== Number(id));
-        this.saveCategories(categories);
-
-        // Background server sync with admin credentials
-        fetch(`/api/categories/${id}`, {
+    async deleteCategory(id) {
+        const res = await fetch(`/api/categories/${id}`, {
             method: 'DELETE',
             credentials: 'include',
             headers: this.getAuthHeaders()
-        }).catch(err => console.warn('deleteCategory sync err:', err));
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || `Server error ${res.status}`);
+        }
+        const data = await res.json();
+        if (!data.success) {
+            throw new Error(data.error || 'Server failed to delete category');
+        }
+        let categories = this.getCategories();
+        categories = categories.filter(c => c.id !== Number(id));
+        this.saveCategories(categories);
+        return true;
     }
 
     // Product Operations
@@ -5866,69 +5899,80 @@ class KhushiStore {
         localStorage.setItem('kc_products', JSON.stringify(products));
     }
 
-    addProduct(prod) {
-        const products = this.getProducts();
-        if (!prod.id) prod.id = Date.now();
-        prod.slug = prod.slug || prod.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-        prod.rating = prod.rating || 5.0;
-        prod.reviews_count = prod.reviews_count || 0;
-        products.unshift(prod);
-        this.saveProducts(products);
-
-        // Background server sync with admin credentials
-        fetch('/api/products', {
+    async addProduct(prod) {
+        const res = await fetch('/api/products', {
             method: 'POST',
             credentials: 'include',
             headers: this.getAuthHeaders(),
             body: JSON.stringify(prod)
-        }).then(r => r.json()).then(res => {
-            if (res && res.success && res.product && res.product.id) {
-                prod.id = res.product.id;
-                this.saveProducts(this.getProducts());
-            }
-        }).catch(err => console.warn('addProduct sync err:', err));
-
-        return prod;
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || `Server error ${res.status}`);
+        }
+        const data = await res.json();
+        if (!data.success) {
+            throw new Error(data.error || 'Server failed to create product');
+        }
+        const savedProd = data.product || prod;
+        const products = this.getProducts();
+        products.unshift(savedProd);
+        this.saveProducts(products);
+        return savedProd;
     }
 
-    updateProduct(id, updatedFields) {
+    async updateProduct(id, updatedFields) {
+        const res = await fetch(`/api/products/${id}`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: this.getAuthHeaders(),
+            body: JSON.stringify(updatedFields)
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || `Server error ${res.status}`);
+        }
+        const data = await res.json();
+        if (!data.success) {
+            throw new Error(data.error || 'Server failed to update product');
+        }
+        const updatedProd = data.product || { ...updatedFields, id: Number(id) };
         const products = this.getProducts();
         const idx = products.findIndex(p => p.id === Number(id));
         if (idx !== -1) {
-            products[idx] = { ...products[idx], ...updatedFields };
-            this.saveProducts(products);
-
-            // Background server sync with admin credentials
-            fetch(`/api/products/${id}`, {
-                method: 'PUT',
-                credentials: 'include',
-                headers: this.getAuthHeaders(),
-                body: JSON.stringify(products[idx])
-            }).catch(err => console.warn('updateProduct sync err:', err));
-
-            return products[idx];
+            products[idx] = { ...products[idx], ...updatedProd };
+        } else {
+            products.unshift(updatedProd);
         }
-        return null;
+        this.saveProducts(products);
+        return updatedProd;
     }
 
-    deleteProduct(id) {
-        let products = this.getProducts();
-        products = products.filter(p => p.id !== Number(id));
-        this.saveProducts(products);
-
-        // Background server sync with admin credentials
-        fetch(`/api/products/${id}`, {
+    async deleteProduct(id) {
+        const res = await fetch(`/api/products/${id}`, {
             method: 'DELETE',
             credentials: 'include',
             headers: this.getAuthHeaders()
-        }).catch(err => console.warn('deleteProduct sync err:', err));
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || `Server error ${res.status}`);
+        }
+        const data = await res.json();
+        if (!data.success) {
+            throw new Error(data.error || 'Server failed to delete product');
+        }
+        let products = this.getProducts();
+        products = products.filter(p => p.id !== Number(id));
+        this.saveProducts(products);
+        return true;
     }
 
     // Cart Operations with Variant & Stock Checks
     saveCart(cart) {
         localStorage.setItem(this.STORAGE_KEYS.CART, JSON.stringify(cart));
         this.updateBadgeCounts();
-        if (typeof window !== 'undefined' && typeof window.renderCartDrawer === 'function') {
+        if (typeof window !== 'undefined' && window.store && typeof window.renderCartDrawer === 'function') {
             window.renderCartDrawer();
         }
     }
@@ -6958,7 +7002,7 @@ Please process this order.`.trim();
     }
 }
 
-const store = new KhushiStore();
+var store = new KhushiStore();
 window.store = store;
 
 // Universal Toast Helper
@@ -7081,10 +7125,12 @@ function closeCartDrawer() {
 
 function renderCartDrawer() {
     ensureCartDrawerDOM();
-    const cart = store.getCart();
+    const st = (typeof window !== 'undefined' && window.store) ? window.store : (typeof store !== 'undefined' ? store : null);
+    if (!st || typeof st.getCart !== 'function') return;
+    const cart = st.getCart();
     const items = Object.values(cart);
     const container = document.getElementById('drawer-items-list') || document.getElementById('cart-drawer-items');
-    const subtotalVal = store.getCartSubtotal();
+    const subtotalVal = st.getCartSubtotal();
 
     const headerBag = document.getElementById('header-bag-subtotal');
     if (headerBag) headerBag.textContent = `Rs. ${subtotalVal.toLocaleString()}`;

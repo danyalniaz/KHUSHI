@@ -166,14 +166,6 @@
                 }
 
                 if (!res.ok || !data.success || !data.order) {
-                    // Try fallback to local store
-                    const localOrder = store.getOrder ? store.getOrder(orderNum) : null;
-                    if (localOrder) {
-                        notFoundBox.classList.add('hidden');
-                        resultBox.classList.remove('hidden');
-                        renderTrackingDetails(localOrder);
-                        return;
-                    }
                     resultBox.classList.add('hidden');
                     notFoundBox.classList.remove('hidden');
                     notFoundIcon.className = 'fa-solid fa-circle-exclamation text-3xl text-rose-500 mb-2';
@@ -188,16 +180,11 @@
 
             } catch (err) {
                 console.error("Tracking API error:", err);
-                // Fallback to localStorage
-                const localOrder = store.getOrder ? store.getOrder(orderNum) : null;
-                if (localOrder) {
-                    notFoundBox.classList.add('hidden');
-                    resultBox.classList.remove('hidden');
-                    renderTrackingDetails(localOrder);
-                } else {
-                    resultBox.classList.add('hidden');
-                    notFoundBox.classList.remove('hidden');
-                }
+                resultBox.classList.add('hidden');
+                notFoundBox.classList.remove('hidden');
+                notFoundIcon.className = 'fa-solid fa-triangle-exclamation text-3xl text-amber-500 mb-2';
+                notFoundTitle.textContent = 'Connection Error';
+                notFoundMsg.textContent = 'Could not reach the tracking server. Please check your network connection and try again.';
             }
         }
 

@@ -354,30 +354,33 @@
             try {
                 if (editId) {
                     await store.updateCategory(editId, catData);
-                    showToast(`Category "${name}" updated successfully!`, 'success');
+                    showToast(`Category "${name}" updated on server!`, 'success');
                 } else {
                     await store.addCategory(catData);
-                    showToast(`New category "${name}" added to store!`, 'success');
+                    showToast(`New category "${name}" saved to server!`, 'success');
                 }
+                closeCategoryModal();
+                renderCategoriesTable();
             } catch (err) {
                 console.error(err);
-                showToast(`Saved locally. Syncing with backend...`, 'info');
+                showToast(`Failed to save category: ${err.message}`, 'error');
             } finally {
                 saveBtn.disabled = false;
                 saveBtn.innerHTML = 'Save Category';
             }
-
-            closeCategoryModal();
-            renderCategoriesTable();
         }
 
         async function deleteCategoryWithConfirm(id) {
             const cat = store.getCategory(id);
             if (!cat) return;
             if (confirm(`Permanently delete category "${cat.name}"?`)) {
-                await store.deleteCategory(id);
-                showToast(`Category "${cat.name}" removed from database.`, 'success');
-                renderCategoriesTable();
+                try {
+                    await store.deleteCategory(id);
+                    showToast(`Category "${cat.name}" removed from database.`, 'success');
+                    renderCategoriesTable();
+                } catch (err) {
+                    showToast(`Failed to delete category: ${err.message}`, 'error');
+                }
             }
         }
 

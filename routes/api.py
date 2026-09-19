@@ -716,11 +716,12 @@ def get_store_settings_api():
     db_settings = get_settings_from_db()
 
     merged = {**file_settings, **db_settings}
-    if 'homepage' in file_settings:
-        if 'homepage' not in db_settings:
-            merged['homepage'] = file_settings['homepage']
-        elif isinstance(db_settings.get('homepage'), dict):
-            merged['homepage'] = {**file_settings['homepage'], **db_settings['homepage']}
+    if isinstance(file_settings.get('homepage'), dict) and isinstance(db_settings.get('homepage'), dict):
+        merged['homepage'] = {**file_settings['homepage'], **db_settings['homepage']}
+
+    if 'payments' in merged and isinstance(merged['payments'], dict) and 'online_card' in merged['payments']:
+        merged['payments']['online_card'].pop('secret_key', None)
+        merged['payments']['online_card'].pop('private_key', None)
 
     return jsonify({'success': True, 'settings': merged})
 
@@ -746,6 +747,11 @@ def update_store_settings_api():
             current_settings[k] = {**current_settings[k], **v}
         else:
             current_settings[k] = v
+
+    # Strip secret keys from settings payload before writing
+    if 'payments' in current_settings and isinstance(current_settings['payments'], dict) and 'online_card' in current_settings['payments']:
+        current_settings['payments']['online_card'].pop('secret_key', None)
+        current_settings['payments']['online_card'].pop('private_key', None)
 
     # 1. Update SQLite settings table
     try:

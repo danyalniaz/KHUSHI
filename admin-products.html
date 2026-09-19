@@ -1178,21 +1178,33 @@
                 is_flash_sale: document.getElementById('f-is-flash').checked
             };
 
-            if (editId) {
-                store.updateProduct(editId, productData);
-                showToast(`Product "${title}" updated successfully!`);
-            } else {
-                store.addProduct(productData);
-                showToast(`Product "${title}" published to catalog!`);
+            const submitBtn = e.target.querySelector('button[type=submit]');
+            const origHtml = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Saving to Server...';
             }
 
-            // Trigger background publish to ensure GitHub & live website sync
-            if (store.publishCatalogToLive) {
-                store.publishCatalogToLive().catch(() => {});
-            }
+            try {
+                if (editId) {
+                    await store.updateProduct(editId, productData);
+                    showToast(`Product "${title}" updated on server!`, 'success');
+                } else {
+                    await store.addProduct(productData);
+                    showToast(`Product "${title}" saved to server catalog!`, 'success');
+                }
 
-            closeProductModal();
-            renderProductsTable();
+                closeProductModal();
+                renderProductsTable();
+            } catch (err) {
+                console.error('Product save error:', err);
+                showToast(`Failed to save product: ${err.message}`, 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = origHtml;
+                }
+            }
         }
 
         // Dedicated Publish to Live Website Action
@@ -1221,29 +1233,62 @@
         window.triggerPublishToLive = triggerPublishToLive;
 
         // Inline Quick Edit Handlers
-        function inlineEditPrice(id, currentPrice) {
+        async function inlineEditPrice(id, currentPrice) {
             const val = prompt('Enter new retail price (PKR):', currentPrice);
             if (val !== null && !isNaN(val) && Number(val) > 0) {
-                store.quickUpdateProduct(id, { price: Number(val) });
-                showToast('Price updated successfully.');
-                renderProductsTable();
+                try {
+                    await store.quickUpdateProduct(id, { price: Number(val) });
+                    showToast('Price updated successfully on server.');
+                    renderProductsTable();
+                } catch (err) {
+                    showToast('Failed to update price: ' + err.message, 'error');
+                }
             }
         }
 
-        function inlineEditStock(id, currentStock) {
+        async function inlineEditStock(id, currentStock) {
             const val = prompt('Enter new stock quantity:', currentStock);
             if (val !== null && !isNaN(val) && Number(val) >= 0) {
-                store.quickUpdateProduct(id, { stock: Number(val) });
-                showToast('Stock quantity updated.');
-                renderProductsTable();
+                try {
+                    await store.quickUpdateProduct(id, { stock: Number(val) });
+                    showToast('Stock quantity updated on server.');
+                    renderProductsTable();
+                } catch (err) {
+                    showToast('Failed to update stock: ' + err.message, 'error');
+                }
             }
         }
 
         // Duplicate Product Action
-        function duplicateProduct(id) {
-            const res = store.duplicateProduct(id);
-            if (res.success) {
-                showToast(res.message);
+        async function duplicateProduct(id) {
+            try {
+                const res = await store.duplicateProduct(id);
+                if (res.success) {
+                    showToast(res.message, 'success');
+                    renderProductsTable();
+                }
+            } catch (err) {
+                showToast('Failed to duplicate: ' + err.message, 'error');
+            }
+        }
+
+        async function handleQuickStockAdd(id, sku, newStock) {
+            try {
+                await store.quickUpdateProduct(id, { stock: newStock });
+                renderProductsTable();
+                showToast(`Added +5 units to ${sku}`);
+            } catch (err) {
+                showToast('Failed to update stock: ' + err.message, 'error');
+            }
+        }
+
+        async function handleProductStatusChange(id, newStatus) {
+            try {
+                await store.quickUpdateProduct(id, { status: newStatus });
+                renderProductsTable();
+                showToast('Status updated to ' + newStatus);
+            } catch (err) {
+                showToast('Failed to update status: ' + err.message, 'error');
                 renderProductsTable();
             }
         }
@@ -1302,11 +1347,11 @@
                                 <span onclick="inlineEditStock(${p.id}, ${totalVariantStock})" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold cursor-pointer border ${isOut ? 'bg-rose-950 text-rose-400 border-rose-500/30' : (isLow ? 'bg-amber-950 text-amber-400 border-amber-500/30' : 'bg-emerald-950 text-emerald-400 border-emerald-500/30')}" title="Click to Quick Edit Stock">
                                     ${isOut ? 'OUT OF STOCK' : `${totalVariantStock} units`}
                                 </span>
-                                <button onclick="store.quickUpdateProduct(${p.id}, { stock: ${totalVariantStock + 5} }); renderProductsTable(); showToast('Added +5 units to ${p.sku}');" class="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-amber-400 text-[10px] font-bold" title="Add 5 units">+5</button>
+                                <button onclick="handleQuickStockAdd(${p.id}, '${p.sku}', ${totalVariantStock + 5})" class="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-amber-400 text-[10px] font-bold" title="Add 5 units">+5</button>
                             </div>
                         </td>
                         <td class="py-3.5 px-4">
-                            <select onchange="store.quickUpdateProduct(${p.id}, { status: this.value }); renderProductsTable(); showToast('Status updated to ' + this.value);" class="bg-zinc-900 border border-zinc-700 text-[10px] font-bold rounded-lg px-2 py-1 text-zinc-300 focus:outline-none focus:border-amber-400">
+                            <select onchange="handleProductStatusChange(${p.id}, this.value)" class="bg-zinc-900 border border-zinc-700 text-[10px] font-bold rounded-lg px-2 py-1 text-zinc-300 focus:outline-none focus:border-amber-400">
                                 <option value="published" ${p.status === 'published' ? 'selected' : ''}>Active</option>
                                 <option value="hidden" ${p.status === 'hidden' ? 'selected' : ''}>Hidden</option>
                                 <option value="draft" ${p.status === 'draft' ? 'selected' : ''}>Draft</option>
@@ -1425,13 +1470,17 @@
             }
         }
 
-        function deleteProductWithConfirm(id) {
+        async function deleteProductWithConfirm(id) {
             const p = store.getProduct(id);
             if (!p) return;
             if (confirm(`Are you sure you want to permanently delete "${p.name}"?`)) {
-                store.deleteProduct(id);
-                showToast(`Product "${p.name}" deleted.`);
-                renderProductsTable();
+                try {
+                    await store.deleteProduct(id);
+                    showToast(`Product "${p.name}" deleted from server.`);
+                    renderProductsTable();
+                } catch (err) {
+                    showToast(`Failed to delete product: ${err.message}`, 'error');
+                }
             }
         }
 

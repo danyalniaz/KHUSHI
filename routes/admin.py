@@ -18,106 +18,13 @@ from services.notifications import (
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
-def get_admin_user_file_path():
-    try:
-        from config import BASE_DIR
-        return os.path.join(BASE_DIR, 'admin_user.json')
-    except Exception:
-        return 'admin_user.json'
-
-def load_admin_user_config():
-    path = get_admin_user_file_path()
-    if os.path.exists(path):
-        try:
-            with open(path, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return None
-
-def save_admin_user_config(data):
-    path = get_admin_user_file_path()
-    try:
-        with open(path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        return True
-    except Exception as e:
-        print(f"Notice: save_admin_user_config error: {e}")
-        return False
-
-def sync_admin_user_to_github(admin_user_data, commit_message="Update admin credentials via Admin Security Console"):
-    """Directly commit updated admin_user.json to GitHub repository for permanent persistence across Vercel deployments"""
-    token = os.environ.get('GITHUB_TOKEN')
-    repo = os.environ.get('GITHUB_REPO', 'danyalniaz/KHUSHI')
-    if not token or not repo:
-        return {'success': False, 'error': 'GitHub token or repo not configured'}
-
-    try:
-        import urllib.request
-        import urllib.error
-
-        content_bytes = json.dumps(admin_user_data, indent=2, ensure_ascii=False).encode('utf-8')
-        encoded_content = base64.b64encode(content_bytes).decode('utf-8')
-
-        api_url = f"https://api.github.com/repos/{repo}/contents/admin_user.json"
-        req = urllib.request.Request(api_url, headers={
-            'Authorization': f'token {token}',
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'Khushi-Backend'
-        })
-        sha = None
-        try:
-            with urllib.request.urlopen(req) as response:
-                if response.status == 200:
-                    current_file = json.loads(response.read().decode('utf-8'))
-                    sha = current_file.get('sha')
-        except urllib.error.HTTPError as e:
-            if e.code != 404:
-                return {'success': False, 'error': f'HTTP {e.code}: {e.read().decode("utf-8")}'}
-
-        payload = {
-            'message': commit_message,
-            'content': encoded_content,
-            'branch': 'main'
-        }
-        if sha:
-            payload['sha'] = sha
-
-        put_req = urllib.request.Request(api_url, data=json.dumps(payload).encode('utf-8'), headers={
-            'Authorization': f'token {token}',
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json',
-            'User-Agent': 'Khushi-Backend'
-        }, method='PUT')
-
-        with urllib.request.urlopen(put_req) as response:
-            res_data = json.loads(response.read().decode('utf-8'))
-            return {'success': True, 'commit': res_data.get('commit', {}).get('sha'), 'message': 'Admin credentials committed to GitHub successfully!'}
-    except Exception as e:
-        return {'success': False, 'error': str(e)}
-
 def verify_admin_password(user, password):
     """
     Validates admin password securely against hashed database credentials.
     """
     if not user or not password:
         return False
-
-    # 1. Direct hash check
-    if check_password_hash(user['password_hash'], password):
-        return True
-
-    # 2. Check admin_user.json (synced from GitHub)
-    cfg = load_admin_user_config()
-    if cfg and cfg.get('has_custom_password', False) and cfg.get('password_hash'):
-        if check_password_hash(cfg['password_hash'], password):
-            try:
-                execute_db('UPDATE users SET password_hash = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?', (cfg['password_hash'], user['id']))
-            except Exception:
-                pass
-            return True
-
-    return False
+    return check_password_hash(user['password_hash'], password)
 
 
 def resolve_current_user():
@@ -1865,22 +1772,6 @@ def change_password():
     execute_db('UPDATE users SET password_hash = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?', (new_hash, user['id']))
 
     # Write to admin_user.json and commit to GitHub for permanent cloud persistence
-    admin_data = {
-        'name': user['name'],
-        'email': user['email'],
-        'password_hash': new_hash,
-        'role': 'OWNER',
-        'status': 'active',
-        'has_custom_password': True,
-        'updated_at': datetime.now().isoformat()
-    }
-    save_admin_user_config(admin_data)
-    gh_res = None
-    try:
-        gh_res = sync_admin_user_to_github(admin_data, commit_message=f"Update admin password for {user['email']}")
-    except Exception as ex:
-        print("Notice sync_admin_user_to_github error:", ex)
-
     # Issue fresh session token
     new_session_token = secrets.token_urlsafe(32)
     now = datetime.now()
@@ -1904,8 +1795,7 @@ def change_password():
         return jsonify({
             'success': True,
             'session_token': new_session_token,
-            'github_sync': gh_res,
-            'message': 'Password updated and saved permanently! Your new password is now active across all servers and devices.'
+            'message': 'Password updated and saved permanently in secure database! Your new password is now active.'
         })
 
 @admin_bp.route('/api/auth-info', methods=['GET'])
@@ -1940,18 +1830,6 @@ def api_update_profile():
     session['user_email'] = new_email
     if new_name:
         session['user_name'] = new_name
-
-    # If owner profile updated, persist to admin_user.json and sync to GitHub
-    if str(user['role']).upper() in ('OWNER', 'SUPER_ADMIN'):
-        cfg = load_admin_user_config() or {}
-        cfg['name'] = new_name or user['name']
-        cfg['email'] = new_email
-        cfg['updated_at'] = datetime.now().isoformat()
-        save_admin_user_config(cfg)
-        try:
-            sync_admin_user_to_github(cfg, commit_message=f"Update admin owner profile ({new_email})")
-        except Exception:
-            pass
 
     log_audit_action('PROFILE_UPDATED', f"Profile updated: email changed to {new_email}",
                      user_id=curr_user_id, user_email=new_email, role=user['role'], ip_address=request.remote_addr)
