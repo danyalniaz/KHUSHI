@@ -871,11 +871,11 @@
                             </div>
                             <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 space-y-2">
                                 <span class="text-xs font-bold text-indigo-400 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-arrows-spin"></i> 360° View Card
+                                    <i class="fa-solid fa-gem"></i> Bespoke Concierge / VIP Atelier Card
                                 </span>
-                                <input type="text" id="cfg-hp-360-title" placeholder="360° View" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
-                                <input type="text" id="cfg-hp-360-sub" placeholder="Explore every detail" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-300 text-xs">
-                                <input type="text" id="cfg-hp-360-btn" placeholder="View 360°" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-amber-400 text-xs">
+                                <input type="text" id="cfg-hp-360-title" placeholder="Bespoke Styling" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-white text-xs">
+                                <input type="text" id="cfg-hp-360-sub" placeholder="Private atelier & custom bridal fitting" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-300 text-xs">
+                                <input type="text" id="cfg-hp-360-btn" placeholder="Chat with Stylist" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-amber-400 text-xs">
                                 <input type="url" id="cfg-hp-360-img" placeholder="Image URL..." class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-400 text-xs">
                             </div>
                         </div>
@@ -1031,6 +1031,9 @@
                             </label>
                             <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
                                 <input type="checkbox" id="chk-sec-revs" class="rounded accent-amber-400"> <span>Customer Reviews</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
+                                <input type="checkbox" id="chk-sec-contact" class="rounded accent-amber-400"> <span>Concierge / Contact</span>
                             </label>
                             <label class="flex items-center gap-2 p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 cursor-pointer hover:border-amber-400 transition">
                                 <input type="checkbox" id="chk-sec-news" class="rounded accent-amber-400"> <span>Newsletter Banner</span>
@@ -1307,6 +1310,7 @@
                 setChk('chk-sec-recent', vis.recently_viewed !== false);
                 setChk('chk-sec-wish', vis.wishlist !== false);
                 setChk('chk-sec-revs', vis.reviews !== false);
+                setChk('chk-sec-contact', vis.contact !== false);
                 setChk('chk-sec-news', vis.newsletter !== false);
 
                 // Two-way synchronization between Store Profile (Tab 1) and Contact (Tab 2)
@@ -1553,9 +1557,9 @@
                     view_360_card: {
                         ...(current.homepage?.view_360_card || {}),
                         enabled: true,
-                        title: getV('cfg-hp-360-title', '360° View'),
-                        subtitle: getV('cfg-hp-360-sub', 'Explore every detail'),
-                        button_text: getV('cfg-hp-360-btn', 'View 360°'),
+                        title: getV('cfg-hp-360-title', 'Bespoke Styling'),
+                        subtitle: getV('cfg-hp-360-sub', 'Private atelier & custom bridal fitting'),
+                        button_text: getV('cfg-hp-360-btn', 'Chat with Stylist'),
                         image_url: getV('cfg-hp-360-img', 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80')
                     },
                     featured_collections: [
@@ -1635,6 +1639,7 @@
                         recently_viewed: getC('chk-sec-recent', true),
                         wishlist: getC('chk-sec-wish', true),
                         reviews: getC('chk-sec-revs', true),
+                        contact: getC('chk-sec-contact', true),
                         newsletter: getC('chk-sec-news', true),
                         footer: true
                     }

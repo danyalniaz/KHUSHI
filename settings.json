@@ -137,9 +137,9 @@
     },
     "view_360_card": {
       "enabled": true,
-      "title": "360° View",
-      "subtitle": "Explore every detail",
-      "button_text": "View 360°",
+      "title": "Bespoke Styling",
+      "subtitle": "Private atelier & custom bridal fitting",
+      "button_text": "Chat with Stylist",
       "image_url": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80"
     },
     "featured_collections": [
@@ -240,7 +240,8 @@
       "wishlist": true,
       "reviews": true,
       "newsletter": true,
-      "footer": true
+      "footer": true,
+      "contact": true
     }
   }
 }

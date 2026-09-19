@@ -162,9 +162,9 @@ const DEFAULT_SETTINGS = {
         },
         view_360_card: {
             enabled: true,
-            title: "360° View",
-            subtitle: "Explore every detail",
-            button_text: "View 360°",
+            title: "Bespoke Styling",
+            subtitle: "Private atelier & custom bridal fitting",
+            button_text: "Chat with Stylist",
             image_url: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80"
         },
         featured_collections: [
@@ -248,6 +248,7 @@ const DEFAULT_SETTINGS = {
             recently_viewed: true,
             wishlist: true,
             reviews: true,
+            contact: true,
             newsletter: true,
             footer: true
         }
@@ -5487,6 +5488,27 @@ class KhushiStore {
                     link.href = `https://wa.me/${waNumber}?text=${encodeURIComponent("Hi Khushi Collection, I would like concierge assistance.")}`;
                 }
             });
+
+            // Homepage Dedicated Concierge & Contact Section
+            const hpPhone = document.getElementById('hp-contact-phone');
+            if (hpPhone) hpPhone.textContent = phone;
+            const hpCallBtn = document.getElementById('hp-contact-call-btn');
+            if (hpCallBtn) hpCallBtn.href = 'tel:' + phone.replace(/\s+/g, '');
+
+            const hpWa = document.getElementById('hp-contact-wa');
+            if (hpWa) hpWa.textContent = '+' + waNumber;
+            const hpWaBtn = document.getElementById('hp-contact-wa-btn');
+            if (hpWaBtn) hpWaBtn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent('Hello Khushi Collection, I would like concierge assistance.')}`;
+
+            const hpEmail = document.getElementById('hp-contact-email');
+            if (hpEmail) hpEmail.textContent = email;
+            const hpEmailBtn = document.getElementById('hp-contact-email-btn');
+            if (hpEmailBtn) hpEmailBtn.href = 'mailto:' + email;
+
+            const hpAddr = document.getElementById('hp-contact-address');
+            if (hpAddr) hpAddr.textContent = address;
+            const hpHours = document.getElementById('hp-contact-hours');
+            if (hpHours) hpHours.textContent = hours;
 
             // Floating WhatsApp Concierge Button
             const floatingBtn = document.getElementById('floating-whatsapp-btn');

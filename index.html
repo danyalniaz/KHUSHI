@@ -199,7 +199,7 @@
                 </div>
 
                 <!-- Center Navigation Links (Desktop) -->
-                <nav class="hidden lg:flex items-center space-x-7 text-xs font-bold uppercase tracking-wider text-slate-700">
+                <nav class="hidden lg:flex items-center space-x-4 xl:space-x-6 text-[11px] xl:text-xs font-bold uppercase tracking-wider text-slate-700">
                     <a href="index.html" class="nav-link-underline text-blue-600">Home</a>
                     <a href="shop.html" class="nav-link-underline hover:text-blue-600 transition">Shop</a>
                     <a href="shop.html?view=collections" class="nav-link-underline hover:text-blue-600 transition">Collections</a>
@@ -214,7 +214,7 @@
                 <div class="flex items-center gap-3 sm:gap-4">
                     
                     <!-- Search Bar (Desktop Pill) -->
-                    <div class="relative hidden md:block w-48 lg:w-64">
+                    <div class="relative hidden md:block w-36 lg:w-44 xl:w-56">
                         <input type="text" id="desktop-search-input" placeholder="Search products..." class="w-full pl-9 pr-4 py-2 rounded-full text-xs bg-slate-100 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition">
                         <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-xs pointer-events-none"></i>
                         <div id="desktop-search-results" class="hidden absolute left-0 right-0 top-11 bg-white border border-slate-200 rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto"></div>
@@ -485,18 +485,18 @@
                         </div>
                     </div>
 
-                    <!-- Card 2: 360° View -->
+                    <!-- Card 2: Bespoke Concierge / VIP Atelier -->
                     <div class="flex-1 rounded-3xl p-6 relative overflow-hidden bg-slate-950 border border-slate-800 text-white flex flex-col justify-between shadow-md group">
-                        <img id="v360-img" src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80" alt="360 View" class="absolute right-0 bottom-0 w-36 sm:w-44 h-full object-cover object-top opacity-70 group-hover:scale-105 transition duration-500 pointer-events-none">
+                        <img id="v360-img" src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80" alt="VIP Atelier Concierge" class="absolute right-0 bottom-0 w-36 sm:w-44 h-full object-cover object-top opacity-70 group-hover:scale-105 transition duration-500 pointer-events-none">
                         <div class="relative z-10 max-w-[65%] space-y-1">
-                            <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400">Interactive</span>
-                            <h4 id="v360-title" class="text-lg font-bold text-white leading-snug">360° View</h4>
-                            <p id="v360-sub" class="text-xs text-slate-300">Explore every detail</p>
+                            <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400">VIP Atelier</span>
+                            <h4 id="v360-title" class="text-lg font-bold text-white leading-snug">Bespoke Styling</h4>
+                            <p id="v360-sub" class="text-xs text-slate-300">Private atelier & custom bridal fitting</p>
                         </div>
                         <div class="relative z-10 mt-4">
-                            <button onclick="open360ViewModal()" class="px-5 py-2 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white font-bold text-xs hover:bg-white/25 shadow-sm transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-arrows-spin text-amber-400 text-xs"></i>
-                                <span id="v360-btn-txt">View 360°</span> &rarr;
+                            <button onclick="openWhatsAppStylist()" class="px-5 py-2 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white font-bold text-xs hover:bg-white/25 shadow-sm transition flex items-center gap-1.5">
+                                <i class="fa-brands fa-whatsapp text-emerald-400 text-xs"></i>
+                                <span id="v360-btn-txt">Chat with Stylist</span> &rarr;
                             </button>
                         </div>
                     </div>
@@ -682,6 +682,97 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="reviews-cards-grid">
                 <!-- Dynamically populated from settings.homepage.reviews -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================================== -->
+    <!-- 11.5 DEDICATED CONTACT & VIP CONCIERGE (ADMIN DRIVEN)                -->
+    <!-- ==================================================================== -->
+    <section id="section-contact-concierge" class="py-16 bg-white border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-amber-500 text-sm">👑</span>
+                        <span class="text-[11px] font-extrabold uppercase tracking-widest text-amber-600">Personalized Support</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-serif font-bold text-slate-900 tracking-tight">Concierge &amp; Atelier Inquiries</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1">Direct assistance for bespoke orders, size consultations &amp; order tracking</p>
+                </div>
+                <a href="contact.html" class="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1">
+                    Visit Contact Hub <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1: Phone Helpline -->
+                <div class="p-6 rounded-3xl bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-4 hover:border-blue-500/40 hover:shadow-md transition">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-600/10 text-blue-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Direct Helpline</span>
+                            <h4 class="text-base font-bold text-slate-900 mt-0.5" id="hp-contact-phone">+92 343 4158605</h4>
+                            <p class="text-xs text-slate-500 mt-1">Instant voice assistance with customer care.</p>
+                        </div>
+                    </div>
+                    <a id="hp-contact-call-btn" href="tel:+923434158605" class="w-full py-2.5 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider text-center transition shadow-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-phone text-[10px]"></i> Call Us
+                    </a>
+                </div>
+
+                <!-- Card 2: WhatsApp Concierge -->
+                <div class="p-6 rounded-3xl bg-emerald-50/50 border border-emerald-200 flex flex-col justify-between space-y-4 hover:border-emerald-500/50 hover:shadow-md transition">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-600/10 text-emerald-600 flex items-center justify-center text-lg">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-700">Instant Chat</span>
+                            <h4 class="text-base font-bold text-slate-900 mt-0.5" id="hp-contact-wa">+92 343 4158605</h4>
+                            <p class="text-xs text-slate-500 mt-1">Order photos, bespoke fits &amp; payment proof.</p>
+                        </div>
+                    </div>
+                    <a id="hp-contact-wa-btn" href="https://wa.me/923434158605?text=Hello%20Khushi%20Collection%2C%20I%20would%20like%20concierge%20assistance." target="_blank" class="w-full py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider text-center transition shadow-sm flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> Chat on WhatsApp
+                    </a>
+                </div>
+
+                <!-- Card 3: Email Concierge -->
+                <div class="p-6 rounded-3xl bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-4 hover:border-indigo-500/40 hover:shadow-md transition">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-600/10 text-indigo-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Official Inquiries</span>
+                            <h4 class="text-base font-bold text-slate-900 mt-0.5 truncate" id="hp-contact-email">support@khushicollection.com</h4>
+                            <p class="text-xs text-slate-500 mt-1">Corporate orders, bridal consultation &amp; feedback.</p>
+                        </div>
+                    </div>
+                    <a id="hp-contact-email-btn" href="mailto:support@khushicollection.com" class="w-full py-2.5 rounded-full bg-white border border-slate-300 hover:border-slate-400 text-slate-800 font-bold text-xs uppercase tracking-wider text-center transition shadow-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-envelope text-[10px]"></i> Email Us
+                    </a>
+                </div>
+
+                <!-- Card 4: Flagship Studio & Hours -->
+                <div class="p-6 rounded-3xl bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-4 hover:border-amber-500/40 hover:shadow-md transition">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Flagship Studio</span>
+                            <h4 class="text-xs font-bold text-slate-900 mt-0.5 line-clamp-2" id="hp-contact-address">Suite 104, Gulberg Galleria, Main Boulevard, Lahore</h4>
+                            <p class="text-[11px] text-slate-500 mt-1 line-clamp-1" id="hp-contact-hours">Mon - Sat: 11:00 AM - 10:00 PM</p>
+                        </div>
+                    </div>
+                    <a id="hp-contact-page-btn" href="contact.html" class="w-full py-2.5 rounded-full btn-gold-pill text-xs uppercase tracking-wider font-bold text-center transition shadow-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-map-pin text-[10px]"></i> Contact Us
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -883,36 +974,6 @@
                 <a href="shop.html" class="flex-1 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs text-center shadow-md transition">
                     Explore Fits &rarr;
                 </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- 360° View Modal -->
-    <div id="v360-modal" onclick="if(event.target === this) close360ViewModal()" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-        <div class="relative w-full max-w-lg bg-slate-950 rounded-3xl p-6 border border-slate-800 text-white shadow-2xl space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-arrows-spin text-amber-400"></i>
-                    <h3 class="font-bold text-white text-base">360° Interactive Detail View</h3>
-                </div>
-                <button onclick="close360ViewModal()" class="w-8 h-8 rounded-full bg-slate-900 text-slate-400 hover:text-white flex items-center justify-center">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="aspect-[4/5] bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 relative flex items-center justify-center select-none cursor-grab active:cursor-grabbing" id="v360-interactive-box">
-                <img id="v360-interactive-img" src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80" alt="360 View" class="w-full h-full object-cover pointer-events-none transition-opacity duration-200">
-                <div class="absolute bottom-4 bg-black/80 backdrop-blur-md px-4 py-1.5 rounded-full text-xs text-amber-400 border border-amber-400/30 flex items-center gap-2">
-                    <i class="fa-solid fa-hand-pointer"></i>
-                    <span>Drag horizontally to rotate 360°</span>
-                </div>
-            </div>
-            
-            <!-- Angle Switcher Quick Pills -->
-            <div class="flex items-center justify-center gap-2 pt-1">
-                <button type="button" onclick="set360Angle(0)" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 hover:bg-amber-400 hover:text-slate-950 transition">Front</button>
-                <button type="button" onclick="set360Angle(1)" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 hover:bg-amber-400 hover:text-slate-950 transition">3/4 Angle</button>
-                <button type="button" onclick="set360Angle(2)" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 hover:bg-amber-400 hover:text-slate-950 transition">Side</button>
-                <button type="button" onclick="set360Angle(3)" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 hover:bg-amber-400 hover:text-slate-950 transition">Detail</button>
             </div>
         </div>
     </div>
@@ -1336,62 +1397,14 @@
             if (input) input.value = '';
         }
 
-        // 360 Degree Viewer
-        const frames360 = [
-            "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&auto=format&fit=crop&q=80"
-        ];
-        let current360Angle = 0;
-        let is360Dragging = false;
-        let start360X = 0;
-
-        function set360Angle(idx) {
-            current360Angle = Math.max(0, Math.min(frames360.length - 1, idx));
-            const img = document.getElementById('v360-interactive-img');
-            if (img) img.src = frames360[current360Angle];
-        }
-
-        function open360ViewModal() {
-            document.getElementById('v360-modal')?.classList.remove('hidden');
-            init360Viewer();
-        }
-        function close360ViewModal() {
-            document.getElementById('v360-modal')?.classList.add('hidden');
-        }
-
-        function init360Viewer() {
-            const box = document.getElementById('v360-interactive-box');
-            const img = document.getElementById('v360-interactive-img');
-            if (!box || !img || box.dataset.initialized) return;
-            box.dataset.initialized = 'true';
-
-            const onStart = (clientX) => {
-                is360Dragging = true;
-                start360X = clientX;
-            };
-
-            const onMove = (clientX) => {
-                if (!is360Dragging) return;
-                const diff = clientX - start360X;
-                if (Math.abs(diff) > 20) {
-                    const step = diff > 0 ? 1 : -1;
-                    current360Angle = (current360Angle + step + frames360.length) % frames360.length;
-                    img.src = frames360[current360Angle];
-                    start360X = clientX;
-                }
-            };
-
-            const onEnd = () => { is360Dragging = false; };
-
-            box.addEventListener('mousedown', (e) => onStart(e.clientX));
-            window.addEventListener('mousemove', (e) => onMove(e.clientX));
-            window.addEventListener('mouseup', onEnd);
-
-            box.addEventListener('touchstart', (e) => { if (e.touches && e.touches[0]) onStart(e.touches[0].clientX); }, { passive: true });
-            window.addEventListener('touchmove', (e) => { if (e.touches && e.touches[0]) onMove(e.touches[0].clientX); }, { passive: true });
-            window.addEventListener('touchend', onEnd);
+        // Bespoke Atelier WhatsApp Consultation
+        function openWhatsAppStylist() {
+            const s = (typeof store !== 'undefined' && store.getSettings) ? store.getSettings() : {};
+            const p = s.store_profile || {};
+            const c = s.contact_support || {};
+            const raw = (p.whatsapp || c.whatsapp_number || '923434158605').replace(/\D/g, '') || '923434158605';
+            const msg = encodeURIComponent("Hello Khushi Collection Atelier, I would like to inquire about bespoke styling and bridal consultation.");
+            window.open(`https://wa.me/${raw}?text=${msg}`, '_blank');
         }
 
         function toggleVideoSound(btn) {
@@ -1424,7 +1437,6 @@
             if (e.key === 'Escape' || e.keyCode === 27) {
                 closeLiveVideoModal();
                 closeVirtualTryOnModal();
-                close360ViewModal();
                 closeCustomerAccountModal();
                 closeSearchModal();
                 closeQuickView();
@@ -1560,6 +1572,7 @@
             document.getElementById('section-why-choose')?.classList.toggle('hidden', !isVis('why_choose_us'));
             document.getElementById('section-recent-wishlist')?.classList.toggle('hidden', !isVis('recently_viewed'));
             document.getElementById('section-reviews')?.classList.toggle('hidden', !isVis('reviews'));
+            document.getElementById('section-contact-concierge')?.classList.toggle('hidden', !isVis('contact'));
             document.getElementById('section-newsletter')?.classList.toggle('hidden', !isVis('newsletter'));
 
             // 2. Announcement Bar
@@ -1626,9 +1639,9 @@
             if (document.getElementById('try-on-img') && tryOn.image_url) document.getElementById('try-on-img').src = tryOn.image_url;
 
             const v360 = hp.view_360_card || {};
-            if (document.getElementById('v360-title')) document.getElementById('v360-title').textContent = v360.title || '360° View';
-            if (document.getElementById('v360-sub')) document.getElementById('v360-sub').textContent = v360.subtitle || 'Explore every detail';
-            if (document.getElementById('v360-btn-txt')) document.getElementById('v360-btn-txt').textContent = v360.button_text || 'View 360°';
+            if (document.getElementById('v360-title')) document.getElementById('v360-title').textContent = v360.title || 'Bespoke Styling';
+            if (document.getElementById('v360-sub')) document.getElementById('v360-sub').textContent = v360.subtitle || 'Private atelier & custom bridal fitting';
+            if (document.getElementById('v360-btn-txt')) document.getElementById('v360-btn-txt').textContent = v360.button_text || 'Chat with Stylist';
             if (document.getElementById('v360-img') && v360.image_url) document.getElementById('v360-img').src = v360.image_url;
 
             // 6. New Arrivals
@@ -1728,6 +1741,34 @@
             if (document.getElementById('news-title')) document.getElementById('news-title').textContent = news.title || 'Join Our Newsletter';
             if (document.getElementById('news-sub')) document.getElementById('news-sub').textContent = news.subtitle || 'Get exclusive offers, invitations and style tips straight to your inbox.';
             if (document.getElementById('news-badge')) document.getElementById('news-badge').textContent = news.discount_badge || 'Get 10% OFF';
+
+            // 12.5 Dynamic Concierge & Contact Support Section
+            const cs = s.contact_support || {};
+            const rawWa = (p.whatsapp || cs.whatsapp_number || '923434158605').replace(/\D/g, '') || '923434158605';
+            const phone = p.phone || cs.support_phone || '+92 343 4158605';
+            const email = p.email || cs.support_email || 'support@khushicollection.com';
+            const address = p.address || cs.business_address || 'Suite 104, Gulberg Galleria, Main Boulevard, Lahore';
+            const hours = p.business_hours || cs.working_hours || 'Mon - Sat: 11:00 AM - 10:00 PM';
+
+            const hpPhone = document.getElementById('hp-contact-phone');
+            if (hpPhone) hpPhone.textContent = phone;
+            const hpCallBtn = document.getElementById('hp-contact-call-btn');
+            if (hpCallBtn) hpCallBtn.href = 'tel:' + phone.replace(/\s+/g, '');
+
+            const hpWa = document.getElementById('hp-contact-wa');
+            if (hpWa) hpWa.textContent = '+' + rawWa;
+            const hpWaBtn = document.getElementById('hp-contact-wa-btn');
+            if (hpWaBtn) hpWaBtn.href = `https://wa.me/${rawWa}?text=${encodeURIComponent('Hello Khushi Collection, I would like concierge assistance.')}`;
+
+            const hpEmail = document.getElementById('hp-contact-email');
+            if (hpEmail) hpEmail.textContent = email;
+            const hpEmailBtn = document.getElementById('hp-contact-email-btn');
+            if (hpEmailBtn) hpEmailBtn.href = 'mailto:' + email;
+
+            const hpAddr = document.getElementById('hp-contact-address');
+            if (hpAddr) hpAddr.textContent = address;
+            const hpHours = document.getElementById('hp-contact-hours');
+            if (hpHours) hpHours.textContent = hours;
 
             // 13. Footer
             if (document.getElementById('footer-desc')) document.getElementById('footer-desc').textContent = p.footer_description || p.store_description || '';
