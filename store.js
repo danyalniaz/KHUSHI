@@ -7371,5 +7371,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Universal Khushi Live Sync
     store.syncWithServer();
-});
 
+    // WhatsApp link helper — used by all pages
+    getWhatsAppLink(message) {
+        const num = (this.settings?.contact_support?.whatsapp_number || '+92 343 4158605').replace(/[^0-9]/g, '');
+        return `https://wa.me/${num}?text=${encodeURIComponent(message || 'Hi Khushi Collection, I need help!')}`;
+    }
+
+}

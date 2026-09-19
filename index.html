@@ -1876,5 +1876,22 @@
             updateCustomerNavLabel();
         });
     </script>
+    <!-- WhatsApp Concierge FAB -->
+    <a id="whatsapp-fab" href="https://wa.me/923434158605?text=Hi%20Khushi%20Collection%2C%20I%20need%20help!" target="_blank" class="whatsapp-fab" title="Chat on WhatsApp" aria-label="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <script>
+    (function() {
+        function setWaFab() {
+            if (typeof store !== 'undefined' && store.settings && store.settings.contact_support && store.settings.contact_support.whatsapp_number) {
+                var num = store.settings.contact_support.whatsapp_number.replace(/[^0-9]/g,'');
+                var fab = document.getElementById('whatsapp-fab');
+                if (fab) fab.href = 'https://wa.me/' + num + '?text=Hi%20Khushi%20Collection%2C%20I%20need%20help!';
+            }
+        }
+        if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', function() { setTimeout(setWaFab, 1500); }); }
+        else { setTimeout(setWaFab, 1500); }
+    })();
+    </script>
 </body>
 </html>

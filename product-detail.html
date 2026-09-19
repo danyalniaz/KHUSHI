@@ -32,94 +32,113 @@
     <link rel="stylesheet" href="static/css/style.css">
 
     <style>
-        body {
-            background-color: #0A0D14;
-            color: #F4F4F5;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-        }
-        .font-serif {
-            font-family: 'Playfair Display', Georgia, serif;
-        }
-        .glass-nav {
-            background: rgba(10, 13, 20, 0.9);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-        }
-        .luxury-card {
-            background: linear-gradient(180deg, rgba(20, 26, 38, 0.7) 0%, rgba(12, 16, 24, 0.9) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-gold {
-            background: linear-gradient(135deg, #ECC94B 0%, #D4AF37 50%, #B7791F 100%);
-            color: #000;
-            font-weight: 700;
-            transition: all 0.3s ease;
-        }
-        .btn-gold:hover {
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-            transform: translateY(-1px);
-        }
-        .tab-btn-active {
-            color: #D4AF37 !important;
-            border-bottom-color: #D4AF37 !important;
-            font-weight: 700 !important;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .tab-btn-active { color: #2563EB !important; border-bottom-color: #2563EB !important; font-weight: 700 !important; }
     </style>
 </head>
-<body class="bg-[#0A0D14] text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-black">
+<body class="bg-white text-slate-900 min-h-screen flex flex-col antialiased selection:bg-amber-400 selection:text-slate-950 overflow-x-hidden">
 
-    <!-- Top Announcement Bar -->
-    <div class="bg-gradient-to-r from-amber-700 via-amber-500 to-amber-700 text-black py-2 px-4 text-xs font-bold tracking-wider text-center shadow-md">
-        <span>✨ FREE NATIONWIDE EXPRESS DELIVERY ON ORDERS OVER RS. 5,000 | WHATSAPP CONCIERGE: +92 300 1234567</span>
+    <!-- Announcement Bar -->
+    <div id="announcement-banner" class="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white py-2 px-4 text-xs font-semibold shadow-sm z-50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <div class="hidden md:flex items-center gap-2 text-blue-100 text-[11px]">
+                <i class="fa-solid fa-truck-fast text-amber-300"></i>
+                <span id="ann-left-text">Free Shipping All Over Pakistan</span>
+            </div>
+            <div class="flex-1 text-center font-bold tracking-wide text-xs sm:text-[13px]">
+                <span id="ann-center-text">🎁 Free Shipping All Over Pakistan | Cash on Delivery Available</span>
+            </div>
+            <div class="hidden sm:flex items-center gap-4 text-blue-100 text-[11px]">
+                <a href="track-order.html" id="ann-right-link" class="hover:text-amber-300 transition flex items-center gap-1">
+                    <i class="fa-solid fa-box text-amber-300"></i>
+                    <span id="ann-right-text">Track Order</span>
+                </a>
+                <span class="text-blue-300">|</span>
+                <span class="font-mono text-amber-300 font-bold">PKR (Rs.)</span>
+            </div>
+        </div>
     </div>
 
-    <!-- Header -->
-    <header class="sticky top-0 z-40 glass-nav">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <button onclick="toggleMobileMenu()" class="md:hidden text-zinc-300 hover:text-amber-400 text-xl p-2" aria-label="Open Navigation Menu">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <a href="index.html" class="flex items-center gap-3">
-                    <img src="static/images/logo.svg" alt="Khushi Collection" class="h-10 sm:h-12 w-auto">
+    <!-- Sticky White Luxury Navigation -->
+    <header class="sticky top-0 z-40 white-glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-4">
+                <a href="index.html" class="flex items-center gap-2.5 group">
+                    <img src="static/images/logo.svg" alt="Khushi Collection" class="h-10 w-auto transition-transform duration-300 group-hover:scale-105">
+                    <div class="flex flex-col">
+                        <span class="font-cinzel text-xl sm:text-2xl font-bold tracking-widest text-slate-900 group-hover:text-blue-600 transition">KHUSHI</span>
+                        <span class="text-[9px] uppercase tracking-[0.25em] text-amber-600 font-bold -mt-1">Wear Your Story</span>
+                    </div>
                 </a>
-            </div>
-
-            <div class="hidden md:flex items-center space-x-6 text-xs font-semibold uppercase tracking-widest text-zinc-300">
-                <a href="index.html" class="hover:text-amber-400 transition">Home</a>
-                <a href="shop.html" class="hover:text-amber-400 transition">Catalog</a>
-                <a href="shop.html?category=women" class="hover:text-amber-400 transition">Women</a>
-                <a href="shop.html?category=men" class="hover:text-amber-400 transition">Men</a>
-                <a href="shop.html?category=perfumes" class="hover:text-amber-400 transition">The Art of Oud</a>
-                <a href="shop.html?filter=sale" class="text-rose-400 hover:text-rose-300 transition">Sale</a>
-            </div>
-
-            <div class="flex items-center gap-3 sm:gap-4">
-                <a href="track-order.html" class="hidden sm:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-amber-400 transition">
-                    <i class="fa-solid fa-truck-fast text-amber-400 text-sm"></i>
-                    <span>Track</span>
-                </a>
-                <a href="shop.html?view=wishlist" class="relative p-2 text-zinc-300 hover:text-amber-400 transition">
-                    <i class="fa-regular fa-heart text-lg"></i>
-                    <span class="wishlist-badge-count hidden absolute top-0 right-0 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center">0</span>
-                </a>
-                <a href="cart.html" class="relative p-2 text-zinc-300 hover:text-amber-400 flex items-center gap-2">
-                    <i class="fa-solid fa-bag-shopping text-xl text-amber-400"></i>
-                    <span class="cart-badge-count hidden absolute -top-1 -right-2 w-4 h-4 rounded-full bg-amber-500 text-black text-[10px] font-extrabold flex items-center justify-center">0</span>
-                </a>
+                <nav class="hidden lg:flex items-center space-x-6 text-xs font-bold uppercase tracking-wider text-slate-700">
+                    <a href="index.html" class="nav-link-underline hover:text-blue-600 transition">Home</a>
+                    <a href="shop.html" class="nav-link-underline hover:text-blue-600 transition">Shop</a>
+                    <a href="shop.html?view=collections" class="nav-link-underline hover:text-blue-600 transition">Collections</a>
+                    <a href="shop.html?category=men" class="nav-link-underline hover:text-blue-600 transition">Men</a>
+                    <a href="shop.html?category=women" class="nav-link-underline hover:text-blue-600 transition">Women</a>
+                    <a href="shop.html?category=shoes" class="nav-link-underline hover:text-blue-600 transition">Accessories</a>
+                    <a href="about.html" class="nav-link-underline hover:text-blue-600 transition">About</a>
+                    <a href="contact.html" class="nav-link-underline hover:text-blue-600 transition">Contact</a>
+                </nav>
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <div class="relative hidden md:block w-44 lg:w-56">
+                        <input type="text" id="desktop-search-input" placeholder="Search products..." class="w-full pl-9 pr-4 py-2 rounded-full text-xs bg-slate-100 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-xs pointer-events-none"></i>
+                        <div id="desktop-search-results" class="hidden absolute left-0 right-0 top-11 bg-white border border-slate-200 rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto"></div>
+                    </div>
+                    <button onclick="openSearchModal()" class="md:hidden w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-blue-600 transition"><i class="fa-solid fa-magnifying-glass text-xs"></i></button>
+                    <button onclick="if(typeof openWishlistDrawer==='function') openWishlistDrawer()" class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 hover:text-rose-500 transition" title="Wishlist">
+                        <i class="fa-regular fa-heart text-sm sm:text-base"></i>
+                        <span id="wishlist-count-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">0</span>
+                    </button>
+                    <button onclick="openCartDrawer()" class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 hover:text-blue-600 transition" title="Cart">
+                        <i class="fa-solid fa-bag-shopping text-sm sm:text-base"></i>
+                        <span id="cart-count-badge" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
+                    </button>
+                    <button type="button" onclick="if(typeof openCustomerAccountModal==='function') openCustomerAccountModal()" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
+                        <i class="fa-regular fa-user text-xs"></i><span id="nav-account-label">Account</span>
+                    </button>
+                    <button type="button" onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
+    <!-- Mobile Nav Drawer -->
+    <div id="mobile-nav-overlay" class="hidden fixed inset-0 bg-black/60 z-50 backdrop-blur-sm" onclick="toggleMobileMenu()"></div>
+    <div id="mobile-nav-drawer" class="fixed top-0 left-0 bottom-0 w-80 max-w-[85vw] bg-white z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+        <div class="p-6 overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div class="flex items-center gap-2"><img src="static/images/logo.svg" class="h-8 w-auto"><span class="font-cinzel text-lg font-bold text-slate-900">KHUSHI</span></div>
+                <button onclick="toggleMobileMenu()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <nav class="py-6 space-y-4 text-sm font-bold uppercase tracking-wider text-slate-800">
+                <a href="index.html" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Home</a>
+                <a href="shop.html" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Shop Catalog</a>
+                <a href="shop.html?view=collections" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Collections</a>
+                <a href="shop.html?category=men" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Men's Wear</a>
+                <a href="shop.html?category=women" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Women's Wear</a>
+                <a href="shop.html?category=shoes" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Accessories</a>
+                <a href="about.html" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Our Story</a>
+                <a href="contact.html" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Contact Us</a>
+                <button type="button" onclick="toggleMobileMenu(); if(typeof openCustomerAccountModal==='function') openCustomerAccountModal();" class="block w-full text-left pt-3 border-t border-slate-100 hover:text-blue-600">
+                    <i class="fa-regular fa-user mr-2 text-slate-500"></i>My Account &rarr;
+                </button>
+            </nav>
+        </div>
+        <div class="p-6 border-t border-slate-100 bg-slate-50 text-xs text-slate-500">Khushi Collection &bull; Timeless Luxury</div>
+    </div>
 
     <!-- Breadcrumb -->
-    <div class="bg-zinc-950/80 border-b border-zinc-800/80 py-3.5 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto flex items-center gap-2 text-xs text-zinc-400">
+    <div class="bg-white border-b border-slate-200 py-3.5 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto flex items-center gap-2 text-xs text-slate-500">
             <a href="index.html" class="hover:text-amber-400">Home</a>
-            <i class="fa-solid fa-chevron-right text-[9px] text-zinc-600"></i>
+            <i class="fa-solid fa-chevron-right text-[9px] text-slate-400"></i>
             <a href="shop.html" class="hover:text-amber-400" id="crumb-category">Catalog</a>
-            <i class="fa-solid fa-chevron-right text-[9px] text-zinc-600"></i>
+            <i class="fa-solid fa-chevron-right text-[9px] text-slate-400"></i>
             <span class="text-amber-400 font-semibold truncate max-w-xs" id="crumb-title">Product Details</span>
         </div>
     </div>
@@ -162,7 +181,7 @@
                             <i class="fa-solid fa-star"></i>
                             <span class="text-zinc-300 font-bold ml-1.5" id="detail-rating-num">4.9</span>
                         </div>
-                        <span class="text-zinc-600">&bull;</span>
+                        <span class="text-slate-400">&bull;</span>
                         <span class="text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-semibold text-[10px]">
                             <i class="fa-solid fa-check"></i> In Stock &bull; Atelier Ready
                         </span>
@@ -399,7 +418,7 @@
             </div>
         </div>
 
-        <div class="pt-6 border-t border-zinc-900 text-center text-[11px] text-zinc-600">
+        <div class="pt-6 border-t border-zinc-900 text-center text-[11px] text-slate-400">
             <p>&copy; 2026 Khushi Collection Pvt Ltd</p>
         </div>
     </div>
@@ -928,5 +947,28 @@
             </form>
         </div>
     </div>
+
+    <!-- WhatsApp FAB -->
+    <a id="whatsapp-fab" href="https://wa.me/923434158605?text=Hi%20Khushi%20Collection!" target="_blank" class="whatsapp-fab" title="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <script>
+    (function() { setTimeout(function() {
+        if (typeof store !== 'undefined' && store.settings && store.settings.contact_support && store.settings.contact_support.whatsapp_number) {
+            var num = store.settings.contact_support.whatsapp_number.replace(/[^0-9]/g,'');
+            var fab = document.getElementById('whatsapp-fab');
+            if (fab) fab.href = 'https://wa.me/' + num + '?text=Hi%20Khushi%20Collection!';
+        }
+    }, 1200); })();
+    function toggleMobileMenu() {
+        var o = document.getElementById('mobile-nav-overlay'), d = document.getElementById('mobile-nav-drawer');
+        if (!o || !d) return;
+        var open = !d.classList.contains('-translate-x-full');
+        if (open) { d.classList.add('-translate-x-full'); o.classList.add('hidden'); document.body.style.overflow=''; }
+        else { d.classList.remove('-translate-x-full'); o.classList.remove('hidden'); document.body.style.overflow='hidden'; }
+    }
+    function openSearchModal() { document.getElementById('smart-search-modal')?.classList.remove('hidden'); }
+    function closeSearchModal() { document.getElementById('smart-search-modal')?.classList.add('hidden'); }
+    </script>
 </body>
 </html>

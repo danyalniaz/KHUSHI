@@ -3,65 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Concierge — Khushi Collection</title>
+    <title>Contact - Khushi Collection</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { serif: ['Playfair Display', 'Georgia', 'serif'], sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="static/css/style.css">
-</head>
-<body class="bg-[#0A0D14] text-zinc-100 min-h-screen flex flex-col antialiased">
-    <header class="sticky top-0 z-40 glass-nav">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="index.html"><img src="static/images/logo.svg" class="h-11 w-auto"></a>
-            <div class="flex items-center gap-6 text-xs font-semibold uppercase tracking-wider text-zinc-300">
-                <a href="index.html" class="hover:text-amber-400">Home</a>
-                <a href="shop.html" class="hover:text-amber-400">Shop</a>
-                <a href="track-order.html" class="hover:text-amber-400">Track</a>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+    </style>
+</head><body class="bg-white text-slate-900 min-h-screen flex flex-col antialiased selection:bg-amber-400 selection:text-slate-950 overflow-x-hidden">
+
+    <!-- Announcement Bar -->
+    <div id="announcement-banner" class="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-slate-900 py-2 px-4 text-xs font-semibold shadow-sm z-50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <div class="hidden md:flex items-center gap-2 text-blue-100 text-[11px]"><i class="fa-solid fa-truck-fast text-amber-300"></i><span>Free Shipping All Over Pakistan</span></div>
+            <div class="flex-1 text-center font-bold tracking-wide text-xs sm:text-[13px]"><span>&#x1F381; Free Shipping All Over Pakistan | Cash on Delivery Available</span></div>
+            <div class="hidden sm:flex items-center gap-4 text-blue-100 text-[11px]"><a href="track-order.html" class="hover:text-amber-300 transition flex items-center gap-1"><i class="fa-solid fa-box text-amber-300"></i><span>Track Order</span></a><span class="text-blue-300">|</span><span class="font-mono text-amber-300 font-bold">PKR (Rs.)</span></div>
+        </div>
+    </div>
+    <!-- Sticky White Luxury Navigation -->
+    <header class="sticky top-0 z-40 white-glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-4">
+                <a href="index.html" class="flex items-center gap-2.5 group">
+                    <img src="static/images/logo.svg" alt="Khushi Collection" class="h-10 w-auto transition-transform duration-300 group-hover:scale-105">
+                    <div class="flex flex-col"><span class="font-cinzel text-xl sm:text-2xl font-bold tracking-widest text-slate-900 group-hover:text-blue-600 transition">KHUSHI</span><span class="text-[9px] uppercase tracking-[0.25em] text-amber-600 font-bold -mt-1">Wear Your Story</span></div>
+                </a>
+                <nav class="hidden lg:flex items-center space-x-6 text-xs font-bold uppercase tracking-wider text-slate-700">
+                    <a href="index.html" class="nav-link-underline hover:text-blue-600 transition">Home</a>
+                    <a href="shop.html" class="nav-link-underline hover:text-blue-600 transition">Shop</a>
+                    <a href="shop.html?view=collections" class="nav-link-underline hover:text-blue-600 transition">Collections</a>
+                    <a href="shop.html?category=men" class="nav-link-underline hover:text-blue-600 transition">Men</a>
+                    <a href="shop.html?category=women" class="nav-link-underline hover:text-blue-600 transition">Women</a>
+                    <a href="shop.html?category=shoes" class="nav-link-underline hover:text-blue-600 transition">Accessories</a>
+                    <a href="about.html" class="nav-link-underline hover:text-blue-600 transition">About</a>
+                    <a href="contact.html" class="nav-link-underline hover:text-blue-600 transition">Contact</a>
+                </nav>
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <button onclick="if(typeof openWishlistDrawer==='function') openWishlistDrawer()" class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 hover:text-rose-500 transition" title="Wishlist"><i class="fa-regular fa-heart text-sm sm:text-base"></i></button>
+                    <button onclick="if(typeof openCartDrawer==='function') openCartDrawer()" class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 hover:text-blue-600 transition" title="Cart"><i class="fa-solid fa-bag-shopping text-sm sm:text-base"></i><span id="cart-count-badge" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span></button>
+                    <button type="button" onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition"><i class="fa-solid fa-bars text-lg"></i></button>
+                </div>
             </div>
         </div>
     </header>
+    <div id="mobile-nav-overlay" class="hidden fixed inset-0 bg-black/60 z-50 backdrop-blur-sm" onclick="toggleMobileMenu()"></div>
+    <div id="mobile-nav-drawer" class="fixed top-0 left-0 bottom-0 w-80 max-w-[85vw] bg-white z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+        <div class="p-6 overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100"><div class="flex items-center gap-2"><img src="static/images/logo.svg" class="h-8 w-auto"><span class="font-cinzel text-lg font-bold text-slate-900">KHUSHI</span></div><button onclick="toggleMobileMenu()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><i class="fa-solid fa-xmark"></i></button></div>
+            <nav class="py-6 space-y-4 text-sm font-bold uppercase tracking-wider text-slate-800">
+                <a href="index.html" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Home</a>
+                <a href="shop.html" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Shop Catalog</a>
+                <a href="shop.html?view=collections" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Collections</a>
+                <a href="shop.html?category=men" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Men's Wear</a>
+                <a href="shop.html?category=women" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Women's Wear</a>
+                <a href="about.html" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Our Story</a>
+                <a href="contact.html" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Contact Us</a>
+            </nav>
+        </div>
+        <div class="p-6 border-t border-slate-100 bg-slate-50 text-xs text-slate-500">Khushi Collection &bull; Timeless Luxury</div>
+    </div>
 
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow space-y-10">
         <div class="text-center space-y-2">
             <span class="text-xs uppercase font-bold tracking-widest text-amber-400">Customer Support</span>
-            <h1 class="text-2xl sm:text-4xl font-serif font-bold text-white">VIP Concierge & Helpdesk</h1>
-            <p class="text-xs text-zinc-400">Have inquiries regarding sizing, custom bridal orders, or order status?</p>
+            <h1 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900">VIP Concierge & Helpdesk</h1>
+            <p class="text-xs text-slate-500">Have inquiries regarding sizing, custom bridal orders, or order status?</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
             <div class="md:col-span-5 space-y-4">
-                <div class="luxury-card p-6 rounded-3xl space-y-4 text-xs">
-                    <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">Direct Contacts</h3>
-                    <p class="flex items-center gap-3 text-zinc-300"><i class="fa-solid fa-phone text-amber-400 w-4"></i> <span class="dyn-store-phone">+92 3434158605</span></p>
-                    <p class="flex items-center gap-3 text-zinc-300"><i class="fa-brands fa-whatsapp text-emerald-400 w-4"></i> WhatsApp: <span class="dyn-store-whatsapp">+923434158605</span></p>
-                    <p class="flex items-center gap-3 text-zinc-300"><i class="fa-solid fa-envelope text-amber-400 w-4"></i> <span class="dyn-store-email">support@khushicollection.com</span></p>
-                    <p class="flex items-center gap-3 text-zinc-300"><i class="fa-solid fa-location-dot text-amber-400 w-4"></i> <span class="dyn-store-address">Suite 104, Gulberg Galleria, Main Boulevard</span></p>
+                <div class="bright-section-card p-6 rounded-3xl space-y-4 text-xs">
+                    <h3 class="text-sm font-serif font-bold text-slate-900 pb-2 border-b border-slate-200">Direct Contacts</h3>
+                    <p class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-phone text-amber-400 w-4"></i> <span class="dyn-store-phone">+92 3434158605</span></p>
+                    <p class="flex items-center gap-3 text-slate-600"><i class="fa-brands fa-whatsapp text-emerald-400 w-4"></i> WhatsApp: <span class="dyn-store-whatsapp">+923434158605</span></p>
+                    <p class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-envelope text-amber-400 w-4"></i> <span class="dyn-store-email">support@khushicollection.com</span></p>
+                    <p class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-location-dot text-amber-400 w-4"></i> <span class="dyn-store-address">Suite 104, Gulberg Galleria, Main Boulevard</span></p>
                 </div>
 
-                <a href="https://wa.me/923434158605" target="_blank" class="dyn-whatsapp-link block w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-center text-white text-xs font-bold uppercase tracking-wider shadow">
+                <a href="https://wa.me/923434158605" target="_blank" class="dyn-whatsapp-link block w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-center text-slate-900 text-xs font-bold uppercase tracking-wider shadow">
                     <i class="fa-brands fa-whatsapp text-sm mr-1.5"></i> Chat on WhatsApp Now
                 </a>
             </div>
 
-            <div class="md:col-span-7 luxury-card p-6 sm:p-8 rounded-3xl space-y-4">
-                <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">Send an Inquiry</h3>
+            <div class="md:col-span-7 bright-section-card p-6 sm:p-8 rounded-3xl space-y-4">
+                <h3 class="text-sm font-serif font-bold text-slate-900 pb-2 border-b border-slate-200">Send an Inquiry</h3>
                 <form onsubmit="handleContactSubmit(event)" class="space-y-3 text-xs">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
-                            <label class="block font-semibold text-zinc-300 mb-1">Your Name *</label>
-                            <input type="text" id="contact-name" required placeholder="Khushi" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                            <label class="block font-semibold text-slate-600 mb-1">Your Name *</label>
+                            <input type="text" id="contact-name" required placeholder="Khushi" class="w-full bg-slate-100 border border-zinc-700 rounded-xl px-3 py-2 text-slate-900">
                         </div>
                         <div>
-                            <label class="block font-semibold text-zinc-300 mb-1">Phone / WhatsApp *</label>
-                            <input type="tel" id="contact-phone" required placeholder="0300 1234567" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                            <label class="block font-semibold text-slate-600 mb-1">Phone / WhatsApp *</label>
+                            <input type="tel" id="contact-phone" required placeholder="0300 1234567" class="w-full bg-slate-100 border border-zinc-700 rounded-xl px-3 py-2 text-slate-900">
                         </div>
                     </div>
                     <div>
-                        <label class="block font-semibold text-zinc-300 mb-1">Subject</label>
-                        <input type="text" id="contact-subject" placeholder="Size assistance or Custom Order" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white">
+                        <label class="block font-semibold text-slate-600 mb-1">Subject</label>
+                        <input type="text" id="contact-subject" placeholder="Size assistance or Custom Order" class="w-full bg-slate-100 border border-zinc-700 rounded-xl px-3 py-2 text-slate-900">
                     </div>
                     <div>
-                        <label class="block font-semibold text-zinc-300 mb-1">Message</label>
-                        <textarea id="contact-message" rows="3" required placeholder="How may we assist you today?" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white"></textarea>
+                        <label class="block font-semibold text-slate-600 mb-1">Message</label>
+                        <textarea id="contact-message" rows="3" required placeholder="How may we assist you today?" class="w-full bg-slate-100 border border-zinc-700 rounded-xl px-3 py-2 text-slate-900"></textarea>
                     </div>
                     <button type="submit" id="contact-submit-btn" class="w-full py-3 rounded-xl btn-gold font-bold uppercase tracking-wider">Send Message</button>
                 </form>
@@ -69,7 +118,7 @@
         </div>
     </main>
 
-    <footer class="bg-[#070A0F] py-8 text-center text-xs text-zinc-500 border-t border-zinc-900">
+    <footer class="bg-[#070A0F] py-8 text-center text-xs text-slate-500 border-t border-zinc-900">
         &copy; 2026 Khushi Collection Pvt Ltd. All Rights Reserved.
     </footer>
     <script src="store.js"></script>
@@ -109,6 +158,64 @@
             document.getElementById('contact-subject').value = '';
             document.getElementById('contact-message').value = '';
         }
+    </script>
+
+    <!-- Shared Site Footer -->
+    <footer class="khushi-footer text-xs pt-12 pb-10 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center gap-2.5"><img src="static/images/logo.svg" alt="Khushi Logo" class="h-9 w-auto"><span class="font-cinzel text-xl font-bold tracking-widest text-white">KHUSHI</span></div>
+                    <p class="text-slate-400 leading-relaxed max-w-sm">Khushi Collection embodies timeless Pakistani heritage through artisanal haute couture, luxury formal wear, and signature fragrances.</p>
+                    <div class="flex items-center gap-3 pt-2 text-slate-400 text-sm">
+                        <a href="https://instagram.com/khushicollection" target="_blank" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-blue-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://facebook.com/khushicollection" target="_blank" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-blue-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://tiktok.com/@khushicollection" target="_blank" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-blue-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Quick Links</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="index.html" class="hover:text-amber-400 transition">Home</a></li>
+                        <li><a href="shop.html" class="hover:text-amber-400 transition">Shop Catalog</a></li>
+                        <li><a href="about.html" class="hover:text-amber-400 transition">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-400 transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Customer Care</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="track-order.html" class="hover:text-amber-400 transition">Track Order</a></li>
+                        <li><a href="size-guide.html" class="hover:text-amber-400 transition">Size Guide</a></li>
+                        <li><a href="faq.html" class="hover:text-amber-400 transition">FAQ</a></li>
+                        <li><p class="text-slate-400">+92 343 4158605</p></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+                <div>&copy; 2026 Khushi Collection. All rights reserved.</div>
+                <div class="flex items-center gap-3 text-slate-400">
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-money-bill-wave text-base text-emerald-400"></i> COD</span>
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-lock text-xs"></i> SSL Secured</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- WhatsApp FAB -->
+    <a id="whatsapp-fab" href="https://wa.me/923434158605?text=Hi%20Khushi%20Collection!" target="_blank" class="whatsapp-fab" title="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+    <script>
+    (function() { setTimeout(function() {
+        if (typeof store !== 'undefined' && store.settings && store.settings.contact_support && store.settings.contact_support.whatsapp_number) {
+            var num = store.settings.contact_support.whatsapp_number.replace(/[^0-9]/g,'');
+            var fab = document.getElementById('whatsapp-fab'); if (fab) fab.href = 'https://wa.me/' + num + '?text=Hi%20Khushi%20Collection!';
+        }
+    }, 1200); })();
+    function toggleMobileMenu() {
+        var o = document.getElementById('mobile-nav-overlay'), d = document.getElementById('mobile-nav-drawer');
+        if (!o || !d) return;
+        if (!d.classList.contains('-translate-x-full')) { d.classList.add('-translate-x-full'); o.classList.add('hidden'); document.body.style.overflow=''; }
+        else { d.classList.remove('-translate-x-full'); o.classList.remove('hidden'); document.body.style.overflow='hidden'; }
+    }
     </script>
 </body>
 </html>

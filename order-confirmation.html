@@ -4,20 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmed — Khushi Collection</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { serif: ['Playfair Display', 'Georgia', 'serif'], sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+    </style>
 </head>
-<body class="bg-[#0A0D14] text-zinc-100 min-h-screen flex flex-col antialiased">
+<body class="bg-white text-slate-900 min-h-screen flex flex-col antialiased selection:bg-amber-400 selection:text-slate-950 overflow-x-hidden">
 
-    <!-- Header -->
-    <header class="sticky top-0 z-40 glass-nav">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-            <a href="index.html" class="flex items-center gap-3">
-                <img src="static/images/logo.svg" alt="Khushi Collection" class="h-11 w-auto">
+    <!-- Checkout Nav -->
+    <header class="sticky top-0 z-40 white-glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <a href="index.html" class="flex items-center gap-2.5 group">
+                <img src="static/images/logo.svg" alt="Khushi Collection" class="h-9 w-auto group-hover:scale-105 transition">
+                <div class="flex flex-col"><span class="font-cinzel text-lg font-bold tracking-widest text-slate-900">KHUSHI</span><span class="text-[8px] uppercase tracking-[0.25em] text-amber-600 font-bold -mt-0.5">Wear Your Story</span></div>
             </a>
-            <a href="shop.html" class="text-xs text-zinc-300 hover:text-amber-400 font-semibold uppercase">Continue Shopping &rarr;</a>
+            <a href="shop.html" class="text-xs text-slate-600 hover:text-blue-600 font-semibold uppercase tracking-wider transition">Continue Shopping &rarr;</a>
         </div>
     </header>
 
@@ -25,7 +34,7 @@
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow space-y-8">
         
         <!-- Success Banner -->
-        <div class="luxury-card p-8 sm:p-12 rounded-3xl text-center space-y-4 border-amber-500/40 relative overflow-hidden">
+        <div class="bright-section-card p-8 sm:p-12 rounded-3xl text-center space-y-4 border-amber-500/40 relative overflow-hidden">
             <div class="w-20 h-20 rounded-full bg-amber-400/10 border-2 border-amber-400 text-amber-400 flex items-center justify-center mx-auto text-3xl shadow-xl">
                 <i class="fa-solid fa-check"></i>
             </div>
@@ -34,12 +43,12 @@
                 Order Received
             </span>
 
-            <h1 class="text-2xl sm:text-4xl font-serif font-extrabold text-white">🎉 Thank You For Your Order!</h1>
-            <p class="text-xs sm:text-sm text-zinc-300 max-w-md mx-auto">
+            <h1 class="text-2xl sm:text-4xl font-serif font-extrabold text-slate-900">🎉 Thank You For Your Order!</h1>
+            <p class="text-xs sm:text-sm text-slate-600 max-w-md mx-auto">
                 Your luxury order has been recorded. Our concierge team is preparing your package for dispatch.
             </p>
 
-            <div class="inline-block p-3 px-6 rounded-2xl bg-zinc-900 border border-zinc-800 font-mono text-sm sm:text-base font-bold text-amber-400">
+            <div class="inline-block p-3 px-6 rounded-2xl bg-slate-100 border border-slate-200 font-mono text-sm sm:text-base font-bold text-amber-400">
                 Order Reference: <span id="conf-order-id">Loading...</span>
             </div>
         </div>
@@ -53,8 +62,8 @@
                         <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Confirmation Dispatched
                     </span>
                 </div>
-                <h4 class="text-base font-bold text-white">Automated WhatsApp Order Confirmation</h4>
-                <p class="text-xs text-zinc-300">
+                <h4 class="text-base font-bold text-slate-900">Automated WhatsApp Order Confirmation</h4>
+                <p class="text-xs text-slate-600">
                     An official confirmation with full order breakdown and live tracking link has been sent to your WhatsApp <strong id="conf-wa-number" class="text-emerald-300 font-mono">--</strong>.
                 </p>
             </div>
@@ -68,22 +77,22 @@
         <!-- Order Summary & Delivery Card -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Customer Information -->
-            <div class="luxury-card p-6 rounded-3xl space-y-3 text-xs">
-                <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">Customer & Shipping</h3>
-                <p><strong class="text-zinc-400">Recipient:</strong> <span id="conf-name" class="text-white">--</span></p>
-                <p><strong class="text-zinc-400">Phone:</strong> <span id="conf-phone" class="text-white">--</span></p>
-                <p><strong class="text-zinc-400">Destination:</strong> <span id="conf-address" class="text-white">--</span></p>
+            <div class="bright-section-card p-6 rounded-3xl space-y-3 text-xs">
+                <h3 class="text-sm font-serif font-bold text-slate-900 pb-2 border-b border-slate-200">Customer & Shipping</h3>
+                <p><strong class="text-slate-500">Recipient:</strong> <span id="conf-name" class="text-slate-900">--</span></p>
+                <p><strong class="text-slate-500">Phone:</strong> <span id="conf-phone" class="text-slate-900">--</span></p>
+                <p><strong class="text-slate-500">Destination:</strong> <span id="conf-address" class="text-slate-900">--</span></p>
                 <div class="pt-2 flex flex-wrap items-center gap-2">
                     <span id="conf-pay-badge" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-950/60 border border-amber-500/40 text-amber-300">Payment: Pending</span>
-                    <span id="conf-ord-badge" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-zinc-800 border border-zinc-700 text-zinc-300">Status: Placed</span>
+                    <span id="conf-ord-badge" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-zinc-800 border border-zinc-700 text-slate-600">Status: Placed</span>
                 </div>
             </div>
 
             <!-- Action Controls & Guidance -->
-            <div class="luxury-card p-6 rounded-3xl space-y-4 flex flex-col justify-between">
+            <div class="bright-section-card p-6 rounded-3xl space-y-4 flex flex-col justify-between">
                 <div>
-                    <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">Next Steps</h3>
-                    <div id="conf-guidance-box" class="mt-2.5 p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-300 leading-relaxed">
+                    <h3 class="text-sm font-serif font-bold text-slate-900 pb-2 border-b border-slate-200">Next Steps</h3>
+                    <div id="conf-guidance-box" class="mt-2.5 p-3 rounded-xl bg-slate-100 border border-slate-200 text-[11px] text-slate-600 leading-relaxed">
                         Your order is being processed by our concierge team.
                     </div>
                 </div>
@@ -92,7 +101,7 @@
                     <a id="conf-track-link" href="track-order.html" class="w-full py-3 rounded-xl btn-gold text-center text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 shadow">
                         <i class="fa-solid fa-truck-fast"></i> Track Order Status
                     </a>
-                    <a id="conf-invoice-link" href="invoice.html" target="_blank" class="w-full py-3 rounded-xl border border-zinc-700 hover:border-amber-400 text-center text-xs font-bold uppercase tracking-widest text-zinc-300 flex items-center justify-center gap-2 transition">
+                    <a id="conf-invoice-link" href="invoice.html" target="_blank" class="w-full py-3 rounded-xl border border-zinc-700 hover:border-amber-400 text-center text-xs font-bold uppercase tracking-widest text-slate-600 flex items-center justify-center gap-2 transition">
                         <i class="fa-solid fa-print"></i> Download / Print Invoice
                     </a>
                 </div>
@@ -100,20 +109,20 @@
         </div>
 
         <!-- Items Table -->
-        <div class="luxury-card p-6 sm:p-8 rounded-3xl space-y-4">
-            <h3 class="text-sm font-serif font-bold text-white pb-3 border-b border-zinc-800">Ordered Products</h3>
+        <div class="bright-section-card p-6 sm:p-8 rounded-3xl space-y-4">
+            <h3 class="text-sm font-serif font-bold text-slate-900 pb-3 border-b border-slate-200">Ordered Products</h3>
             <div class="space-y-3 divide-y divide-zinc-800/80" id="conf-items-list"></div>
 
-            <div class="pt-4 border-t border-zinc-800 space-y-2 text-xs text-zinc-300">
+            <div class="pt-4 border-t border-slate-200 space-y-2 text-xs text-slate-600">
                 <div class="flex justify-between">
                     <span>Subtotal:</span>
-                    <span id="conf-subtotal" class="font-bold text-white">Rs. 0</span>
+                    <span id="conf-subtotal" class="font-bold text-slate-900">Rs. 0</span>
                 </div>
                 <div class="flex justify-between">
                     <span>Delivery Charges:</span>
-                    <span id="conf-delivery" class="font-bold text-white">Rs. 0</span>
+                    <span id="conf-delivery" class="font-bold text-slate-900">Rs. 0</span>
                 </div>
-                <div class="pt-2 border-t border-zinc-800 flex justify-between font-bold text-base text-white">
+                <div class="pt-2 border-t border-slate-200 flex justify-between font-bold text-base text-slate-900">
                     <span>Total Amount:</span>
                     <span id="conf-total" class="text-amber-400 text-xl font-serif">Rs. 0</span>
                 </div>
@@ -213,16 +222,41 @@
             document.getElementById('conf-items-list').innerHTML = items.map(item => `
                 <div class="flex items-center justify-between gap-4 pt-3 first:pt-0 text-xs">
                     <div class="flex items-center gap-3">
-                        <img src="${item.thumbnail || 'static/images/logo.svg'}" class="w-12 h-14 object-cover rounded-lg border border-zinc-800">
+                        <img src="${item.thumbnail || 'static/images/logo.svg'}" class="w-12 h-14 object-cover rounded-lg border border-slate-200">
                         <div>
-                            <h5 class="font-bold text-white">${item.name || item.product_name}</h5>
-                            <span class="text-[11px] text-zinc-400">Qty: ${item.quantity} | Size: ${item.size || 'Std'} | Color: ${item.color || 'Def'}</span>
+                            <h5 class="font-bold text-slate-900">${item.name || item.product_name}</h5>
+                            <span class="text-[11px] text-slate-500">Qty: ${item.quantity} | Size: ${item.size || 'Std'} | Color: ${item.color || 'Def'}</span>
                         </div>
                     </div>
                     <span class="font-bold text-amber-400 text-sm">Rs. ${(Number(item.price) * Number(item.quantity)).toLocaleString()}</span>
                 </div>
             `).join('');
         });
+    </script>
+
+    <!-- Footer -->
+    <footer class="khushi-footer text-xs pt-12 pb-10 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+                <div class="flex items-center gap-2.5"><img src="static/images/logo.svg" class="h-7 w-auto opacity-60"><span class="font-cinzel font-bold text-white">KHUSHI COLLECTION</span></div>
+                <div>&copy; 2026 Khushi Collection. All rights reserved.</div>
+                <div class="flex items-center gap-4 text-slate-400">
+                    <a href="shop.html" class="hover:text-amber-400">Shop</a>
+                    <a href="track-order.html" class="hover:text-amber-400">Track Order</a>
+                    <a href="contact.html" class="hover:text-amber-400">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- WhatsApp FAB -->
+    <a id="whatsapp-fab" href="https://wa.me/923434158605?text=Hi%20Khushi!" target="_blank" class="whatsapp-fab" title="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+    <script>
+    (function() { setTimeout(function() {
+        if (typeof store !== 'undefined' && store.settings && store.settings.contact_support && store.settings.contact_support.whatsapp_number) {
+            var num = store.settings.contact_support.whatsapp_number.replace(/[^0-9]/g,'');
+            var fab = document.getElementById('whatsapp-fab'); if (fab) fab.href = 'https://wa.me/' + num + '?text=Hi%20Khushi!';
+        }
+    }, 1200); })();
     </script>
 </body>
 </html>
