@@ -68,7 +68,7 @@
                 </p>
             </div>
 
-            <a id="conf-whatsapp-btn" href="#" target="_blank" class="px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold uppercase tracking-widest flex items-center gap-2.5 shadow-2xl transition flex-shrink-0">
+            <a id="conf-whatsapp-btn" href="#" target="_blank" class="px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2.5 shadow-md transition flex-shrink-0">
                 <i class="fa-brands fa-whatsapp text-base"></i>
                 <span>Open WhatsApp Concierge</span>
             </a>
@@ -83,8 +83,8 @@
                 <p><strong class="text-slate-500">Phone:</strong> <span id="conf-phone" class="text-slate-900">--</span></p>
                 <p><strong class="text-slate-500">Destination:</strong> <span id="conf-address" class="text-slate-900">--</span></p>
                 <div class="pt-2 flex flex-wrap items-center gap-2">
-                    <span id="conf-pay-badge" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-950/60 border border-amber-500/40 text-amber-300">Payment: Pending</span>
-                    <span id="conf-ord-badge" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-zinc-800 border border-zinc-700 text-slate-600">Status: Placed</span>
+                    <span id="conf-pay-badge" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-50 border border-amber-200 text-amber-700">Payment: Pending</span>
+                    <span id="conf-ord-badge" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-slate-100 border border-slate-200 text-slate-700">Status: Placed</span>
                 </div>
             </div>
 
@@ -98,10 +98,10 @@
                 </div>
 
                 <div class="space-y-3">
-                    <a id="conf-track-link" href="track-order.html" class="w-full py-3 rounded-xl btn-gold text-center text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 shadow">
+                    <a id="conf-track-link" href="track-order.html" class="w-full py-3 rounded-full btn-gold-pill text-center text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm">
                         <i class="fa-solid fa-truck-fast"></i> Track Order Status
                     </a>
-                    <a id="conf-invoice-link" href="invoice.html" target="_blank" class="w-full py-3 rounded-xl border border-zinc-700 hover:border-amber-400 text-center text-xs font-bold uppercase tracking-widest text-slate-600 flex items-center justify-center gap-2 transition">
+                    <a id="conf-invoice-link" href="invoice.html" target="_blank" class="w-full py-3 rounded-full border border-slate-300 hover:border-blue-600 text-center text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center justify-center gap-2 transition">
                         <i class="fa-solid fa-print"></i> Download / Print Invoice
                     </a>
                 </div>
@@ -166,7 +166,7 @@
 
             document.getElementById('conf-order-id').textContent = `#${order.order_number}`;
             document.getElementById('conf-name').textContent = order.customer_name;
-            const phoneStr = order.customer_phone || order.masked_phone || '+92 300 1234567';
+            const phoneStr = order.customer_phone || order.masked_phone || '+92 343 4158605';
             document.getElementById('conf-phone').textContent = phoneStr;
             const waNumEl = document.getElementById('conf-wa-number');
             if (waNumEl) waNumEl.textContent = phoneStr;
@@ -178,13 +178,13 @@
             // Status badges
             const payBadge = document.getElementById('conf-pay-badge');
             if (payStatus === 'PAID') {
-                payBadge.className = 'px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-950/60 border border-emerald-500/40 text-emerald-300';
+                payBadge.className = 'px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-50 border border-emerald-200 text-emerald-700';
                 payBadge.innerHTML = '<i class="fa-solid fa-circle-check text-[9px] mr-1"></i> Payment: VERIFIED PAID';
             } else if (payStatus === 'VERIFICATION_REQUIRED') {
                 payBadge.className = 'px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-950/60 border border-amber-500/40 text-amber-300';
                 payBadge.innerHTML = '<i class="fa-solid fa-clock text-[9px] mr-1"></i> Payment: VERIFICATION REQUIRED';
             } else {
-                payBadge.className = 'px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-sky-950/60 border border-sky-500/40 text-sky-300';
+                payBadge.className = 'px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-blue-50 border border-blue-200 text-blue-700';
                 payBadge.innerHTML = `<i class="fa-solid fa-wallet text-[9px] mr-1"></i> Payment: ${order.payment_method?.toUpperCase() || 'COD'}`;
             }
 
@@ -211,7 +211,7 @@
 
             // WhatsApp Message
             const settings = store.getSettings ? store.getSettings() : {};
-            const storeWaPhone = settings.store_whatsapp || settings.store_phone || '923001234567';
+            const storeWaPhone = (settings.contact_support && settings.contact_support.whatsapp_number) || (settings.store_profile && settings.store_profile.whatsapp) || '923434158605';
             const conciergeMsg = `Hello Khushi Collection, I placed Order #${order.order_number} (${order.customer_name}). Please share the latest update.`;
             const waUrl = `https://api.whatsapp.com/send?phone=${storeWaPhone.replace(/[^0-9]/g, '')}&text=${encodeURIComponent(conciergeMsg)}`;
             const waBtn = document.getElementById('conf-whatsapp-btn');

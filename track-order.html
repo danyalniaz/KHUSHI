@@ -74,12 +74,12 @@
         <div class="bright-section-card p-6 rounded-3xl">
             <form onsubmit="searchOrder(event)" class="flex flex-col sm:flex-row gap-3">
                 <div class="flex-1">
-                    <input type="text" id="track-order-num" placeholder="Order ID (e.g. KC-10025)" required class="w-full bg-slate-100 border border-zinc-700 rounded-xl px-4 py-3 text-xs uppercase font-mono text-slate-900 placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+                    <input type="text" id="track-order-num" placeholder="Order ID (e.g. KC-10025)" required class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 text-xs uppercase font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 bg-slate-50">
                 </div>
                 <div class="flex-1">
-                    <input type="text" id="track-phone" placeholder="Phone Number (e.g. 0321 9876543)" class="w-full bg-slate-100 border border-zinc-700 rounded-xl px-4 py-3 text-xs text-slate-900 placeholder-zinc-500 focus:outline-none focus:border-amber-400">
+                    <input type="text" id="track-phone" placeholder="Phone Number (e.g. 0321 9876543)" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 bg-slate-50">
                 </div>
-                <button type="submit" class="px-8 py-3 rounded-xl btn-gold text-xs font-bold uppercase tracking-widest shadow">
+                <button type="submit" class="px-8 py-3 rounded-full btn-gold-pill text-xs font-extrabold uppercase tracking-wider shadow-sm">
                     Track Now
                 </button>
             </form>
@@ -105,8 +105,8 @@
                     <div>
                         <div class="flex items-center gap-3">
                             <h3 class="text-xl sm:text-2xl font-mono font-bold text-amber-400" id="res-order-id"></h3>
-                            <span id="res-status-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-amber-950 text-amber-400 border border-amber-500/30"></span>
-                            <span id="res-payment-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-sky-950 text-sky-400 border border-sky-500/30"></span>
+                            <span id="res-status-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-amber-50 text-amber-700 border border-amber-200"></span>
+                            <span id="res-payment-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-blue-50 text-blue-700 border border-blue-200"></span>
                         </div>
                         <p class="text-xs text-slate-500 mt-1">Courier: <strong class="text-slate-900" id="res-courier"></strong> | Tracking #: <strong class="text-amber-400 font-mono" id="res-tracking-num"></strong></p>
                     </div>
@@ -142,7 +142,7 @@
                     <h5 class="text-sm font-bold text-slate-900">Need delivery assistance?</h5>
                     <p class="text-xs text-slate-500">Our customer support concierge is ready to assist you on WhatsApp.</p>
                 </div>
-                <a href="https://wa.me/923434158605" target="_blank" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-900 text-xs font-bold uppercase flex items-center gap-2 transition">
+                <a href="https://wa.me/923434158605" target="_blank" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase flex items-center gap-2 transition">
                     <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Support
                 </a>
             </div>
@@ -240,13 +240,13 @@
             const payBadge = document.getElementById('res-payment-badge');
             const payStatus = (order.payment_status || 'PENDING').toUpperCase();
             if (payStatus === 'PAID') {
-                payBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-emerald-950 text-emerald-400 border border-emerald-500/30';
+                payBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200';
                 payBadge.textContent = 'Payment: PAID';
             } else if (payStatus === 'VERIFICATION_REQUIRED') {
-                payBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-amber-950 text-amber-400 border border-amber-500/30';
+                payBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-amber-50 text-amber-700 border border-amber-200';
                 payBadge.textContent = 'Payment: VERIFICATION IN PROGRESS';
             } else {
-                payBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-sky-950 text-sky-400 border border-sky-500/30';
+                payBadge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase bg-blue-50 text-blue-700 border border-blue-200';
                 payBadge.textContent = `Payment: ${order.payment_method?.toUpperCase() || 'COD'}`;
             }
 

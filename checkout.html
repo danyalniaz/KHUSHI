@@ -146,7 +146,7 @@
                     <!-- 2. Payment Method -->
                     <div class="bright-section-card p-6 sm:p-8 rounded-3xl space-y-4">
                         <div class="flex items-center justify-between pb-3 border-b border-slate-200">
-                            <h3 class="text-sm font-serif font-bold text-white flex items-center gap-2">
+                            <h3 class="text-sm font-serif font-bold text-slate-900 flex items-center gap-2">
                                 <i class="fa-solid fa-credit-card text-amber-400"></i> 2. Select Payment Method
                             </h3>
                             <span class="text-[10px] text-slate-500 font-semibold"><i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i> 256-Bit SSL Encrypted</span>
@@ -169,18 +169,18 @@
                             <label id="cod-label-container" class="flex items-start gap-3 p-4 rounded-2xl bg-zinc-900/80 border border-amber-400/40 cursor-pointer payment-option-label hover:border-amber-400 transition">
                                 <input type="radio" name="payment_method" id="rad-cod" value="cod" checked onchange="togglePaymentBoxes('cod')" class="mt-1 accent-amber-400">
                                 <div>
-                                    <span class="text-xs font-bold text-white block" id="cod-title-txt">Cash on Delivery (COD)</span>
+                                    <span class="text-xs font-bold text-slate-900 block" id="cod-title-txt">Cash on Delivery (COD)</span>
                                     <span class="text-[11px] text-slate-500" id="cod-desc-txt">Pay conveniently in cash when your parcel arrives at your doorstep.</span>
                                 </div>
                             </label>
 
                             <!-- Online Card Payment (Visa / Mastercard) -->
-                            <label class="flex items-start gap-3 p-4 rounded-2xl bg-zinc-900/40 border border-slate-200 cursor-pointer payment-option-label hover:border-amber-400 transition">
+                            <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200 cursor-pointer payment-option-label hover:border-amber-400 transition">
                                 <input type="radio" name="payment_method" value="online_card" onchange="togglePaymentBoxes('online_card')" class="mt-1 accent-amber-400">
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-2">
-                                            <span class="text-xs font-bold text-white">Debit / Credit Card (Visa & Mastercard)</span>
+                                            <span class="text-xs font-bold text-slate-900">Debit / Credit Card (Visa & Mastercard)</span>
                                             <span class="text-[9px] font-bold text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded border border-amber-400/20">Instant</span>
                                         </div>
                                         <div class="flex items-center gap-1.5 text-slate-500 text-sm">
@@ -199,20 +199,20 @@
 
                                         <div>
                                             <label class="block font-semibold text-slate-600 mb-1">Cardholder Full Name</label>
-                                            <input type="text" id="card-holder-name" placeholder="Name on Card" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white text-xs">
+                                            <input type="text" id="card-holder-name" placeholder="Name on Card" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 text-xs">
                                         </div>
                                         <div>
                                             <label class="block font-semibold text-slate-600 mb-1">Card Number (16 Digits)</label>
-                                            <input type="text" id="card-number" maxlength="19" placeholder="4242 •••• •••• 4242" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono text-xs">
+                                            <input type="text" id="card-number" maxlength="19" placeholder="4242 •••• •••• 4242" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono text-xs">
                                         </div>
                                         <div class="grid grid-cols-2 gap-3">
                                             <div>
                                                 <label class="block font-semibold text-slate-600 mb-1">Expiry Date (MM/YY)</label>
-                                                <input type="text" id="card-expiry" maxlength="5" placeholder="12/28" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono text-xs">
+                                                <input type="text" id="card-expiry" maxlength="5" placeholder="12/28" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono text-xs">
                                             </div>
                                             <div>
                                                 <label class="block font-semibold text-slate-600 mb-1">CVV / Security Code</label>
-                                                <input type="password" id="card-cvv" maxlength="4" placeholder="•••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-white font-mono text-xs">
+                                                <input type="password" id="card-cvv" maxlength="4" placeholder="•••" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-900 font-mono text-xs">
                                             </div>
                                         </div>
                                     </div>
@@ -220,58 +220,58 @@
                             </label>
 
                             <!-- EasyPaisa -->
-                            <label class="flex items-start gap-3 p-4 rounded-2xl bg-zinc-900/40 border border-slate-200 cursor-pointer payment-option-label hover:border-amber-400 transition">
+                            <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200 cursor-pointer payment-option-label hover:border-amber-400 transition">
                                 <input type="radio" name="payment_method" value="easypaisa" onchange="togglePaymentBoxes('easypaisa')" class="mt-1 accent-amber-400">
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between">
-                                        <span class="text-xs font-bold text-white">EasyPaisa Mobile Account</span>
+                                        <span class="text-xs font-bold text-slate-900">EasyPaisa Mobile Account</span>
                                         <span class="text-[10px] font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/30">Instant</span>
                                     </div>
                                     <div id="easypaisa-box" class="hidden mt-3 p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-xs text-emerald-200 space-y-2">
-                                        <p>Send amount to: <strong class="font-mono text-white text-sm" id="box-ep-number">0300 1234567</strong></p>
-                                        <p>Account Title: <strong id="box-ep-title" class="text-white">Khushi Fatima</strong></p>
+                                        <p>Send amount to: <strong class="font-mono text-slate-900 text-sm" id="box-ep-number">0300 1234567</strong></p>
+                                        <p>Account Title: <strong id="box-ep-title" class="text-slate-900">Khushi Fatima</strong></p>
                                         <div>
                                             <label class="block font-semibold text-emerald-200 mb-1">Transaction ID (TID) *</label>
-                                            <input type="text" id="ep-tid" placeholder="e.g. 784930219" class="w-full bg-zinc-900 border border-emerald-700/60 rounded-xl px-3 py-1.5 text-white font-mono text-xs">
+                                            <input type="text" id="ep-tid" placeholder="e.g. 784930219" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-mono text-xs">
                                         </div>
                                     </div>
                                 </div>
                             </label>
 
                             <!-- JazzCash -->
-                            <label class="flex items-start gap-3 p-4 rounded-2xl bg-zinc-900/40 border border-slate-200 cursor-pointer payment-option-label hover:border-amber-400 transition">
+                            <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200 cursor-pointer payment-option-label hover:border-amber-400 transition">
                                 <input type="radio" name="payment_method" value="jazzcash" onchange="togglePaymentBoxes('jazzcash')" class="mt-1 accent-amber-400">
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between">
-                                        <span class="text-xs font-bold text-white">JazzCash Mobile Wallet</span>
+                                        <span class="text-xs font-bold text-slate-900">JazzCash Mobile Wallet</span>
                                         <span class="text-[10px] font-bold text-amber-400 bg-amber-950 px-2 py-0.5 rounded border border-amber-500/30">Instant</span>
                                     </div>
                                     <div id="jazzcash-box" class="hidden mt-3 p-3 rounded-xl bg-amber-950/40 border border-amber-500/30 text-xs text-amber-200 space-y-2">
-                                        <p>Send amount to: <strong class="font-mono text-white text-sm" id="box-jc-number">0300 7654321</strong></p>
-                                        <p>Account Title: <strong id="box-jc-title" class="text-white">Khushi Fatima</strong></p>
+                                        <p>Send amount to: <strong class="font-mono text-slate-900 text-sm" id="box-jc-number">0300 7654321</strong></p>
+                                        <p>Account Title: <strong id="box-jc-title" class="text-slate-900">Khushi Fatima</strong></p>
                                         <div>
                                             <label class="block font-semibold text-amber-200 mb-1">Transaction ID (TID) *</label>
-                                            <input type="text" id="jc-tid" placeholder="e.g. 983201844" class="w-full bg-zinc-900 border border-amber-700/60 rounded-xl px-3 py-1.5 text-white font-mono text-xs">
+                                            <input type="text" id="jc-tid" placeholder="e.g. 983201844" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-mono text-xs">
                                         </div>
                                     </div>
                                 </div>
                             </label>
 
                             <!-- Bank Transfer -->
-                            <label class="flex items-start gap-3 p-4 rounded-2xl bg-zinc-900/40 border border-slate-200 cursor-pointer payment-option-label hover:border-amber-400 transition">
+                            <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200 cursor-pointer payment-option-label hover:border-amber-400 transition">
                                 <input type="radio" name="payment_method" value="bank_transfer" onchange="togglePaymentBoxes('bank_transfer')" class="mt-1 accent-amber-400">
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between">
-                                        <span class="text-xs font-bold text-white" id="box-bank-header">Direct Bank Transfer (Meezan Bank)</span>
+                                        <span class="text-xs font-bold text-slate-900" id="box-bank-header">Direct Bank Transfer (Meezan Bank)</span>
                                         <span class="text-[10px] font-bold text-amber-400 bg-amber-950 px-2 py-0.5 rounded border border-amber-500/30">Official</span>
                                     </div>
                                     <div id="bank_transfer-box" class="hidden mt-3 p-3.5 rounded-xl bg-amber-950/40 border border-amber-500/30 text-xs text-amber-200 space-y-2">
-                                        <p>Bank: <strong id="box-bank-name" class="text-white">Meezan Bank Limited</strong></p>
-                                        <p>Account Title: <strong id="box-bank-title" class="text-white">Khushi Collection Luxury Pvt Ltd</strong></p>
-                                        <p>IBAN: <strong class="font-mono text-white text-sm" id="box-bank-iban">PK64MEZN0002010108876543</strong></p>
+                                        <p>Bank: <strong id="box-bank-name" class="text-slate-900">Meezan Bank Limited</strong></p>
+                                        <p>Account Title: <strong id="box-bank-title" class="text-slate-900">Khushi Collection Luxury Pvt Ltd</strong></p>
+                                        <p>IBAN: <strong class="font-mono text-slate-900 text-sm" id="box-bank-iban">PK64MEZN0002010108876543</strong></p>
                                         <div>
                                             <label class="block font-semibold text-amber-200 mb-1">Deposit Slip / Transaction Reference *</label>
-                                            <input type="text" id="bank-ref" placeholder="e.g. FT-938201 or ATM Ref" class="w-full bg-zinc-900 border border-amber-700/60 rounded-xl px-3 py-1.5 text-white font-mono text-xs">
+                                            <input type="text" id="bank-ref" placeholder="e.g. FT-938201 or ATM Ref" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-slate-900 font-mono text-xs">
                                         </div>
                                     </div>
                                 </div>
@@ -312,7 +312,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" id="btn-place-order" class="w-full py-4 rounded-xl btn-gold text-center text-xs font-extrabold uppercase tracking-widest flex items-center justify-center gap-2 shadow-2xl mt-4 cursor-pointer hover:scale-[1.02] transition transform">
+                        <button type="submit" id="btn-place-order" class="w-full py-4 rounded-full btn-gold-pill text-center text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md mt-4 cursor-pointer hover:scale-[1.01] transition transform">
                             <span>PLACE ORDER</span>
                             <i class="fa-solid fa-arrow-right text-[11px]"></i>
                         </button>

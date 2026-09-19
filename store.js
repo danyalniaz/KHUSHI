@@ -7049,7 +7049,7 @@ function handleImageError(img) {
     }
 }
 
-// Universal Cart Drawer Management
+// Universal Cart Drawer Management (Bright Luxury Theme)
 function ensureCartDrawerDOM() {
     if (typeof document === 'undefined') return;
     if (document.getElementById('cart-drawer')) return;
@@ -7057,48 +7057,48 @@ function ensureCartDrawerDOM() {
     const overlay = document.createElement('div');
     overlay.id = 'cart-drawer-overlay';
     overlay.onclick = () => closeCartDrawer();
-    overlay.className = 'hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm transition-opacity';
+    overlay.className = 'hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity';
     document.body.appendChild(overlay);
 
     const drawer = document.createElement('div');
     drawer.id = 'cart-drawer';
-    drawer.className = 'fixed top-0 right-0 bottom-0 w-full max-w-md z-50 bg-[#0C101A] border-l border-amber-500/20 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between';
+    drawer.className = 'fixed top-0 right-0 bottom-0 w-full max-w-md z-50 bg-white border-l border-slate-200 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between';
     drawer.innerHTML = `
-        <div class="p-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-950/60">
+        <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
             <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-full bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
+                <div class="w-8 h-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600">
                     <i class="fa-solid fa-bag-shopping text-xs"></i>
                 </div>
                 <div>
-                    <h3 class="font-serif font-bold text-white text-sm">Shopping Bag</h3>
-                    <span class="text-[10px] text-zinc-400">Khushi Haute Couture</span>
+                    <h3 class="font-serif font-bold text-slate-900 text-sm">Shopping Bag</h3>
+                    <span class="text-[10px] text-slate-500 font-medium">Khushi Haute Couture</span>
                 </div>
             </div>
-            <button onclick="closeCartDrawer()" class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white flex items-center justify-center transition" title="Close Bag">
+            <button onclick="closeCartDrawer()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition" title="Close Bag">
                 <i class="fa-solid fa-xmark text-sm"></i>
             </button>
         </div>
 
         <!-- Free Delivery Indicator -->
-        <div class="px-5 py-3 bg-[#080C14] border-b border-zinc-800/80 space-y-1.5">
+        <div class="px-5 py-3 bg-blue-50/40 border-b border-blue-100 space-y-1.5">
             <div class="flex items-center justify-between text-[11px]" id="drawer-free-delivery-msg">
-                <span>Add <strong class="text-amber-400">Rs. 5,000</strong> for <strong class="text-white">FREE Delivery</strong></span>
+                <span>Add <strong class="text-blue-600">Rs. 5,000</strong> for <strong class="text-slate-900">FREE Delivery</strong></span>
             </div>
-            <div class="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                <div id="drawer-free-delivery-bar" class="h-full bg-gradient-to-r from-amber-500 to-amber-300 rounded-full transition-all duration-500" style="width: 0%;"></div>
+            <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                <div id="drawer-free-delivery-bar" class="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full transition-all duration-500" style="width: 0%;"></div>
             </div>
         </div>
 
-        <div class="p-5 flex-1 overflow-y-auto divide-y divide-zinc-800/80 space-y-3" id="drawer-items-list"></div>
+        <div class="p-5 flex-1 overflow-y-auto divide-y divide-slate-100 space-y-3" id="drawer-items-list"></div>
 
-        <div class="p-5 border-t border-zinc-800 bg-[#0A0D14] space-y-3">
-            <div class="flex items-center justify-between text-xs text-zinc-400">
-                <span>Bag Subtotal:</span>
-                <span class="text-base font-bold text-amber-400 font-mono" id="drawer-subtotal-val">Rs. 0</span>
+        <div class="p-5 border-t border-slate-100 bg-slate-50/50 space-y-3">
+            <div class="flex items-center justify-between text-xs text-slate-500">
+                <span class="font-medium">Bag Subtotal:</span>
+                <span class="text-base font-extrabold text-slate-900 font-mono" id="drawer-subtotal-val">Rs. 0</span>
             </div>
             <div class="grid grid-cols-2 gap-3">
-                <a href="cart.html" onclick="closeCartDrawer()" class="py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-center text-xs font-bold uppercase text-zinc-300 transition">View Bag</a>
-                <a href="checkout.html" class="py-3 rounded-xl btn-gold text-center text-xs font-extrabold uppercase tracking-wider shadow">Checkout &rarr;</a>
+                <a href="cart.html" onclick="closeCartDrawer()" class="py-3 rounded-full bg-white hover:bg-slate-100 border border-slate-200 text-center text-xs font-bold uppercase tracking-wider text-slate-800 transition shadow-sm">View Bag</a>
+                <a href="checkout.html" class="py-3 rounded-full btn-gold-pill text-center text-xs font-extrabold uppercase tracking-wider shadow-sm flex items-center justify-center gap-1.5">Checkout &rarr;</a>
             </div>
         </div>
     `;
@@ -7147,9 +7147,9 @@ function renderCartDrawer() {
     
     if (freeDeliveryMsg) {
         if (remaining === 0 && subtotalVal > 0) {
-            freeDeliveryMsg.innerHTML = '<span class="text-emerald-400 font-bold"><i class="fa-solid fa-circle-check"></i> You unlocked FREE Express Delivery!</span>';
+            freeDeliveryMsg.innerHTML = '<span class="text-emerald-600 font-bold"><i class="fa-solid fa-circle-check"></i> You unlocked FREE Express Delivery!</span>';
         } else {
-            freeDeliveryMsg.innerHTML = `<span>Add <strong class="text-amber-400 font-mono">Rs. ${remaining.toLocaleString()}</strong> for <strong class="text-white">FREE Delivery</strong></span>`;
+            freeDeliveryMsg.innerHTML = `<span>Add <strong class="text-blue-600 font-mono">Rs. ${remaining.toLocaleString()}</strong> for <strong class="text-slate-900">FREE Delivery</strong></span>`;
         }
     }
     if (freeDeliveryBar) {
@@ -7162,11 +7162,11 @@ function renderCartDrawer() {
         if (items.length === 0) {
             container.innerHTML = `
                 <div class="py-16 text-center space-y-3">
-                    <div class="w-14 h-14 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-500 flex items-center justify-center mx-auto text-xl">
+                    <div class="w-14 h-14 rounded-full bg-slate-100 border border-slate-200 text-slate-400 flex items-center justify-center mx-auto text-xl">
                         <i class="fa-solid fa-bag-shopping"></i>
                     </div>
-                    <p class="text-xs text-zinc-400 font-medium">Your shopping bag is empty</p>
-                    <a href="shop.html" onclick="closeCartDrawer()" class="inline-block px-5 py-2 rounded-full btn-gold text-[11px] font-bold uppercase tracking-wider">Explore Collections</a>
+                    <p class="text-xs text-slate-500 font-medium">Your shopping bag is empty</p>
+                    <a href="shop.html" onclick="closeCartDrawer()" class="inline-block px-5 py-2 rounded-full btn-gold-pill text-[11px] font-bold uppercase tracking-wider shadow-sm">Explore Collections</a>
                 </div>
             `;
             return;
@@ -7184,22 +7184,22 @@ function renderCartDrawer() {
             const name = item.name || 'Khushi Ensemble';
 
             return `
-                <div class="flex gap-4 py-3.5 first:pt-0 border-b border-zinc-800/80 last:border-b-0">
-                    <img src="${thumb}" alt="${name}" onerror="handleImageError(this)" class="w-14 h-18 object-cover rounded-xl border border-zinc-800 flex-shrink-0">
+                <div class="flex gap-4 py-3.5 first:pt-0 border-b border-slate-100 last:border-b-0">
+                    <img src="${thumb}" alt="${name}" onerror="handleImageError(this)" class="w-14 h-18 object-cover rounded-xl border border-slate-200 flex-shrink-0">
                     <div class="flex-1 min-w-0 flex flex-col justify-between">
                         <div>
-                            <h5 class="text-xs font-semibold text-white truncate">${name}</h5>
-                            <p class="text-[11px] text-zinc-400 mt-0.5">${sVal} &bull; ${cVal}</p>
+                            <h5 class="text-xs font-semibold text-slate-900 truncate">${name}</h5>
+                            <p class="text-[11px] text-slate-500 mt-0.5">${sVal} &bull; ${cVal}</p>
                         </div>
                         <div class="flex items-center justify-between mt-2">
-                            <div class="flex items-center border border-zinc-700 rounded-lg bg-zinc-900 px-1">
-                                <button type="button" onclick="store.updateCartQty('${safeKey}', ${qty - 1}); renderCartDrawer();" class="w-6 h-6 text-zinc-400 hover:text-white text-xs font-bold flex items-center justify-center">-</button>
-                                <span class="w-6 text-center text-xs font-bold text-white font-mono">${qty}</span>
-                                <button type="button" onclick="store.updateCartQty('${safeKey}', ${qty + 1}); renderCartDrawer();" class="w-6 h-6 text-zinc-400 hover:text-white text-xs font-bold flex items-center justify-center">+</button>
+                            <div class="flex items-center border border-slate-200 rounded-lg bg-slate-50 px-1">
+                                <button type="button" onclick="store.updateCartQty('${safeKey}', ${qty - 1}); renderCartDrawer();" class="w-6 h-6 text-slate-500 hover:text-slate-900 text-xs font-bold flex items-center justify-center">-</button>
+                                <span class="w-6 text-center text-xs font-bold text-slate-900 font-mono">${qty}</span>
+                                <button type="button" onclick="store.updateCartQty('${safeKey}', ${qty + 1}); renderCartDrawer();" class="w-6 h-6 text-slate-500 hover:text-slate-900 text-xs font-bold flex items-center justify-center">+</button>
                             </div>
                             <div class="flex items-center gap-3">
-                                <span class="text-xs font-bold text-amber-400 font-mono">Rs. ${(price * qty).toLocaleString()}</span>
-                                <button type="button" onclick="store.removeFromCart('${safeKey}'); renderCartDrawer();" class="text-zinc-500 hover:text-rose-400 text-xs p-1" title="Remove item">
+                                <span class="text-xs font-bold text-slate-900 font-mono">Rs. ${(price * qty).toLocaleString()}</span>
+                                <button type="button" onclick="store.removeFromCart('${safeKey}'); renderCartDrawer();" class="text-slate-400 hover:text-rose-500 text-xs p-1 transition" title="Remove item">
                                     <i class="fa-regular fa-trash-can"></i>
                                 </button>
                             </div>
@@ -7371,11 +7371,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Universal Khushi Live Sync
     store.syncWithServer();
+});
 
-    // WhatsApp link helper — used by all pages
-    getWhatsAppLink(message) {
-        const num = (this.settings?.contact_support?.whatsapp_number || '+92 343 4158605').replace(/[^0-9]/g, '');
-        return `https://wa.me/${num}?text=${encodeURIComponent(message || 'Hi Khushi Collection, I need help!')}`;
+KhushiStore.prototype.getWhatsAppLink = function(message) {
+    const num = (this.settings?.contact_support?.whatsapp_number || '+92 343 4158605').replace(/[^0-9]/g, '');
+    return `https://wa.me/${num}?text=${encodeURIComponent(message || 'Hi Khushi Collection, I need help!')}`;
+};
+
+window.getWhatsAppLink = function(message) {
+    if (typeof store !== 'undefined' && store.getWhatsAppLink) {
+        return store.getWhatsAppLink(message);
     }
-
-}
+    return `https://wa.me/923434158605?text=${encodeURIComponent(message || 'Hi Khushi Collection, I need help!')}`;
+};

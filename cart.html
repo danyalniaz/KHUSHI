@@ -82,7 +82,7 @@
                         </div>
                     </div>
 
-                    <a href="checkout.html" class="w-full py-4 rounded-xl btn-gold text-center text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 shadow-2xl mt-4">
+                    <a href="checkout.html" class="w-full py-3.5 rounded-full btn-gold-pill text-center text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md mt-4">
                         Proceed to Checkout <i class="fa-solid fa-arrow-right text-[11px]"></i>
                     </a>
 
@@ -94,13 +94,13 @@
             </div>
         </div>
 
-        <div id="cart-empty-state" class="hidden luxury-card p-16 rounded-3xl text-center space-y-4 max-w-md mx-auto my-12">
-            <div class="w-16 h-16 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-2xl">
+        <div id="cart-empty-state" class="hidden bright-section-card p-16 rounded-3xl text-center space-y-4 max-w-md mx-auto my-12 border border-slate-200">
+            <div class="w-16 h-16 rounded-full bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center mx-auto text-2xl">
                 <i class="fa-solid fa-bag-shopping"></i>
             </div>
-            <h3 class="text-lg font-serif font-bold text-white">Your Shopping Bag is Empty</h3>
+            <h3 class="text-lg font-serif font-bold text-slate-900">Your Shopping Bag is Empty</h3>
             <p class="text-xs text-slate-500">Explore our luxury collections and pick your favorite pieces.</p>
-            <a href="shop.html" class="inline-block px-8 py-3.5 rounded-full btn-gold text-xs font-bold uppercase tracking-widest shadow-xl">
+            <a href="shop.html" class="inline-block px-8 py-3.5 rounded-full btn-gold-pill text-xs font-bold uppercase tracking-wider shadow-sm">
                 Explore Collections
             </a>
         </div>
@@ -132,24 +132,24 @@
                 const sVal = typeof item.size === 'object' && item.size !== null ? (item.size.name || 'Standard') : (item.size && item.size !== '[object Object]' ? item.size : 'Standard');
                 const cVal = typeof item.color === 'object' && item.color !== null ? (item.color.name || 'Default') : (item.color && item.color !== '[object Object]' ? item.color : 'Default');
                 html += `
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 first:pt-0 border-b border-zinc-800/80 last:border-none">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 first:pt-0 border-b border-slate-100 last:border-none">
                         <div class="flex items-center gap-4">
-                            <img src="${item.thumbnail}" alt="${item.name}" class="w-16 h-20 object-cover rounded-xl border border-zinc-800 flex-shrink-0">
+                            <img src="${item.thumbnail}" alt="${item.name}" class="w-16 h-20 object-cover rounded-xl border border-slate-200 flex-shrink-0">
                             <div>
-                                <h4 class="text-sm font-semibold text-white truncate max-w-sm">${item.name}</h4>
-                                <p class="text-xs text-slate-500 mt-1">Size: <strong class="text-white">${sVal}</strong> | Color: <strong class="text-white">${cVal}</strong></p>
-                                <span class="text-xs font-bold text-amber-400 mt-1 block">Rs. ${item.price.toLocaleString()}</span>
+                                <h4 class="text-sm font-semibold text-slate-900 truncate max-w-sm">${item.name}</h4>
+                                <p class="text-xs text-slate-500 mt-1">Size: <strong class="text-slate-800">${sVal}</strong> | Color: <strong class="text-slate-800">${cVal}</strong></p>
+                                <span class="text-xs font-bold text-slate-900 mt-1 block font-mono">Rs. ${item.price.toLocaleString()}</span>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-between sm:justify-end gap-6">
-                            <div class="flex items-center border border-zinc-700 rounded-xl bg-zinc-900 p-1">
-                                <button onclick="store.updateCartQty('${item.key}', ${item.quantity - 1}); renderCartPage();" class="w-7 h-7 rounded hover:bg-zinc-800 text-zinc-300 font-bold text-xs flex items-center justify-center">-</button>
-                                <span class="w-8 text-center text-xs font-bold text-white">${item.quantity}</span>
-                                <button onclick="store.updateCartQty('${item.key}', ${item.quantity + 1}); renderCartPage();" class="w-7 h-7 rounded hover:bg-zinc-800 text-zinc-300 font-bold text-xs flex items-center justify-center">+</button>
+                            <div class="flex items-center border border-slate-200 rounded-lg bg-slate-50 p-1">
+                                <button onclick="store.updateCartQty('${item.key}', ${item.quantity - 1}); renderCartPage();" class="w-7 h-7 rounded hover:bg-slate-200 text-slate-600 font-bold text-xs flex items-center justify-center">-</button>
+                                <span class="w-8 text-center text-xs font-bold text-slate-900 font-mono">${item.quantity}</span>
+                                <button onclick="store.updateCartQty('${item.key}', ${item.quantity + 1}); renderCartPage();" class="w-7 h-7 rounded hover:bg-slate-200 text-slate-600 font-bold text-xs flex items-center justify-center">+</button>
                             </div>
 
-                            <span class="text-sm font-bold text-white min-w-[90px] text-right">Rs. ${(item.price * item.quantity).toLocaleString()}</span>
+                            <span class="text-sm font-bold text-slate-900 min-w-[90px] text-right font-mono">Rs. ${(item.price * item.quantity).toLocaleString()}</span>
 
                             <button onclick="store.removeFromCart('${item.key}'); renderCartPage();" class="text-slate-500 hover:text-rose-400 text-xs p-1" title="Remove">
                                 <i class="fa-solid fa-trash-can"></i>
@@ -204,5 +204,58 @@
             renderCartPage();
         });
     </script>
+
+    <!-- Shared Site Footer -->
+    <footer class="khushi-footer text-xs pt-14 pb-10 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center gap-2.5">
+                        <img src="static/images/logo.svg" alt="Khushi Logo" class="h-9 w-auto">
+                        <span class="font-cinzel text-xl font-bold tracking-widest text-white">KHUSHI</span>
+                    </div>
+                    <p class="text-slate-400 leading-relaxed max-w-sm">Khushi Collection embodies timeless Pakistani heritage through artisanal haute couture, luxury formal wear, and signature fragrances.</p>
+                    <div class="flex items-center gap-3 pt-2 text-slate-400 text-sm">
+                        <a href="https://instagram.com/khushicollection" target="_blank" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-blue-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://facebook.com/khushicollection" target="_blank" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-blue-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://tiktok.com/@khushicollection" target="_blank" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-blue-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Quick Links</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="index.html" class="hover:text-amber-400 transition">Home</a></li>
+                        <li><a href="shop.html" class="hover:text-amber-400 transition">Shop Catalog</a></li>
+                        <li><a href="shop.html?view=collections" class="hover:text-amber-400 transition">Collections</a></li>
+                        <li><a href="about.html" class="hover:text-amber-400 transition">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-400 transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Customer Care</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="track-order.html" class="hover:text-amber-400 transition">Track Order</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-400 transition">Returns &amp; Exchanges</a></li>
+                        <li><a href="size-guide.html" class="hover:text-amber-400 transition">Size Guide</a></li>
+                        <li><a href="faq.html" class="hover:text-amber-400 transition">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Flagship Studio</h4>
+                    <p class="text-slate-400 leading-relaxed">Suite 104, Gulberg Galleria, Main Boulevard, Lahore</p>
+                    <p class="text-slate-400"><span class="text-white font-semibold">Phone:</span> +92 343 4158605</p>
+                    <p class="text-slate-400"><span class="text-white font-semibold">Email:</span> support@khushicollection.com</p>
+                </div>
+            </div>
+            <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+                <div>&copy; 2026 Khushi Collection. All rights reserved.</div>
+                <div class="flex items-center gap-3 text-slate-400">
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-money-bill-wave text-base text-emerald-400"></i> COD</span>
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-lock text-xs"></i> SSL Secured</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>

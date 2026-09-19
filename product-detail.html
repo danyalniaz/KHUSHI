@@ -135,9 +135,9 @@
     <!-- Breadcrumb -->
     <div class="bg-white border-b border-slate-200 py-3.5 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto flex items-center gap-2 text-xs text-slate-500">
-            <a href="index.html" class="hover:text-amber-400">Home</a>
+            <a href="index.html" class="hover:text-blue-600">Home</a>
             <i class="fa-solid fa-chevron-right text-[9px] text-slate-400"></i>
-            <a href="shop.html" class="hover:text-amber-400" id="crumb-category">Catalog</a>
+            <a href="shop.html" class="hover:text-blue-600" id="crumb-category">Catalog</a>
             <i class="fa-solid fa-chevron-right text-[9px] text-slate-400"></i>
             <span class="text-amber-400 font-semibold truncate max-w-xs" id="crumb-title">Product Details</span>
         </div>
@@ -151,7 +151,7 @@
             <!-- Left: Gallery Section (5 cols) -->
             <div class="lg:col-span-5 space-y-4">
                 <!-- Main Image Preview -->
-                <div class="aspect-[4/5] rounded-3xl overflow-hidden luxury-card border border-amber-500/20 shadow-2xl relative group bg-zinc-950">
+                <div class="aspect-[4/5] rounded-3xl overflow-hidden bright-card border border-slate-200 shadow-md relative group bg-slate-50">
                     <img id="main-product-image" src="" alt="" class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105">
                     <div id="product-badge-overlay" class="absolute top-4 left-4 z-10"></div>
                 </div>
@@ -163,12 +163,12 @@
             <!-- Right: Product Purchasing Details (7 cols) -->
             <div class="lg:col-span-7 space-y-6">
                 <div>
-                    <div class="flex items-center justify-between text-xs text-zinc-400">
+                    <div class="flex items-center justify-between text-xs text-slate-500">
                         <span class="uppercase font-bold tracking-widest text-amber-400" id="detail-brand">Khushi Collection</span>
                         <span class="font-mono text-zinc-500" id="detail-sku">SKU-000</span>
                     </div>
 
-                    <h1 class="text-2xl sm:text-4xl font-serif font-extrabold text-white mt-1.5" id="detail-title">
+                    <h1 class="text-2xl sm:text-4xl font-serif font-extrabold text-slate-900 mt-1.5" id="detail-title">
                         Luxury Ensemble
                     </h1>
 
@@ -179,29 +179,29 @@
                             <i class="fa-solid fa-star"></i>
                             <i class="fa-solid fa-star"></i>
                             <i class="fa-solid fa-star"></i>
-                            <span class="text-zinc-300 font-bold ml-1.5" id="detail-rating-num">4.9</span>
+                            <span class="text-slate-700 font-bold ml-1.5" id="detail-rating-num">4.9</span>
                         </div>
                         <span class="text-slate-400">&bull;</span>
-                        <span class="text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-semibold text-[10px]">
+                        <span class="text-emerald-700 bg-emerald-50 border border-emerald-200 font-bold px-2.5 py-0.5 rounded-full font-semibold text-[10px]">
                             <i class="fa-solid fa-check"></i> In Stock &bull; Atelier Ready
                         </span>
                     </div>
                 </div>
 
                 <!-- Price Block -->
-                <div class="flex items-baseline gap-4 py-4 border-y border-zinc-800">
-                    <span class="text-3xl sm:text-4xl font-serif font-bold text-amber-400" id="detail-price">Rs. 0</span>
-                    <span class="text-base line-through text-zinc-500 hidden" id="detail-original-price">Rs. 0</span>
+                <div class="flex items-baseline gap-4 py-4 border-y border-slate-200">
+                    <span class="text-3xl sm:text-4xl font-serif font-extrabold text-slate-900" id="detail-price">Rs. 0</span>
+                    <span class="text-base line-through text-slate-400 hidden" id="detail-original-price">Rs. 0</span>
                     <span class="badge-sale px-3 py-1 rounded-full text-xs font-extrabold hidden" id="detail-discount-badge">0% OFF</span>
                 </div>
 
                 <!-- Short Description -->
-                <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light" id="detail-short-desc"></p>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal" id="detail-short-desc"></p>
 
                 <!-- Size Selector -->
                 <div id="size-selection-box" class="space-y-2.5">
                     <div class="flex items-center justify-between text-xs">
-                        <span class="font-bold text-zinc-300 uppercase tracking-wider text-[11px]">Select Size: <span id="selected-size-label" class="text-amber-400 font-semibold normal-case ml-1 font-sans"></span></span>
+                        <span class="font-bold text-slate-700 uppercase tracking-wider text-[11px]">Select Size: <span id="selected-size-label" class="text-amber-400 font-semibold normal-case ml-1 font-sans"></span></span>
                         <button onclick="openSizeGuideModal()" class="text-amber-400 hover:text-amber-300 underline text-xs flex items-center gap-1">
                             <i class="fa-solid fa-ruler-horizontal text-[11px]"></i> Size Guide
                         </button>
@@ -211,28 +211,28 @@
 
                 <!-- Color Selector -->
                 <div id="color-selection-box" class="space-y-2.5">
-                    <span class="font-bold text-zinc-300 uppercase tracking-wider text-[11px] block">Select Color / Finish: <span id="selected-color-label" class="text-amber-400 font-semibold normal-case ml-1 font-sans"></span></span>
+                    <span class="font-bold text-slate-700 uppercase tracking-wider text-[11px] block">Select Color / Finish: <span id="selected-color-label" class="text-amber-400 font-semibold normal-case ml-1 font-sans"></span></span>
                     <div class="flex flex-wrap gap-2.5" id="detail-colors-list"></div>
                 </div>
 
                 <!-- Quantity & Add to Cart -->
                 <div class="space-y-3 pt-2">
                     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                        <div class="flex items-center justify-between sm:justify-center border border-zinc-700 rounded-2xl bg-zinc-900 px-3 py-2 sm:py-1.5">
+                        <div class="flex items-center justify-between sm:justify-center border border-slate-200 rounded-2xl bg-slate-50 px-3 py-2 sm:py-1.5">
                             <span class="text-xs text-zinc-400 sm:hidden">Quantity:</span>
                             <div class="flex items-center">
-                                <button onclick="adjustDetailQty(-1)" class="w-8 h-8 flex items-center justify-center text-zinc-400 hover:text-white font-bold text-base">-</button>
-                                <span id="detail-qty-val" class="px-3 text-sm font-bold text-white font-mono">1</span>
-                                <button onclick="adjustDetailQty(1)" class="w-8 h-8 flex items-center justify-center text-zinc-400 hover:text-white font-bold text-base">+</button>
+                                <button onclick="adjustDetailQty(-1)" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-slate-900 font-bold text-base">-</button>
+                                <span id="detail-qty-val" class="px-3 text-sm font-bold text-slate-900 font-mono">1</span>
+                                <button onclick="adjustDetailQty(1)" class="w-8 h-8 flex items-center justify-center text-slate-500 hover:text-slate-900 font-bold text-base">+</button>
                             </div>
                         </div>
 
                         <div class="flex items-center gap-3 flex-1">
-                            <button onclick="handleDetailAddToCart()" class="flex-1 py-3.5 sm:py-4 px-6 rounded-2xl btn-gold text-xs uppercase tracking-widest font-extrabold shadow-xl flex items-center justify-center gap-2">
+                            <button onclick="handleDetailAddToCart()" class="flex-1 py-3.5 sm:py-4 px-6 rounded-2xl btn-gold-pill text-xs uppercase tracking-widest font-extrabold shadow-md flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-bag-shopping"></i> Add to Shopping Bag
                             </button>
 
-                            <button onclick="handleDetailWishlistToggle()" id="detail-wishlist-btn" class="w-12 sm:w-14 h-12 sm:h-14 rounded-2xl bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-rose-500 flex items-center justify-center text-base sm:text-lg transition shadow flex-shrink-0" title="Add to Wishlist">
+                            <button onclick="handleDetailWishlistToggle()" id="detail-wishlist-btn" class="w-12 sm:w-14 h-12 sm:h-14 rounded-2xl bg-slate-100 border border-slate-200 text-slate-700 hover:text-rose-500 hover:bg-slate-200 flex items-center justify-center text-base sm:text-lg transition shadow flex-shrink-0" title="Add to Wishlist">
                                 <i class="fa-regular fa-heart"></i>
                             </button>
                         </div>
@@ -240,27 +240,27 @@
 
                     <!-- Instant Checkout & Quick Order Grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <button onclick="handleDetailBuyNow()" class="w-full py-3.5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-amber-300 border border-amber-500/50 hover:border-amber-400 text-xs uppercase tracking-wider font-bold transition shadow-lg flex items-center justify-center gap-2">
+                        <button onclick="handleDetailBuyNow()" class="w-full py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-amber-300 border border-slate-900 text-xs uppercase tracking-wider font-bold transition shadow-sm rounded-full flex items-center justify-center gap-2">
                             <i class="fa-solid fa-bolt text-amber-400"></i> Instant Checkout
                         </button>
-                        <button onclick="openQuickOrderModal()" class="w-full py-3.5 rounded-2xl bg-emerald-950/80 hover:bg-emerald-900/90 text-emerald-300 border border-emerald-500/50 hover:border-emerald-400 text-xs uppercase tracking-wider font-bold transition shadow-lg flex items-center justify-center gap-2">
+                        <button onclick="openQuickOrderModal()" class="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-600 text-xs uppercase tracking-wider font-bold transition shadow-sm rounded-full flex items-center justify-center gap-2">
                             <i class="fa-solid fa-truck-fast text-emerald-400"></i> 1-Click COD Order (SMS)
                         </button>
                     </div>
 
                     <!-- Direct WhatsApp Order & Inquiry Button -->
-                    <button onclick="handleWhatsAppOrder()" class="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition">
+                    <button onclick="handleWhatsAppOrder()" class="w-full py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition">
                         <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp Concierge
                     </button>
                 </div>
 
                 <!-- WhatsApp Styling Assistance -->
-                <div class="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between text-xs">
+                <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between text-xs">
                     <div class="flex items-center gap-3">
                         <i class="fa-brands fa-whatsapp text-2xl text-emerald-400"></i>
                         <div>
-                            <span class="font-bold text-white block">Need Custom Sizing or Styling Advice?</span>
-                            <span class="text-zinc-400 text-[11px]">Chat with our personal master stylist on WhatsApp</span>
+                            <span class="font-bold text-emerald-950 block">Need Custom Sizing or Styling Advice?</span>
+                            <span class="text-emerald-700 text-[11px]">Chat with our personal master stylist on WhatsApp</span>
                         </div>
                     </div>
                     <button onclick="handleWhatsAppOrder()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-[11px] shadow">
@@ -274,19 +274,19 @@
         </div>
 
         <!-- 6 INFORMATION TABS (Description, Fabric, Size & Fit, Delivery, Returns, Care) -->
-        <section class="luxury-card rounded-3xl p-6 sm:p-10 border border-zinc-800">
+        <section class="bright-section-card rounded-3xl p-6 sm:p-10 border border-slate-200">
             <!-- Tabs Navigation -->
-            <div class="flex items-center gap-6 sm:gap-10 border-b border-zinc-800 overflow-x-auto pb-3 text-xs uppercase tracking-wider font-semibold text-zinc-400" id="product-tabs-nav">
-                <button onclick="switchTab('desc', this)" class="pb-2 border-b-2 border-transparent hover:text-amber-400 tab-btn-active">Description</button>
-                <button onclick="switchTab('fabric', this)" class="pb-2 border-b-2 border-transparent hover:text-amber-400">Fabric & Material</button>
-                <button onclick="switchTab('fit', this)" class="pb-2 border-b-2 border-transparent hover:text-amber-400">Size & Fit</button>
-                <button onclick="switchTab('delivery', this)" class="pb-2 border-b-2 border-transparent hover:text-amber-400">Delivery & Shipping</button>
-                <button onclick="switchTab('returns', this)" class="pb-2 border-b-2 border-transparent hover:text-amber-400">Returns & Exchange</button>
-                <button onclick="switchTab('care', this)" class="pb-2 border-b-2 border-transparent hover:text-amber-400">Care Instructions</button>
+            <div class="flex items-center gap-6 sm:gap-10 border-b border-slate-200 overflow-x-auto pb-3 text-xs uppercase tracking-wider font-semibold text-slate-500" id="product-tabs-nav">
+                <button onclick="switchTab('desc', this)" class="pb-2 border-b-2 border-transparent hover:text-blue-600 tab-btn-active">Description</button>
+                <button onclick="switchTab('fabric', this)" class="pb-2 border-b-2 border-transparent hover:text-blue-600">Fabric & Material</button>
+                <button onclick="switchTab('fit', this)" class="pb-2 border-b-2 border-transparent hover:text-blue-600">Size & Fit</button>
+                <button onclick="switchTab('delivery', this)" class="pb-2 border-b-2 border-transparent hover:text-blue-600">Delivery & Shipping</button>
+                <button onclick="switchTab('returns', this)" class="pb-2 border-b-2 border-transparent hover:text-blue-600">Returns & Exchange</button>
+                <button onclick="switchTab('care', this)" class="pb-2 border-b-2 border-transparent hover:text-blue-600">Care Instructions</button>
             </div>
 
             <!-- Tab Contents -->
-            <div class="pt-6 text-xs sm:text-sm text-zinc-300 leading-relaxed" id="tab-contents">
+            <div class="pt-6 text-xs sm:text-sm text-slate-600 leading-relaxed" id="tab-contents">
                 <div id="tab-desc" class="space-y-3">
                     <p id="tab-desc-content">Handcrafted by master artisans with heirloom attention to detail.</p>
                 </div>
@@ -309,9 +309,9 @@
         </section>
 
         <!-- FREQUENTLY BOUGHT TOGETHER BUNDLE -->
-        <section class="luxury-card rounded-3xl p-6 sm:p-8 border border-amber-500/20 space-y-4">
+        <section class="bright-section-card rounded-3xl p-6 sm:p-8 border border-slate-200 space-y-4">
             <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Signature Ensemble Styling</span>
-            <h3 class="text-xl font-serif font-bold text-white">Frequently Bought Together</h3>
+            <h3 class="text-xl font-serif font-bold text-slate-900">Frequently Bought Together</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center pt-2" id="bundle-items-container">
                 <!-- Injected dynamically -->
             </div>
@@ -319,7 +319,7 @@
 
         <!-- YOU MAY ALSO LIKE RECOMMENDATIONS -->
         <section class="space-y-6">
-            <h3 class="text-2xl font-serif font-bold text-white">You May Also Like</h3>
+            <h3 class="text-2xl font-serif font-bold text-slate-900">You May Also Like</h3>
             <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" id="related-products-grid"></div>
         </section>
 
@@ -327,14 +327,14 @@
 
     <!-- SIZE GUIDE MODAL -->
     <div id="size-guide-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="luxury-card w-full max-w-xl rounded-3xl p-6 border border-amber-500/30 shadow-2xl space-y-4">
+        <div class="bg-white w-full max-w-xl rounded-3xl p-6 border border-slate-200 shadow-2xl space-y-4 text-slate-900">
             <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
-                <h3 class="font-serif font-bold text-white text-base">Khushi Standard Size Chart (Inches)</h3>
-                <button onclick="closeSizeGuideModal()" class="text-zinc-400 hover:text-white">
+                <h3 class="font-serif font-bold text-slate-900 text-base">Khushi Standard Size Chart (Inches)</h3>
+                <button onclick="closeSizeGuideModal()" class="text-slate-400 hover:text-slate-900">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <table class="w-full text-xs text-left text-zinc-300 divide-y divide-zinc-800">
+            <table class="w-full text-xs text-left text-slate-700 divide-y divide-slate-100">
                 <thead>
                     <tr class="text-amber-400 font-bold uppercase text-[10px]">
                         <th class="py-2">Size</th>
@@ -345,10 +345,10 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-zinc-800/60 font-mono">
-                    <tr><td class="py-2 font-bold text-white">Small (S)</td><td>36"</td><td>32"</td><td>38"</td><td>42"</td></tr>
-                    <tr><td class="py-2 font-bold text-white">Medium (M)</td><td>40"</td><td>36"</td><td>42"</td><td>44"</td></tr>
-                    <tr><td class="py-2 font-bold text-white">Large (L)</td><td>44"</td><td>40"</td><td>46"</td><td>45"</td></tr>
-                    <tr><td class="py-2 font-bold text-white">XL</td><td>48"</td><td>44"</td><td>50"</td><td>46"</td></tr>
+                    <tr><td class="py-2 font-bold text-slate-900">Small (S)</td><td>36"</td><td>32"</td><td>38"</td><td>42"</td></tr>
+                    <tr><td class="py-2 font-bold text-slate-900">Medium (M)</td><td>40"</td><td>36"</td><td>42"</td><td>44"</td></tr>
+                    <tr><td class="py-2 font-bold text-slate-900">Large (L)</td><td>44"</td><td>40"</td><td>46"</td><td>45"</td></tr>
+                    <tr><td class="py-2 font-bold text-slate-900">XL</td><td>48"</td><td>44"</td><td>50"</td><td>46"</td></tr>
                 </tbody>
             </table>
             <p class="text-[11px] text-zinc-400">For bespoke measurements, message our master tailor on WhatsApp.</p>
@@ -356,67 +356,78 @@
     </div>
 
     <!-- Mobile Sticky Action Bar -->
-    <div class="fixed bottom-0 left-0 right-0 z-30 bg-zinc-950/95 backdrop-blur-md border-t border-zinc-800/90 p-3 sm:hidden shadow-[0_-10px_25px_rgba(0,0,0,0.8)]">
+    <div class="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 sm:hidden shadow-lg">
         <div class="flex items-center justify-between gap-3 max-w-md mx-auto">
             <div class="flex flex-col">
                 <span class="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold">Total Price</span>
-                <span class="text-base font-serif font-bold text-amber-400" id="mobile-sticky-price">Rs. 0</span>
+                <span class="text-base font-serif font-bold text-slate-900" id="mobile-sticky-price">Rs. 0</span>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="handleDetailAddToCart()" class="px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-200 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow">
+                <button onclick="handleDetailAddToCart()" class="px-4 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-800 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm rounded-full">
                     <i class="fa-solid fa-bag-shopping text-amber-400"></i> Bag
                 </button>
-                <button onclick="handleDetailBuyNow()" class="px-4 py-2.5 rounded-xl btn-gold text-black text-xs font-extrabold uppercase tracking-wider shadow flex items-center gap-1.5">
+                <button onclick="handleDetailBuyNow()" class="px-4 py-2.5 rounded-full btn-gold-pill text-slate-950 text-xs font-extrabold uppercase tracking-wider shadow-sm flex items-center gap-1.5">
                     <i class="fa-solid fa-bolt"></i> Buy Now
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-[#05070D] border-t border-zinc-800/80 py-10 text-xs text-zinc-500 text-center mt-auto pb-24 sm:pb-10">
-        <p>&copy; 2026 Khushi Collection Pvt Ltd. All Rights Reserved.</p>
-    </footer>
-
-    <!-- MOBILE SLIDE-IN NAVIGATION DRAWER -->
-    <div id="mobile-nav-overlay" onclick="toggleMobileMenu()" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm transition-opacity"></div>
-    <div id="mobile-nav-drawer" class="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm z-50 bg-[#0A0D14] border-r border-zinc-800 p-6 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 overflow-y-auto">
-        <div class="space-y-6">
-            <div class="flex items-center justify-between pb-4 border-b border-zinc-800">
-                <img src="static/images/logo.svg" alt="Khushi Collection" class="h-10 w-auto">
-                <button onclick="toggleMobileMenu()" class="text-zinc-400 hover:text-white p-2">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
+    
+    <!-- Shared Site Footer -->
+    <footer class="khushi-footer text-xs pt-14 pb-10 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center gap-2.5">
+                        <img src="static/images/logo.svg" alt="Khushi Logo" class="h-9 w-auto">
+                        <span class="font-cinzel text-xl font-bold tracking-widest text-white">KHUSHI</span>
+                    </div>
+                    <p class="text-slate-400 leading-relaxed max-w-sm">Khushi Collection embodies timeless Pakistani heritage through artisanal haute couture, luxury formal wear, and signature fragrances.</p>
+                    <div class="flex items-center gap-3 pt-2 text-slate-400 text-sm">
+                        <a href="https://instagram.com/khushicollection" target="_blank" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-blue-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://facebook.com/khushicollection" target="_blank" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-blue-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://tiktok.com/@khushicollection" target="_blank" class="w-8 h-8 rounded-full bg-slate-900 hover:bg-blue-600 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Quick Links</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="index.html" class="hover:text-amber-400 transition">Home</a></li>
+                        <li><a href="shop.html" class="hover:text-amber-400 transition">Shop Catalog</a></li>
+                        <li><a href="shop.html?view=collections" class="hover:text-amber-400 transition">Collections</a></li>
+                        <li><a href="about.html" class="hover:text-amber-400 transition">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-400 transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Customer Care</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="track-order.html" class="hover:text-amber-400 transition">Track Order</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-400 transition">Returns &amp; Exchanges</a></li>
+                        <li><a href="size-guide.html" class="hover:text-amber-400 transition">Size Guide</a></li>
+                        <li><a href="faq.html" class="hover:text-amber-400 transition">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Flagship Studio</h4>
+                    <p class="text-slate-400 leading-relaxed">Suite 104, Gulberg Galleria, Main Boulevard, Lahore</p>
+                    <p class="text-slate-400"><span class="text-white font-semibold">Phone:</span> +92 343 4158605</p>
+                    <p class="text-slate-400"><span class="text-white font-semibold">Email:</span> support@khushicollection.com</p>
+                </div>
             </div>
-
-            <div class="space-y-1 text-sm font-semibold uppercase tracking-wider text-zinc-300">
-                <a href="index.html" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400 text-amber-400">Home</a>
-                <a href="shop.html" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">All Collections</a>
-                <a href="shop.html?category=women" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Women Couture</a>
-                <a href="shop.html?category=men" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Men Heritage</a>
-                <a href="shop.html?category=kids" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Kids Festive</a>
-                <a href="shop.html?category=perfumes" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Imperial Oud</a>
-                <a href="shop.html?category=watches" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Watches</a>
-                <a href="shop.html?category=shoes" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Khussas</a>
-                <a href="shop.html?category=bags" class="block py-2.5 px-3 rounded-xl hover:bg-zinc-900 hover:text-amber-400">Bags</a>
-                <a href="shop.html?filter=sale" class="block py-2.5 px-3 rounded-xl bg-rose-950/60 text-rose-300 font-bold">🔥 Seasonal Sale</a>
-            </div>
-
-            <div class="pt-4 border-t border-zinc-800 space-y-2 text-xs text-zinc-400">
-                <a href="track-order.html" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-zinc-900 hover:text-white">
-                    <i class="fa-solid fa-truck-fast text-amber-400"></i>
-                    <span>Track Your Order</span>
-                </a>
-                <a href="contact.html" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-zinc-900 hover:text-white">
-                    <i class="fa-solid fa-headset text-amber-400"></i>
-                    <span>Concierge & WhatsApp</span>
-                </a>
-                <a href="about.html" class="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-zinc-900 hover:text-white">
-                    <i class="fa-solid fa-book-open text-amber-400"></i>
-                    <span>The Khushi Story</span>
-                </a>
+            <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+                <div>&copy; 2026 Khushi Collection. All rights reserved.</div>
+                <div class="flex items-center gap-3 text-slate-400">
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-money-bill-wave text-base text-emerald-400"></i> COD</span>
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-lock text-xs"></i> SSL Secured</span>
+                </div>
             </div>
         </div>
+    </footer>
+
+
+    
 
         <div class="pt-6 border-t border-zinc-900 text-center text-[11px] text-slate-400">
             <p>&copy; 2026 Khushi Collection Pvt Ltd</p>
@@ -443,9 +454,9 @@
 
         function switchTab(tabKey, btn) {
             document.querySelectorAll('#product-tabs-nav button').forEach(b => {
-                b.className = 'pb-2 border-b-2 border-transparent hover:text-amber-400';
+                b.className = 'pb-2 border-b-2 border-transparent hover:text-blue-600';
             });
-            btn.className = 'pb-2 border-b-2 border-transparent hover:text-amber-400 tab-btn-active';
+            btn.className = 'pb-2 border-b-2 border-transparent hover:text-blue-600 tab-btn-active';
 
             const tabs = ['desc', 'fabric', 'fit', 'delivery', 'returns', 'care'];
             tabs.forEach(t => {
@@ -481,9 +492,9 @@
             const label = document.getElementById('selected-size-label');
             if (label) label.textContent = sizeName;
             document.querySelectorAll('#detail-sizes-list button').forEach(b => {
-                b.className = 'px-4 py-2 rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500 text-xs font-semibold transition';
+                b.className = 'px-4 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 hover:border-blue-400 text-xs font-semibold transition';
             });
-            btn.className = 'px-4 py-2 rounded-xl border border-amber-400 bg-amber-400/20 text-amber-300 font-bold shadow-[0_0_12px_rgba(212,175,55,0.25)] text-xs font-semibold transition';
+            btn.className = 'px-4 py-2 rounded-xl border border-blue-600 bg-blue-50 text-blue-700 font-bold shadow-sm text-xs font-semibold transition';
         }
 
         function selectProductColor(colorName, btn) {
@@ -491,9 +502,9 @@
             const label = document.getElementById('selected-color-label');
             if (label) label.textContent = colorName;
             document.querySelectorAll('#detail-colors-list button').forEach(b => {
-                b.className = 'px-4 py-2 rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500 text-xs font-semibold flex items-center gap-2 transition';
+                b.className = 'px-4 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 hover:border-blue-400 text-xs font-semibold flex items-center gap-2 transition';
             });
-            btn.className = 'px-4 py-2 rounded-xl border border-amber-400 bg-amber-400/20 text-amber-300 font-bold shadow-[0_0_12px_rgba(212,175,55,0.25)] text-xs font-semibold flex items-center gap-2 transition';
+            btn.className = 'px-4 py-2 rounded-xl border border-blue-600 bg-blue-50 text-blue-700 font-bold shadow-sm text-xs font-semibold flex items-center gap-2 transition';
         }
 
         function handleDetailAddToCart() {
@@ -540,7 +551,7 @@
                             <img src="${p1.thumbnail}" class="w-full h-full object-cover">
                         </div>
                         <div class="text-[11px] max-w-[100px] sm:max-w-[130px]">
-                            <span class="font-bold text-white block truncate">${p1.name}</span>
+                            <span class="font-bold text-slate-900 block truncate">${p1.name}</span>
                             <span class="text-amber-400 font-serif font-bold">Rs. ${price1.toLocaleString()}</span>
                         </div>
                     </div>
@@ -550,7 +561,7 @@
                             <img src="${p2.thumbnail}" class="w-full h-full object-cover">
                         </div>
                         <div class="text-[11px] max-w-[100px] sm:max-w-[130px]">
-                            <span class="font-bold text-white block truncate">${p2.name}</span>
+                            <span class="font-bold text-slate-900 block truncate">${p2.name}</span>
                             <span class="text-amber-400 font-serif font-bold">Rs. ${price2.toLocaleString()}</span>
                         </div>
                     </div>
@@ -560,7 +571,7 @@
                             <img src="${p3.thumbnail}" class="w-full h-full object-cover">
                         </div>
                         <div class="text-[11px] max-w-[100px] sm:max-w-[130px]">
-                            <span class="font-bold text-white block truncate">${p3.name}</span>
+                            <span class="font-bold text-slate-900 block truncate">${p3.name}</span>
                             <span class="text-amber-400 font-serif font-bold">Rs. ${price3.toLocaleString()}</span>
                         </div>
                     </div>
@@ -612,7 +623,7 @@
 
             if (thumbsContainer) {
                 thumbsContainer.innerHTML = allImages.map((img, idx) => `
-                    <button onclick="document.getElementById('main-product-image').src='${img}'" class="aspect-[4/5] rounded-xl overflow-hidden border border-zinc-800 hover:border-amber-400 transition bg-zinc-950">
+                    <button onclick="document.getElementById('main-product-image').src='${img}'" class="aspect-[4/5] rounded-xl overflow-hidden border border-slate-200 hover:border-blue-500 transition bg-slate-50">
                         <img src="${img}" class="w-full h-full object-cover">
                     </button>
                 `).join('');
@@ -658,7 +669,7 @@
                     const sName = typeof s === 'object' && s !== null ? (s.name || 'Standard') : String(s);
                     const isSelected = idx === 0;
                     return `
-                        <button type="button" onclick="selectProductSize('${sName.replace(/'/g, "\\'")}', this)" class="px-4 py-2 rounded-xl border ${isSelected ? 'border-amber-400 bg-amber-400/20 text-amber-300 font-bold shadow-[0_0_12px_rgba(212,175,55,0.25)]' : 'border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500'} text-xs font-semibold transition">
+                        <button type="button" onclick="selectProductSize('${sName.replace(/'/g, "\\'")}', this)" class="px-4 py-2 rounded-xl border ${isSelected ? 'border-blue-600 bg-blue-50 text-blue-700 font-bold shadow-sm' : 'border-slate-200 bg-slate-50 text-slate-800 hover:border-blue-400'} text-xs font-semibold transition">
                             ${sName}
                         </button>
                     `;
@@ -679,7 +690,7 @@
                     const cHex = typeof c === 'object' && c !== null ? (c.hex || '#d4af37') : '#d4af37';
                     const isSelected = idx === 0;
                     return `
-                        <button type="button" onclick="selectProductColor('${cName.replace(/'/g, "\\'")}', this)" class="px-4 py-2 rounded-xl border ${isSelected ? 'border-amber-400 bg-amber-400/20 text-amber-300 font-bold shadow-[0_0_12px_rgba(212,175,55,0.25)]' : 'border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500'} text-xs font-semibold flex items-center gap-2 transition">
+                        <button type="button" onclick="selectProductColor('${cName.replace(/'/g, "\\'")}', this)" class="px-4 py-2 rounded-xl border ${isSelected ? 'border-blue-600 bg-blue-50 text-blue-700 font-bold shadow-sm' : 'border-slate-200 bg-slate-50 text-slate-800 hover:border-blue-400'} text-xs font-semibold flex items-center gap-2 transition">
                             <span class="w-3.5 h-3.5 rounded-full border border-white/25 flex-shrink-0 shadow-sm" style="background-color: ${cHex};"></span>
                             <span>${cName}</span>
                         </button>
@@ -695,7 +706,7 @@
             // WhatsApp link with product query
             const waBtn = document.getElementById('detail-whatsapp-btn');
             if (waBtn) {
-                waBtn.href = `https://wa.me/923001234567?text=Hi%20Khushi%20Collection,%20I%20am%20inquiring%20about%20${encodeURIComponent(currentProduct.name)}%20(SKU:%20${currentProduct.sku})`;
+                waBtn.href = `https://wa.me/923434158605?text=Hi%20Khushi%20Collection,%20I%20am%20inquiring%20about%20${encodeURIComponent(currentProduct.name)}%20(SKU:%20${currentProduct.sku})`;
             }
 
             // Render Bundle Section
@@ -705,18 +716,40 @@
             const related = store.getProducts().filter(p => p.category === currentProduct.category && p.id !== currentProduct.id).slice(0, 4);
             const relatedGrid = document.getElementById('related-products-grid');
             if (relatedGrid) {
-                relatedGrid.innerHTML = related.map(p => `
-                    <div class="luxury-card rounded-2xl overflow-hidden flex flex-col group p-3">
-                        <a href="product-detail.html?id=${p.id}" class="aspect-[4/5] rounded-xl overflow-hidden bg-zinc-950 block">
-                            <img src="${p.thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition">
-                        </a>
-                        <div class="pt-3">
-                            <span class="text-[9px] uppercase font-bold text-amber-400 tracking-wider">${p.category_name || p.category}</span>
-                            <h5 class="text-xs font-bold text-white truncate mt-0.5">${p.name}</h5>
-                            <span class="text-xs font-bold text-amber-400 mt-1 block">Rs. ${(p.sale_price || p.price).toLocaleString()}</span>
+                relatedGrid.innerHTML = related.map(p => {
+                    const price = p.sale_price || p.price;
+                    const hasDiscount = p.sale_price && p.sale_price < p.price;
+                    const discountPercent = hasDiscount ? Math.round(((p.price - p.sale_price) / p.price) * 100) : 0;
+                    return `
+                        <div class="bright-card group flex flex-col justify-between" data-product-id="${p.id}">
+                            <div class="relative aspect-square bg-slate-50 overflow-hidden rounded-2xl m-2.5">
+                                ${hasDiscount ? `<div class="absolute top-2.5 left-2.5 z-10"><span class="bg-rose-500 text-white text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full shadow-sm">-${discountPercent}%</span></div>` : ''}
+                                <a href="product-detail.html?id=${p.id}" class="block w-full h-full">
+                                    <img src="${p.thumbnail}" alt="${p.name}" onerror="handleImageError(this)" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                </a>
+                            </div>
+                            <div class="p-3.5 pt-0 flex-1 flex flex-col justify-between">
+                                <div>
+                                    <div class="text-[10px] font-medium text-slate-400 uppercase tracking-wider truncate mb-1">
+                                        ${p.category_name || p.category}
+                                    </div>
+                                    <h4 class="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition truncate">
+                                        <a href="product-detail.html?id=${p.id}">${p.name}</a>
+                                    </h4>
+                                    <div class="flex items-baseline gap-1.5 mt-1">
+                                        <span class="text-xs font-bold text-slate-900 font-mono">Rs. ${price.toLocaleString()}</span>
+                                        ${hasDiscount ? `<span class="text-[10px] text-slate-400 line-through font-mono">Rs. ${p.price.toLocaleString()}</span>` : ''}
+                                    </div>
+                                </div>
+                                <div class="mt-2.5 pt-2 border-t border-slate-100">
+                                    <a href="product-detail.html?id=${p.id}" class="w-full py-1.5 px-3 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-center text-[11px] font-bold block transition">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             }
         }
         window.renderProductDetailPage = renderProductDetailPage;
@@ -731,7 +764,7 @@
         function handleWhatsAppOrder() {
             if (!currentProduct) return;
             const s = store.getSettings() || {};
-            const waRaw = (s.store_profile && s.store_profile.whatsapp) || (s.contact_support && s.contact_support.whatsapp_number) || s.store_whatsapp || '923001234567';
+            const waRaw = (s.store_profile && s.store_profile.whatsapp) || (s.contact_support && s.contact_support.whatsapp_number) || s.store_whatsapp || '923434158605';
             const cleanWa = String(waRaw).replace(/\D/g, '');
             const price = currentProduct.sale_price || currentProduct.price;
             const total = price * qty;
@@ -782,7 +815,7 @@
                     <div class="flex items-center gap-3 p-3 bg-zinc-950 rounded-xl border border-zinc-800">
                         <img src="${currentProduct.thumbnail}" class="w-12 h-14 object-cover rounded-lg">
                         <div class="min-w-0 flex-1 text-xs">
-                            <h5 class="font-bold text-white truncate">${currentProduct.name}</h5>
+                            <h5 class="font-bold text-slate-900 truncate">${currentProduct.name}</h5>
                             <p class="text-zinc-400 text-[11px]">Size: <span class="text-amber-400 font-semibold">${selectedSize}</span> | Color: <span class="text-amber-400 font-semibold">${selectedColor}</span> | Qty: <span class="text-white font-bold">${qty}</span></p>
                             <span class="text-amber-400 font-bold font-mono">Rs. ${price.toLocaleString()} each</span>
                         </div>
@@ -889,7 +922,7 @@
             <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-truck-fast text-amber-400"></i>
-                    <h3 class="font-serif font-bold text-white text-base">Instant 1-Click Order</h3>
+                    <h3 class="font-serif font-bold text-slate-900 text-base">Instant 1-Click Order</h3>
                 </div>
                 <button onclick="closeQuickOrderModal()" class="text-zinc-400 hover:text-white p-1">
                     <i class="fa-solid fa-xmark text-lg"></i>
