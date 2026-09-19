@@ -1608,11 +1608,11 @@
 
             // 5. Live Video & Bento Cards
             const vid = hp.live_video_section || {};
-            if (document.getElementById('live-video-badge')) document.getElementById('live-video-badge').textContent = vid.badge || 'LIVE | 2.4K Watching';
-            if (document.getElementById('live-video-title')) document.getElementById('live-video-title').textContent = vid.title || 'Live Fashion Show';
-            if (document.getElementById('live-video-sub')) document.getElementById('live-video-sub').textContent = vid.subtitle || 'Watch our latest collection in real-time';
-            if (document.getElementById('live-video-comment')) document.getElementById('live-video-comment').textContent = vid.comment_pill || 'Beautiful collection ❤️ Where can I buy this?';
-            if (document.getElementById('live-video-btn-txt')) document.getElementById('live-video-btn-txt').textContent = vid.button_text || 'Watch Live';
+            if (document.getElementById('live-video-badge')) document.getElementById('live-video-badge').textContent = vid.badge || 'RUNWAY ARCHIVE | 2026 COUTURE';
+            if (document.getElementById('live-video-title')) document.getElementById('live-video-title').textContent = vid.title || 'Live Runway Showcase';
+            if (document.getElementById('live-video-sub')) document.getElementById('live-video-sub').textContent = vid.subtitle || 'Explore our exclusive runway curation';
+            if (document.getElementById('live-video-comment')) document.getElementById('live-video-comment').textContent = vid.comment_pill || 'Featured ensemble: Noor-e-Kashmir Velvet Shawl';
+            if (document.getElementById('live-video-btn-txt')) document.getElementById('live-video-btn-txt').textContent = vid.button_text || 'Watch Runway';
             if (document.getElementById('live-fashion-video') && vid.video_url) {
                 const vidEl = document.getElementById('live-fashion-video');
                 if (vidEl.src !== vid.video_url) vidEl.src = vid.video_url;
