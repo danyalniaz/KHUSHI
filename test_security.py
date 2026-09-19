@@ -46,7 +46,7 @@ class SecurityTestSuite(unittest.TestCase):
         else:
             execute_db("UPDATE users SET status = 'active', password_hash = ? WHERE email = 'test_owner@khushi.com'", (generate_password_hash('OwnerSecurePass123!'),))
         execute_db("UPDATE users SET status = 'active' WHERE email = 'test_staff@khushi.com'")
-        execute_db("UPDATE users SET status = 'active' WHERE email = 'admin@khushicollection.com'")
+        execute_db("UPDATE users SET status = 'active' WHERE email = 'owner@khushicollection.com'")
 
     def test_01_unauthenticated_admin_access_redirects(self):
         """Unauthenticated user accessing /admin/dashboard must be redirected to /admin/login"""
@@ -222,7 +222,7 @@ class SecurityTestSuite(unittest.TestCase):
         self.assertIn('Cannot delete the sole remaining Store Owner', res_del.get_json().get('error', ''))
 
         # Restore status
-        execute_db("UPDATE users SET status = 'active' WHERE email IN ('test_owner@khushi.com', 'admin@khushicollection.com')")
+        execute_db("UPDATE users SET status = 'active' WHERE email IN ('test_owner@khushi.com', 'owner@khushicollection.com')")
 
     def test_11_active_sessions_and_revocation(self):
         """Active sessions are listed and can be revoked"""

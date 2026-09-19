@@ -22,10 +22,10 @@ with app.app_context():
     print(f"[OK] Owner email preserved after re-seed: {owner_after['email']}")
 
     # Restore original email (delete old admin row if any, then update)
-    existing = query_db("SELECT id FROM users WHERE email='admin@khushicollection.com'", one=True)
+    existing = query_db("SELECT id FROM users WHERE email='owner@khushicollection.com'", one=True)
     if existing and existing['id'] != owner['id']:
         execute_db("DELETE FROM users WHERE id=?", (existing['id'],))
-    execute_db("UPDATE users SET email='admin@khushicollection.com' WHERE id=?", (owner['id'],))
+    execute_db("UPDATE users SET email='owner@khushicollection.com' WHERE id=?", (owner['id'],))
 
     # Test 3: Test bulk delete API
     execute_db("INSERT OR REPLACE INTO orders (id, order_number, customer_name, customer_email, customer_phone, address, total_amount, order_status, payment_status, payment_method, city) VALUES (9001, 'KC-TESTA', 'Test A', 'a@t.com', '03001111111', 'Test St', 5000, 'pending', 'COD', 'cod', 'Lahore')")

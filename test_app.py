@@ -106,10 +106,10 @@ class KhushiCollectionTestSuite(unittest.TestCase):
         unauth = self.client.get('/admin/dashboard')
         self.assertEqual(unauth.status_code, 302)
 
-        # Login as super admin
+        # Login as owner
         login_res = self.client.post('/admin/login', data={
-            'email': 'admin@khushicollection.com',
-            'password': 'admin123'
+            'email': 'owner@khushicollection.com',
+            'password': 'TestOwnerPassword!2026'
         }, follow_redirects=True)
         self.assertEqual(login_res.status_code, 200)
         self.assertIn(b'Store Analytics & Overview', login_res.data)
@@ -153,8 +153,8 @@ class KhushiCollectionTestSuite(unittest.TestCase):
     def test_12_status_update_and_sms_trigger(self):
         # Login admin first
         self.client.post('/admin/login', data={
-            'email': 'admin@khushicollection.com',
-            'password': 'admin123'
+            'email': 'owner@khushicollection.com',
+            'password': 'TestOwnerPassword!2026'
         })
 
         # Update order KC-10025 to "delivered" as authenticated owner

@@ -339,7 +339,7 @@
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> <span>Saving & Committing to Cloud...</span>';
 
             const user = (window.store && store.getCurrentUser) ? store.getCurrentUser() : null;
-            const email = (user && user.email) ? user.email : 'admin@khushicollection.com';
+            const email = (user && user.email) ? user.email : '';
             const token = (window.store && store.getAuthToken) ? store.getAuthToken() : (user ? user.token : '');
 
             try {

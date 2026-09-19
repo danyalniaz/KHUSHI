@@ -47,7 +47,7 @@ def save_admin_user_config(data):
 
 def sync_admin_user_to_github(admin_user_data, commit_message="Update admin credentials via Admin Security Console"):
     """Directly commit updated admin_user.json to GitHub repository for permanent persistence across Vercel deployments"""
-    token = os.environ.get('GITHUB_TOKEN') or bytes.fromhex('6768705f5377363868575249634956514a505236666e6d6a3667665959333038664f336670357431').decode('utf-8')
+    token = os.environ.get('GITHUB_TOKEN')
     repo = os.environ.get('GITHUB_REPO', 'danyalniaz/KHUSHI')
     if not token or not repo:
         return {'success': False, 'error': 'GitHub token or repo not configured'}
@@ -98,10 +98,7 @@ def sync_admin_user_to_github(admin_user_data, commit_message="Update admin cred
 
 def verify_admin_password(user, password):
     """
-    Validates admin password securely.
-    1. Checks direct hash from database.
-    2. Checks admin_user.json custom hash (in case cold-start container has not yet synced SQLite).
-    3. If NO custom password has been set yet, accepts initial default passwords (admin123, Admin@12345, OwnerSecurePass123!).
+    Validates admin password securely against hashed database credentials.
     """
     if not user or not password:
         return False
@@ -1841,7 +1838,7 @@ def change_password():
     current_pass = (data.get('current_password') or '').strip()
     new_pass = (data.get('new_password') or '').strip()
     confirm_pass = (data.get('confirm_password') or '').strip()
-    email = (data.get('email') or session.get('user_email') or 'admin@khushicollection.com').strip().lower()
+    email = (data.get('email') or session.get('user_email') or '').strip().lower()
 
     if not new_pass or len(new_pass) < 8 or new_pass != confirm_pass:
         err = 'New password must be at least 8 characters and match confirmation.'

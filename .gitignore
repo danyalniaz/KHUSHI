@@ -8,3 +8,6 @@ env/
 venv/
 .github_token
 scratch/
+admin_user.json
+*.pem
+*.key

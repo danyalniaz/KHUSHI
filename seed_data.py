@@ -19,35 +19,26 @@ CATEGORIES = [
 ]
 
 def sync_owner_user(cursor):
-    admin_user_file = os.path.join(BASE_DIR, 'admin_user.json')
-    owner_name = 'Khushi Store Owner'
-    import secrets
-    owner_hash = generate_password_hash(secrets.token_urlsafe(16))
-    has_custom = False
+    owner_name = os.environ.get('ADMIN_NAME', 'Khushi Store Owner')
+    owner_email = os.environ.get('ADMIN_EMAIL', 'owner@khushicollection.com')
+    env_pass = os.environ.get('ADMIN_PASSWORD')
+    env_hash = os.environ.get('ADMIN_PASSWORD_HASH')
 
-    if os.path.exists(admin_user_file):
-        try:
-            with open(admin_user_file, 'r', encoding='utf-8') as f:
-                acfg = json.load(f)
-                owner_name = acfg.get('name', owner_name)
-                owner_email = acfg.get('email', owner_email)
-                has_custom = acfg.get('has_custom_password', False)
-                if has_custom and acfg.get('password_hash'):
-                    owner_hash = acfg.get('password_hash')
-        except Exception:
-            pass
-
-    cursor.execute("SELECT id FROM users WHERE role IN ('OWNER', 'SUPER_ADMIN')")
+    cursor.execute("SELECT id, password_hash FROM users WHERE role IN ('OWNER', 'SUPER_ADMIN')")
     row = cursor.fetchone()
     if not row:
+        import secrets
+        default_hash = env_hash if env_hash else generate_password_hash(env_pass if env_pass else secrets.token_urlsafe(16))
         cursor.execute('''
             INSERT INTO users (name, email, password_hash, role, status, failed_login_attempts, locked_until)
             VALUES (?, ?, ?, 'OWNER', 'active', 0, NULL)
-        ''', (owner_name, owner_email, owner_hash))
+        ''', (owner_name, owner_email, default_hash))
     else:
-        cursor.execute('''
-            UPDATE users SET name = ?, email = ?, password_hash = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?
-        ''', (owner_name, owner_email, owner_hash, row[0]))
+        # Existing owner in database: preserve existing password_hash unless explicit env var overrides it
+        if env_hash:
+            cursor.execute('UPDATE users SET password_hash = ? WHERE id = ?', (env_hash, row[0]))
+        elif env_pass:
+            cursor.execute('UPDATE users SET password_hash = ? WHERE id = ?', (generate_password_hash(env_pass), row[0]))
 
 def sync_settings_data(cursor):
     settings_file = os.path.join(BASE_DIR, 'settings.json')
