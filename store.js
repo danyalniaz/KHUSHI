@@ -5212,83 +5212,8 @@ const DEFAULT_POPULAR_SEARCHES = [
     "Minaudière Bag"
 ];
 
-// Pre-seeded Sample Orders
-const DEFAULT_ORDERS = [
-    {
-        id: 1700000002,
-        order_number: "KC-76906",
-        customer_name: "Danyal Niaz",
-        customer_phone: "0356545654547",
-        customer_email: "danyalniaz16.56@gmail.com",
-        address: "ASSAMNFNB",
-        city: "Other Cities",
-        area: ",kzjdbxz sbajhSGU",
-        delivery_instructions: ",MAJFBDS",
-        subtotal: 5200,
-        discount_amount: 0,
-        delivery_fee: 0,
-        total_amount: 5200,
-        payment_method: "cod",
-        payment_status: "COD",
-        order_status: "pending",
-        tracking_number: "TRX-84106052",
-        courier_name: "Trax Logistics",
-        created_at: new Date().toISOString(),
-        items: [
-            {
-                id: 37,
-                product_id: 37,
-                name: "Maharani Pure Leather Hand-Embroidered Velvet Khussa",
-                thumbnail: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800",
-                price: 5200,
-                quantity: 1,
-                size: "36",
-                color: "Antique Gold"
-            }
-        ],
-        timeline: [
-            { status: "pending", title: "Order Placed", description: "Order recorded (COD - COD)", time: "10:43 PM", by: "Customer" }
-        ]
-    },
-    {
-        id: 1700000001,
-        order_number: "KC-10025",
-        customer_name: "Khushi Fatima",
-        customer_phone: "03219876543",
-        customer_email: "khushi.fatima@example.com",
-        address: "House 45, Street 12, Sector F-7/2",
-        city: "Islamabad",
-        area: "F-7",
-        delivery_instructions: "Please call before arrival",
-        subtotal: 18500,
-        discount_amount: 1850,
-        delivery_fee: 0,
-        total_amount: 16650,
-        payment_method: "cod",
-        payment_status: "COD",
-        order_status: "shipped",
-        tracking_number: "TRX-99882211",
-        courier_name: "Trax Logistics",
-        created_at: new Date(Date.now() - 2 * 86400000).toISOString(),
-        items: [
-            {
-                id: 1,
-                product_id: 1,
-                name: "Khushi Royal Embroidered Velvet Shawl Suit",
-                thumbnail: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800",
-                price: 14950,
-                quantity: 1,
-                size: "M",
-                color: "Emerald Green"
-            }
-        ],
-        timeline: [
-            { status: "pending", title: "Order Placed", description: "Order recorded (COD)", time: "10:30 AM", by: "Customer" },
-            { status: "confirmed", title: "Order Confirmed", description: "Verified by concierge team", time: "11:15 AM", by: "Staff" },
-            { status: "shipped", title: "Dispatched", description: "Handed over to Trax Logistics (Tracking: TRX-99882211)", time: "03:45 PM", by: "Logistics" }
-        ]
-    }
-];
+// Default Orders (Empty by default to prevent leaking mock orders)
+const DEFAULT_ORDERS = [];
 
 class KhushiStore {
     constructor() {

@@ -118,6 +118,7 @@
                     <table class="w-full text-left text-xs text-zinc-300">
                         <thead class="text-zinc-400 uppercase font-semibold border-b border-zinc-800 bg-zinc-900/60 text-[11px]">
                             <tr>
+                                <th class="py-3.5 px-3 w-8 text-center text-zinc-500" title="Drag to Reorder"><i class="fa-solid fa-arrows-up-down"></i></th>
                                 <th class="py-3.5 px-4 w-8"><input type="checkbox" id="select-all-cb" onchange="toggleSelectAll(this)" class="accent-amber-400"></th>
                                 <th class="py-3.5 px-4">Product Info</th>
                                 <th class="py-3.5 px-4">Category</th>
@@ -1271,7 +1272,10 @@
                 const isOut = totalVariantStock === 0;
 
                 return `
-                    <tr class="hover:bg-zinc-800/30 transition">
+                    <tr class="hover:bg-zinc-800/30 transition cursor-default" draggable="true" data-id="${p.id}">
+                        <td class="py-3.5 px-3 text-center cursor-grab text-zinc-500 hover:text-amber-400 select-none drag-handle" title="Drag to reorder">
+                            <i class="fa-solid fa-grip-vertical"></i>
+                        </td>
                         <td class="py-3.5 px-4">
                             <input type="checkbox" value="${p.id}" onchange="handleRowCheckbox(this)" class="row-cb accent-amber-400">
                         </td>
@@ -1308,7 +1312,13 @@
                                 <option value="draft" ${p.status === 'draft' ? 'selected' : ''}>Draft</option>
                             </select>
                         </td>
-                        <td class="py-3.5 px-4 text-right space-x-1.5 whitespace-nowrap">
+                        <td class="py-3.5 px-4 text-right space-x-1 whitespace-nowrap">
+                            <button onclick="moveProductOrder(${p.id}, -1)" class="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition" title="Move Up in Storefront">
+                                <i class="fa-solid fa-arrow-up"></i>
+                            </button>
+                            <button onclick="moveProductOrder(${p.id}, 1)" class="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition" title="Move Down in Storefront">
+                                <i class="fa-solid fa-arrow-down"></i>
+                            </button>
                             <button onclick="openProductModal(${p.id})" class="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs transition" title="Edit Full Specifications">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
@@ -1325,6 +1335,94 @@
                     </tr>
                 `;
             }).join('');
+            initTableDragAndDrop();
+        }
+
+        function moveProductOrder(id, direction) {
+            const products = store.getProducts();
+            const idx = products.findIndex(p => p.id === Number(id));
+            if (idx === -1) return;
+            const targetIdx = idx + direction;
+            if (targetIdx < 0 || targetIdx >= products.length) return;
+
+            const temp = products[idx];
+            products[idx] = products[targetIdx];
+            products[targetIdx] = temp;
+
+            products.forEach((p, i) => { p.display_order = i; });
+            store.saveProducts(products);
+            renderProductsTable();
+            saveProductsOrderToServer(products);
+        }
+
+        function initTableDragAndDrop() {
+            const tbody = document.getElementById('products-table-tbody');
+            if (!tbody) return;
+            const rows = tbody.querySelectorAll('tr[data-id]');
+            let draggedRow = null;
+
+            rows.forEach(row => {
+                row.addEventListener('dragstart', (e) => {
+                    draggedRow = row;
+                    e.dataTransfer.effectAllowed = 'move';
+                    row.classList.add('opacity-40', 'bg-amber-950/20');
+                });
+
+                row.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    const current = e.currentTarget;
+                    if (current && current !== draggedRow) {
+                        const rect = current.getBoundingClientRect();
+                        const next = (e.clientY - rect.top) / (rect.bottom - rect.top) > 0.5;
+                        tbody.insertBefore(draggedRow, next ? current.nextSibling : current);
+                    }
+                });
+
+                row.addEventListener('dragend', () => {
+                    if (draggedRow) {
+                        draggedRow.classList.remove('opacity-40', 'bg-amber-950/20');
+                        draggedRow = null;
+                    }
+                    const newOrderIds = Array.from(tbody.querySelectorAll('tr[data-id]'))
+                        .map(r => Number(r.getAttribute('data-id')));
+                    
+                    const currentProducts = store.getProducts();
+                    const productMap = new Map(currentProducts.map(p => [p.id, p]));
+                    const reordered = [];
+                    newOrderIds.forEach((id, idx) => {
+                        const p = productMap.get(id);
+                        if (p) {
+                            p.display_order = idx;
+                            reordered.push(p);
+                            productMap.delete(id);
+                        }
+                    });
+                    productMap.forEach(p => reordered.push(p));
+                    store.saveProducts(reordered);
+                    saveProductsOrderToServer(reordered);
+                });
+            });
+        }
+
+        async function saveProductsOrderToServer(productsList) {
+            try {
+                const orderPayload = productsList.map((p, idx) => ({ id: p.id, display_order: idx }));
+                const token = localStorage.getItem('kc_admin_token') || sessionStorage.getItem('kc_admin_token');
+                const res = await fetch('/api/products/reorder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token ? `Bearer ${token}` : ''
+                    },
+                    body: JSON.stringify({ product_orders: orderPayload })
+                });
+                if (res.ok) {
+                    showToast('Catalog order saved to server!');
+                }
+            } catch (err) {
+                console.warn('Reorder API sync error:', err);
+            }
         }
 
         function deleteProductWithConfirm(id) {

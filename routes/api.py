@@ -32,7 +32,7 @@ def dump_products_to_json():
             FROM products p
             LEFT JOIN categories c ON p.category_id = c.id
             WHERE p.status != "deleted"
-            ORDER BY p.id ASC
+            ORDER BY COALESCE(p.display_order, 0) ASC, p.id ASC
         ''')
         products = [format_product_dict(p) for p in products_raw]
         products_file = os.path.join(BASE_DIR, 'products.json')
@@ -59,7 +59,7 @@ def sync_products_to_github(commit_message="Update product catalog via Admin"):
             FROM products p
             LEFT JOIN categories c ON p.category_id = c.id
             WHERE p.status != "deleted"
-            ORDER BY p.id ASC
+            ORDER BY COALESCE(p.display_order, 0) ASC, p.id ASC
         ''')
         products = [format_product_dict(p) for p in products_raw]
         content_bytes = json.dumps(products, indent=2, ensure_ascii=False).encode('utf-8')
@@ -286,7 +286,7 @@ def all_products():
         FROM products p
         LEFT JOIN categories c ON p.category_id = c.id
         WHERE p.status != 'deleted'
-        ORDER BY p.id DESC
+        ORDER BY COALESCE(p.display_order, 0) ASC, p.id DESC
     ''')
     formatted = [format_product_dict(p) for p in products]
     return jsonify({'success': True, 'products': formatted, 'count': len(formatted)})
@@ -591,6 +591,32 @@ def publish_catalog_api():
         'message': 'Product catalog successfully published to live website and GitHub!'
     })
 
+@api_bp.route('/products/reorder', methods=['POST'])
+@admin_required(['OWNER', 'MANAGER', 'SUPER_ADMIN'])
+def reorder_products_api():
+    """Update display_order for products in database and persist to JSON"""
+    data = request.get_json(silent=True) or {}
+    orders = data.get('product_orders') or data.get('orders') or []
+    if not orders or not isinstance(orders, list):
+        return jsonify({'success': False, 'error': 'Invalid product orders array'}), 400
+
+    try:
+        for idx, item in enumerate(orders):
+            if isinstance(item, dict):
+                pid = item.get('id')
+                order_val = item.get('display_order', idx)
+            else:
+                pid = item
+                order_val = idx
+
+            if pid is not None:
+                execute_db('UPDATE products SET display_order = ? WHERE id = ?', (order_val, pid))
+
+        dump_products_to_json()
+        return jsonify({'success': True, 'message': 'Product ordering saved successfully!'}), 200
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 # 4. Universal Image Upload API
 @api_bp.route('/upload', methods=['POST'])
 @admin_required(['OWNER', 'MANAGER', 'STAFF', 'SUPER_ADMIN'])
@@ -755,7 +781,7 @@ def update_store_settings_api():
 # 5. Full Storefront Sync API (Single high-speed call for all devices)
 @api_bp.route('/sync', methods=['GET'])
 def get_full_store_sync():
-    prods_raw = query_db('SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.status != "deleted" ORDER BY p.id DESC')
+    prods_raw = query_db('SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.status != "deleted" ORDER BY COALESCE(p.display_order, 0) ASC, p.id DESC')
     products = [format_product_dict(p) for p in prods_raw]
     
     cats_raw = query_db('SELECT * FROM categories WHERE is_active = 1 ORDER BY display_order ASC, id ASC')

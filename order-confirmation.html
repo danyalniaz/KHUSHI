@@ -40,7 +40,7 @@
             </p>
 
             <div class="inline-block p-3 px-6 rounded-2xl bg-zinc-900 border border-zinc-800 font-mono text-sm sm:text-base font-bold text-amber-400">
-                Order Reference: <span id="conf-order-id">#KC-10025</span>
+                Order Reference: <span id="conf-order-id">Loading...</span>
             </div>
         </div>
 
@@ -55,7 +55,7 @@
                 </div>
                 <h4 class="text-base font-bold text-white">Automated WhatsApp Order Confirmation</h4>
                 <p class="text-xs text-zinc-300">
-                    An official confirmation with full order breakdown and live tracking link has been sent to your WhatsApp <strong id="conf-wa-number" class="text-emerald-300 font-mono">+92 3XX XXXXXXX</strong>.
+                    An official confirmation with full order breakdown and live tracking link has been sent to your WhatsApp <strong id="conf-wa-number" class="text-emerald-300 font-mono">--</strong>.
                 </p>
             </div>
 
@@ -70,9 +70,9 @@
             <!-- Customer Information -->
             <div class="luxury-card p-6 rounded-3xl space-y-3 text-xs">
                 <h3 class="text-sm font-serif font-bold text-white pb-2 border-b border-zinc-800">Customer & Shipping</h3>
-                <p><strong class="text-zinc-400">Recipient:</strong> <span id="conf-name" class="text-white">Customer</span></p>
-                <p><strong class="text-zinc-400">Phone:</strong> <span id="conf-phone" class="text-white">+923001234567</span></p>
-                <p><strong class="text-zinc-400">Destination:</strong> <span id="conf-address" class="text-white">Delivery Address</span></p>
+                <p><strong class="text-zinc-400">Recipient:</strong> <span id="conf-name" class="text-white">--</span></p>
+                <p><strong class="text-zinc-400">Phone:</strong> <span id="conf-phone" class="text-white">--</span></p>
+                <p><strong class="text-zinc-400">Destination:</strong> <span id="conf-address" class="text-white">--</span></p>
                 <div class="pt-2 flex flex-wrap items-center gap-2">
                     <span id="conf-pay-badge" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-950/60 border border-amber-500/40 text-amber-300">Payment: Pending</span>
                     <span id="conf-ord-badge" class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-zinc-800 border border-zinc-700 text-zinc-300">Status: Placed</span>
@@ -127,7 +127,13 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const orderId = urlParams.get('order_id') || 'KC-10025';
+            const orderId = (urlParams.get('order') || urlParams.get('order_id') || urlParams.get('id') || '').trim();
+
+            if (!orderId) {
+                const el = document.getElementById('conf-order-id');
+                if (el) el.textContent = 'No Order Specified';
+                return;
+            }
 
             let order = null;
 

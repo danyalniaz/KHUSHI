@@ -49,9 +49,9 @@
 
             <div class="text-left sm:text-right">
                 <span class="inline-block px-3 py-1 rounded bg-zinc-100 border border-zinc-300 text-xs font-bold uppercase tracking-widest text-zinc-700">Official Invoice</span>
-                <h2 class="text-2xl font-mono font-bold text-black mt-2" id="inv-order-num">#KC-10025</h2>
-                <p class="text-xs text-zinc-500 mt-1">Date: <strong id="inv-date">2026-09-01</strong></p>
-                <p class="text-xs text-zinc-500">Status: <strong class="uppercase text-emerald-700" id="inv-status">ON THE WAY</strong></p>
+                <h2 class="text-2xl font-mono font-bold text-black mt-2" id="inv-order-num">--</h2>
+                <p class="text-xs text-zinc-500 mt-1">Date: <strong id="inv-date">--</strong></p>
+                <p class="text-xs text-zinc-500">Status: <strong class="uppercase text-emerald-700" id="inv-status">--</strong></p>
             </div>
         </div>
 
@@ -59,9 +59,9 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 text-xs">
             <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
                 <span class="text-[10px] uppercase font-bold text-zinc-400 block tracking-wider">Bill To Customer</span>
-                <h4 class="font-bold text-zinc-900 text-sm" id="inv-cust-name">Khushi Fatima</h4>
-                <p class="text-zinc-600" id="inv-cust-phone">+923219876543</p>
-                <p class="text-zinc-600" id="inv-cust-email">khushi@example.com</p>
+                <h4 class="font-bold text-zinc-900 text-sm" id="inv-cust-name">--</h4>
+                <p class="text-zinc-600" id="inv-cust-phone">--</p>
+                <p class="text-zinc-600" id="inv-cust-email">--</p>
             </div>
 
             <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-1">
@@ -120,12 +120,32 @@
 
     <script src="store.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const orderId = urlParams.get('order_id') || 'KC-10025';
+            const orderId = (urlParams.get('order') || urlParams.get('order_id') || urlParams.get('id') || '').trim();
 
-            const order = store.getOrder(orderId) || store.getOrders()[0];
-            if (!order) return;
+            if (!orderId) {
+                document.getElementById('inv-order-num').textContent = 'No Order Specified';
+                return;
+            }
+
+            let order = null;
+            try {
+                const res = await fetch(`/api/orders/track?order_id=${encodeURIComponent(orderId)}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success && data.order) order = data.order;
+                }
+            } catch(e) {}
+
+            if (!order) {
+                order = (typeof store !== 'undefined' && store.getOrder) ? store.getOrder(orderId) : null;
+            }
+
+            if (!order) {
+                document.getElementById('inv-order-num').textContent = 'Order Not Found';
+                return;
+            }
 
             document.getElementById('inv-order-num').textContent = `#${order.order_number}`;
             document.getElementById('inv-date').textContent = order.created_at ? order.created_at.slice(0, 10) : '2026-09-01';

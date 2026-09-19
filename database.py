@@ -307,6 +307,7 @@ def init_db():
         colors TEXT,
         fabric TEXT,
         occasion TEXT,
+        display_order INTEGER DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (category_id) REFERENCES categories(id)
     )
@@ -577,7 +578,8 @@ def init_db():
         ('is_new', 'BOOLEAN DEFAULT 0'),
         ('is_bestseller', 'BOOLEAN DEFAULT 0'),
         ('rating', 'REAL DEFAULT 5.0'),
-        ('review_count', 'INTEGER DEFAULT 1')
+        ('review_count', 'INTEGER DEFAULT 1'),
+        ('display_order', 'INTEGER DEFAULT 0')
     ]:
         try:
             cursor.execute(f"ALTER TABLE products ADD COLUMN {col} {col_type}")

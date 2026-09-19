@@ -120,13 +120,13 @@
     },
     "live_video_section": {
       "enabled": true,
-      "badge": "LIVE | 2.4K Watching",
-      "title": "Live Fashion Show",
-      "subtitle": "Watch our latest collection in real-time",
-      "button_text": "Watch Live",
+      "badge": "RUNWAY ARCHIVE | 2026 COUTURE",
+      "title": "Live Runway Showcase",
+      "subtitle": "Watch our latest luxury collections",
+      "button_text": "Watch Runway",
       "video_url": "https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-photo-session-39879-large.mp4",
-      "poster_image": "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1200&auto=format&fit=crop&q=80",
-      "comment_pill": "Beautiful collection ❤️ Where can I buy this?"
+      "poster_image": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1200&auto=format&fit=crop&q=80",
+      "comment_pill": "Featured ensemble: Noor-e-Kashmir Velvet Shawl"
     },
     "try_on_card": {
       "enabled": true,
