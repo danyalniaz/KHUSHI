@@ -48,29 +48,36 @@
             </form>
         </div>
 
-        <!-- Tracking Results Card -->
-        <div id="tracking-result-box" class="space-y-6">
+        <!-- Initial State Prompt -->
+        <div id="initial-prompt-box" class="luxury-card p-12 rounded-3xl text-center space-y-3">
+            <div class="w-16 h-16 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto text-2xl mb-2">
+                <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <h4 class="text-lg font-serif font-bold text-white">Enter Your Tracking Details Above</h4>
+            <p class="text-xs text-zinc-400 max-w-md mx-auto leading-relaxed">
+                Provide your Order ID (e.g. KC-10025) and your registered WhatsApp/mobile number to securely access real-time courier updates and delivery progress.
+            </p>
+        </div>
+
+        <!-- Tracking Results Card (Hidden Until Valid Lookup) -->
+        <div id="tracking-result-box" class="hidden space-y-6">
             
             <!-- Status Header -->
             <div class="luxury-card p-6 sm:p-8 rounded-3xl space-y-6">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-800">
                     <div>
                         <div class="flex items-center gap-3">
-                            <h3 class="text-xl sm:text-2xl font-mono font-bold text-amber-400" id="res-order-id">#KC-10025</h3>
-                            <span id="res-status-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-amber-950 text-amber-400 border border-amber-500/30">
-                                Order Placed
-                            </span>
-                            <span id="res-payment-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-sky-950 text-sky-400 border border-sky-500/30">
-                                Payment: COD
-                            </span>
+                            <h3 class="text-xl sm:text-2xl font-mono font-bold text-amber-400" id="res-order-id"></h3>
+                            <span id="res-status-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-amber-950 text-amber-400 border border-amber-500/30"></span>
+                            <span id="res-payment-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-sky-950 text-sky-400 border border-sky-500/30"></span>
                         </div>
-                        <p class="text-xs text-zinc-400 mt-1">Courier: <strong class="text-white" id="res-courier">Trax Logistics</strong> | Tracking #: <strong class="text-amber-400 font-mono" id="res-tracking-num">TRX-99882211</strong></p>
+                        <p class="text-xs text-zinc-400 mt-1">Courier: <strong class="text-white" id="res-courier"></strong> | Tracking #: <strong class="text-amber-400 font-mono" id="res-tracking-num"></strong></p>
                     </div>
 
                     <div class="text-left sm:text-right">
                         <span class="text-[10px] uppercase font-bold text-zinc-400 block">Recipient</span>
-                        <span class="text-xs font-bold text-white" id="res-customer">Khushi Fatima</span>
-                        <span class="text-[11px] text-zinc-400 block" id="res-destination">Islamabad</span>
+                        <span class="text-xs font-bold text-white" id="res-customer"></span>
+                        <span class="text-[11px] text-zinc-400 block" id="res-destination"></span>
                     </div>
                 </div>
 
@@ -98,7 +105,7 @@
                     <h5 class="text-sm font-bold text-white">Need delivery assistance?</h5>
                     <p class="text-xs text-zinc-400">Our customer support concierge is ready to assist you on WhatsApp.</p>
                 </div>
-                <a href="https://wa.me/923001234567" target="_blank" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase flex items-center gap-2 transition">
+                <a href="https://wa.me/923434158605" target="_blank" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase flex items-center gap-2 transition">
                     <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Support
                 </a>
             </div>
@@ -136,11 +143,14 @@
             const notFoundTitle = document.getElementById('not-found-title');
             const notFoundMsg = document.getElementById('not-found-msg');
             const notFoundIcon = document.getElementById('not-found-icon');
+            const initialBox = document.getElementById('initial-prompt-box');
 
             if (!orderNum) {
                 alert('Please enter your Order Reference ID (e.g. KC-10025)');
                 return;
             }
+
+            if (initialBox) initialBox.classList.add('hidden');
 
             try {
                 const res = await fetch(`/api/orders/track?order_id=${encodeURIComponent(orderNum)}&phone=${encodeURIComponent(phone)}`);

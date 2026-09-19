@@ -7301,6 +7301,9 @@ window.openCartDrawer = openCartDrawer;
 window.closeCartDrawer = closeCartDrawer;
 window.renderCartDrawer = renderCartDrawer;
 window.ensureCartDrawerDOM = ensureCartDrawerDOM;
+window.openWishlistDrawer = function() {
+    window.location.href = 'shop.html?view=wishlist';
+};
 
 // Enforce Canonical Production Domain for old preview URLs
 (function enforceCanonicalDomain() {

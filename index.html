@@ -438,7 +438,7 @@
                     <div class="relative z-10 flex items-center justify-between">
                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/90 text-white text-[11px] font-extrabold uppercase tracking-wider shadow-lg">
                             <span class="w-2 h-2 rounded-full bg-white badge-live-pulse"></span>
-                            <span id="live-video-badge">LIVE | 2.4K Watching</span>
+                            <span id="live-video-badge">RUNWAY ARCHIVE | 2026 COUTURE</span>
                         </div>
                         <button onclick="toggleVideoSound(this)" class="w-9 h-9 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white flex items-center justify-center text-xs hover:scale-110 transition" title="Toggle Mute">
                             <i class="fa-solid fa-volume-xmark"></i>
@@ -447,21 +447,21 @@
 
                     <!-- Bottom Content & Comment Overlay -->
                     <div class="relative z-10 space-y-4">
-                        <!-- Live Comment Bubble Overlay -->
+                        <!-- Featured Ensemble Pill Overlay -->
                         <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-full text-xs text-white max-w-md shadow-lg">
-                            <i class="fa-regular fa-comment-dots text-amber-300"></i>
-                            <span id="live-video-comment" class="truncate">Beautiful collection ❤️ Where can I buy this?</span>
+                            <i class="fa-solid fa-sparkles text-amber-300"></i>
+                            <span id="live-video-comment" class="truncate">Featured: Royal Velvet &amp; Pashmina Ensemble</span>
                         </div>
 
                         <div>
-                            <h3 id="live-video-title" class="text-2xl sm:text-3xl font-serif font-bold text-white leading-tight">Live Fashion Show</h3>
-                            <p id="live-video-sub" class="text-xs sm:text-sm text-slate-300 mt-1 max-w-lg">Watch our latest collection in real-time</p>
+                            <h3 id="live-video-title" class="text-2xl sm:text-3xl font-serif font-bold text-white leading-tight">Haute Couture Runway</h3>
+                            <p id="live-video-sub" class="text-xs sm:text-sm text-slate-300 mt-1 max-w-lg">Experience our handcrafted artisanal collections in motion</p>
                         </div>
 
                         <div>
                             <button onclick="openLiveVideoModal()" class="px-6 py-2.5 rounded-full bg-white text-slate-950 hover:bg-slate-100 font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-xl hover:scale-105 transition">
                                 <i class="fa-solid fa-play text-red-600 text-xs"></i>
-                                <span id="live-video-btn-txt">Watch Live</span>
+                                <span id="live-video-btn-txt">Watch Runway</span>
                             </button>
                         </div>
                     </div>
@@ -805,7 +805,7 @@
     <!-- ==================================================================== -->
 
     <!-- Live Video Player Modal -->
-    <div id="live-video-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div id="live-video-modal" onclick="if(event.target === this) closeLiveVideoModal()" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
         <div class="relative w-full max-w-4xl bg-slate-950 rounded-3xl overflow-hidden border border-slate-800 shadow-2xl">
             <div class="flex items-center justify-between p-4 px-6 border-b border-slate-800">
                 <div class="flex items-center gap-2">
@@ -850,31 +850,37 @@
     </div>
 
     <!-- Virtual Try-On Modal -->
-    <div id="virtual-try-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div id="virtual-try-modal" onclick="if(event.target === this) closeVirtualTryOnModal()" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
         <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 border border-slate-200 shadow-2xl space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded-lg bg-blue-600/10 text-blue-600 flex items-center justify-center font-bold text-sm">
                         <i class="fa-solid fa-mobile-screen"></i>
                     </div>
-                    <h3 class="font-bold text-slate-900 text-base">Virtual Fit &amp; Try-On</h3>
+                    <h3 class="font-bold text-slate-900 text-base">Virtual Fit &amp; Silhouette Guide</h3>
                 </div>
                 <button onclick="closeVirtualTryOnModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 flex items-center justify-center">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
             <div class="aspect-[4/5] bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 relative flex items-center justify-center text-center p-6">
-                <img id="try-on-preview-img" src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&auto=format&fit=crop&q=80" alt="Try on model" class="w-full h-full object-cover rounded-xl">
+                <img id="try-on-preview-img" src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&auto=format&fit=crop&q=80" alt="Try on model" class="w-full h-full object-cover rounded-xl transition-all duration-300">
                 <div class="absolute bottom-4 left-4 right-4 bg-black/75 backdrop-blur-md text-white p-3 rounded-xl text-xs">
-                    <p class="font-bold">Model Height: 5'11" &bull; Size: Medium</p>
-                    <p class="text-[11px] text-slate-300">Matches Pakistani standard sizing charts.</p>
+                    <p class="font-bold" id="try-on-fit-label">Model Height: 5'11" &bull; Size: Medium</p>
+                    <p class="text-[11px] text-slate-300" id="try-on-fit-sub">Matches Pakistani standard pret sizing charts.</p>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <button onclick="showToast('Photo uploaded! Real-time AI preview generated.');" class="flex-1 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition">
-                    <i class="fa-solid fa-camera mr-1"></i> Upload Photo
+            
+            <input type="file" id="try-on-upload-input" accept="image/*" class="hidden" onchange="handleTryOnUpload(this)">
+            
+            <div class="flex items-center gap-2.5">
+                <button type="button" onclick="document.getElementById('try-on-upload-input').click()" class="flex-1 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-camera text-blue-600"></i> Upload Photo
                 </button>
-                <a href="shop.html" class="flex-1 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs text-center transition">
+                <button type="button" onclick="resetTryOnPhoto()" class="px-3.5 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs transition" title="Reset to default model">
+                    <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <a href="shop.html" class="flex-1 py-2.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs text-center shadow-md transition">
                     Explore Fits &rarr;
                 </a>
             </div>
@@ -882,7 +888,7 @@
     </div>
 
     <!-- 360° View Modal -->
-    <div id="v360-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div id="v360-modal" onclick="if(event.target === this) close360ViewModal()" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
         <div class="relative w-full max-w-lg bg-slate-950 rounded-3xl p-6 border border-slate-800 text-white shadow-2xl space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-slate-800">
                 <div class="flex items-center gap-2">
@@ -894,11 +900,19 @@
                 </button>
             </div>
             <div class="aspect-[4/5] bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 relative flex items-center justify-center select-none cursor-grab active:cursor-grabbing" id="v360-interactive-box">
-                <img id="v360-interactive-img" src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80" alt="360 View" class="w-full h-full object-cover pointer-events-none">
+                <img id="v360-interactive-img" src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80" alt="360 View" class="w-full h-full object-cover pointer-events-none transition-opacity duration-200">
                 <div class="absolute bottom-4 bg-black/80 backdrop-blur-md px-4 py-1.5 rounded-full text-xs text-amber-400 border border-amber-400/30 flex items-center gap-2">
                     <i class="fa-solid fa-hand-pointer"></i>
                     <span>Drag horizontally to rotate 360°</span>
                 </div>
+            </div>
+            
+            <!-- Angle Switcher Quick Pills -->
+            <div class="flex items-center justify-center gap-2 pt-1">
+                <button type="button" onclick="set360Angle(0)" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 hover:bg-amber-400 hover:text-slate-950 transition">Front</button>
+                <button type="button" onclick="set360Angle(1)" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 hover:bg-amber-400 hover:text-slate-950 transition">3/4 Angle</button>
+                <button type="button" onclick="set360Angle(2)" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 hover:bg-amber-400 hover:text-slate-950 transition">Side</button>
+                <button type="button" onclick="set360Angle(3)" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/10 hover:bg-amber-400 hover:text-slate-950 transition">Detail</button>
             </div>
         </div>
     </div>
@@ -933,7 +947,7 @@
     </div>
 
     <!-- Customer Account Modal (Dedicated Customer Portal - Completely Separate from Admin) -->
-    <div id="customer-account-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+    <div id="customer-account-modal" onclick="if(event.target === this) closeCustomerAccountModal()" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
         <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-5 text-slate-800">
             <!-- Modal Header -->
             <div class="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -1290,11 +1304,94 @@
             document.getElementById('virtual-try-modal')?.classList.add('hidden');
         }
 
+        function handleTryOnUpload(input) {
+            if (input && input.files && input.files[0]) {
+                const file = input.files[0];
+                if (file.size > 10 * 1024 * 1024) {
+                    showToast('Please select a photo under 10MB', 'error');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('try-on-preview-img');
+                    const fitLabel = document.getElementById('try-on-fit-label');
+                    const fitSub = document.getElementById('try-on-fit-sub');
+                    if (preview) preview.src = e.target.result;
+                    if (fitLabel) fitLabel.innerHTML = '<span class="text-emerald-400 font-bold"><i class="fa-solid fa-check-circle mr-1"></i> Custom Silhouette Loaded</span>';
+                    if (fitSub) fitSub.textContent = 'Standard Pakistani fit recommendations mapped to your photo.';
+                    showToast('Personal fit preview updated successfully!', 'success');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function resetTryOnPhoto() {
+            const preview = document.getElementById('try-on-preview-img');
+            const fitLabel = document.getElementById('try-on-fit-label');
+            const fitSub = document.getElementById('try-on-fit-sub');
+            if (preview) preview.src = 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&auto=format&fit=crop&q=80';
+            if (fitLabel) fitLabel.textContent = "Model Height: 5'11\" • Size: Medium";
+            if (fitSub) fitSub.textContent = 'Matches Pakistani standard pret sizing charts.';
+            const input = document.getElementById('try-on-upload-input');
+            if (input) input.value = '';
+        }
+
+        // 360 Degree Viewer
+        const frames360 = [
+            "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&auto=format&fit=crop&q=80"
+        ];
+        let current360Angle = 0;
+        let is360Dragging = false;
+        let start360X = 0;
+
+        function set360Angle(idx) {
+            current360Angle = Math.max(0, Math.min(frames360.length - 1, idx));
+            const img = document.getElementById('v360-interactive-img');
+            if (img) img.src = frames360[current360Angle];
+        }
+
         function open360ViewModal() {
             document.getElementById('v360-modal')?.classList.remove('hidden');
+            init360Viewer();
         }
         function close360ViewModal() {
             document.getElementById('v360-modal')?.classList.add('hidden');
+        }
+
+        function init360Viewer() {
+            const box = document.getElementById('v360-interactive-box');
+            const img = document.getElementById('v360-interactive-img');
+            if (!box || !img || box.dataset.initialized) return;
+            box.dataset.initialized = 'true';
+
+            const onStart = (clientX) => {
+                is360Dragging = true;
+                start360X = clientX;
+            };
+
+            const onMove = (clientX) => {
+                if (!is360Dragging) return;
+                const diff = clientX - start360X;
+                if (Math.abs(diff) > 20) {
+                    const step = diff > 0 ? 1 : -1;
+                    current360Angle = (current360Angle + step + frames360.length) % frames360.length;
+                    img.src = frames360[current360Angle];
+                    start360X = clientX;
+                }
+            };
+
+            const onEnd = () => { is360Dragging = false; };
+
+            box.addEventListener('mousedown', (e) => onStart(e.clientX));
+            window.addEventListener('mousemove', (e) => onMove(e.clientX));
+            window.addEventListener('mouseup', onEnd);
+
+            box.addEventListener('touchstart', (e) => { if (e.touches && e.touches[0]) onStart(e.touches[0].clientX); }, { passive: true });
+            window.addEventListener('touchmove', (e) => { if (e.touches && e.touches[0]) onMove(e.touches[0].clientX); }, { passive: true });
+            window.addEventListener('touchend', onEnd);
         }
 
         function toggleVideoSound(btn) {
@@ -1321,6 +1418,18 @@
         function openSearchModal() { document.getElementById('smart-search-modal')?.classList.remove('hidden'); }
         function closeSearchModal() { document.getElementById('smart-search-modal')?.classList.add('hidden'); }
         function closeQuickView() { document.getElementById('quick-view-modal')?.classList.add('hidden'); }
+
+        // Universal Escape Listener to close any open modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                closeLiveVideoModal();
+                closeVirtualTryOnModal();
+                close360ViewModal();
+                closeCustomerAccountModal();
+                closeSearchModal();
+                closeQuickView();
+            }
+        });
 
         // ====================================================================
         // MASTER DYNAMIC PRODUCT CARD GENERATOR (BRIGHT LUXURY)
