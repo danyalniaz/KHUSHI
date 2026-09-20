@@ -2900,7 +2900,7 @@ const DEFAULT_PRODUCTS = [
         "images": [
             "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80"
+            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80"
         ],
         "short_description": "Precision Japanese quartz chronograph with sapphire crystal glass, 316L solid steel case, and sunburst emerald dial.",
         "description": "Precision Japanese quartz chronograph with sapphire crystal glass, 316L solid steel case, and sunburst emerald dial. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
@@ -2948,7 +2948,7 @@ const DEFAULT_PRODUCTS = [
         "images": [
             "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80"
+            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80"
         ],
         "short_description": "Swiss quartz movement with mother-of-pearl dial and Austrian crystal pav\u00e9 bezel in 18K rose gold PVD coating.",
         "description": "Swiss quartz movement with mother-of-pearl dial and Austrian crystal pav\u00e9 bezel in 18K rose gold PVD coating. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
@@ -2991,10 +2991,10 @@ const DEFAULT_PRODUCTS = [
         "is_flash_sale": false,
         "rating": 4.85,
         "reviews_count": 33,
-        "thumbnail": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "thumbnail": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
         "secondary_image": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
         "images": [
-            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
         ],
@@ -3040,10 +3040,10 @@ const DEFAULT_PRODUCTS = [
         "rating": 4.9,
         "reviews_count": 38,
         "thumbnail": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
-        "secondary_image": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
         "images": [
             "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
         ],
         "short_description": "Fluted bezel classic luxury timepiece with magnifying cyclops date lens and dual-tone jubilee link.",
@@ -3092,7 +3092,7 @@ const DEFAULT_PRODUCTS = [
         "images": [
             "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80"
+            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80"
         ],
         "short_description": "Jewellery-grade polished oval case with integrated bangle clasp and sapphire crystal glass.",
         "description": "Jewellery-grade polished oval case with integrated bangle clasp and sapphire crystal glass. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
@@ -3135,10 +3135,10 @@ const DEFAULT_PRODUCTS = [
         "is_flash_sale": false,
         "rating": 4.85,
         "reviews_count": 48,
-        "thumbnail": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "thumbnail": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
         "secondary_image": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
         "images": [
-            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
         ],
@@ -3188,7 +3188,7 @@ const DEFAULT_PRODUCTS = [
         "images": [
             "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80"
+            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80"
         ],
         "short_description": "Genuine rotating moonphase dial displaying lunar calendar cycles with sapphire exhibition back.",
         "description": "Genuine rotating moonphase dial displaying lunar calendar cycles with sapphire exhibition back. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
@@ -3232,10 +3232,10 @@ const DEFAULT_PRODUCTS = [
         "rating": 4.95,
         "reviews_count": 58,
         "thumbnail": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
-        "secondary_image": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
         "images": [
             "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80"
         ],
         "short_description": "Emerald green guilloch\u00e9 dial with baguette crystal indexes and polished jubilee bracelet.",
@@ -3279,10 +3279,10 @@ const DEFAULT_PRODUCTS = [
         "is_flash_sale": false,
         "rating": 4.85,
         "reviews_count": 63,
-        "thumbnail": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "thumbnail": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
         "secondary_image": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
         "images": [
-            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
         ],
@@ -3332,7 +3332,7 @@ const DEFAULT_PRODUCTS = [
         "images": [
             "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80"
+            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80"
         ],
         "short_description": "Ultra-slim 6mm profile dress watch with traditional Roman numerals and saffiano leather strap.",
         "description": "Ultra-slim 6mm profile dress watch with traditional Roman numerals and saffiano leather strap. Handcrafted with meticulous attention to detail, luxury finished hems, and authentic materials.",
@@ -3376,10 +3376,10 @@ const DEFAULT_PRODUCTS = [
         "rating": 4.95,
         "reviews_count": 73,
         "thumbnail": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
-        "secondary_image": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "secondary_image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
         "images": [
             "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
         ],
         "short_description": "Triple-subdial chronograph bathed in heavy 24K gold vacuum plating with sapphire crystal.",
@@ -3423,10 +3423,10 @@ const DEFAULT_PRODUCTS = [
         "is_flash_sale": true,
         "rating": 4.85,
         "reviews_count": 78,
-        "thumbnail": "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+        "thumbnail": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
         "secondary_image": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
         "images": [
-            "https://images.unsplash.com/photo-1547996160-71dfabb1d5b1?w=800&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop&q=80"
         ],

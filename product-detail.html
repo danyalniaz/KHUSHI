@@ -444,12 +444,23 @@
 
         function getProductIdFromUrl() {
             const params = new URLSearchParams(window.location.search);
-            return Number(params.get('id')) || 1;
+            const idParam = params.get('id');
+            if (idParam) return Number(idParam) || 1;
+            const slug = params.get('slug');
+            if (slug && typeof store !== 'undefined' && store.getProducts) {
+                const prods = store.getProducts();
+                const matched = prods.find(p => p.slug === slug);
+                if (matched) return matched.id;
+            }
+            return 1;
         }
 
         function adjustDetailQty(delta) {
             qty = Math.max(1, qty + delta);
             document.getElementById('detail-qty-val').textContent = qty;
+        }
+        function changeDetailQty(delta) {
+            adjustDetailQty(delta);
         }
 
         function switchTab(tabKey, btn) {
@@ -611,8 +622,9 @@
             document.getElementById('crumb-title').textContent = currentProduct.name;
             const crumbCat = document.getElementById('crumb-category');
             if (crumbCat) {
-                crumbCat.textContent = (currentProduct.category_name || currentProduct.category).toUpperCase();
-                crumbCat.href = `shop.html?category=${currentProduct.category}`;
+                const catText = currentProduct.category_name || currentProduct.category || 'Collection';
+                crumbCat.textContent = String(catText).toUpperCase();
+                crumbCat.href = `shop.html?category=${currentProduct.category || 'all'}`;
             }
 
             // Image Gallery

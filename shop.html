@@ -721,7 +721,7 @@
                     const cats = (typeof store !== 'undefined' && store.getCategories) ? store.getCategories() : [];
                     const catObj = cats.find(c => (c.slug || '').toLowerCase() === catLower);
                     const titleEl = document.getElementById('catalog-page-title');
-                    if (titleEl) titleEl.textContent = catObj ? `${catObj.name} Couture` : `${currentCategory.toUpperCase()} Collection`;
+                    if (titleEl) titleEl.textContent = catObj ? `${catObj.name} Couture` : `${String(currentCategory || 'All').toUpperCase()} Collection`;
                 }
             } else {
                 const titleEl = document.getElementById('catalog-page-title');
