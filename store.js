@@ -6218,6 +6218,10 @@ class KhushiStore {
         return Object.values(cart).reduce((sum, item) => sum + (Number(item.price || 0) * Number(item.quantity || 1)), 0);
     }
 
+    getCartTotal() {
+        return this.getCartSubtotal();
+    }
+
     getCartCount() {
         const cart = this.getCart();
         return Object.values(cart).reduce((sum, item) => sum + Number(item.quantity || 0), 0);
