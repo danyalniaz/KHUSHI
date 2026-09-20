@@ -6960,15 +6960,13 @@ Please process this order.`.trim();
 
     updateBadgeCounts() {
         const cartCount = this.getCartCount();
-        document.querySelectorAll('.cart-badge-count').forEach(b => {
+        document.querySelectorAll('.cart-badge-count, #cart-count-badge, [id*="cart-count"]').forEach(b => {
             b.textContent = cartCount;
-            b.classList.toggle('hidden', cartCount === 0);
         });
 
         const wishCount = this.getWishlistCount();
-        document.querySelectorAll('.wishlist-badge-count').forEach(b => {
+        document.querySelectorAll('.wishlist-badge-count, #wishlist-count-badge, [id*="wishlist-count"]').forEach(b => {
             b.textContent = wishCount;
-            b.classList.toggle('hidden', wishCount === 0);
         });
     }
 
