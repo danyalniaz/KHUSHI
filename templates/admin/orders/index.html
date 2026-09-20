@@ -42,6 +42,9 @@
             <a href="{{ url_for('admin.orders', status='cancelled') }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold transition {% if status_filter == 'cancelled' %}bg-rose-500 text-black{% else %}bg-zinc-900 border border-zinc-700 text-zinc-300 hover:border-zinc-500{% endif %}">
                 Cancelled
             </a>
+            <a href="{{ url_for('admin.orders', status='archived') }}" class="px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold transition {% if status_filter == 'archived' %}bg-zinc-700 text-white{% else %}bg-zinc-900 border border-zinc-700 text-zinc-400 hover:border-zinc-500{% endif %}">
+                Archived
+            </a>
         </div>
 
         <!-- Search Bar & Actions -->
@@ -109,7 +112,7 @@
                                 <span class="text-[9px] text-zinc-500 font-semibold">{{ o.payment_status }}</span>
                             </td>
                             <td class="py-3.5 px-4">
-                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {% if o.order_status == 'delivered' %}bg-emerald-950 text-emerald-400 border border-emerald-500/30{% elif o.order_status in ('shipped', 'on_the_way') %}bg-amber-950 text-amber-400 border border-amber-500/30{% elif o.order_status == 'cancelled' %}bg-rose-950 text-rose-400 border border-rose-500/30{% else %}bg-zinc-800 text-zinc-300 border border-zinc-700{% endif %}">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {% if o.order_status == 'delivered' %}bg-emerald-950 text-emerald-400 border border-emerald-500/30{% elif o.order_status in ('shipped', 'on_the_way') %}bg-amber-950 text-amber-400 border border-amber-500/30{% elif o.order_status == 'cancelled' %}bg-rose-950 text-rose-400 border border-rose-500/30{% elif o.order_status == 'archived' %}bg-zinc-800 text-zinc-400 border border-zinc-700{% else %}bg-zinc-800 text-zinc-300 border border-zinc-700{% endif %}">
                                     {{ o.order_status.replace('_', ' ').title() }}
                                 </span>
                             </td>

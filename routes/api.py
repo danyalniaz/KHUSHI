@@ -139,6 +139,11 @@ def format_product_dict(p):
     if not p:
         return {}
     p = dict(p)
+    if not p.get('category_name') or p.get('category_name') == 'Uncategorized':
+        if p.get('category_id'):
+            cat = query_db('SELECT name FROM categories WHERE id = ?', (p['category_id'],), one=True)
+            if cat and cat['name']:
+                p['category_name'] = cat['name']
     for field in ['colors', 'sizes', 'images', 'variant_matrix', 'size_guide', 'custom_attributes', 'category_attributes', 'payment_methods', 'tags']:
         val = p.get(field)
         if isinstance(val, str):
@@ -276,6 +281,9 @@ def delete_category_api(identifier):
     if not cat:
         return jsonify({'success': False, 'error': 'Category not found'}), 404
     cat_id = cat['id']
+    prod_count = query_db('SELECT COUNT(*) as cnt FROM products WHERE category_id = ? AND status != "deleted"', (cat_id,), one=True)['cnt']
+    if prod_count > 0:
+        return jsonify({'success': False, 'error': f"Cannot delete category '{cat['name']}': it still contains {prod_count} product(s). Please reassign or delete the products first.", 'product_count': prod_count}), 400
     execute_db('DELETE FROM categories WHERE id = ?', (cat_id,))
     return jsonify({'success': True, 'message': f"Category '{cat['name']}' deleted successfully!"})
 
@@ -625,6 +633,7 @@ def upload_file_api():
     if 'file' in request.files or 'image' in request.files:
         file = request.files.get('file') or request.files.get('image')
         if file and file.filename:
+            ext = file.filename.rsplit('.', 1)[-1].lower() if '.' in file.filename else 'jpg'
             is_vid = ext in ['mp4', 'webm', 'mov', 'm4v', 'ogg']
             fname = f"{'vid' if is_vid else 'img'}_{uuid.uuid4().hex[:12]}.{ext}"
             upload_folder = current_app.config.get('UPLOAD_FOLDER', 'static/uploads')
@@ -731,7 +740,23 @@ def get_store_settings_api():
         merged['payments']['online_card'].pop('secret_key', None)
         merged['payments']['online_card'].pop('private_key', None)
 
+    # Sanitize and mask any sensitive secret tokens/keys from public exposure
+    for sk in ['sms_api_key', 'api_secret', 'github_token', 'secret_key', 'private_key', 'password']:
+        merged.pop(sk, None)
+    for k in list(merged.keys()):
+        if any(s in k.lower() for s in ['secret', 'token', 'password', 'api_key']) and 'public' not in k.lower():
+            merged.pop(k, None)
+
     return jsonify({'success': True, 'settings': merged})
+
+# Banners & Slides API
+@api_bp.route('/banners', methods=['GET'])
+def get_banners_api():
+    try:
+        banners = query_db('SELECT * FROM banners ORDER BY display_order ASC, id ASC')
+        return jsonify({'success': True, 'banners': [dict(b) for b in banners]})
+    except Exception as e:
+        return jsonify({'success': True, 'banners': []})
 
 @api_bp.route('/settings', methods=['POST', 'PUT'])
 @admin_required(['OWNER', 'SUPER_ADMIN'])

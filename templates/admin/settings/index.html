@@ -67,7 +67,8 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-zinc-300 mb-1">SMS API Secret Key</label>
-                    <input type="password" name="sms_api_key" value="{{ settings.get('sms_api_key', 'KC_SECURE_API_SMS_KEY_8829') }}" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white font-mono focus:outline-none focus:border-amber-400">
+                    <input type="password" name="sms_api_key" value="{{ settings.get('sms_api_key', '') }}" placeholder="••••••••••••••••" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white font-mono focus:outline-none focus:border-amber-400">
+                    <span class="text-[10px] text-zinc-400 mt-1 block">Stored encrypted in server environment. Enter a new key only to change.</span>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-zinc-300 mb-1">SMS Brand Masking / Sender ID</label>

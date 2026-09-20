@@ -254,7 +254,7 @@
                     }
                     showToast(`Welcome back, ${data.user.name}! Authenticated as ${data.user.role}.`);
                     setTimeout(() => {
-                        window.location.href = data.redirect_url || 'admin-dashboard.html';
+                        window.location.href = data.redirect_url || '/admin';
                     }, 400);
                 } else {
                     errBox.classList.remove('hidden');

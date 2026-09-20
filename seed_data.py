@@ -72,9 +72,18 @@ def seed():
     cursor.execute("SELECT COUNT(*) FROM products")
     existing_count = cursor.fetchone()[0]
     if existing_count > 0:
-        # Products already exist, sync owner credentials & settings and do not wipe catalog
+        # Products already exist, sync owner credentials & settings and ensure category links
         sync_owner_user(cursor)
         sync_settings_data(cursor)
+        try:
+            cursor.execute("""
+                UPDATE products 
+                SET category_name = (SELECT name FROM categories WHERE categories.id = products.category_id),
+                    category_slug = (SELECT slug FROM categories WHERE categories.id = products.category_id)
+                WHERE category_id IS NOT NULL AND (category_name IS NULL OR category_name = '' OR category_slug IS NULL OR category_slug = '')
+            """)
+        except Exception:
+            pass
         conn.commit()
         conn.close()
         return

@@ -3,16 +3,25 @@
 // ====================================================================
 
 (function() {
-if (window.location.protocol === 'file:') {
-    const filename = window.location.pathname.split('/').pop();
-    let target = '/admin';
-    if (filename === 'admin-products.html') target = '/admin/products';
-    else if (filename === 'admin-orders.html') target = '/admin/orders';
-    else if (filename === 'admin-settings.html') target = '/admin/settings';
-    else if (filename === 'admin-security.html') target = '/admin/security';
-    else if (filename === 'admin-categories.html') target = '/admin/categories';
-    window.location.replace('http://127.0.0.1:5000' + target);
-}
+    // Canonical Admin Routing Harmonization:
+    // Forward any legacy static admin HTML requests to authoritative Flask Admin routes
+    const filename = (window.location.pathname.split('/').pop() || '').toLowerCase();
+    const adminRoutes = {
+        'admin-dashboard.html': '/admin',
+        'admin-products.html': '/admin/products',
+        'admin-categories.html': '/admin/categories',
+        'admin-orders.html': '/admin/orders',
+        'admin-settings.html': '/admin/settings',
+        'admin-reports.html': '/admin/reports',
+        'admin-security.html': '/admin/security',
+        'admin-staff.html': '/admin/security'
+    };
+
+    if (adminRoutes[filename]) {
+        const base = window.location.protocol === 'file:' ? 'http://127.0.0.1:5000' : '';
+        window.location.replace(base + adminRoutes[filename]);
+        return;
+    }
     // Map each administrative page to its required granular permission
     const PAGE_PERMISSIONS = {
         'admin-dashboard.html': null, // Open to all authenticated admins

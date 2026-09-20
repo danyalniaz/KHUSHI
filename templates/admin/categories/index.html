@@ -90,7 +90,7 @@
                                 {% endif %}
                             </td>
                             <td class="py-2.5 px-4 text-right">
-                                {% if session.get('user_role') == 'super_admin' %}
+                                {% if session.get('user_role') in ('OWNER', 'super_admin', 'SUPER_ADMIN') %}
                                 <form method="POST" action="{{ url_for('admin.delete_category', id=c.id) }}" onsubmit="return confirm('Delete this category?');" class="inline">
                                     <button type="submit" class="text-rose-400 hover:text-rose-300 font-semibold text-xs">Delete</button>
                                 </form>

@@ -538,7 +538,10 @@ def products():
     category_id = request.args.get('category_id', type=int)
 
     sql = '''
-        SELECT p.*, c.name as category_name
+        SELECT p.id, p.name, p.slug, p.sku, p.brand, p.price, p.sale_price, p.stock,
+               p.low_stock_threshold, p.is_featured, p.is_new, p.is_bestseller, p.is_flash_sale,
+               p.status, p.thumbnail, p.images, p.video_url, p.created_at,
+               COALESCE(NULLIF(c.name, ''), NULLIF(p.category_name, ''), 'Uncategorized') as category_name
         FROM products p
         LEFT JOIN categories c ON p.category_id = c.id
         WHERE 1=1
@@ -600,14 +603,18 @@ def add_product():
         is_flash_sale = 1 if request.form.get('is_flash_sale') else 0
         status = request.form.get('status', 'active')
 
+        cat_info = query_db('SELECT name, slug FROM categories WHERE id = ?', (category_id,), one=True)
+        cat_name = cat_info['name'] if cat_info else 'Uncategorized'
+        cat_slug = cat_info['slug'] if cat_info else ''
+
         execute_db('''
             INSERT INTO products (
-                name, slug, category_id, brand, sku, price, sale_price, stock, low_stock_threshold,
+                name, slug, category_id, category_name, category_slug, brand, sku, price, sale_price, stock, low_stock_threshold,
                 sizes, colors, thumbnail, images, video_url, description, tags,
                 is_featured, is_new, is_bestseller, is_flash_sale, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
-            name, slug, category_id, brand, sku, price, sale_price, stock, low_stock_threshold,
+            name, slug, category_id, cat_name, cat_slug, brand, sku, price, sale_price, stock, low_stock_threshold,
             json.dumps(sizes_list), json.dumps(colors_list), thumbnail, json.dumps(images_list),
             video_url, description, tags, is_featured, is_new, is_bestseller, is_flash_sale, status
         ))
@@ -661,15 +668,19 @@ def edit_product(id):
         is_flash_sale = 1 if request.form.get('is_flash_sale') else 0
         status = request.form.get('status', 'active')
 
+        cat_info = query_db('SELECT name, slug FROM categories WHERE id = ?', (category_id,), one=True)
+        cat_name = cat_info['name'] if cat_info else 'Uncategorized'
+        cat_slug = cat_info['slug'] if cat_info else ''
+
         execute_db('''
             UPDATE products SET
-                name = ?, slug = ?, category_id = ?, brand = ?, sku = ?, price = ?, sale_price = ?,
+                name = ?, slug = ?, category_id = ?, category_name = ?, category_slug = ?, brand = ?, sku = ?, price = ?, sale_price = ?,
                 stock = ?, low_stock_threshold = ?, sizes = ?, colors = ?, thumbnail = ?, images = ?,
                 video_url = ?, description = ?, tags = ?, is_featured = ?, is_new = ?, is_bestseller = ?,
                 is_flash_sale = ?, status = ?
             WHERE id = ?
         ''', (
-            name, slug, category_id, brand, sku, price, sale_price, stock, low_stock_threshold,
+            name, slug, category_id, cat_name, cat_slug, brand, sku, price, sale_price, stock, low_stock_threshold,
             json.dumps(sizes_list), json.dumps(colors_list), thumbnail, json.dumps(images_list),
             video_url, description, tags, is_featured, is_new, is_bestseller, is_flash_sale, status,
             id
@@ -682,7 +693,7 @@ def edit_product(id):
     return render_template('admin/products/form.html', product=product, categories=categories)
 
 @admin_bp.route('/products/delete/<int:id>', methods=['POST'])
-@admin_required(['super_admin'])
+@admin_required(['OWNER', 'super_admin', 'manager'])
 def delete_product(id):
     execute_db('DELETE FROM products WHERE id = ?', (id,))
     flash('Product deleted permanently.', 'info')
@@ -711,10 +722,15 @@ def categories():
     return render_template('admin/categories/index.html', categories=cats)
 
 @admin_bp.route('/categories/delete/<int:id>', methods=['POST'])
-@admin_required(['super_admin'])
+@admin_required(['OWNER', 'super_admin'])
 def delete_category(id):
+    prod_count = query_db('SELECT COUNT(*) as cnt FROM products WHERE category_id = ? AND status != "deleted"', (id,), one=True)['cnt']
+    if prod_count > 0:
+        flash(f'Cannot delete category: it still contains {prod_count} product(s). Please reassign or delete the products first.', 'error')
+        return redirect(url_for('admin.categories'))
+
     execute_db('DELETE FROM categories WHERE id = ?', (id,))
-    flash('Category deleted.', 'info')
+    flash('Category deleted successfully.', 'info')
     return redirect(url_for('admin.categories'))
 
 # 4. Inventory Management
@@ -747,6 +763,17 @@ def quick_inventory_update():
 @admin_bp.route('/orders')
 @admin_required(['super_admin', 'manager', 'staff'])
 def orders():
+    # Auto-archive delivered orders completed > 24 hours ago
+    try:
+        execute_db("""
+            UPDATE orders 
+            SET order_status = 'archived', updated_at = CURRENT_TIMESTAMP 
+            WHERE order_status = 'delivered' 
+            AND datetime(updated_at) <= datetime('now', '-24 hours')
+        """)
+    except Exception:
+        pass
+
     status_filter = request.args.get('status', '').strip()
     search = request.args.get('search', '').strip()
 
@@ -1288,6 +1315,8 @@ def delete_banner(id):
 def settings():
     if request.method == 'POST':
         for key, value in request.form.items():
+            if key == 'sms_api_key' and value.startswith('••••'):
+                continue
             execute_db('''
                 INSERT OR REPLACE INTO settings (setting_key, setting_value, updated_at)
                 VALUES (?, ?, CURRENT_TIMESTAMP)
@@ -1298,6 +1327,8 @@ def settings():
 
     rows = query_db('SELECT setting_key, setting_value FROM settings')
     settings_dict = {r['setting_key']: r['setting_value'] for r in rows}
+    if 'sms_api_key' in settings_dict and settings_dict['sms_api_key']:
+        settings_dict['sms_api_key'] = '••••••••••••••••'
     return render_template('admin/settings/index.html', settings=settings_dict)
 
 # 11. Reports & Analytics

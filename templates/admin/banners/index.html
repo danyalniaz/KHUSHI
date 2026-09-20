@@ -68,7 +68,7 @@
                     <p class="text-xs text-zinc-400 truncate">{{ b.subtitle }}</p>
                     <span class="text-[10px] text-zinc-500 block mt-1">Link: {{ b.button_link }}</span>
                 </div>
-                {% if session.get('user_role') == 'super_admin' %}
+                {% if session.get('user_role') in ('OWNER', 'super_admin', 'SUPER_ADMIN') %}
                 <form method="POST" action="{{ url_for('admin.delete_banner', id=b.id) }}" onsubmit="return confirm('Delete this banner?');">
                     <button type="submit" class="p-2 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-400 text-xs">
                         <i class="fa-solid fa-trash-can"></i>

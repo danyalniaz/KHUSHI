@@ -53,6 +53,7 @@
                             <option value="delivered" {% if order.order_status == 'delivered' %}selected{% endif %}>7. Delivered (SMS Triggered)</option>
                             <option value="cancelled" {% if order.order_status == 'cancelled' %}selected{% endif %}>8. Cancelled (SMS Triggered)</option>
                             <option value="returned" {% if order.order_status == 'returned' %}selected{% endif %}>9. Returned</option>
+                            <option value="archived" {% if order.order_status == 'archived' %}selected{% endif %}>10. Archived (Completed & Stored)</option>
                         </select>
                     </div>
 

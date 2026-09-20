@@ -1658,6 +1658,24 @@
             if (document.getElementById('hero-cta2-txt')) document.getElementById('hero-cta2-txt').textContent = hero.cta2_text || 'Watch Video';
             if (document.getElementById('hero-bg-img') && hero.hero_image_url) document.getElementById('hero-bg-img').src = hero.hero_image_url;
 
+            // Connect with Authoritative Admin Banners API
+            try {
+                fetch('/api/banners')
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d.success && d.banners && d.banners.length > 0) {
+                            const b = d.banners[0];
+                            if (b.title && document.getElementById('hero-headline')) document.getElementById('hero-headline').textContent = b.title;
+                            if (b.subtitle && document.getElementById('hero-subtitle')) document.getElementById('hero-subtitle').textContent = b.subtitle;
+                            if (b.badge_text && document.getElementById('hero-season-badge')) document.getElementById('hero-season-badge').textContent = b.badge_text;
+                            if (b.image_url && document.getElementById('hero-bg-img')) document.getElementById('hero-bg-img').src = b.image_url;
+                            if (b.button_text && document.getElementById('hero-cta1-txt')) document.getElementById('hero-cta1-txt').textContent = b.button_text;
+                            if (b.button_link && document.getElementById('hero-cta1')) document.getElementById('hero-cta1').href = b.button_link;
+                        }
+                    })
+                    .catch(() => {});
+            } catch (bannerErr) {}
+
             const pills = hero.pills || [];
             if (pills[0]) {
                 if (document.getElementById('pill1-title')) document.getElementById('pill1-title').textContent = pills[0].title;

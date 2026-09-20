@@ -139,6 +139,11 @@ def get_public_settings():
     if 'payments' in safe_settings and 'online_card' in safe_settings['payments']:
         safe_settings['payments']['online_card'].pop('secret_key', None)
         safe_settings['payments']['online_card'].pop('private_key', None)
+    for sk in ['sms_api_key', 'api_secret', 'github_token', 'secret_key', 'private_key', 'password']:
+        safe_settings.pop(sk, None)
+    for k in list(safe_settings.keys()):
+        if any(term in k.lower() for term in ['secret', 'token', 'password', 'api_key']) and 'public' not in k.lower():
+            safe_settings.pop(k, None)
     return jsonify({"success": True, "settings": safe_settings})
 
 @payments_bp.route('/api/settings', methods=['POST', 'PUT'])
