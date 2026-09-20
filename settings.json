@@ -93,7 +93,7 @@
       "cta1_text": "Shop Now",
       "cta1_link": "shop.html",
       "cta2_text": "Watch Video",
-      "cta2_video_url": "https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-photo-session-39879-large.mp4",
+      "cta2_video_url": "static/videos/luxury-preview.mp4",
       "hero_image_url": "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=1600&auto=format&fit=crop&q=85",
       "pills": [
         {
@@ -124,7 +124,7 @@
       "title": "Live Runway Showcase",
       "subtitle": "Watch our latest luxury collections",
       "button_text": "Watch Runway",
-      "video_url": "https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-photo-session-39879-large.mp4",
+      "video_url": "static/videos/luxury-preview.mp4",
       "poster_image": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1200&auto=format&fit=crop&q=80",
       "comment_pill": "Featured ensemble: Noor-e-Kashmir Velvet Shawl"
     },

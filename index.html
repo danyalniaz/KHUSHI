@@ -430,7 +430,7 @@
                 <div class="lg:col-span-8 rounded-3xl relative overflow-hidden min-h-[380px] sm:min-h-[440px] flex flex-col justify-between p-6 sm:p-8 bg-slate-950 border border-slate-800 text-white shadow-2xl group">
                     <!-- Video Background -->
                     <video id="live-fashion-video" autoplay muted loop playsinline preload="none" poster="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1200&auto=format&fit=crop&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-75 transition-opacity duration-700">
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-photo-session-39879-large.mp4" type="video/mp4">
+                        <source src="static/videos/luxury-preview.mp4" type="video/mp4">
                     </video>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30 pointer-events-none"></div>
 
@@ -903,7 +903,7 @@
                     <span class="w-2.5 h-2.5 rounded-full bg-red-500 badge-live-pulse"></span>
                     <span class="font-bold text-sm text-white">Live Fashion Showcase Stream</span>
                 </div>
-                <button onclick="closeLiveVideoModal()" class="w-8 h-8 rounded-full bg-slate-900 text-slate-400 hover:text-white flex items-center justify-center">
+                <button id="close-video-modal-btn" onclick="closeLiveVideoModal()" class="w-8 h-8 rounded-full bg-slate-900 text-slate-400 hover:text-white flex items-center justify-center">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -934,7 +934,7 @@
                 </div>
 
                 <video id="modal-video-player" controls autoplay playsinline poster="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1200&auto=format&fit=crop&q=80" class="w-full h-full object-cover">
-                    <source src="https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-photo-session-39879-large.mp4" type="video/mp4">
+                    <source src="static/videos/luxury-preview.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
@@ -1021,7 +1021,7 @@
                         <p class="text-xs text-slate-500">Khushi Royale Club &bull; Orders, Wishlist &amp; Care</p>
                     </div>
                 </div>
-                <button type="button" onclick="closeCustomerAccountModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 flex items-center justify-center transition">
+                <button id="cust-account-close-btn" type="button" onclick="closeCustomerAccountModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 flex items-center justify-center transition">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -1056,7 +1056,7 @@
             const fallbackOverlay = document.getElementById('modal-video-fallback-overlay');
             const hp = (typeof store !== 'undefined' && store.getHomepageSettings) ? store.getHomepageSettings() : null;
 
-            const videoUrl = hp?.live_video_section?.video_url || 'https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-photo-session-39879-large.mp4';
+            const videoUrl = hp?.live_video_section?.video_url || 'static/videos/luxury-preview.mp4';
             const posterUrl = hp?.live_video_section?.poster_url || 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1200&auto=format&fit=crop&q=80';
 
             if (fallbackImg) {

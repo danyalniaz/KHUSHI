@@ -130,7 +130,7 @@ const DEFAULT_SETTINGS = {
             cta1_text: "Shop Now",
             cta1_link: "shop.html",
             cta2_text: "Watch Video",
-            cta2_video_url: "https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-photo-session-39879-large.mp4",
+            cta2_video_url: "static/videos/luxury-preview.mp4",
             hero_image_url: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=1600&auto=format&fit=crop&q=85",
             pills: [
                 { title: "Premium Quality", subtitle: "100% Authentic", icon: "fa-solid fa-crown" },
@@ -149,7 +149,7 @@ const DEFAULT_SETTINGS = {
             title: "Live Fashion Show",
             subtitle: "Watch our latest collection in real-time",
             button_text: "Watch Live",
-            video_url: "https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-photo-session-39879-large.mp4",
+            video_url: "static/videos/luxury-preview.mp4",
             poster_image: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1200&auto=format&fit=crop&q=80",
             comment_pill: "Beautiful collection ❤️ Where can I buy this?"
         },
@@ -7114,7 +7114,7 @@ function ensureCartDrawerDOM() {
                     <span class="text-[10px] text-slate-500 font-medium">Khushi Haute Couture</span>
                 </div>
             </div>
-            <button onclick="closeCartDrawer()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition" title="Close Bag">
+            <button id="close-cart-drawer-btn" onclick="closeCartDrawer()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition" title="Close Bag">
                 <i class="fa-solid fa-xmark text-sm"></i>
             </button>
         </div>
