@@ -153,6 +153,32 @@
             backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 255, 255, 0.12);
         }
+
+        /* 3D Why Choose Khushi Cards */
+        .why-card-3d {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+        }
+        .why-card-3d:hover {
+            transform: translateY(-6px) rotateX(2deg) scale(1.01);
+            box-shadow: 0 16px 32px -8px rgba(212, 175, 55, 0.18), 0 6px 16px -4px rgba(15, 23, 42, 0.08);
+            border-color: rgba(212, 175, 55, 0.6);
+        }
+
+        /* Category Filter Active Animation */
+        .cat-tab-btn {
+            transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .cat-tab-btn.active {
+            background: #0F172A !important;
+            color: #FFFFFF !important;
+            transform: scale(1.04);
+            box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.25);
+        }
+        .product-grid-fade {
+            transition: opacity 0.22s ease, transform 0.22s ease;
+        }
     </style>
 </head>
 <body class="bg-white text-slate-900 min-h-screen flex flex-col antialiased selection:bg-amber-400 selection:text-slate-950 overflow-x-hidden">
@@ -188,12 +214,14 @@
             <div class="flex items-center justify-between h-20 gap-4">
                 
                 <!-- Brand Logo (Left) -->
-                <div class="flex items-center gap-3">
-                    <a href="index.html" class="flex items-center gap-2.5 group">
-                        <img src="static/images/logo.svg" alt="Khushi Collection" class="h-10 w-auto transition-transform duration-300 group-hover:scale-105">
+                <div class="flex items-center gap-3 flex-shrink-0">
+                    <a href="index.html" class="flex items-center gap-2 sm:gap-2.5 group flex-shrink-0">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-950 p-1.5 flex items-center justify-center border border-amber-500/30 flex-shrink-0 group-hover:border-amber-400/70 transition shadow-sm">
+                            <img src="static/images/logo-mark.svg" alt="Khushi Logo" class="w-full h-full object-contain">
+                        </div>
                         <div class="flex flex-col">
-                            <span class="font-cinzel text-xl sm:text-2xl font-bold tracking-widest text-slate-900 group-hover:text-blue-600 transition">KHUSHI</span>
-                            <span class="text-[9px] uppercase tracking-[0.25em] text-amber-600 font-bold -mt-1">Wear Your Story</span>
+                            <span class="font-cinzel text-base sm:text-xl font-black tracking-[0.16em] sm:tracking-[0.18em] text-slate-900 group-hover:text-blue-600 transition leading-none">KHUSHI</span>
+                            <span class="text-[7.5px] sm:text-[9px] uppercase tracking-[0.22em] sm:tracking-[0.25em] text-amber-600 font-extrabold mt-0.5 leading-none">Wear Your Story</span>
                         </div>
                     </a>
                 </div>
@@ -211,7 +239,7 @@
                 </nav>
 
                 <!-- Right Actions: Search Bar, Wishlist, Cart & Account -->
-                <div class="flex items-center gap-3 sm:gap-4">
+                <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
                     
                     <!-- Search Bar (Desktop Pill) -->
                     <div class="relative hidden md:block w-36 lg:w-44 xl:w-56">
@@ -221,31 +249,31 @@
                     </div>
 
                     <!-- Search Trigger (Mobile) -->
-                    <button onclick="openSearchModal()" class="md:hidden w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-blue-600 transition" title="Search">
+                    <button onclick="openSearchModal()" class="md:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:text-blue-600 transition" title="Search">
                         <i class="fa-solid fa-magnifying-glass text-xs"></i>
                     </button>
 
                     <!-- Wishlist Button -->
-                    <button onclick="openWishlistDrawer()" class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 hover:text-rose-500 transition" title="View Wishlist">
-                        <i class="fa-regular fa-heart text-sm sm:text-base"></i>
-                        <span id="wishlist-count-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">0</span>
+                    <button onclick="openWishlistDrawer()" class="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 hover:text-rose-500 transition" title="View Wishlist">
+                        <i class="fa-regular fa-heart text-xs sm:text-base"></i>
+                        <span id="wishlist-count-badge" class="wishlist-badge-count absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] sm:text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">0</span>
                     </button>
 
                     <!-- Cart Bag Button -->
-                    <button onclick="openCartDrawer()" class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 hover:text-blue-600 transition" title="View Cart">
-                        <i class="fa-solid fa-bag-shopping text-sm sm:text-base"></i>
-                        <span id="cart-count-badge" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
+                    <button onclick="openCartDrawer()" class="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 hover:text-blue-600 transition" title="View Cart">
+                        <i class="fa-solid fa-bag-shopping text-xs sm:text-base"></i>
+                        <span id="cart-count-badge" class="cart-badge-count absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[9px] sm:text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
                     </button>
 
-                    <!-- Customer Account Button (Completely Separate from Admin) -->
-                    <button type="button" onclick="openCustomerAccountModal()" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition" title="Customer Account">
+                    <!-- Customer Account Button (Mobile + Desktop Responsive) -->
+                    <button type="button" onclick="openCustomerAccountModal()" class="w-8 h-8 sm:w-auto sm:px-3 sm:py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center sm:gap-1.5" title="Customer Account">
                         <i class="fa-regular fa-user text-xs"></i>
-                        <span id="nav-account-label">Account</span>
+                        <span id="nav-account-label" class="hidden sm:inline">Account</span>
                     </button>
 
                     <!-- Mobile Hamburger Menu Button -->
-                    <button type="button" onclick="toggleMobileMenu()" class="xl:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none transition">
-                        <i class="fa-solid fa-bars text-lg"></i>
+                    <button type="button" onclick="toggleMobileMenu()" class="xl:hidden w-8 h-8 sm:w-10 sm:h-10 rounded-xl text-slate-700 hover:bg-slate-100 flex items-center justify-center focus:outline-none transition" aria-label="Toggle Navigation">
+                        <i class="fa-solid fa-bars text-base sm:text-lg"></i>
                     </button>
                 </div>
             </div>
@@ -257,9 +285,11 @@
     <div id="mobile-nav-drawer" class="fixed top-0 left-0 bottom-0 w-80 max-w-[85vw] bg-white z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
         <div class="p-6 overflow-y-auto">
             <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div class="flex items-center gap-2">
-                    <img src="static/images/logo.svg" alt="Khushi Logo" class="h-8 w-auto">
-                    <span class="font-cinzel text-lg font-bold text-slate-900">KHUSHI</span>
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-slate-950 p-1 flex items-center justify-center border border-amber-500/30">
+                        <img src="static/images/logo-mark.svg" alt="Khushi Logo" class="w-full h-full object-contain">
+                    </div>
+                    <span class="font-cinzel text-lg font-black tracking-wider text-slate-900">KHUSHI</span>
                 </div>
                 <button onclick="toggleMobileMenu()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-900">
                     <i class="fa-solid fa-xmark"></i>
@@ -618,7 +648,41 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="why-choose-grid">
-                <!-- Dynamically populated -->
+                <div class="why-card-3d p-6 rounded-2xl bg-white border border-slate-200/90 hover:border-amber-400/60 transition-all duration-300 flex flex-col items-center text-center space-y-3.5 group shadow-sm hover:shadow-xl hover:-translate-y-1.5 cursor-default relative overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-blue-600/10 text-amber-600 group-hover:from-amber-500 group-hover:to-amber-600 group-hover:text-slate-950 flex items-center justify-center text-xl transition-all duration-300 shadow-inner group-hover:scale-110 group-hover:rotate-3">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <h4 class="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition tracking-tight">Premium Quality</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">100% Authentic</p>
+                    <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400/0 to-transparent group-hover:via-amber-400 transition-all duration-500"></div>
+                </div>
+
+                <div class="why-card-3d p-6 rounded-2xl bg-white border border-slate-200/90 hover:border-amber-400/60 transition-all duration-300 flex flex-col items-center text-center space-y-3.5 group shadow-sm hover:shadow-xl hover:-translate-y-1.5 cursor-default relative overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-indigo-600/10 text-blue-600 group-hover:from-blue-600 group-hover:to-indigo-600 group-hover:text-white flex items-center justify-center text-xl transition-all duration-300 shadow-inner group-hover:scale-110 group-hover:-rotate-3">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <h4 class="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition tracking-tight">Fast Delivery</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">All Over Pakistan</p>
+                    <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500/0 to-transparent group-hover:via-blue-500 transition-all duration-500"></div>
+                </div>
+
+                <div class="why-card-3d p-6 rounded-2xl bg-white border border-slate-200/90 hover:border-amber-400/60 transition-all duration-300 flex flex-col items-center text-center space-y-3.5 group shadow-sm hover:shadow-xl hover:-translate-y-1.5 cursor-default relative overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-teal-600/10 text-emerald-600 group-hover:from-emerald-600 group-hover:to-teal-600 group-hover:text-white flex items-center justify-center text-xl transition-all duration-300 shadow-inner group-hover:scale-110 group-hover:rotate-3">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h4 class="text-sm font-bold text-slate-900 group-hover:text-emerald-600 transition tracking-tight">Secure Payments</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Multiple Options (COD, Cards, Wallets)</p>
+                    <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-500/0 to-transparent group-hover:via-emerald-500 transition-all duration-500"></div>
+                </div>
+
+                <div class="why-card-3d p-6 rounded-2xl bg-white border border-slate-200/90 hover:border-amber-400/60 transition-all duration-300 flex flex-col items-center text-center space-y-3.5 group shadow-sm hover:shadow-xl hover:-translate-y-1.5 cursor-default relative overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/10 via-purple-500/5 to-pink-600/10 text-purple-600 group-hover:from-purple-600 group-hover:to-pink-600 group-hover:text-white flex items-center justify-center text-xl transition-all duration-300 shadow-inner group-hover:scale-110 group-hover:-rotate-3">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h4 class="text-sm font-bold text-slate-900 group-hover:text-purple-600 transition tracking-tight">24/7 Support</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">We're Here to Help Anytime</p>
+                    <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-purple-500/0 to-transparent group-hover:via-purple-500 transition-all duration-500"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -822,7 +886,9 @@
                 <!-- Brand Column -->
                 <div class="lg:col-span-2 space-y-4">
                     <div class="flex items-center gap-2.5">
-                        <img src="static/images/logo.svg" alt="Khushi Logo" class="h-9 w-auto">
+                        <div class="w-9 h-9 rounded-xl bg-slate-900 p-1.5 flex items-center justify-center border border-amber-500/30">
+                            <img src="static/images/logo-mark.svg" alt="Khushi Logo" class="w-full h-full object-contain">
+                        </div>
                         <span class="font-cinzel text-xl font-bold tracking-widest text-white">KHUSHI</span>
                     </div>
                     <p class="text-slate-400 leading-relaxed max-w-sm" id="footer-desc">
@@ -1698,15 +1764,19 @@
             const whyContainer = document.getElementById('why-choose-grid');
             const whyItems = hp.why_choose_us || [];
             if (whyContainer && whyItems.length > 0) {
-                whyContainer.innerHTML = whyItems.map(item => `
-                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-blue-500/50 hover:bg-white transition flex flex-col items-center text-center space-y-3 group shadow-sm">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-600/10 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center text-lg transition duration-300">
-                            <i class="${item.icon || 'fa-solid fa-check'}"></i>
+                whyContainer.innerHTML = whyItems.map(item => {
+                    const iconClass = (item.icon || 'fa-solid fa-crown').replace('shield-check', 'shield-halved');
+                    return `
+                        <div class="why-card-3d p-6 rounded-2xl bg-white border border-slate-200/90 hover:border-amber-400/60 transition-all duration-300 flex flex-col items-center text-center space-y-3.5 group shadow-sm hover:shadow-xl hover:-translate-y-1.5 cursor-default relative overflow-hidden">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-blue-600/10 text-amber-600 group-hover:from-amber-500 group-hover:to-amber-600 group-hover:text-slate-950 flex items-center justify-center text-xl transition-all duration-300 shadow-inner group-hover:scale-110 group-hover:rotate-3">
+                                <i class="${iconClass}"></i>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition tracking-tight">${item.title}</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">${item.subtitle}</p>
+                            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400/0 to-transparent group-hover:via-amber-400 transition-all duration-500"></div>
                         </div>
-                        <h4 class="text-sm font-bold text-slate-900">${item.title}</h4>
-                        <p class="text-xs text-slate-500">${item.subtitle}</p>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             }
 
             // 10. Recently Viewed & Wishlist Preview
@@ -1777,15 +1847,27 @@
             if (document.getElementById('footer-email')) document.getElementById('footer-email').textContent = p.email || 'support@khushicollection.com';
         }
 
-        // New Arrivals Filter Tabs
+        // New Arrivals Filter Tabs with Smooth Animation
         function filterNewArrivals(cat, btn) {
             if (btn) {
                 document.querySelectorAll('#new-arrivals-tabs button').forEach(b => {
-                    b.className = 'px-4 py-1 rounded-full text-slate-600 hover:text-slate-900 transition';
+                    b.className = 'px-4 py-1.5 rounded-full text-slate-600 hover:text-slate-900 cat-tab-btn transition-all duration-300';
                 });
-                btn.className = 'px-4 py-1 rounded-full bg-slate-900 text-white font-bold transition';
+                btn.className = 'px-4 py-1.5 rounded-full bg-slate-900 text-white font-bold cat-tab-btn active transition-all duration-300';
             }
-            renderNewArrivalsFiltered(cat);
+            const container = document.getElementById('new-arrivals-grid');
+            if (container) {
+                container.classList.add('product-grid-fade');
+                container.style.opacity = '0';
+                container.style.transform = 'translateY(6px)';
+                setTimeout(() => {
+                    renderNewArrivalsFiltered(cat);
+                    container.style.opacity = '1';
+                    container.style.transform = 'translateY(0)';
+                }, 150);
+            } else {
+                renderNewArrivalsFiltered(cat);
+            }
         }
 
         function renderNewArrivalsFiltered(cat) {

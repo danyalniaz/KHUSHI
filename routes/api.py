@@ -5,6 +5,7 @@ import uuid
 import base64
 from datetime import datetime
 from flask import Blueprint, request, jsonify, session, current_app
+from werkzeug.security import check_password_hash
 from database import query_db, execute_db
 
 from routes.admin import admin_required
@@ -961,5 +962,56 @@ def api_clear_all_orders():
     return jsonify({'success': True, 'message': 'All orders cleared successfully from store database.'})
 
 
+@api_bp.route('/account/session', methods=['GET', 'POST'])
+def api_customer_account_session():
+    """Validates or initializes customer session via JSON."""
+    if request.method == 'POST':
+        data = request.get_json(silent=True) or {}
+        email = (data.get('email') or '').strip().lower()
+        password = data.get('password') or ''
+        if not email or not password:
+            return jsonify({'success': False, 'error': 'Email and password required'}), 400
+        user = query_db('SELECT * FROM users WHERE LOWER(email) = ?', (email,), one=True)
+        if user and check_password_hash(user['password_hash'], password):
+            session['user_id'] = user['id']
+            session['user_name'] = user['name']
+            session['user_email'] = user['email']
+            session['user_role'] = user['role']
+            session.permanent = True
+            return jsonify({
+                'success': True,
+                'authenticated': True,
+                'customer': {
+                    'id': user['id'],
+                    'name': user['name'],
+                    'email': user['email'],
+                    'role': user['role']
+                }
+            })
+        return jsonify({'success': False, 'error': 'Invalid email or password'}), 401
+
+    # GET: check active session
+    user_id = session.get('user_id')
+    if user_id:
+        user = query_db('SELECT id, name, email, role, status FROM users WHERE id = ?', (user_id,), one=True)
+        if user and user['status'] == 'active':
+            return jsonify({
+                'success': True,
+                'authenticated': True,
+                'customer': {
+                    'id': user['id'],
+                    'name': user['name'],
+                    'email': user['email'],
+                    'role': user['role']
+                }
+            })
+    return jsonify({'success': True, 'authenticated': False, 'customer': None})
 
 
+@api_bp.route('/account/logout', methods=['GET', 'POST'])
+def api_customer_account_logout():
+    session.pop('user_id', None)
+    session.pop('user_name', None)
+    session.pop('user_email', None)
+    session.pop('user_role', None)
+    return jsonify({'success': True, 'message': 'Customer signed out successfully'})

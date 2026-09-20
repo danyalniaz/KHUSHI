@@ -204,7 +204,7 @@ const DEFAULT_SETTINGS = {
         why_choose_us: [
             { title: "Premium Quality", subtitle: "100% Authentic", icon: "fa-solid fa-crown" },
             { title: "Fast Delivery", subtitle: "All Over Pakistan", icon: "fa-solid fa-truck-fast" },
-            { title: "Secure Payments", subtitle: "Multiple Options (COD, Cards, Wallets)", icon: "fa-solid fa-shield-check" },
+            { title: "Secure Payments", subtitle: "Multiple Options (COD, Cards, Wallets)", icon: "fa-solid fa-shield-halved" },
             { title: "24/7 Support", subtitle: "We're Here to Help Anytime", icon: "fa-solid fa-headset" }
         ],
         reviews: [
@@ -7432,21 +7432,21 @@ function ensureCustomerAccountModalDOM() {
     if (document.getElementById('customer-account-modal')) return;
     const modalEl = document.createElement('div');
     modalEl.id = 'customer-account-modal';
-    modalEl.className = 'hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm';
+    modalEl.className = 'hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto';
     modalEl.onclick = function(e) { if (e.target === modalEl) closeCustomerAccountModal(); };
     modalEl.innerHTML = `
-        <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-5 text-slate-800" onclick="event.stopPropagation()">
+        <div class="relative w-full max-w-lg bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-2xl space-y-4 sm:space-y-5 text-slate-800 max-h-[92vh] overflow-y-auto" onclick="event.stopPropagation()">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-2xl bg-amber-400/15 text-amber-600 flex items-center justify-center font-bold text-base">
+                    <div class="w-10 h-10 rounded-2xl bg-amber-400/15 text-amber-600 flex items-center justify-center font-bold text-base flex-shrink-0">
                         <i class="fa-solid fa-crown"></i>
                     </div>
                     <div>
-                        <h3 class="font-serif font-bold text-slate-900 text-lg leading-tight">Customer Portal</h3>
-                        <p class="text-xs text-slate-500">Khushi Royale Club &bull; Orders, Wishlist &amp; Care</p>
+                        <h3 class="font-serif font-bold text-slate-900 text-base sm:text-lg leading-tight">Customer Portal</h3>
+                        <p class="text-[11px] sm:text-xs text-slate-500">Khushi Royale Club &bull; Orders, Wishlist &amp; Care</p>
                     </div>
                 </div>
-                <button type="button" onclick="closeCustomerAccountModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 flex items-center justify-center transition">
+                <button type="button" onclick="closeCustomerAccountModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 flex items-center justify-center transition flex-shrink-0">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -7658,25 +7658,49 @@ if (typeof window.switchCustomerTab !== 'function') {
     };
 }
 if (typeof window.handleCustomerLogin !== 'function') {
-    window.handleCustomerLogin = function(e) {
-        e.preventDefault();
+    window.handleCustomerLogin = async function(e) {
+        if (e) e.preventDefault();
         const email = document.getElementById('cust-l-email')?.value.trim();
+        const pass = document.getElementById('cust-l-pass')?.value || '';
         if (!email) return;
-        const customer = { name: email.split('@')[0].replace('.', ' ').toUpperCase(), email: email, logged_in_at: new Date().toISOString() };
+
+        let customer = { name: email.split('@')[0].replace(/[._]/g, ' ').toUpperCase(), email: email, logged_in_at: new Date().toISOString() };
+        try {
+            const res = await fetch('/api/account/session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password: pass })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                if (data && data.customer) {
+                    customer = data.customer;
+                }
+            }
+        } catch(netErr) {}
+
         localStorage.setItem('kc_customer', JSON.stringify(customer));
-        if (typeof showToast === 'function') showToast('Welcome back, ' + customer.name + '!', 'success');
+        if (typeof showToast === 'function') showToast('Welcome back, ' + (customer.name || 'Valued Customer') + '!', 'success');
         renderCustomerAccountModal();
         updateCustomerNavLabel();
     };
 }
 if (typeof window.handleCustomerRegister !== 'function') {
-    window.handleCustomerRegister = function(e) {
-        e.preventDefault();
+    window.handleCustomerRegister = async function(e) {
+        if (e) e.preventDefault();
         const name = document.getElementById('cust-r-name')?.value.trim();
         const email = document.getElementById('cust-r-email')?.value.trim();
         const phone = document.getElementById('cust-r-phone')?.value.trim();
+        const pass = document.getElementById('cust-r-pass')?.value || '';
         if (!name || !email) return;
         const customer = { name, email, phone, created_at: new Date().toISOString() };
+        try {
+            await fetch('/api/account/session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password: pass, name, phone })
+            });
+        } catch(e) {}
         localStorage.setItem('kc_customer', JSON.stringify(customer));
         if (typeof showToast === 'function') showToast('Account created! Welcome to Khushi Royale Club.', 'success');
         renderCustomerAccountModal();
@@ -7684,7 +7708,10 @@ if (typeof window.handleCustomerRegister !== 'function') {
     };
 }
 if (typeof window.handleCustomerLogout !== 'function') {
-    window.handleCustomerLogout = function() {
+    window.handleCustomerLogout = async function() {
+        try {
+            await fetch('/api/account/logout', { method: 'POST' });
+        } catch(e) {}
         localStorage.removeItem('kc_customer');
         if (typeof showToast === 'function') showToast('Signed out of customer account.');
         renderCustomerAccountModal();
@@ -7704,20 +7731,42 @@ if (typeof window.handleQuickOrderLookup !== 'function') {
 }
 if (typeof window.updateCustomerNavLabel !== 'function') {
     window.updateCustomerNavLabel = function() {
-        const label = document.getElementById('nav-account-label');
-        if (!label) return;
+        const labels = document.querySelectorAll('#nav-account-label, .nav-account-label');
+        if (!labels || labels.length === 0) return;
         const custRaw = localStorage.getItem('kc_customer');
+        let text = 'Account';
         if (custRaw) {
             try {
                 const c = JSON.parse(custRaw);
                 if (c && c.name) {
-                    label.textContent = c.name.split(' ')[0];
-                    return;
+                    text = c.name.split(' ')[0];
                 }
             } catch(e) {}
         }
-        label.textContent = 'Account';
+        labels.forEach(lbl => { lbl.textContent = text; });
     };
+}
+if (typeof window.initCustomerSession !== 'function') {
+    window.initCustomerSession = async function() {
+        updateCustomerNavLabel();
+        try {
+            const res = await fetch('/api/account/session');
+            if (res.ok) {
+                const data = await res.json();
+                if (data && data.authenticated && data.customer) {
+                    localStorage.setItem('kc_customer', JSON.stringify(data.customer));
+                    updateCustomerNavLabel();
+                }
+            }
+        } catch(e) {}
+    };
+    if (typeof document !== 'undefined') {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.initCustomerSession);
+        } else {
+            window.initCustomerSession();
+        }
+    }
 }
 if (typeof window.openAccountModal !== 'function') {
     window.openAccountModal = function() {

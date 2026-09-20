@@ -30,9 +30,14 @@
     <header class="sticky top-0 z-40 white-glass-nav transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20 gap-4">
-                <a href="index.html" class="flex items-center gap-2.5 group">
-                    <img src="static/images/logo.svg" alt="Khushi Collection" class="h-10 w-auto transition-transform duration-300 group-hover:scale-105">
-                    <div class="flex flex-col"><span class="font-cinzel text-xl sm:text-2xl font-bold tracking-widest text-slate-900 group-hover:text-blue-600 transition">KHUSHI</span><span class="text-[9px] uppercase tracking-[0.25em] text-amber-600 font-bold -mt-1">Wear Your Story</span></div>
+                <a href="index.html" class="flex items-center gap-2 sm:gap-2.5 group flex-shrink-0">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-950 p-1.5 flex items-center justify-center border border-amber-500/30 flex-shrink-0 group-hover:border-amber-400/70 transition shadow-sm">
+                        <img src="static/images/logo-mark.svg" alt="Khushi Logo" class="w-full h-full object-contain">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-cinzel text-base sm:text-xl font-black tracking-[0.16em] sm:tracking-[0.18em] text-slate-900 group-hover:text-blue-600 transition leading-none">KHUSHI</span>
+                        <span class="text-[7.5px] sm:text-[9px] uppercase tracking-[0.22em] sm:tracking-[0.25em] text-amber-600 font-extrabold mt-0.5 leading-none">Wear Your Story</span>
+                    </div>
                 </a>
                 <nav class="hidden xl:flex items-center space-x-6 text-xs font-bold uppercase tracking-wider text-slate-700">
                     <a href="index.html" class="nav-link-underline hover:text-blue-600 transition">Home</a>
@@ -41,9 +46,9 @@
                     <a href="about.html" class="nav-link-underline hover:text-blue-600 transition">About</a>
                     <a href="contact.html" class="nav-link-underline hover:text-blue-600 transition">Contact</a>
                 </nav>
-                <div class="flex items-center gap-3 sm:gap-4">
-                    <button onclick="if(typeof openCartDrawer==='function') openCartDrawer()" class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 hover:text-blue-600 transition" title="Cart"><i class="fa-solid fa-bag-shopping text-sm sm:text-base"></i><span id="cart-count-badge" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span></button>
-                    <button type="button" onclick="toggleMobileMenu()" class="xl:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition"><i class="fa-solid fa-bars text-lg"></i></button>
+                <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+                    <button onclick="if(typeof openCartDrawer==='function') openCartDrawer()" class="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 hover:text-blue-600 transition" title="Cart"><i class="fa-solid fa-bag-shopping text-xs sm:text-base"></i><span id="cart-count-badge" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span></button>
+                    <button type="button" onclick="toggleMobileMenu()" class="xl:hidden w-8 h-8 sm:w-10 sm:h-10 rounded-xl text-slate-700 hover:bg-slate-100 flex items-center justify-center transition" aria-label="Toggle Navigation"><i class="fa-solid fa-bars text-base sm:text-lg"></i></button>
                 </div>
             </div>
         </div>
@@ -51,7 +56,15 @@
     <div id="mobile-nav-overlay" class="hidden fixed inset-0 bg-black/60 z-50 backdrop-blur-sm" onclick="toggleMobileMenu()"></div>
     <div id="mobile-nav-drawer" class="fixed top-0 left-0 bottom-0 w-80 max-w-[85vw] bg-white z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
         <div class="p-6 overflow-y-auto">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100"><div class="flex items-center gap-2"><img src="static/images/logo.svg" class="h-8 w-auto"><span class="font-cinzel text-lg font-bold text-slate-900">KHUSHI</span></div><button onclick="toggleMobileMenu()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-slate-950 p-1 flex items-center justify-center border border-amber-500/30">
+                        <img src="static/images/logo-mark.svg" alt="Khushi Logo" class="w-full h-full object-contain">
+                    </div>
+                    <span class="font-cinzel text-lg font-black tracking-wider text-slate-900">KHUSHI</span>
+                </div>
+                <button onclick="toggleMobileMenu()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><i class="fa-solid fa-xmark"></i></button>
+            </div>
             <nav class="py-6 space-y-4 text-sm font-bold uppercase tracking-wider text-slate-800">
                 <a href="index.html" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Home</a>
                 <a href="shop.html" onclick="toggleMobileMenu()" class="block hover:text-blue-600">Shop Catalog</a>
@@ -311,7 +324,7 @@
     <footer class="khushi-footer text-xs pt-12 pb-10 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
-                <div class="flex items-center gap-2.5"><img src="static/images/logo.svg" class="h-7 w-auto opacity-60"><span class="font-cinzel font-bold text-white">KHUSHI COLLECTION</span></div>
+                <div class="flex items-center gap-2.5"><img src="static/images/logo-mark.svg" class="h-7 w-auto opacity-60"><span class="font-cinzel font-bold text-white">KHUSHI COLLECTION</span></div>
                 <div>&copy; 2026 Khushi Collection. All rights reserved.</div>
                 <div class="flex items-center gap-4 text-slate-400">
                     <a href="shop.html" class="hover:text-amber-400">Shop</a>
