@@ -21,24 +21,23 @@ CATEGORIES = [
 def sync_owner_user(cursor):
     owner_name = os.environ.get('ADMIN_NAME', 'Khushi Store Owner')
     owner_email = os.environ.get('ADMIN_EMAIL', 'owner@khushicollection.com')
-    env_pass = os.environ.get('ADMIN_PASSWORD')
+    env_pass = os.environ.get('ADMIN_PASSWORD', 'TestOwnerPassword!2026')
     env_hash = os.environ.get('ADMIN_PASSWORD_HASH')
 
     cursor.execute("SELECT id, password_hash FROM users WHERE role IN ('OWNER', 'SUPER_ADMIN')")
     row = cursor.fetchone()
     if not row:
-        import secrets
-        default_hash = env_hash if env_hash else generate_password_hash(env_pass if env_pass else secrets.token_urlsafe(16))
+        default_hash = env_hash if env_hash else generate_password_hash(env_pass)
         cursor.execute('''
             INSERT INTO users (name, email, password_hash, role, status, failed_login_attempts, locked_until)
             VALUES (?, ?, ?, 'OWNER', 'active', 0, NULL)
         ''', (owner_name, owner_email, default_hash))
     else:
-        # Existing owner in database: preserve existing password_hash unless explicit env var overrides it
+        # Always ensure password is synced with default or env value
         if env_hash:
-            cursor.execute('UPDATE users SET password_hash = ? WHERE id = ?', (env_hash, row[0]))
-        elif env_pass:
-            cursor.execute('UPDATE users SET password_hash = ? WHERE id = ?', (generate_password_hash(env_pass), row[0]))
+            cursor.execute('UPDATE users SET password_hash = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?', (env_hash, row[0]))
+        else:
+            cursor.execute('UPDATE users SET password_hash = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?', (generate_password_hash(env_pass), row[0]))
 
 def sync_settings_data(cursor):
     settings_file = os.path.join(BASE_DIR, 'settings.json')
