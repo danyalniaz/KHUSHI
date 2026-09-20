@@ -7422,3 +7422,312 @@ window.getWhatsAppLink = function(message) {
     }
     return `https://wa.me/923434158605?text=${encodeURIComponent(message || 'Hi Khushi Collection, I need help!')}`;
 };
+
+// ====================================================================
+// UNIVERSAL CUSTOMER ROYALE ACCOUNT PORTAL
+// ====================================================================
+function ensureCustomerAccountModalDOM() {
+    if (document.getElementById('customer-account-modal')) return;
+    const modalEl = document.createElement('div');
+    modalEl.id = 'customer-account-modal';
+    modalEl.className = 'hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm';
+    modalEl.onclick = function(e) { if (e.target === modalEl) closeCustomerAccountModal(); };
+    modalEl.innerHTML = `
+        <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-5 text-slate-800" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-amber-400/15 text-amber-600 flex items-center justify-center font-bold text-base">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif font-bold text-slate-900 text-lg leading-tight">Customer Portal</h3>
+                        <p class="text-xs text-slate-500">Khushi Royale Club &bull; Orders, Wishlist &amp; Care</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeCustomerAccountModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-900 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="customer-account-content"></div>
+        </div>
+    `;
+    document.body.appendChild(modalEl);
+}
+
+if (typeof window.openCustomerAccountModal !== 'function') {
+    window.openCustomerAccountModal = function() {
+        ensureCustomerAccountModalDOM();
+        renderCustomerAccountModal();
+        const modal = document.getElementById('customer-account-modal');
+        if (modal) modal.classList.remove('hidden');
+    };
+}
+if (typeof window.closeCustomerAccountModal !== 'function') {
+    window.closeCustomerAccountModal = function() {
+        const modal = document.getElementById('customer-account-modal');
+        if (modal) modal.classList.add('hidden');
+    };
+}
+if (typeof window.renderCustomerAccountModal !== 'function') {
+    window.renderCustomerAccountModal = function() {
+        ensureCustomerAccountModalDOM();
+        const container = document.getElementById('customer-account-content');
+        if (!container) return;
+
+        const custRaw = localStorage.getItem('kc_customer');
+        let customer = null;
+        try { if (custRaw) customer = JSON.parse(custRaw); } catch(e) {}
+
+        if (customer && customer.email) {
+            const orders = (typeof store !== 'undefined' && store.getOrders) ? store.getOrders() : [];
+            const custOrders = orders.filter(o => 
+                (o.customer_email && o.customer_email.toLowerCase() === customer.email.toLowerCase()) ||
+                (o.customer_phone && customer.phone && o.customer_phone.includes(customer.phone))
+            );
+            const wishCount = (typeof store !== 'undefined' && store.getWishlistCount) ? store.getWishlistCount() : 0;
+
+            container.innerHTML = `
+                <div class="space-y-4 text-xs">
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                        <div class="space-y-0.5">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full">Royale Member</span>
+                            <h4 class="text-sm font-bold text-slate-900">${customer.name || 'Valued Customer'}</h4>
+                            <p class="text-slate-500 font-mono text-[11px]">${customer.email}</p>
+                            ${customer.phone ? `<p class="text-slate-400 text-[11px]">${customer.phone}</p>` : ''}
+                        </div>
+                        <button onclick="handleCustomerLogout()" class="px-3 py-1.5 rounded-xl border border-slate-200 hover:border-rose-300 hover:text-rose-600 text-slate-600 text-[11px] font-semibold transition">
+                            <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i>Sign Out
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="shop.html?view=wishlist" class="p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-left transition flex items-center gap-3 group">
+                            <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center text-sm">
+                                <i class="fa-solid fa-heart"></i>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-slate-900 group-hover:text-blue-600 transition">My Wishlist</span>
+                                <span class="text-[11px] text-slate-500">${wishCount} items saved</span>
+                            </div>
+                        </a>
+
+                        <a href="track-order.html" class="p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-left transition flex items-center gap-3 group">
+                            <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm">
+                                <i class="fa-solid fa-truck-fast"></i>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-slate-900 group-hover:text-blue-600 transition">Live Tracking</span>
+                                <span class="text-[11px] text-slate-500">Track courier</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="space-y-2 pt-1">
+                        <div class="flex items-center justify-between">
+                            <h5 class="font-bold text-slate-900 text-xs">Recent Orders (${custOrders.length})</h5>
+                            <a href="track-order.html" class="text-blue-600 hover:underline text-[11px] font-semibold">Track by ID &rarr;</a>
+                        </div>
+                        ${custOrders.length === 0 ? `
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 text-center text-slate-400 text-xs">
+                                No orders recorded yet. Discover our latest couture pieces in the catalog!
+                            </div>
+                        ` : `
+                            <div class="max-h-48 overflow-y-auto space-y-2 pr-1">
+                                ${custOrders.slice(0, 4).map(o => `
+                                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                                        <div>
+                                            <span class="font-mono font-bold text-slate-900">#${o.order_number}</span>
+                                            <span class="text-[11px] text-slate-500 block">${o.created_at ? o.created_at.slice(0, 10) : 'Recent'} &bull; ${(o.payment_method||'COD').toUpperCase()}</span>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="font-mono font-bold text-blue-600 block">Rs. ${(o.total_amount||0).toLocaleString()}</span>
+                                            <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${o.status === 'delivered' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${o.status || 'Pending'}</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="space-y-4 text-xs">
+                    <div class="flex border-b border-slate-200">
+                        <button type="button" onclick="switchCustomerTab('login')" id="cust-tab-login" class="flex-1 pb-2.5 font-bold text-xs border-b-2 border-blue-600 text-blue-600 transition">
+                            Log In
+                        </button>
+                        <button type="button" onclick="switchCustomerTab('register')" id="cust-tab-register" class="flex-1 pb-2.5 font-bold text-xs border-b-2 border-transparent text-slate-400 hover:text-slate-700 transition">
+                            Register
+                        </button>
+                        <button type="button" onclick="switchCustomerTab('lookup')" id="cust-tab-lookup" class="flex-1 pb-2.5 font-bold text-xs border-b-2 border-transparent text-slate-400 hover:text-slate-700 transition">
+                            Quick Track
+                        </button>
+                    </div>
+
+                    <form id="cust-login-form" onsubmit="handleCustomerLogin(event)" class="space-y-3">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Email Address</label>
+                            <input type="email" id="cust-l-email" required placeholder="your.name@example.com" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Password</label>
+                            <input type="password" id="cust-l-pass" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-blue-500 font-mono">
+                        </div>
+                        <button type="submit" class="w-full py-3 rounded-xl btn-gold-pill text-slate-950 font-bold uppercase tracking-wider text-xs shadow-md hover:scale-[1.01] active:scale-[0.99] transition">
+                            Sign In to Customer Account
+                        </button>
+                    </form>
+
+                    <form id="cust-reg-form" onsubmit="handleCustomerRegister(event)" class="hidden space-y-3">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Full Name *</label>
+                            <input type="text" id="cust-r-name" required placeholder="e.g. Fatima Ali" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Email Address *</label>
+                            <input type="email" id="cust-r-email" required placeholder="fatima@example.com" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Phone Number (For Delivery Updates) *</label>
+                            <input type="tel" id="cust-r-phone" required placeholder="0300 1234567" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-blue-500 font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Password (Min 6 characters) *</label>
+                            <input type="password" id="cust-r-pass" required minlength="6" placeholder="Create password" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-blue-500 font-mono">
+                        </div>
+                        <button type="submit" class="w-full py-3 rounded-xl btn-gold-pill text-slate-950 font-bold uppercase tracking-wider text-xs shadow-md hover:scale-[1.01] active:scale-[0.99] transition">
+                            Create Account
+                        </button>
+                    </form>
+
+                    <div id="cust-lookup-form" class="hidden space-y-3">
+                        <p class="text-slate-500 text-xs leading-relaxed">
+                            Enter your Order ID (e.g. KC-1001) to view real-time shipping status without logging in.
+                        </p>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Order Number</label>
+                            <input type="text" id="cust-quick-order-id" placeholder="KC-1001" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-blue-500 font-mono">
+                        </div>
+                        <button type="button" onclick="handleQuickOrderLookup()" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase tracking-wider text-xs transition shadow-md">
+                            Track Live Status &rarr;
+                        </button>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-500 flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-blue-600 text-xs"></i>
+                        <span>Protected Customer Area &bull; For store admin, please access the Administration Console.</span>
+                    </div>
+                </div>
+            `;
+        }
+    };
+}
+if (typeof window.switchCustomerTab !== 'function') {
+    window.switchCustomerTab = function(tab) {
+        const loginForm = document.getElementById('cust-login-form');
+        const regForm = document.getElementById('cust-reg-form');
+        const lookupForm = document.getElementById('cust-lookup-form');
+        const tabLogin = document.getElementById('cust-tab-login');
+        const tabReg = document.getElementById('cust-tab-register');
+        const tabLookup = document.getElementById('cust-tab-lookup');
+
+        [loginForm, regForm, lookupForm].forEach(f => f && f.classList.add('hidden'));
+        [tabLogin, tabReg, tabLookup].forEach(t => {
+            if (t) {
+                t.classList.remove('border-blue-600', 'text-blue-600');
+                t.classList.add('border-transparent', 'text-slate-400');
+            }
+        });
+
+        if (tab === 'login') {
+            loginForm?.classList.remove('hidden');
+            tabLogin?.classList.add('border-blue-600', 'text-blue-600');
+            tabLogin?.classList.remove('border-transparent', 'text-slate-400');
+        } else if (tab === 'register') {
+            regForm?.classList.remove('hidden');
+            tabReg?.classList.add('border-blue-600', 'text-blue-600');
+            tabReg?.classList.remove('border-transparent', 'text-slate-400');
+        } else if (tab === 'lookup') {
+            lookupForm?.classList.remove('hidden');
+            tabLookup?.classList.add('border-blue-600', 'text-blue-600');
+            tabLookup?.classList.remove('border-transparent', 'text-slate-400');
+        }
+    };
+}
+if (typeof window.handleCustomerLogin !== 'function') {
+    window.handleCustomerLogin = function(e) {
+        e.preventDefault();
+        const email = document.getElementById('cust-l-email')?.value.trim();
+        if (!email) return;
+        const customer = { name: email.split('@')[0].replace('.', ' ').toUpperCase(), email: email, logged_in_at: new Date().toISOString() };
+        localStorage.setItem('kc_customer', JSON.stringify(customer));
+        if (typeof showToast === 'function') showToast('Welcome back, ' + customer.name + '!', 'success');
+        renderCustomerAccountModal();
+        updateCustomerNavLabel();
+    };
+}
+if (typeof window.handleCustomerRegister !== 'function') {
+    window.handleCustomerRegister = function(e) {
+        e.preventDefault();
+        const name = document.getElementById('cust-r-name')?.value.trim();
+        const email = document.getElementById('cust-r-email')?.value.trim();
+        const phone = document.getElementById('cust-r-phone')?.value.trim();
+        if (!name || !email) return;
+        const customer = { name, email, phone, created_at: new Date().toISOString() };
+        localStorage.setItem('kc_customer', JSON.stringify(customer));
+        if (typeof showToast === 'function') showToast('Account created! Welcome to Khushi Royale Club.', 'success');
+        renderCustomerAccountModal();
+        updateCustomerNavLabel();
+    };
+}
+if (typeof window.handleCustomerLogout !== 'function') {
+    window.handleCustomerLogout = function() {
+        localStorage.removeItem('kc_customer');
+        if (typeof showToast === 'function') showToast('Signed out of customer account.');
+        renderCustomerAccountModal();
+        updateCustomerNavLabel();
+    };
+}
+if (typeof window.handleQuickOrderLookup !== 'function') {
+    window.handleQuickOrderLookup = function() {
+        const input = document.getElementById('cust-quick-order-id');
+        const val = input ? input.value.trim() : '';
+        if (!val) {
+            if (typeof showToast === 'function') showToast('Please enter an Order ID', 'error');
+            return;
+        }
+        window.location.href = 'track-order.html?order_id=' + encodeURIComponent(val);
+    };
+}
+if (typeof window.updateCustomerNavLabel !== 'function') {
+    window.updateCustomerNavLabel = function() {
+        const label = document.getElementById('nav-account-label');
+        if (!label) return;
+        const custRaw = localStorage.getItem('kc_customer');
+        if (custRaw) {
+            try {
+                const c = JSON.parse(custRaw);
+                if (c && c.name) {
+                    label.textContent = c.name.split(' ')[0];
+                    return;
+                }
+            } catch(e) {}
+        }
+        label.textContent = 'Account';
+    };
+}
+if (typeof window.openAccountModal !== 'function') {
+    window.openAccountModal = function() {
+        if (typeof window.openCustomerAccountModal === 'function') {
+            window.openCustomerAccountModal();
+        }
+    };
+}
+if (typeof window.closeAccountModal !== 'function') {
+    window.closeAccountModal = function() {
+        if (typeof window.closeCustomerAccountModal === 'function') {
+            window.closeCustomerAccountModal();
+        }
+    };
+}

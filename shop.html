@@ -624,13 +624,30 @@
             applyFilters();
         }
 
-        function openAccountModal() {
+        function openCustomerAccountModal() {
+            if (typeof window.renderCustomerAccountModal === 'function') {
+                ensureCustomerAccountModalDOM();
+                renderCustomerAccountModal();
+                const modal = document.getElementById('customer-account-modal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    return;
+                }
+            }
             const el = document.getElementById('account-modal');
             if (el) el.classList.remove('hidden');
         }
-        function closeAccountModal() {
+        function openAccountModal() {
+            openCustomerAccountModal();
+        }
+        function closeCustomerAccountModal() {
+            const modal = document.getElementById('customer-account-modal');
+            if (modal) modal.classList.add('hidden');
             const el = document.getElementById('account-modal');
             if (el) el.classList.add('hidden');
+        }
+        function closeAccountModal() {
+            closeCustomerAccountModal();
         }
         function toggleMobileFilterDrawer() {
             const aside = document.querySelector('aside');
